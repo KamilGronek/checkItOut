@@ -1,0 +1,23 @@
+/* ----------------------------------------------------------------------------------------------------- */
+/*  @ Import/write your custom styles here.
+/*  @ Styles from this file will override 'vendors.scss' and Fuse's base styles.
+/* ----------------------------------------------------------------------------------------------------- */
+
+.influForm mat-form-field {
+    padding-right: 16px;
+    padding-left: 16px;
+}
+
+.influFormEdit mat-form-field {
+    padding-right: 16px;
+    padding-left: 16px;
+}
+
+.influFormEdit mat-label {
+    color: rgb(100 116 139);
+}
+
+.influFormEdit .mdc-floating-label--required {
+    color: rgb(100 116 139);
+}
+
