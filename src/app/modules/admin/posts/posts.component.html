@@ -123,7 +123,7 @@
                         <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
                         <tr mat-row *matRowDef="let influencer; columns: columnsToDisplayWithExpand;"
                             class="example-element-row" [class.example-expanded-row]="expandedInfluencer === influencer"
-                            (click)="expandedInfluencer = expandedInfluencer === influencer ? null : influencer">
+                            (click)="expandedInfluencer = expandedInfluencer === influencer ? null : influencer; fillEditForm()">
                         </tr>
                         <tr mat-row *matRowDef="let row; columns: ['editFormSpace']" class="example-detail-row"></tr>
                         <tr class="h-16 border-0" mat-footer-row *matFooterRowDef="['recentOrdersTableFooter']"></tr>
