@@ -6,6 +6,8 @@ import { QuickChatService } from 'app/layout/common/quick-chat/quick-chat.servic
 import { ShortcutsService } from 'app/layout/common/shortcuts/shortcuts.service';
 import { forkJoin } from 'rxjs';
 
+import { Firestore } from '@angular/fire/firestore';
+
 export const initialDataResolver = () =>
 {
     const messagesService = inject(MessagesService);
@@ -13,6 +15,7 @@ export const initialDataResolver = () =>
     const notificationsService = inject(NotificationsService);
     const quickChatService = inject(QuickChatService);
     const shortcutsService = inject(ShortcutsService);
+    const firestore: Firestore = inject(Firestore);
 
     // Fork join multiple API endpoint calls to wait all of them to finish
     return forkJoin([

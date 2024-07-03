@@ -10,7 +10,7 @@ import { Influencer } from './Influencer';
 })
 export class InfluencerService {
 
-  private apiUrl: string = "http://51.83.134.121:8080/influencer";
+  private apiUrl: string = "http://localhost:8080/influencer";
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })

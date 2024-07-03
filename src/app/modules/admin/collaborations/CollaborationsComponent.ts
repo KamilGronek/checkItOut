@@ -1,16 +1,10 @@
-import { CurrencyPipe, DatePipe, NgClass } from '@angular/common';
-import { AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation, inject} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { Influencer } from 'app/services/influencer/Influencer';
-import { FinanceService } from 'app/mock-api/dashboards/finance/finance.service';
-import { ApexOptions, NgApexchartsModule } from 'ng-apexcharts';
 import { Subject, takeUntil } from 'rxjs';
+
+import { Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, FacebookAuthProvider, signInWithPopup, signInWithCredential} from '@angular/fire/auth';
+
 
 @Component({
     selector: 'collaborations',
@@ -18,32 +12,16 @@ import { Subject, takeUntil } from 'rxjs';
     templateUrl: './collaborations.component.html',
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [MatButtonModule, MatIconModule, MatMenuModule, MatDividerModule, NgApexchartsModule, MatTableModule, MatSortModule, NgClass, MatProgressBarModule, CurrencyPipe, DatePipe],
+    imports: [MatButtonModule, MatIconModule],
 })
 export class CollaborationsComponent implements OnInit, AfterViewInit, OnDestroy
 {
-    ELEMENT_DATA: Influencer[] = [
-        {id: 1, firstName: 'norbert', lastName: 'Marchewka', instagramId: '@caarrotek', apiKey: 'jakisKlucz'},
-        {id: 2, firstName: 'jarek', lastName: 'Marchewka', instagramId: '@unnewewe', apiKey: 'jakisKlucz2'},
-        {id: 3, firstName: 'jarek', lastName: 'Marchewka', instagramId: '@unnewewe', apiKey: 'jakisKlucz2'},
-        {id: 4, firstName: 'jarek', lastName: 'Marchewka', instagramId: '@unnewewe', apiKey: 'jakisKlucz2'},
-        {id: 5, firstName: 'jarek', lastName: 'Marchewka', instagramId: '@unnewewe', apiKey: 'jakisKlucz2'},
-        {id: 6, firstName: 'jarek', lastName: 'Marchewka', instagramId: '@unnewewe', apiKey: 'jakisKlucz2'},
-        {id: 7, firstName: 'jarek', lastName: 'Marchewka', instagramId: '@unnewewe', apiKey: 'jakisKlucz2'},
-        {id: 8, firstName: 'jarek', lastName: 'Marchewka', instagramId: '@unnewewe', apiKey: 'jakisKlucz2'},
-        {id: 9, firstName: 'jarek', lastName: 'Marchewka', instagramId: '@unnewewe', apiKey: 'jakisKlucz2'}
-    ]
 
-    @ViewChild('influencersTable', {read: MatSort}) influencersTableMatSort: MatSort;
-
-    data: any;
-    accountBalanceOptions: ApexOptions;
-    dataSource: MatTableDataSource<Influencer> =  new MatTableDataSource<Influencer>(this.ELEMENT_DATA);
-    influencersTableColumns: string[] = ['id', 'firstName', 'lastName', 'instagramId', 'apiKey'];
+    private auth = inject(Auth);
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
 
-    constructor(private _financeService: FinanceService)
+    constructor()
     {
 
     }
@@ -52,7 +30,78 @@ export class CollaborationsComponent implements OnInit, AfterViewInit, OnDestroy
 
     ngOnInit(): void
     {
-        // Get
+    }
+
+    sendRequest() {
+        console.log("Przycisk działa");
+        const provider = new FacebookAuthProvider();
+
+        signInWithPopup(this.auth, provider)
+        .then((result) => {
+            // The signed-in user info.
+            const user = result.user;
+            // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+            const credential = FacebookAuthProvider.credentialFromResult(result);
+
+
+            signInWithCredential(this.auth, credential)
+         .then((userCredential) => {
+            // Signed in 
+            const user = userCredential.user;
+            console.log(user.getIdToken());
+            // ...
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+            });
+
+    
+            // IdP data available using getAdditionalUserInfo(result)
+            // ...
+            })
+        .catch((error) => {
+            // Handle Errors here.
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            // The email of the user's account used.
+            const email = error.customData.email;
+            // The AuthCredential type that was used.
+            const credential = FacebookAuthProvider.credentialFromError(error);
+            console.log("problem")
+            console.log(credential.idToken)
+            // ...\
+            });
+    }
+    
+
+    signUp() {
+        createUserWithEmailAndPassword(this.auth, 'natalkamarchewka11@gmail.com', 'Mateusz24!ppp')
+        .then((userCredential) => {
+            // Signed up 
+            const user = userCredential.user;
+            console.log(user.getIdToken());
+            // ...
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                // ..
+                });
+    }
+
+    signIn() {
+         signInWithEmailAndPassword(this.auth, 'norbert.marchewka44@gmail.com', 'Mateusz24!ppp')
+         .then((userCredential) => {
+            // Signed in 
+            const user = userCredential.user;
+            console.log(user.getIdToken());
+            // ...
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+            });
     }
 
     /**
