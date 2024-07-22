@@ -11,10 +11,12 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertComponent, FuseAlertType } from '@fuse/components/alert';
 import { AuthService } from 'app/core/auth/auth.service';
+import { signInWithEmailAndPassword } from '@angular/fire/auth';
 
 @Component({
     selector     : 'auth-sign-in',
     templateUrl  : './sign-in.component.html',
+    styleUrl     : './sign-in.styles.css',
     encapsulation: ViewEncapsulation.None,
     animations   : fuseAnimations,
     standalone   : true,
@@ -67,6 +69,92 @@ export class AuthSignInComponent implements OnInit
     /**
      * Sign in
      */
+
+    signInWithEmailAndPassword(): void 
+    {
+        // Return if the form is invalid
+        if ( this.signInForm.invalid )
+        {
+            return;
+        }
+    
+        // Disable the form
+        this.signInForm.disable();
+    
+        // Hide the alert
+        this.showAlert = false;
+
+        this._authService.signInUsingEmailAndPassword(this.signInForm.value)
+            .then(() => {
+                const redirectURL = this._activatedRoute.snapshot.queryParamMap.get('redirectURL') || '/signed-in-redirect';
+                // Navigate to the redirect url
+                this._router.navigateByUrl(redirectURL);
+            })
+            .catch((error) => {
+                this.signInForm.enable();
+                this.signInNgForm.resetForm();
+
+                this.alert = {
+                    type   : 'error',
+                    message: 'Wrong email or password',
+                };
+
+                this.showAlert = true;
+            })
+    }
+
+    signInWithFacebook(): void {
+        // Disable the form
+        this.signInForm.disable();
+    
+        // Hide the alert
+        this.showAlert = false;
+
+        this._authService.signInWithFacebook()
+        .then(() => {
+            const redirectURL = this._activatedRoute.snapshot.queryParamMap.get('redirectURL') || '/signed-in-redirect';
+            // Navigate to the redirect url
+            this._router.navigateByUrl(redirectURL);
+        })
+        .catch((error) => {
+            this.signInForm.enable();
+            this.signInNgForm.resetForm();
+
+            this.alert = {
+                type   : 'error',
+                message: 'Something go wrong',
+            };
+
+            this.showAlert = true;
+        });
+    }
+
+    signInWithGoogle(): void {
+        // Disable the form
+        this.signInForm.disable();
+    
+        // Hide the alert
+        this.showAlert = false;
+
+        this._authService.signInWithGoogle()
+        .then(() => {
+            const redirectURL = this._activatedRoute.snapshot.queryParamMap.get('redirectURL') || '/signed-in-redirect';
+            // Navigate to the redirect url
+            this._router.navigateByUrl(redirectURL);
+        })
+        .catch((error) => {
+            this.signInForm.enable();
+            this.signInNgForm.resetForm();
+
+            this.alert = {
+                type   : 'error',
+                message: 'Something go wrong',
+            };
+
+            this.showAlert = true;
+        });
+    }
+
     signIn(): void
     {
         // Return if the form is invalid

@@ -105,7 +105,7 @@
                     mat-flat-button
                     [color]="'primary'"
                     [disabled]="signInForm.disabled"
-                    (click)="signIn()">
+                    (click)="signInWithEmailAndPassword()">
                     <span *ngIf="!signInForm.disabled">
                         Sign in
                     </span>
@@ -125,6 +125,7 @@
                 <!-- Single sign-on buttons -->
                 <div class="flex items-center mt-8 space-x-4">
                     <button
+                        (click)="signInWithFacebook()"
                         class="flex-auto"
                         type="button"
                         mat-stroked-button>
@@ -133,20 +134,20 @@
                             [svgIcon]="'feather:facebook'"></mat-icon>
                     </button>
                     <button
+                        (click)="signInWithGoogle()"
                         class="flex-auto"
                         type="button"
                         mat-stroked-button>
+                        <div class="gsi-material-button-state"></div>
+                        <div class="gsi-material-button-content-wrapper">
+                            <div class="gsi-material-button-icon">
+
                         <mat-icon
                             class="icon-size-5"
-                            [svgIcon]="'feather:twitter'"></mat-icon>
-                    </button>
-                    <button
-                        class="flex-auto"
-                        type="button"
-                        mat-stroked-button>
-                        <mat-icon
-                            class="icon-size-5"
-                            [svgIcon]="'feather:github'"></mat-icon>
+                            [svgIcon]="'feather:google'"></mat-icon>
+                        </div>
+                        <span style="display: none;">Sign in with Google</span>
+                      </div>
                     </button>
                 </div>
             </form>

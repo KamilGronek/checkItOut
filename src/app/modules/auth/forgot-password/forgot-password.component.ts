@@ -9,7 +9,6 @@ import { RouterLink } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertComponent, FuseAlertType } from '@fuse/components/alert';
 import { AuthService } from 'app/core/auth/auth.service';
-import { finalize } from 'rxjs';
 
 @Component({
     selector     : 'auth-forgot-password',
@@ -72,42 +71,29 @@ export class AuthForgotPasswordComponent implements OnInit
 
         // Disable the form
         this.forgotPasswordForm.disable();
-
         // Hide the alert
         this.showAlert = false;
 
-        // Forgot password
         this._authService.forgotPassword(this.forgotPasswordForm.get('email').value)
-            .pipe(
-                finalize(() =>
-                {
-                    // Re-enable the form
-                    this.forgotPasswordForm.enable();
+        .then(() => {
+            this.alert = {
+                type   : 'success',
+                message: 'Password reset sent! You\'ll receive an email if you are registered on our system.',
+            };
 
-                    // Reset the form
-                    this.forgotPasswordNgForm.resetForm();
+            this.forgotPasswordForm.enable();
+            this.forgotPasswordNgForm.resetForm();
+            this.showAlert = true;
+        })
+        .catch(() => {
+            this.alert = {
+                type   : 'error',
+                message: 'Email does not found! Are you sure you are already a member?',
+            };
 
-                    // Show the alert
-                    this.showAlert = true;
-                }),
-            )
-            .subscribe(
-                (response) =>
-                {
-                    // Set the alert
-                    this.alert = {
-                        type   : 'success',
-                        message: 'Password reset sent! You\'ll receive an email if you are registered on our system.',
-                    };
-                },
-                (response) =>
-                {
-                    // Set the alert
-                    this.alert = {
-                        type   : 'error',
-                        message: 'Email does not found! Are you sure you are already a member?',
-                    };
-                },
-            );
+            this.forgotPasswordForm.enable();
+            this.forgotPasswordNgForm.resetForm();
+            this.showAlert = true;
+        })
     }
 }

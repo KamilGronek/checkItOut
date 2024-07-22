@@ -3,6 +3,8 @@ import { inject, Injectable } from '@angular/core';
 import { AuthUtils } from 'app/core/auth/auth.utils';
 import { UserService } from 'app/core/user/user.service';
 import { catchError, Observable, of, switchMap, throwError } from 'rxjs';
+import { sendPasswordResetEmail, Auth, sendEmailVerification , RecaptchaVerifier, signInWithEmailAndPassword, createUserWithEmailAndPassword, FacebookAuthProvider, signInWithPopup, signInWithCredential, signOut, GoogleAuthProvider, UserCredential } from '@angular/fire/auth';
+import { user } from 'app/mock-api/common/user/data'
 
 @Injectable({providedIn: 'root'})
 export class AuthService
@@ -10,6 +12,7 @@ export class AuthService
     private _authenticated: boolean = false;
     private _httpClient = inject(HttpClient);
     private _userService = inject(UserService);
+    private auth = inject(Auth);
 
     // -----------------------------------------------------------------------------------------------------
     // @ Accessors
@@ -37,9 +40,9 @@ export class AuthService
      *
      * @param email
      */
-    forgotPassword(email: string): Observable<any>
+    forgotPassword(email: string): Promise<any>
     {
-        return this._httpClient.post('api/auth/forgot-password', email);
+        return sendPasswordResetEmail(this.auth, email);
     }
 
     /**
@@ -62,7 +65,7 @@ export class AuthService
         // Throw error, if the user is already logged in
         if ( this._authenticated )
         {
-            return throwError('User is already logged in.');
+            return throwError(() => 'User is already logged in.');
         }
 
         return this._httpClient.post('api/auth/sign-in', credentials).pipe(
@@ -83,6 +86,56 @@ export class AuthService
         );
     }
 
+    signInUsingEmailAndPassword(credentials: { email: string; password: string }): Promise<any> {
+        if ( this._authenticated ){
+            throwError(() => 'User is already logged in.');
+        }
+
+        return signInWithEmailAndPassword(this.auth, credentials.email, credentials.password)
+        .then(userCredential => {return new Promise<string>((resolve, reject) => {resolve(userCredential.user.getIdToken())})})
+        .then(token => {return new Promise((resolve, reject) => {
+            this.accessToken = token;
+            console.log(token)
+            this._authenticated = true;
+            this._userService.user = user;
+            resolve(true);
+        })});
+    }
+
+    signInWithFacebook(): Promise<any> {
+        if ( this._authenticated ){
+            throwError(() => 'User is already logged in.');
+        }
+
+        const provider = new FacebookAuthProvider();
+
+        return signInWithPopup(this.auth, provider)
+        .then(userCredential => {return new Promise<string>((resolve, reject) => {resolve(userCredential.user.getIdToken())})})
+        .then(token => {return new Promise((resolve, reject) => {
+            this.accessToken = token;
+            this._authenticated = true;
+            this._userService.user = user;
+            resolve(true);
+        })});
+    }
+
+    signInWithGoogle(): Promise<any> {
+        if ( this._authenticated ){
+            throwError(() => 'User is already logged in.');
+        }
+
+        const provider = new GoogleAuthProvider();
+
+        return signInWithPopup(this.auth, provider)
+        .then(userCredential => {return new Promise<string>((resolve, reject) => {resolve(userCredential.user.getIdToken())})})
+        .then(token => {return new Promise((resolve, reject) => {
+            this.accessToken = token;
+            this._authenticated = true;
+            this._userService.user = user;
+            resolve(true);
+        })});
+    }
+    
     /**
      * Sign in using the access token
      */
@@ -126,7 +179,7 @@ export class AuthService
     /**
      * Sign out
      */
-    signOut(): Observable<any>
+    signOut(): Promise<any>
     {
         // Remove the access token from the local storage
         localStorage.removeItem('accessToken');
@@ -134,8 +187,8 @@ export class AuthService
         // Set the authenticated flag to false
         this._authenticated = false;
 
-        // Return the observable
-        return of(true);
+        return this.auth.signOut();
+        
     }
 
     /**
@@ -143,9 +196,14 @@ export class AuthService
      *
      * @param user
      */
-    signUp(user: { name: string; email: string; password: string; company: string }): Observable<any>
+    signUpWithPassword(user: { name: string; email: string; password: string; company: string }): Promise<any>
     {
-        return this._httpClient.post('api/auth/sign-up', user);
+        return createUserWithEmailAndPassword(this.auth, user.email, user.password);
+    }
+
+    sendConfirmationEmail(userCredential: UserCredential): Promise<any>
+    {
+        return sendEmailVerification(userCredential.user);
     }
 
     /**
