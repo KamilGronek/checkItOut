@@ -1,0 +1,66 @@
+/* .inventory-grid {
+  grid-template-columns: 48px auto 40px;
+
+  @screen sm {
+      grid-template-columns: 48px auto 112px 72px;
+  }
+
+  @screen md {
+      grid-template-columns: 48px 112px auto 112px 72px;
+  }
+
+  @screen lg {
+      grid-template-columns: 48px 112px auto 112px 96px 96px 72px;
+  }
+} */
+
+.card-container{
+    display: flex;
+    /* flex-direction:column;
+    justify-content: space-between; */
+  }
+  
+  .example-card {
+    max-width: 200px;
+  }
+  
+  .example-header-image {
+    background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+    background-size: cover;
+  }
+  
+  
+  .card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 5px;
+    justify-content: center; /* Wyśrodkowanie kart w poziomie */
+    margin-left: 100px;
+    margin-top: 50px;
+  
+  }
+  
+  .card-item {
+    flex: 1 1 calc(25% - 16px);
+    /* min-width: 200px; */
+  
+    box-sizing: border-box;
+  }
+  
+  .example-card {
+    /* margin: 0;  */
+    display: flex;
+    flex-direction: column; /* Ustawienie kierunku wewnętrznego flexa */
+    height: 100%; /* Spraw, aby karty miały pełną wysokość kontenera */
+  }
+  
+  
+  .green-button {
+    background-color: green;
+    color: white;
+  }
+  
+  .green-button:hover {
+    background-color: darkgreen;
+  }

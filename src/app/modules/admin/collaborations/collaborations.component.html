@@ -1,1 +1,30 @@
-Collabs here
+<div class="bg-card flex min-w-0 flex-auto flex-col dark:bg-transparent sm:inset-0 sm:overflow-hidden"
+>
+      <div class="flex flex-0 flex-col border-b px-6 py-8 sm:flex-row sm:items-center md:px-8">
+        <div class="text-4xl font-extrabold tracking-tight">Współprace do podjęcia</div>
+      </div>
+
+      <div class="card-container">
+        <div *ngFor="let item of dataJson" class="card-item gap-16">
+          <mat-card class="example-card" appearance="outlined">
+            <mat-card-header>
+              <div mat-card-avatar class="example-header-image"></div>
+              <mat-card-title><b>{{ item.firstName }}</b> 
+                {{ item.lastName }}</mat-card-title>
+              <!-- <mat-card-subtitle>Instagram: {{ item.instagramId }}</mat-card-subtitle> -->
+            </mat-card-header>
+            <img mat-card-image [src]="item.images" alt="Photo of barbershop"/>
+
+            <mat-card-content>
+              <p>
+                Instagram: {{ item.instagramId }}
+              </p>
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-button (click)="openDescription(item.id)">Opis</button>
+              <button mat-button (click)="takePart(item.id)">ZGŁOŚ SIĘ</button>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+      </div>
+</div>
