@@ -54,10 +54,10 @@ interface PeriodicElement {
 }
 
 @Component({
-    selector: 'influencer-list2',
+    selector: 'newInfluencers',
     standalone: true,
-    templateUrl: './influencer-list.componentCopy.html',
-    styleUrl: './infleuncers-list.stylesCopy.css',
+    templateUrl: './newInfluencers-list.component.html',
+    styleUrl: './newInfluencers-list.styles.css',
     animations: [
         trigger('detailExpand', [
             state('collapsed,void', style({ height: '0px', minHeight: '0' })),
@@ -89,7 +89,7 @@ interface PeriodicElement {
         DatePipe,
     ],
 })
-export class InfluencerListComponentCopy
+export class newInfluencersListComponent
     implements OnInit, AfterViewInit, OnDestroy
 {
     @ViewChild('influencersTable', { read: MatSort })

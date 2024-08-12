@@ -23,7 +23,7 @@ import { AuthResolver } from 'app/core/auth/auth.resolver';
 export const appRoutes: Route[] = [
     // Redirect empty path to '/example'
 
-    { path: '', pathMatch: 'full', redirectTo: 'newInfulensers' },
+    { path: '', pathMatch: 'full', redirectTo: 'newInfluencers' },
 
     // Redirect signed-in user to the '/example'
     //
@@ -33,7 +33,7 @@ export const appRoutes: Route[] = [
     {
         path: 'signed-in-redirect',
         pathMatch: 'full',
-        redirectTo: 'newInfulensers',
+        redirectTo: 'newInfluencers',
     },
 
     // Auth routes for guests
@@ -138,10 +138,10 @@ export const appRoutes: Route[] = [
                     import('app/modules/admin/influencers/influencers.routes'),
             },
             {
-                path: 'newInfulensers',
+                path: 'newInfluencers',
                 loadChildren: () =>
                     import(
-                        'app/modules/admin/influencersCopy/influencersCopy.routes'
+                        'app/modules/admin/newInfluencers/newInfluencers.routes'
                     ),
             },
             // {

@@ -52,11 +52,11 @@ export const defaultNavigation: FuseNavigationItem[] = [
         link: '/posts',
     },
     {
-        id: 'newInfulensers',
+        id: 'newInfluencers',
         title: 'Zgłoszenia Nowych Influeserów',
         type: 'basic',
         icon: 'heroicons_outline:paper-airplane',
-        link: '/newInfulensers',
+        link: '/newInfluencers',
     },
 ];
 
@@ -71,11 +71,11 @@ export const unauthorizedUserNavigation: FuseNavigationItem[] = [
         link: '/profile',
     },
     {
-        id: 'newInfulensers',
+        id: 'newInfluencers',
         title: 'Zgłoszenia Nowych Influeserów',
         type: 'basic',
         icon: 'heroicons_outline:paper-airplane',
-        link: '/newInfulensers',
+        link: '/newInfluencers',
     },
 ];
 
@@ -140,11 +140,11 @@ export const adminNavigation: FuseNavigationItem[] = [
         link: '/posts',
     },
     {
-        id: 'newInfulensers',
+        id: 'newInfluencers',
         title: 'Zgłoszenia Nowych Influeserów',
         type: 'basic',
         icon: 'heroicons_outline:paper-airplane',
-        link: '/newInfulensers',
+        link: '/newInfluencers',
     },
 ];
 
