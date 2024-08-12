@@ -1,0 +1,323 @@
+<div class="flex flex-col flex-auto min-w-0">
+    <div class="flex-auto p-6 sm:p-10">
+        <div class="grid grid-cols-1 xl:grid-cols-3 gap-8 w-full">
+
+            <!-- Recent transactions table -->
+            <div class="xl:col-span-3 flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden">
+
+                <div class="p-6 flex flex-row justify-between">
+                    <div class="mr-43 text-2xl font-medium tracking-tight leading-6 truncate flex items-center">
+                       Zgłoszenia nowych influencerów</div>
+                       <mat-form-field>
+                            <mat-label>Znajdź po imieniu</mat-label>
+                            <input matInput  
+                                placeholder="Znajdź po imieniu"
+                                (input)="onInputChange($event)">
+                        </mat-form-field>
+                    <button class="ml-4 mr-10" mat-flat-button [color]="'primary'"
+                         (click)="openAddInfluencerForm()">
+                        <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+                        <span class="ml-2 mr-1">Add</span>
+                    </button>
+                </div>
+
+                <ng-container *ngIf="formLaunched">
+                    <ng-container *ngTemplateOutlet="influencerForm"></ng-container>
+                </ng-container>
+
+                <div class="overflow-x-auto mx-6">
+                    <table class="w-full bg-transparent" mat-table [dataSource]="dataSource"
+                        multiTemplateDataRows [trackBy]="trackByFn" matSort matSortActive="id" matSortDirection="asc"
+                        matSortDisableClear #influencersTable>
+                        
+                      
+                        <ng-container matColumnDef="id">
+                            <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                                Id
+                            </th>
+                            <td mat-cell *matCellDef="let influencer">
+                                <span class="pr-6 font-medium text-sm text-secondary whitespace-nowrap">
+                                    {{influencer.id}}
+                                </span>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="date">
+                            <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                                Data
+                            </th>
+                            <td mat-cell *matCellDef="let influencer">
+                                <span class="pr-6 whitespace-nowrap">
+                                    {{influencer.date}}
+                                </span>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="name">
+                            <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                                Imię
+                            </th>
+                            <td mat-cell *matCellDef="let influencer">
+                                <span class="pr-6 whitespace-nowrap">
+                                    {{influencer.name}}
+                                </span>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="surname">
+                            <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                                Nazwisko
+                            </th>
+                            <td mat-cell *matCellDef="let influencer">
+                                <span class="pr-6 font-medium whitespace-nowrap">
+                                    {{influencer.surname}}
+                                </span>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="mail">
+                            <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                                Mail
+                            </th>
+                            <td mat-cell *matCellDef="let influencer">
+                                <span class="leading-relaxed whitespace-nowrap">
+                                    {{influencer.mail}}
+                                </span>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="city">
+                            <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                                Miasto
+                            </th>
+                            <td mat-cell *matCellDef="let influencer">
+                                <span class="leading-relaxed whitespace-nowrap">
+                                    {{influencer.city}}
+                                </span>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="instagram">
+                            <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                                Instagram
+                            </th>
+                            <td mat-cell *matCellDef="let influencer">
+                                <span class="leading-relaxed whitespace-nowrap">
+                                    {{influencer.instagram}}
+                                </span>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="followersAmount">
+                            <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                               Ilość followersów
+                            </th>
+                            <td mat-cell *matCellDef="let influencer">
+                                <span class="leading-relaxed whitespace-nowrap">
+                                    {{influencer.followersAmount}}
+                                </span>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="accountType">
+                            <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                               Rodzaj konta
+                            </th>
+                            <td mat-cell *matCellDef="let influencer">
+                                <span class="leading-relaxed whitespace-nowrap">
+                                    {{influencer.accountType}}
+                                </span>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="status">
+                            <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                                Status
+                            </th>
+                            <td mat-cell *matCellDef="let influencer">
+                                <span class="leading-relaxed whitespace-nowrap">
+                                    {{influencer.status}}
+                                </span>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="expand">
+                            <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+                            <td mat-cell *matCellDef="let influencer"> 
+                                <button mat-icon-button aria-label="expand row"
+                                    (click)="(expandedInfluencer = expandedInfluencer === influencer 
+                                    ? null : influencer);
+                                     $event.stopPropagation(); fillEditForm()">
+                                    @if (expandedInfluencer === influencer) {
+                                    <mat-icon>keyboard_arrow_up</mat-icon>
+                                    } @else {
+                                    <mat-icon>keyboard_arrow_down</mat-icon>
+                                    }
+                                </button>
+                            </td>
+                        </ng-container>
+                        <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+                        <ng-container matColumnDef="editFormSpace">
+                            <td mat-cell *matCellDef="let influencer"
+                                [attr.colspan]="columnsToDisplayWithExpand.length + 1">
+                                <div class="example-element-detail"
+                                    [@detailExpand]="influencer == expandedInfluencer ? 'expanded' : 'collapsed'">
+                                    <ng-container>
+                                        <ng-container *ngTemplateOutlet="influencerEditForm"></ng-container>
+                                    </ng-container>
+                                </div>
+                            </td>
+                            <mat-divider></mat-divider>
+                        </ng-container>
+          
+
+
+                        <!-- Footer -->
+                        
+                        <ng-container matColumnDef="recentOrdersTableFooter">
+                            <td class="py-6 px-0 border-0" mat-footer-cell *matFooterCellDef colspan="6">
+                                <button mat-stroked-button>See all influencers</button>
+                            </td>
+                        </ng-container>
+                        <!----------------------------------------------->
+                        
+                        <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+                        <tr mat-row *matRowDef="let influencer; columns: columnsToDisplayWithExpand;"
+                            class="example-element-row" [class.example-expanded-row]="expandedInfluencer === influencer"
+                            (click)="expandedInfluencer = expandedInfluencer === influencer ? null : influencer; fillEditForm()">
+                        </tr>
+                        <tr mat-row *matRowDef="let row; columns: ['editFormSpace']" class="example-detail-row"></tr>
+                        <tr class="h-16 border-0" mat-footer-row *matFooterRowDef="['recentOrdersTableFooter']"></tr>
+                    </table>
+                </div>
+            </div>
+
+            <ng-template #influencerForm let-product>
+                <form class="grid grid-cols-5 overflow-x-auto mx-6 influForm" [formGroup]="addInfluencerFormGroup">
+                    <mat-form-field>
+                        <mat-label>Data</mat-label>
+                        <input matInput [formControlName]="'date'">
+                    </mat-form-field>
+                    
+                    <mat-form-field>
+                        <mat-label>Imię</mat-label>
+                        <input matInput [formControlName]="'name'">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Nazwisko</mat-label>
+                        <input matInput [formControlName]="'surname'">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Mail</mat-label>
+                        <input matInput [formControlName]="'mail'">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Miasto</mat-label>
+                        <input matInput [formControlName]="'city'">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Instagram</mat-label>
+                        <input matInput [formControlName]="'instagram'">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Ilość followersów</mat-label>
+                        <input matInput [formControlName]="'followersAmount'">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Rodzaj konta</mat-label>
+                        <input matInput [formControlName]="'accountType'">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Status</mat-label>
+                        <input matInput [formControlName]="'status'">
+                    </mat-form-field>
+
+                    <button mat-flat-button type="submit" class="w-2/4 justify-self-center self-center"
+                        [color]="'primary'" (click)="addInfluencer()">
+                        Submit
+                    </button>
+                </form>
+            </ng-template>
+
+            <ng-template #influencerEditForm let-product>
+                <div class="info">
+                        <b>Publiczny / Niepubliczny / NA</b>
+                        <!-- <div class="account"> -->
+                            <b>Konto aktywne / konto nieaktywne / Konto w trakcie walidacji</b>
+                        <!-- </div>  -->
+                </div>    
+                <form class="grid grid-cols-10 overflow-hidden pb-3 influFormEdit"
+                    [formGroup]="editInfluencerFormGroup
+                    ">  
+                    <mat-form-field class="pl-0">
+                        <mat-label>Id</mat-label>
+                        <input matInput [formControlName]="'id'">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Data</mat-label>
+                        <input matInput [formControlName]="'date'">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Imię</mat-label>
+                        <input matInput [formControlName]="'name'">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Nazwisko</mat-label>
+                        <input matInput [formControlName]="'surname'">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Mail</mat-label>
+                        <input matInput [formControlName]="'mail'">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Miasto</mat-label>
+                        <input matInput [formControlName]="'city'">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Instagram</mat-label>
+                        <input matInput [formControlName]="'instagram'">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Ilość followersów</mat-label>
+                        <input matInput [formControlName]="'followersAmount'">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Rodzaj konta</mat-label>
+                        <input matInput [formControlName]="'accountType'">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Status</mat-label>
+                        <input matInput [formControlName]="'status'">
+                    </mat-form-field>
+
+                <div class="container">
+                    <mat-form-field class="text-area">
+                        <mat-label><b>Notatka:</b></mat-label>
+                        <textarea matInput placeholder="Wyślij notatkę..."></textarea>
+                    </mat-form-field>
+                </div>   
+                </form>
+                <div class="info-button">
+                    <button mat-button type="submit" class="justify-self-center self-center" 
+                         mat-button class="custom-red-button" (click)="updateInfluencer()">
+                            Wyślij
+                    </button>
+                    <button class="justify-self-center self-center" 
+                    mat-button class="custom-green-button"
+                            (click)="deleteSelectedProduct(influencer)">
+                            Zaakceptuj
+                    </button>
+                </div> 
+            </ng-template>
+            <ng-template #noProducts>
+                <div class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center">There are no products!</div>
+            </ng-template>
+        </div>
+    </div>
+</div>
