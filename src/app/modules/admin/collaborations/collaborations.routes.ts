@@ -5,9 +5,9 @@ import { CollaborationsComponent } from './CollaborationsComponent';
 
 export default [
     {
-        path     : '',
+        path: '',
         component: CollaborationsComponent,
-        resolve  : {
+        resolve: {
             data: () => inject(FinanceService).getData(),
         },
     },
