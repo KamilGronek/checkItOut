@@ -70,13 +70,13 @@ export const unauthorizedUserNavigation: FuseNavigationItem[] = [
         icon: 'heroicons_outline:user-circle',
         link: '/profile',
     },
-    {
-        id: 'newInfluencers',
-        title: 'Zgłoszenia Nowych Influeserów',
-        type: 'basic',
-        icon: 'heroicons_outline:paper-airplane',
-        link: '/newInfluencers',
-    },
+    // {
+    //     id: 'newInfluencers',
+    //     title: 'Zgłoszenia Nowych Influeserów',
+    //     type: 'basic',
+    //     icon: 'heroicons_outline:paper-airplane',
+    //     link: '/newInfluencers',
+    // },
 ];
 
 export const influenserNavigation: FuseNavigationItem[] = [

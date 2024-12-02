@@ -17,17 +17,38 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Influencer } from 'app/services/influencer/Influencer';
+import { InfluencerResponse } from 'app/services/influencer/Influencer';
+// import { MessageToInfluenser } from 'app/services/influencer/Influencer';
+
+// import { UserData } from 'app/services/userData/UserData';
+
 import { FinanceService } from 'app/mock-api/dashboards/finance/finance.service';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { ApexOptions, NgApexchartsModule } from 'ng-apexcharts';
-import { Subject, takeUntil } from 'rxjs';
-import { InfluencerService } from 'app/services/influencer/influencer.service';
 import {
+    Subject,
+    takeUntil,
+    BehaviorSubject,
+    debounceTime,
+    distinctUntilChanged,
+    startWith,
+    map,
+} from 'rxjs';
+// import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
+
+import { InfluencerService } from 'app/services/influencer/influencer.service';
+// import { UserDataService } from 'app/services/userData/userData.service';
+
+import {
+    FormGroup,
+    FormBuilder,
     FormsModule,
     ReactiveFormsModule,
     UntypedFormBuilder,
     UntypedFormGroup,
     Validators,
+    UntypedFormControl,
+    FormControl,
 } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -38,20 +59,14 @@ import {
     transition,
     trigger,
 } from '@angular/animations';
+import { MatSelectModule, MatSelectChange } from '@angular/material/select';
+import { AuthService } from 'app/core/auth/auth.service';
+import { delay, Observable, of, switchMap, throwError } from 'rxjs';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator } from '@angular/material/paginator';
 
-interface PeriodicElement {
-    id: number;
-    date: number;
-    name: string;
-    surname: string;
-    mail: string;
-    city: string;
-    instagram: string;
-    followersAmount: number;
-    accountType: string;
-    status: string;
-    showDetails: boolean;
-}
+import { PageEvent } from '@angular/material/paginator';
+import { serverTimestamp } from '@angular/fire/firestore';
 
 @Component({
     selector: 'newInfluencers',
@@ -87,25 +102,28 @@ interface PeriodicElement {
         MatProgressBarModule,
         CurrencyPipe,
         DatePipe,
+        MatSelectModule,
+        MatPaginatorModule,
     ],
 })
 export class newInfluencersListComponent
     implements OnInit, AfterViewInit, OnDestroy
 {
+    @ViewChild(MatPaginator) paginator!: MatPaginator;
     @ViewChild('influencersTable', { read: MatSort })
     influencersTableMatSort: MatSort;
     data: any;
-    influencersDataSource: MatTableDataSource<any> = new MatTableDataSource();
+
     influencersTableColumns: string[] = [
         'id',
         'date',
-        'name',
-        'surname',
-        'mail',
+        'firstName',
+        'lastName',
+        'email',
         'city',
-        'instagram',
+        'instagramId',
         'followersAmount',
-        'accountType',
+        'instagramAccountType',
         'status',
     ];
     columnsToDisplayWithExpand: string[] = [
@@ -113,130 +131,375 @@ export class newInfluencersListComponent
         'expand',
     ];
     expandedInfluencer: Influencer | null;
+
+    // expandedMessageToInfluenser: MessageToInfluenser | null;
+    // searchInputControl: UntypedFormControl = new UntypedFormControl();
+
+    // expandedNewInfluencer: UserData | null;
     formLaunched: boolean = false;
     editformLaunched: boolean = false;
     idOfEditedUser: number;
     flashMessage: 'success' | 'error' | null = null;
-    influencerList: Influencer[];
-    addInfluencerFormGroup: UntypedFormGroup;
+    // influencerList: Influencer[];
+    // userDataList: UserData[];
+    // MessageToInfluenser: MessageToInfluenser[];
+
+    // addInfluencerFormGroup: UntypedFormGroup;
     editInfluencerFormGroup: UntypedFormGroup;
-    // dataSource: MatTableDataSource<Influencer>;
-    dataSource: MatTableDataSource<any>;
+
+    // editTextNoteToInfluenser: UntypedFormGroup;
+    // influencersDataSource: MatTableDataSource<any> = new MatTableDataSource();
+
+    influencerList: Influencer[] = [];
+    InfluencerResponse: { Influencer: any };
+    // influencerUpdate: Influencer[];
+
+    dataSource: MatTableDataSource<Influencer>;
+
     // dataSource = ELEMENT_DATA;
     resInput: any;
+    form: FormGroup;
+    selectedProduct: Influencer | null = null;
+    isLoading: boolean = false;
+    updatedNoteInfo: boolean = false;
+    followersAmountInfo: boolean = false;
+    instagramAccountTypeInfo: boolean = false;
+    confrimEditionInfo: boolean = false;
+    ascDescInfo: boolean = false;
+
+    sortDirection: string = 'asc';
+    // filterByAccountType: string = '';
+    // filterByStatus: string = '';
+
+    // searchInputStatus = new FormControl('');
+    // searchInputAccountType = new FormControl('');
+
+    myControl = new FormControl('');
+    options: string[] = ['One', 'Two', 'Three'];
+    filteredOptions: Observable<string[]>;
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
+
+    categories: Influencer[];
+
+    selectedSortOption = 'default';
+
+    // selectedTypeAccount: string = '';
+    // selectedStatus: string = '';
+
+    fieldOptions: string[] = ['Imię', 'Nazwisko', 'Status', 'Rodzaj Konta'];
+    statusOptions: string[] = [];
+
+    arrStatus: string[] = [];
+    statusReduceArr: string[] = [];
+    // statusChoose: string;
+    dataToken: any;
+
+    length = 100;
+    pageSize = 20;
+    pageIndex = 0;
+    pageSizeOptions = [5, 10, 20, 50];
+
+    resNumberRecord = 0;
+
+    hidePageSize = false;
+    showPageSizeOptions = true;
+    showFirstLastButtons = true;
+
+    disabled = false;
+
+    pageEvent: PageEvent;
+
+    sortBy: string = 'id';
+    direction: string = 'asc';
+    statusInflu: string = '';
+    instagramAccountType: string = '';
+    // city: string = '';
+    firstName: string = '';
+    lastName: string = '';
+
+    searchValue: string = '';
+
+    statusTextTableHtml = false;
+    statusTextTable: string = '';
+    // typeStatus: any;
+
+    selectedTypeAccount: string = 'NONPUBLIC';
+    // NIEPUBLICZNE
+    typeAccountOptions: any = '';
+
+    selectedStatus: string = 'IN_VALIDATION';
+    typeStatus: any = 'IN_VALIDATION';
+
+    selectedFilter: string = 'Imię';
+
+    filterByAccountType: string = '';
+    filterByStatus: string = '';
+
+    filteredStatus: string[] = [];
+    influencerStatuses: any;
+
+    // id: number = 0;
 
     constructor(
         private _influencerService: InfluencerService,
         private _formBuilder: UntypedFormBuilder,
         private _changeDetectorRef: ChangeDetectorRef,
-        private _fuseConfirmationService: FuseConfirmationService
-    ) {}
+        private _fuseConfirmationService: FuseConfirmationService,
+        private _authService: AuthService,
+        private buttonStateService: InfluencerService,
 
-    elements = [
-        {
-            id: 1,
-            date: 1.0079,
-            name: 'Hydrogen',
-            surname: 'Adam',
-            mail: 'H',
-            city: 'Bydgoszcz',
-            instagram: '@example',
-            followersAmount: 1223,
-            accountType: 'Profesjonalne',
-            status: 'influenser',
-
-            showDetails: false,
-        },
-        {
-            id: 2,
-            date: 4.0026,
-            name: 'Helium',
-            surname: 'Arek',
-            mail: 'He',
-            city: 'Bydgoszcz',
-            instagram: '@example',
-            followersAmount: 1223,
-            accountType: 'Firmowe',
-            status: 'influenser',
-
-            showDetails: false,
-        },
-        {
-            id: 3,
-            date: 6.941,
-            name: 'Lithium',
-            surname: 'Jarek',
-            mail: 'Li',
-            city: 'Bydgoszcz',
-            instagram: '@example',
-            followersAmount: 1223,
-            accountType: 'Profesjonalne',
-            status: 'influenser',
-
-            showDetails: false,
-        },
-    ];
-    ngOnInit(): void {
-        // this._influencerService
-        //     .getInfluencerList()
-        //     .pipe(takeUntil(this._unsubscribeAll))
-        //     .subscribe((influencerList) => {
-        //         this.influencerList = influencerList;
-        //         this.influencersDataSource.data = influencerList;
-        //         this.dataSource = new MatTableDataSource<Influencer>(
-        //             this.influencerList
-        //         );
-        //     });
-
-        // this.dataSource = this.dataSource;
-        this.dataSource = new MatTableDataSource(this.elements);
-
-        // Create the selected product form
-        this.addInfluencerFormGroup = this._formBuilder.group({
-            date: ['', [Validators.required]],
-            name: ['', [Validators.required]],
-            surname: ['', [Validators.required]],
-            mail: ['', [Validators.required]],
-            city: ['', [Validators.required]],
-            instagram: ['', [Validators.required]],
-            followersAmount: ['', [Validators.required]],
-            accountType: ['', [Validators.required]],
-            status: ['', [Validators.required]],
+        private fb: FormBuilder
+    ) {
+        this.form = this.fb.group({
+            noteFromAdmin: ['', [Validators.required]], // Dodajemy walidację
         });
+    }
+
+    ngAfterViewInit(): void {
+        if (this.dataSource) {
+            console.log('this.dataSource', this.dataSource);
+            this.dataSource.paginator = this.paginator;
+
+            // console.log('typeStatus134:', this.typeStatus);
+
+            // this.getStatus();
+        }
+
+        this.dataSource = new MatTableDataSource<Influencer>(
+            this.influencerList
+        );
+
+        console.log('response:', this.influencerList);
+    }
+
+    ngOnInit(): void {
+        // this.filteredStatus = this.typeStatus.filter(
+        //     (type: any) => type !== 'IN_VALIDATION'
+        // );
+
+        console.log('typeStatus266:', this.typeStatus);
+        // console.log('filteredStatus:', this.filteredStatus);
+
+        // this.pageSize = 20;
+        this.initializeForm();
+        this.loadInfluencers(
+            this.pageIndex,
+            this.pageSize,
+            this.sortBy,
+            this.direction,
+            this.statusInflu,
+            this.instagramAccountType,
+            this.firstName,
+            this.lastName
+        );
+        // this.setupSearch();
+        this.getTypeAccount();
+    }
+
+    private initializeForm(): void {
         this.editInfluencerFormGroup = this._formBuilder.group({
             id: ['', [Validators.required]],
             date: ['', [Validators.required]],
-            name: ['', [Validators.required]],
-            surname: ['', [Validators.required]],
-            mail: ['', [Validators.required]],
+            firstName: ['', [Validators.required]],
+            lastName: ['', [Validators.required]],
+            email: ['', [Validators.required]],
             city: ['', [Validators.required]],
-            instagram: ['', [Validators.required]],
+            instagramId: ['', [Validators.required]],
             followersAmount: ['', [Validators.required]],
-            accountType: ['', [Validators.required]],
+            instagramAccountType: ['', [Validators.required]],
             status: ['', [Validators.required]],
         });
     }
 
-    onInputChange(event: Event) {
-        let inputElement = event.target as HTMLInputElement;
-        this.dataSource.filter = inputElement.value.trim().toLowerCase();
+    private setSearchFiltersToEmptyStrings() {
+        this.firstName = '';
+        this.lastName = '';
+        this.statusInflu = '';
+        this.instagramAccountType = '';
+    }
 
-        // let res = this.dataSource.filter(
-        //     (element) => element.name === inputElement.value
-        // );
+    private setValueOfSelectedFilter(valueOfSelectedFilter: string) {
+        switch (this.selectedFilter) {
+            case 'Imię':
+                this.firstName = valueOfSelectedFilter;
+                break;
+            case 'Nazwisko':
+                this.lastName = valueOfSelectedFilter;
+                break;
+            case 'Status':
+                this.statusInflu = valueOfSelectedFilter;
+                break;
+            case 'Rodzaj Konta':
+                this.instagramAccountType = valueOfSelectedFilter;
+                break;
+        }
+    }
 
-        // return res;
+    onSearchInputChange(searchInputValue: string): void {
+        this.searchValue = searchInputValue;
+        this.setSearchFiltersToEmptyStrings();
+        this.setValueOfSelectedFilter(searchInputValue);
+        this.loadInfluencers(
+            0,
+            this.pageSize,
+            this.sortBy,
+            this.direction,
+            this.firstName,
+            this.lastName,
+            this.statusInflu,
+            this.instagramAccountType
+        );
+    }
+
+    onSearchSelectChange(event?: any): void {
+        this.selectedFilter = event.value;
+        this.onSearchInputChange(this.searchValue);
+    }
+
+    private async loadInfluencers(
+        pageIndex: number,
+        pageSize: number,
+        sortBy: string,
+        direction: string,
+        statusInflu: string,
+        instagramAccountType: string,
+        firstName: string,
+        lastName: string
+    ): Promise<void> {
+        this._influencerService
+            // .getInfluencerList()
+            .getInfluencerPaged(
+                pageIndex,
+                this.pageSize,
+                this.sortBy,
+                this.direction,
+                this.statusInflu,
+                this.instagramAccountType,
+                this.firstName,
+                this.lastName
+            )
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe(
+                (response: InfluencerResponse) => {
+                    this.length = response.page.totalElements;
+                    this.pageIndex = response.page.number;
+
+                    this.paginator.length = response.page.totalElements;
+                    this.paginator.pageIndex = response.page.number;
+                    this.paginator.pageSize = response.page.size;
+
+                    this.dataSource.data = response.content;
+                    this.getStatus();
+                },
+                (error) => {
+                    console.error('Error fetching influencer list', error);
+                }
+            );
+    }
+
+    pageSizeChanged(previousPageSize: number, newPageSize: number): boolean {
+        return previousPageSize != newPageSize;
+    }
+
+    handlePageSizeChange(e: PageEvent): void {
+        this.pageIndex = 0;
+        this.pageSize = e.pageSize;
+
+        this.loadInfluencers(
+            0,
+            e.pageSize,
+            this.sortBy,
+            this.direction,
+            this.firstName,
+            this.lastName,
+            this.statusInflu,
+            this.instagramAccountType
+        );
+    }
+
+    handlePageNavigationChange(e: PageEvent): void {
+        this.pageIndex = e.pageIndex;
+        this.pageSize = e.pageSize;
+
+        this.loadInfluencers(
+            e.pageIndex,
+            e.pageSize,
+            this.sortBy,
+            this.direction,
+            this.firstName,
+            this.lastName,
+            this.statusInflu,
+            this.instagramAccountType
+        );
+    }
+
+    handlePageEvent(e: PageEvent) {
+        if (this.pageSizeChanged(this.pageSize, e.pageSize)) {
+            this.handlePageSizeChange(e);
+        } else {
+            this.handlePageNavigationChange(e);
+        }
+    }
+
+    onSortData(event: any): void {
+        console.log(event);
+
+        this.ascDescInfo = true;
+        this.direction = event.direction;
+        this.sortBy = event.active;
+
+        this.loadInfluencers(
+            0,
+            this.pageSize,
+            this.sortBy,
+            this.direction,
+            this.statusInflu,
+            this.instagramAccountType,
+            this.firstName,
+            this.lastName
+        );
+    }
+
+    getStatus() {
+        this._influencerService
+            .getInfluencerStatus()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe(
+                (response) => {
+                    this.typeStatus = response;
+                    // this.typeStatus.push('ALL');
+
+                    console.log('typeStatus:', this.typeStatus);
+                },
+                (error) => {
+                    console.error('Error fetching influencer list', error);
+                }
+            );
+    }
+
+    getTypeAccount() {
+        this._influencerService
+            .getInfluencerTypeAccount()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe(
+                (response) => {
+                    this.typeAccountOptions = response;
+                    // this.typeAccountOptions.push('ALL');
+                },
+                (error) => {
+                    console.error('Error fetching influencer list', error);
+                }
+            );
+    }
+
+    closeDetails(): void {
+        this.selectedProduct = null;
     }
 
     /**
      * After view init
      */
-    ngAfterViewInit(): void {
-        this.influencersDataSource.sort = this.influencersTableMatSort;
-        this.influencersDataSource._orderData.apply;
-    }
 
     /**
      * On destroy
@@ -261,66 +524,86 @@ export class newInfluencersListComponent
         return item.id || index;
     }
 
-    addInfluencer(): void {
-        if (this.addInfluencerFormGroup.valid) {
-            const influencer: Influencer =
-                this.addInfluencerFormGroup.getRawValue();
-            this._influencerService
-                .addInfluencer(influencer)
-                .subscribe((influencer) => {
-                    this.influencerList.push(influencer);
-                    this.influencersDataSource._updateChangeSubscription();
-                });
+    sendToInluencer(influencerId: number): void {
+        const instagramId =
+            this.editInfluencerFormGroup.get('instagramId').value;
+        const firstName = this.editInfluencerFormGroup.get('firstName').value;
+        const lastName = this.editInfluencerFormGroup.get('lastName').value;
+        const email = this.editInfluencerFormGroup.get('email').value;
+        const city = this.editInfluencerFormGroup.get('city').value;
+        const followersAmount =
+            this.editInfluencerFormGroup.get('followersAmount').value;
+        const updatedNote = this.form.get('noteFromAdmin').value;
+        const influencerToUpdate = this.influencerList.find(
+            (influencer) => influencer.id === influencerId
+        );
+
+        console.log('Influenscer id:', influencerId);
+        this.confrimEditionInfo = true;
+        this.followersAmountInfo = false;
+        // if (!influencerToUpdate) {
+        //     console.log('Influenscer o podanym ID nie został znaleziony');
+        //     return;
+        // }
+
+        if (this.selectedStatus == 'ACTIVE') {
+            const shouldDisable = true;
+            this.buttonStateService.setDisabledState(shouldDisable);
         }
+
+        const influencerUpdate = {
+            ...influencerToUpdate,
+            instagramId: instagramId,
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            city: city,
+            followersAmount: followersAmount,
+            noteFromAdmin: updatedNote,
+            status: this.selectedStatus,
+            instagramAccountType: this.selectedTypeAccount,
+        };
+
+        if (followersAmount == null || followersAmount < 1) {
+            console.log('followersAmount:', followersAmount);
+
+            this.followersAmountInfo = true;
+            this.confrimEditionInfo = false;
+        }
+
+        this._influencerService
+            .updateNoteFromAdmin(influencerUpdate, influencerId)
+            .subscribe((updatedInfluencer) => {
+                const index = this.influencerList.findIndex(
+                    (influencer) => influencer.id === influencerId
+                );
+                this.influencerList[index] = updatedInfluencer;
+
+                console.log(
+                    'Influenser po wysłaniu:',
+                    this.influencerList[index]
+                );
+            });
+
+        this.getStatus();
+
+        const shouldDisable = true;
+        this.buttonStateService.setDisabledState(shouldDisable);
     }
 
-    updateInfluencer(): void {
-        if (this.editInfluencerFormGroup.valid) {
-            const influencer: Influencer =
-                this.editInfluencerFormGroup.getRawValue();
-            this._influencerService
-                .updateInfluencer(influencer)
-                .subscribe((e) => {
-                    var itemIndex = this.influencerList.findIndex(
-                        (obj) => obj['id'] === this.expandedInfluencer.id
-                    );
-                    this.influencerList[itemIndex] = influencer;
-                    this.influencersDataSource._updateChangeSubscription();
-                    this.expandedInfluencer = this.influencerList[itemIndex];
-                    this.fillEditForm();
-                });
-        }
+    onTypeAccountChange(event: MatSelectChange): void {
+        this.selectedTypeAccount = event.value;
+
+        // this.editInfluencerFormGroup.patchValue({
+        //     instagramAccountType: this.selectedTypeAccount,
+        // });
     }
 
-    deleteSelectedProduct(): void {
-        // Open the confirmation dialog
-        const confirmation = this._fuseConfirmationService.open({
-            title: 'Delete Influencer',
-            message:
-                'Are you sure you want to remove this Influencer? This action cannot be undone!',
-            actions: {
-                confirm: {
-                    label: 'Delete',
-                },
-            },
-        });
+    onStatusChange(event: MatSelectChange): void {
+        console.log('ruch');
 
-        // Subscribe to the confirmation dialog closed action
-        confirmation.afterClosed().subscribe((result) => {
-            // If the confirm button pressed...
-            if (result === 'confirmed') {
-                // Delete the product on the server
-                this._influencerService
-                    .deleteInfluencerById(this.expandedInfluencer.id)
-                    .subscribe((e) => {
-                        const itemIndex = this.influencerList.findIndex(
-                            (obj) => obj['id'] === this.expandedInfluencer.id
-                        );
-                        this.influencerList.splice(itemIndex, 1);
-                        this.influencersDataSource._updateChangeSubscription();
-                    });
-            }
-        });
+        console.log(event.value);
+        this.selectedStatus = event.value;
     }
 
     openAddInfluencerForm(): void {
@@ -329,39 +612,43 @@ export class newInfluencersListComponent
         } else this.formLaunched = false;
     }
 
+    getExpandedInfluencer(): Influencer {
+        return this.expandedInfluencer;
+    }
+
     fillEditForm(): void {
         if (this.expandedInfluencer != null) {
             this.editInfluencerFormGroup.controls['id'].setValue(
                 this.expandedInfluencer.id
             );
-            this.editInfluencerFormGroup.controls['date'].setValue(
+            // this.editInfluencerFormGroup.controls['date'].setValue(
+            //     this.expandedInfluencer.date
+            // );
+            this.editInfluencerFormGroup.controls['firstName'].setValue(
                 this.expandedInfluencer.firstName
             );
-            this.editInfluencerFormGroup.controls['name'].setValue(
+            this.editInfluencerFormGroup.controls['lastName'].setValue(
                 this.expandedInfluencer.lastName
             );
-            this.editInfluencerFormGroup.controls['surname'].setValue(
-                this.expandedInfluencer.instagramId
-            );
-            this.editInfluencerFormGroup.controls['mail'].setValue(
-                this.expandedInfluencer.apiKey
+            this.editInfluencerFormGroup.controls['email'].setValue(
+                this.expandedInfluencer.email
             );
             this.editInfluencerFormGroup.controls['city'].setValue(
-                this.expandedInfluencer.apiKey
+                this.expandedInfluencer.city
             );
-            this.editInfluencerFormGroup.controls['instagram'].setValue(
-                this.expandedInfluencer.apiKey
+            this.editInfluencerFormGroup.controls['instagramId'].setValue(
+                this.expandedInfluencer.instagramId
             );
             this.editInfluencerFormGroup.controls['followersAmount'].setValue(
-                this.expandedInfluencer.apiKey
+                this.expandedInfluencer.followersAmount
             );
-            this.editInfluencerFormGroup.controls['accountType'].setValue(
-                this.expandedInfluencer.apiKey
-            );
-            this.editInfluencerFormGroup.controls['status'].setValue(
-                this.expandedInfluencer.apiKey
-            );
+            this.editInfluencerFormGroup.controls[
+                'instagramAccountType'
+            ].setValue(this.expandedInfluencer.instagramAccountType);
 
+            this.editInfluencerFormGroup.controls['status'].setValue(
+                this.expandedInfluencer.status
+            );
             this.editInfluencerFormGroup.controls['id'].disable();
         }
     }

@@ -1,23 +1,7 @@
 import { inject } from '@angular/core';
 import { CanActivateChildFn, CanActivateFn, Router } from '@angular/router';
 import { of, switchMap } from 'rxjs';
-import { Injectable } from '@angular/core';
-import { CanActivate } from '@angular/router';
 import { AuthService } from 'app/core/auth/auth.service';
-
-@Injectable({
-    providedIn: 'root',
-})
-export class AuthGuard2 implements CanActivate {
-    constructor(private authService: AuthService) {}
-
-    canActivate(): boolean {
-        const userData = this.authService.getRole();
-        console.log(userData); // Logowanie danych użytkownika
-
-        return !!userData; // Warunek na podstawie danych z AuthService
-    }
-}
 
 export const AuthGuard: CanActivateFn | CanActivateChildFn = (route, state) => {
     const router: Router = inject(Router);
@@ -38,9 +22,10 @@ export const AuthGuard: CanActivateFn | CanActivateChildFn = (route, state) => {
 
                     return of(urlTree);
                 }
-
                 // Allow the access
                 return of(true);
             })
         );
 };
+
+//===========================================================================

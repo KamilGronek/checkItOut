@@ -2,9 +2,9 @@ table {
     width: 100%;
 }
 
-/* tr.example-detail-row {
+tr.example-detail-row {
     height: 0 !important;
-} */
+}
 
 tr.example-element-row:not(.example-expanded-row):hover {
     background: whitesmoke;
@@ -62,11 +62,20 @@ tr.example-element-row:not(.example-expanded-row):active {
     margin-bottom: 20px;
 }
 
+
+
 .info-button {
     display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
+    /* justify-content: space-between;
+    margin-bottom: 20px; */
 }
+
+.info-button button.custom-green-button {
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+
 
 .container {
     display: flex;
@@ -82,4 +91,58 @@ tr.example-element-row:not(.example-expanded-row):active {
 .custom-green-button {
     background-color: lightgreen;
     color: white;
+}
+
+.textWarning{
+    color: red;
+    padding-bottom: 20px;
+}
+
+.textConfirm{
+    color: lightgreen;
+    padding-bottom: 20px;
+}
+
+  .text-green {
+    background-color: lightgreen;
+}
+
+.text-red {
+    background-color: lightcoral;
+}
+
+.text-yellow {
+    background-color: yellow;
+}
+
+.displayNoneActive{
+    display: none;
+}
+.displayNoneInActive{
+    display: none;
+}
+
+.mat-form-field {
+    flex-shrink: 1;
+    flex-grow: 1;
+    max-width: 200px;
+}
+
+.pageNr{
+    margin-top: 25px;
+    font-size: 12px;
+}
+
+.recordNr{
+    margin-top: 25px;
+    font-size: 12px;
+    margin-left: 20px;
+}
+
+
+
+@media (max-width: 1500px) {
+    table {
+        width: 1500px;
+    }
 }

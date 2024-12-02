@@ -4,14 +4,21 @@
         <div class="text-4xl font-extrabold tracking-tight">Współprace do podjęcia</div>
       </div>
 
-      <div class="card-container">
-        <div *ngFor="let item of dataJson" class="card-item gap-16">
+      
+
+
+
+      <!-- <div class="-m-4 flex w-full max-w-400 flex-wrap items-start"> -->
+
+      <!-- <div class="card-container"> -->
+       
+
+      <!-- <div *ngFor="let item of dataJson" class="card-item gap-16">
           <mat-card class="example-card" appearance="outlined">
             <mat-card-header>
               <div mat-card-avatar class="example-header-image"></div>
               <mat-card-title><b>{{ item.firstName }}</b> 
                 {{ item.lastName }}</mat-card-title>
-              <!-- <mat-card-subtitle>Instagram: {{ item.instagramId }}</mat-card-subtitle> -->
             </mat-card-header>
             <img mat-card-image [src]="item.images" alt="Photo of barbershop"/>
 
@@ -25,6 +32,96 @@
               <button mat-button (click)="takePart(item.id)">ZGŁOŚ SIĘ</button>
             </mat-card-actions>
           </mat-card>
-        </div>
+    </div> -->
+
+    <div class="flex-auto p-6 sm:p-10">
+      <div class="-m-4 flex w-full max-w-400 flex-wrap items-start">
+        <fuse-card 
+        style="margin: 16px;"
+        *ngFor="let item of influencerList" class="filter-article filter-interactive flex w-full max-w-80 flex-col"
+                [flippable]="true"
+                [face]="'front'"
+                #flippableCard01="fuseCard"
+            >
+                <ng-container fuseCardFront>
+                    <img  [src]="item.images"
+                        class="object-cover"
+                        alt="Card cover image"
+                    />
+                    <div class="m-8 mb-4">
+                        <div class="text-2xl font-semibold leading-tight">
+                          {{ item.firstName }}
+                        </div>
+                        <a class="whitespace-nowrap text-primary-500">
+                          {{ item.instagramId }}
+                        </a>
+                        <div class="mt-4">
+                            From rocky mountains to crystal clear lakes, there
+                            are the places you must see and enjoy.
+                        </div>
+                        <div class="-mx-3 mt-3">
+                          <button 
+                          class="px-3"
+                          mat-button
+                          [color]="'primary'"
+                          (click)="goToDetails(item.id, item.fir)">
+                            Szczegóły współpracy
+                          </button>
+                            <!-- <button
+                                class="px-3"
+                                mat-button
+                                [color]="'primary'"
+                                (click)="
+                                    flippableCard01.face =
+                                        flippableCard01.face === 'front'
+                                            ? 'back'
+                                            : 'front'
+                                "
+                            >
+                                Read More
+                            </button> -->
+                        </div>
+                    </div>
+                </ng-container>
+                <!-- <ng-container fuseCardBack>
+                    <div class="m-4 flex flex-auto flex-col">
+                        <button
+                            class="ml-1.5"
+                            mat-icon-button
+                            (click)="
+                                flippableCard01.face =
+                                    flippableCard01.face === 'front'
+                                        ? 'back'
+                                        : 'front'
+                            "
+                        >
+                            <mat-icon
+                                [svgIcon]="'heroicons_outline:arrow-long-left'"
+                            ></mat-icon>
+                        </button>
+                        <div class="m-4 mt-3">
+                            <div class="text-2xl font-semibold leading-tight">
+                                Most beautiful and quite places to see
+                            </div>
+                            <div class="mt-4">
+                                From rocky mountains to crystal clear lakes,
+                                these are the places you must see and enjoy. You
+                                can bring your own food and have a little picnic
+                                on top of the amazing grasslands.
+                            </div>
+                            <div class="mt-4">
+                                From rocky mountains to crystal clear lakes,
+                                these are the places you must see and enjoy. You
+                                can bring your own food and have a little picnic
+                                on top of the amazing grasslands.
+                            </div>
+                        </div>
+                    </div>
+                </ng-container> -->
+        </fuse-card>
       </div>
+    </div>
+        
+      <!-- </div> -->
+       <!-- </div> -->
 </div>

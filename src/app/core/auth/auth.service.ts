@@ -19,6 +19,7 @@ import {
 } from '@angular/fire/auth';
 import { user } from 'app/mock-api/common/user/data';
 import { jwtDecode } from 'jwt-decode';
+import { User } from '../user/user.types';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -27,9 +28,26 @@ export class AuthService {
     private _userService = inject(UserService);
     private auth = inject(Auth);
 
+    // private userRole: string | null = null;
+
+    constructor() {
+        this.initializeAuth();
+    }
     // -----------------------------------------------------------------------------------------------------
     // @ Accessors
     // -----------------------------------------------------------------------------------------------------
+
+    initializeAuth(): void {
+        const token = this.getAccessToken();
+
+        if (token && !AuthUtils.isTokenExpired(token)) {
+            this._authenticated = true;
+            this.dataTokenRole = this.getRole();
+
+            // Opcjonalnie, można ponownie załadować dane użytkownika
+            this._userService.user = this.getUserFromToken();
+        }
+    }
 
     /**
      * Setter & getter for access token
@@ -80,6 +98,14 @@ export class AuthService {
         return dataTokenRole;
     }
 
+    getUserFromToken(): User {
+        const decodedToken = this.getDecodedToken();
+        let newUser = user;
+        newUser.email = decodedToken.email;
+        newUser.id = decodedToken.user_id;
+        return newUser;
+    }
+
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
@@ -122,7 +148,7 @@ export class AuthService {
                 this._authenticated = true;
 
                 // Store the user on the user service
-                this._userService.user = response.user;
+                this._userService.user = this.getUserFromToken();
 
                 // Return a new observable with the response
                 return of(response);
@@ -152,7 +178,7 @@ export class AuthService {
                 return new Promise((resolve, reject) => {
                     this.accessToken = token;
                     this._authenticated = true;
-                    this._userService.user = user;
+                    this._userService.user = this.getUserFromToken();
                     resolve(true);
                 });
             });
@@ -175,7 +201,7 @@ export class AuthService {
                 return new Promise((resolve, reject) => {
                     this.accessToken = token;
                     this._authenticated = true;
-                    this._userService.user = user;
+                    this._userService.user = this.getUserFromToken();
                     resolve(true);
                 });
             });
@@ -198,7 +224,7 @@ export class AuthService {
                 return new Promise((resolve, reject) => {
                     this.accessToken = token;
                     this._authenticated = true;
-                    this._userService.user = user;
+                    this._userService.user = this.getUserFromToken();
                     resolve(true);
                 });
             });
@@ -234,8 +260,7 @@ export class AuthService {
                     this._authenticated = true;
 
                     // Store the user on the user service
-                    this._userService.user = response.user;
-                    console.log(response);
+                    this._userService.user = this.getUserFromToken();
 
                     // Return true
                     return of(true);

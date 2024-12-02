@@ -1,12 +1,19 @@
-import { Route } from '@angular/router';
+import { Route, Routes } from '@angular/router';
 import { initialDataResolver } from 'app/app.resolvers';
 import { AuthGuard } from 'app/core/auth/guards/auth.guard';
 import { NoAuthGuard } from 'app/core/auth/guards/noAuth.guard';
+import { RoleGuard } from './core/auth/guards/role.guard';
 import { LayoutComponent } from 'app/layout/layout.component';
+import { AuthSignOutComponent } from './modules/auth/sign-out/sign-out.component';
 import { Component, OnInit } from '@angular/core';
 import { AuthResolver } from 'app/core/auth/auth.resolver';
+// import { AuthService } from 'app/core/auth/auth.service';
 
-// import { AppComponent } from 'app/app.component';
+import { AppComponent } from 'app/app.component';
+
+// import { ProfileComponent } from 'app/modules/admin/profile/ProfileComponent';
+
+// import { newInfluencersListComponent } from 'app/modules/admin/newInfluencers/newInfluencersListComponent';
 
 // export class InfluencersComponent implements OnInit {
 //     constructor(private authService: AuthService) {}
@@ -20,21 +27,31 @@ import { AuthResolver } from 'app/core/auth/auth.resolver';
 // @formatter:off
 /* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
+
+// export const userRoutes: Routes = [
+//     {
+//         path: '**',
+//         redirectTo: 'profile',
+//     },
+// ];
+
+// export const adminRoutes: Routes = [
+//     {
+//         path: 'dashboard',
+//         component: newInfluencersListComponent,
+//     },
+// ];
+
 export const appRoutes: Route[] = [
     // Redirect empty path to '/example'
 
-    { path: '', pathMatch: 'full', redirectTo: 'newInfluencers' },
+    { path: '', pathMatch: 'full', redirectTo: 'home' },
 
     // Redirect signed-in user to the '/example'
     //
     // After the user signs in, the sign-in page will redirect the user to the 'signed-in-redirect'
     // path. Below is another redirection for that path to redirect the user to the desired
     // location. This is a small convenience to keep all main routes together here on this file.
-    {
-        path: 'signed-in-redirect',
-        pathMatch: 'full',
-        redirectTo: 'newInfluencers',
-    },
 
     // Auth routes for guests
     {
@@ -80,29 +97,20 @@ export const appRoutes: Route[] = [
         ],
     },
 
+    {
+        path: 'sign-out',
+        component: AuthSignOutComponent,
+    },
+
     // Auth routes for authenticated users
     {
-        path: '',
-        canActivate: [AuthGuard],
-        canActivateChild: [AuthGuard],
+        path: 'home',
+        canActivate: [RoleGuard],
+        canActivateChild: [RoleGuard],
         component: LayoutComponent,
         data: {
             layout: 'empty',
         },
-        children: [
-            {
-                path: 'sign-out',
-                loadChildren: () =>
-                    import('app/modules/auth/sign-out/sign-out.routes'),
-            },
-            {
-                path: 'unlock-session',
-                loadChildren: () =>
-                    import(
-                        'app/modules/auth/unlock-session/unlock-session.routes'
-                    ),
-            },
-        ],
     },
 
     // Landing routes
@@ -117,6 +125,13 @@ export const appRoutes: Route[] = [
                 path: 'home',
                 loadChildren: () =>
                     import('app/modules/landing/home/home.routes'),
+            },
+            {
+                path: 'unlock-session',
+                loadChildren: () =>
+                    import(
+                        'app/modules/auth/unlock-session/unlock-session.routes'
+                    ),
             },
         ],
     },
@@ -144,11 +159,11 @@ export const appRoutes: Route[] = [
                         'app/modules/admin/newInfluencers/newInfluencers.routes'
                     ),
             },
-            // {
-            //     path: 'newInfulensers',
-            //     loadChildren: () =>
-            //         import('app/modules/admin/posts/posts.routes'),
-            // },
+            {
+                path: 'profile',
+                loadChildren: () =>
+                    import('app/modules/admin/profile/profile.routes'),
+            },
             {
                 path: 'companies',
                 loadChildren: () =>
@@ -161,6 +176,15 @@ export const appRoutes: Route[] = [
                         'app/modules/admin/collaborations/collaborations.routes'
                     ),
             },
+            {
+                path: 'collaborations/:id',
+                loadChildren: () =>
+                    import(
+                        'app/modules/admin/collaborationsId/collaborationsId.routes'
+                    ),
+            },
         ],
     },
 ];
+
+//========================================================
