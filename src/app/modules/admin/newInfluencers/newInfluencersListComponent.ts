@@ -232,7 +232,6 @@ export class newInfluencersListComponent
     }
 
     ngOnInit(): void {
-        this.initializeForm();
         this.loadInfluencers(
             this.pageIndex,
             this.pageSize,
@@ -246,9 +245,6 @@ export class newInfluencersListComponent
         this.getTypeAccount();
     }
 
-    private initializeForm(): void {
-
-    }
 
     private setSearchFiltersToEmptyStrings() {
         this.firstName = '';
