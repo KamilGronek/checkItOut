@@ -232,17 +232,7 @@ export class newInfluencersListComponent
     }
 
     ngOnInit(): void {
-        this.loadInfluencers(
-            this.pageIndex,
-            this.pageSize,
-            this.sortBy,
-            this.direction,
-            this.statusInflu,
-            this.instagramAccountType,
-            this.firstName,
-            this.lastName
-        );
-        this.getTypeAccount();
+        this.loadInfluencers(this.pageIndex);
     }
 
 
@@ -274,16 +264,7 @@ export class newInfluencersListComponent
         this.searchValue = searchInputValue;
         this.setSearchFiltersToEmptyStrings();
         this.setValueOfSelectedFilter(searchInputValue);
-        this.loadInfluencers(
-            0,
-            this.pageSize,
-            this.sortBy,
-            this.direction,
-            this.firstName,
-            this.lastName,
-            this.statusInflu,
-            this.instagramAccountType
-        );
+        this.loadInfluencers(0);
     }
 
     onSearchSelectChange(event?: any): void {
@@ -292,14 +273,7 @@ export class newInfluencersListComponent
     }
 
     private async loadInfluencers(
-        pageIndex: number,
-        pageSize: number,
-        sortBy: string,
-        direction: string,
-        statusInflu: string,
-        instagramAccountType: string,
-        firstName: string,
-        lastName: string
+        pageIndex: number
     ): Promise<void> {
         this._influencerService
         .getInfluencerPaged(
@@ -316,7 +290,6 @@ export class newInfluencersListComponent
             next: (response: InfluencerResponse) => {
                 this.length = response.page.totalElements;
                 this.pageIndex = response.page.number;
-
                 this.paginator.length = response.page.totalElements;
                 this.paginator.pageIndex = response.page.number;
                 this.paginator.pageSize = response.page.size;
@@ -327,7 +300,6 @@ export class newInfluencersListComponent
                 })
 
                 this.dataSource.data = response.content;
-                this.getStatus();
             },
             error: (error) => {
                 console.error('Error fetching influencer list', error);
@@ -343,32 +315,14 @@ export class newInfluencersListComponent
         this.pageIndex = 0;
         this.pageSize = e.pageSize;
 
-        this.loadInfluencers(
-            0,
-            e.pageSize,
-            this.sortBy,
-            this.direction,
-            this.firstName,
-            this.lastName,
-            this.statusInflu,
-            this.instagramAccountType
-        );
+        this.loadInfluencers(0);
     }
 
     handlePageNavigationChange(e: PageEvent): void {
         this.pageIndex = e.pageIndex;
         this.pageSize = e.pageSize;
 
-        this.loadInfluencers(
-            e.pageIndex,
-            e.pageSize,
-            this.sortBy,
-            this.direction,
-            this.firstName,
-            this.lastName,
-            this.statusInflu,
-            this.instagramAccountType
-        );
+        this.loadInfluencers(e.pageIndex);
     }
 
     handlePageEvent(e: PageEvent) {
@@ -384,42 +338,7 @@ export class newInfluencersListComponent
         this.direction = event.direction;
         this.sortBy = event.active;
 
-        this.loadInfluencers(
-            0,
-            this.pageSize,
-            this.sortBy,
-            this.direction,
-            this.statusInflu,
-            this.instagramAccountType,
-            this.firstName,
-            this.lastName
-        );
-    }
-
-    getStatus() {
-        this._influencerService
-        .getInfluencerStatus()
-        .subscribe({
-            next: (response) => {
-                //this.typeStatus = response;
-            },
-            error: (error) => {
-                console.error('Error fetching influencer list', error);
-            }
-        });
-    }
-
-    getTypeAccount() {
-        this._influencerService
-        .getInfluencerTypeAccount()
-        .subscribe({
-            next: (response) => {
-                //this.typeAccountOptions = response;
-            },
-            error: (error) => {
-                console.error('Error fetching influencer list', error);
-            }
-        });
+        this.loadInfluencers(0);
     }
 
     closeDetails(): void {
