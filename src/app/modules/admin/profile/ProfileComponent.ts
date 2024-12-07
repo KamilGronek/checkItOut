@@ -75,8 +75,6 @@ import { MatSelectModule, MatSelectChange } from '@angular/material/select';
         MatSortModule,
         NgClass,
         MatProgressBarModule,
-        CurrencyPipe,
-        DatePipe,
         MatSelectModule,
     ],
     styleUrl: 'profile-list.styles.css',

@@ -148,12 +148,12 @@
                                     'font-family': 'Arial,Helvetica, sans-serif',
 
 
-                                    'background-color': influencer.instagramAccountType === 'PUBLIC' ? '#bbf7d0' : 
-                                    influencer.instagramAccountType === 'NONPUBLIC' ? '#FECACA' : 
+                                    'background-color': influencer.instagramAccountType === 'Publiczne' ? '#bbf7d0' : 
+                                    influencer.instagramAccountType === 'Niepubliczne' ? '#FECACA' : 
                                     influencer.instagramAccountType === 'NA' ? '#f7f5bb' : '#000000',
 
-                                    'color': influencer.instagramAccountType === 'PUBLIC' ? '#166534' : 
-                                    influencer.instagramAccountType === 'NONPUBLIC' ? '#991b1b' : 
+                                    'color': influencer.instagramAccountType === 'Publiczne' ? '#166534' : 
+                                    influencer.instagramAccountType === 'Niepubliczne' ? '#991b1b' : 
                                     influencer.instagramAccountType === 'NA' ? '#92400e' : '#000000'
 
                                 }"
@@ -170,13 +170,13 @@
                             <td mat-cell *matCellDef="let influencer">
                                 <span style="padding:2px 10px; font-weight: bold; border-radius: 40px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;"
                                 [ngStyle]="{
-                                    'background-color': influencer.status === 'ACTIVE' ? '#bbf7d0' : 
-                                    influencer.status === 'INACTIVE' ? '#FECACA' : 
-                                    influencer.status === 'IN_VALIDATION' ? '#f7f5bb' : '#000000',
+                                    'background-color': influencer.status === 'Aktywne' ? '#bbf7d0' : 
+                                    influencer.status === 'Nieaktywne' ? '#FECACA' : 
+                                    influencer.status === 'W walidacji' ? '#f7f5bb' : '#000000',
 
-                                    'color': influencer.status === 'ACTIVE' ? '#166534' : 
-                                    influencer.status === 'INACTIVE' ? '#991b1b' : 
-                                    influencer.status === 'IN_VALIDATION' ? '#92400e' : '#000000'
+                                    'color': influencer.status === 'Aktywne' ? '#166534' : 
+                                    influencer.status === 'Nieaktywne' ? '#991b1b' : 
+                                    influencer.status === 'W walidacji' ? '#92400e' : '#000000'
 
                                 }"
                                 class="leading-relaxed whitespace-nowrap">
@@ -248,67 +248,32 @@
                         aria-label="Select page">
                     </mat-paginator>
                     <label class="pageNr">Page nr: {{pageIndex}}</label>
-                    <!-- <label class="recordNr">Record nr: {{resNumberRecord}}</label> -->
-
                 </div>
             </div>
-            <!-- <div *ngFor="let item of influencerList"> -->
             <ng-template #influencerEditForm let-influencer>
-                <form class="grid grid-cols-4 overflow-hidden pb-3 influFormEdit"
-                    [formGroup]="editInfluencerFormGroup
-                    ">  
-                    <!-- <mat-form-field class="pl-0">
-                        <mat-label>Id</mat-label>
-                        <input matInput [formControlName]="'id'" [ngStyle]="{ 'color': '#9e9e9e'}" readonly  >
-                    </mat-form-field> -->
-
-                    <!-- <mat-form-field>
-                        <mat-label>Data</mat-label>
-                        <input matInput [formControlName]="'date'" [ngStyle]="{ 'color': '#9e9e9e'}" readonly >
-                    </mat-form-field> -->
-
-                    <!-- <mat-form-field>
-                        <mat-label>Imię</mat-label>
-                        <input matInput [formControlName]="'firstName'" [ngStyle]="{ 'color': '#9e9e9e'}" readonly >
-                    </mat-form-field> -->
-                    <!-- 
-                    <mat-form-field>
-                        <mat-label>Nazwisko</mat-label>
-                        <input matInput [formControlName]="'lastName'" [ngStyle]="{ 'color': '#9e9e9e'}" readonly >
-                    </mat-form-field> -->
-                    <!-- 
-                    <mat-form-field>
-                        <mat-label>Mail</mat-label>
-                        <input matInput [formControlName]="'email'" [ngStyle]="{ 'color': '#9e9e9e'}" readonly >
-                    </mat-form-field> -->
-
+                <form class="grid grid-cols-4 overflow-hidden pb-3 influFormEdit" [formGroup]="editInfluencerFormGroup"> 
                     <mat-form-field>
                         <mat-label>Miasto</mat-label>
                         <input matInput [formControlName]="'city'">
                     </mat-form-field>
-                    <!-- 
-                    <mat-form-field>
-                        <mat-label>Instagram</mat-label>
-                        <input matInput [formControlName]="'instagramId'" [ngStyle]="{ 'color': '#9e9e9e'}" readonly >
-                    </mat-form-field> -->
 
                     <mat-form-field>
                         <mat-label>Ilość followersów</mat-label>
                         <input matInput  type="number" [formControlName]="'followersAmount'">
                     </mat-form-field>
+
                     <mat-form-field>
                         <mat-label>Rodzaj konta</mat-label>
-                        <mat-select
-                         [(value)]="selectedTypeAccount" (selectionChange)="onTypeAccountChange($event)">
+                        <mat-select [formControlName]="'instagramAccountType'" [(value)]="selectedTypeAccount" (selectionChange)="onTypeAccountChange($event)">
                             <mat-option *ngFor="let account of typeAccountOptions" [value]="account">
                              {{account}}
                           </mat-option>
                         </mat-select>
                     </mat-form-field>
-                    <!-- [subscriptSizing]="'dynamic'" -->
+
                     <mat-form-field >
                         <mat-label>Status</mat-label>
-                            <mat-select [(value)]="selectedStatus" (selectionChange)="onStatusChange($event)">
+                            <mat-select [formControlName]="'status'" [(value)]="selectedStatus" (selectionChange)="onStatusChange($event)">
                             <mat-option *ngFor="let status of typeStatus " [value]="status">
                                 {{status}}
                             </mat-option>
@@ -316,10 +281,11 @@
                     </mat-form-field>
 
                     <div class="info-button">
-                        <form  [formGroup]="form">
+                        <form  [formGroup]="editInfluencerFormGroup">
                             <mat-form-field appearance="outline" class="text-area">
                             <mat-label><b>Notatka:</b></mat-label>
-                            <textarea matInput
+                            <textarea   [formControlName]="'noteFromAdmin'"
+                                        matInput
                                         formControlName="noteFromAdmin"
                                         placeholder="Wyślij notatkę...">
                             </textarea>
