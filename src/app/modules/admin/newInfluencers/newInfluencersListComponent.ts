@@ -120,7 +120,7 @@ export class newInfluencersListComponent
 
     influencerList: Influencer[] = [];
     InfluencerResponse: { Influencer: any };
-    dataSource: MatTableDataSource<Influencer> = new MatTableDataSource<Influencer>();
+    dataSource: MatTableDataSource<Influencer>;
 
     resInput: any;
     form: FormGroup;
@@ -229,6 +229,10 @@ export class newInfluencersListComponent
 
     ngAfterViewInit(): void {
         if (this.dataSource) this.dataSource.paginator = this.paginator;
+
+        this.dataSource = new MatTableDataSource<Influencer>(
+            this.influencerList
+        );
     }
 
     ngOnInit(): void {
