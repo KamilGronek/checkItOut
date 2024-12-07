@@ -252,7 +252,7 @@
             </div>
             <ng-template #influencerEditForm let-influencer>
                 <form class="grid grid-cols-4 overflow-hidden pb-3 influFormEdit" [formGroup]="editInfluencerFormGroup"> 
-                    <mat-form-field>
+                    <mat-form-field  class="pl-0">
                         <mat-label>Miasto</mat-label>
                         <input matInput [formControlName]="'city'">
                     </mat-form-field>
@@ -280,9 +280,9 @@
                             </mat-select>
                     </mat-form-field>
 
-                    <div class="info-button">
+                    <div class="info-button pl-0">
                         <form  [formGroup]="editInfluencerFormGroup">
-                            <mat-form-field appearance="outline" class="text-area">
+                            <mat-form-field appearance="outline" class="text-area pl-0">
                             <mat-label><b>Notatka:</b></mat-label>
                             <textarea   [formControlName]="'noteFromAdmin'"
                                         matInput

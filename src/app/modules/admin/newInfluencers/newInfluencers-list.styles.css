@@ -66,8 +66,6 @@ tr.example-element-row:not(.example-expanded-row):active {
 
 .info-button {
     display: flex;
-    /* justify-content: space-between;
-    margin-bottom: 20px; */
 }
 
 .info-button button.custom-green-button {
