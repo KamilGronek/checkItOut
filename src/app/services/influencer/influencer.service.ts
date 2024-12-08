@@ -155,8 +155,8 @@ export class InfluencerService {
         );
     }
 
-    createAccountUserData(influencer: Influencer) {
-        return this.http.post<Influencer>(
+    createAccountUserData(influencer: any) {
+        return this.http.post<any>(
             this.apiUrl,
             influencer,
             this.httpOptions

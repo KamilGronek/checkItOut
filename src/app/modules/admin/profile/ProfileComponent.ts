@@ -46,6 +46,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { AuthService } from 'app/core/auth/auth.service';
 import { MatSelectModule, MatSelectChange } from '@angular/material/select';
+import { HttpEvent, HttpResponse } from '@angular/common/http';
 
 @Component({
     selector: 'profile',
@@ -142,6 +143,8 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     userLength: number = 0;
     isInputVisible = true;
     isDisabled = false;
+    eror404: boolean = false;
+    
 
     chartNewVsReturning: ApexOptions;
 
@@ -239,9 +242,17 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         );
     }
 
+    updateOrCreateInfluencer() {
+        if (this.eror404) {
+            this.createNewInfluencer()
+        } else {
+            this.updateInfluencer();
+        }
+    }
+
     updateInfluencer() {
-        const influencer: Influencer =
-            this.editInfluencerFormGroup.getRawValue();
+        let influencer: Influencer = this.editInfluencerFormGroup.getRawValue();
+        influencer.instagramAccountType = this.getAccountTypeByTranslation(influencer.instagramAccountType)
 
         this._influencerService
             .updateInfluencer(influencer, this.influencerUser.id)
@@ -252,6 +263,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.confirmedRejestration = true;
                     this.isInputVisible = false;
                     this.confirmedStatusInfo = true;
+                    this.eror404 = false;
 
                     this.editInfluencerFormGroup.patchValue({
                         instagramId: this.influencerUser.instagramId,
@@ -259,8 +271,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                         lastName: this.influencerUser.lastName,
                         email: this.influencerUser.email,
                         city: this.influencerUser.city,
-                        instagramAccountType:
-                            this.influencerUser.instagramAccountType,
+                        instagramAccountType: this.accountTypeMap.get(this.influencerUser.instagramAccountType),
                         noteFromAdmin: this.influencerUser.noteFromAdmin,
                     });
 
@@ -278,6 +289,43 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
+    createNewInfluencer() {
+        let influencer: Influencer = this.editInfluencerFormGroup.getRawValue();
+        influencer.instagramAccountType = this.getAccountTypeByTranslation(influencer.instagramAccountType)
+
+        this._influencerService.createAccountUserData(influencer).subscribe({
+            next: (influencer) => {
+                this.influencerUser = influencer;
+                this.switchStatusInfo = false;
+                this.confirmedRejestration = true;
+                this.isInputVisible = false;
+                this.confirmedStatusInfo = true;
+                this.eror404 = false;
+
+                this.editInfluencerFormGroup.patchValue({
+                    instagramId: this.influencerUser.instagramId,
+                    firstName: this.influencerUser.firstName,
+                    lastName: this.influencerUser.lastName,
+                    email: this.influencerUser.email,
+                    city: this.influencerUser.city,
+                    instagramAccountType: this.accountTypeMap.get(this.influencerUser.instagramAccountType),
+                    noteFromAdmin: this.influencerUser.noteFromAdmin,
+                });
+
+                this.setStatusOfUser(this.influencerUser.status);
+            },
+            error: (error) => {
+                console.error(
+                    'Error with influencer update:',
+                    error.error.message
+                );
+
+                this.errorMessage = 'Coś poszło nie tak';
+                this.error500 = true;
+            },
+        });
+    }
+
     private async loadInfluencer(): Promise<void> {
         this._influencerService.getInfluencerUser().subscribe({
             next: (influencer: Influencer) => {
@@ -286,6 +334,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.confirmedRejestration = true;
                 this.isInputVisible = false;
                 this.confirmedStatusInfo = true;
+                this.eror404 = false;
 
                 this.editInfluencerFormGroup.patchValue({
                     instagramId: this.influencerUser.instagramId,
@@ -293,14 +342,15 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                     lastName: this.influencerUser.lastName,
                     email: this.influencerUser.email,
                     city: this.influencerUser.city,
-                    instagramAccountType: this.influencerUser.instagramAccountType,
+                    instagramAccountType: this.accountTypeMap.get(this.influencerUser.instagramAccountType),
                     noteFromAdmin: this.influencerUser.noteFromAdmin,
                 });
 
                 this.setStatusOfUser(this.influencerUser.status);
             },
-            error: (error) => {
+            error: (error: HttpResponse<Influencer>) => {
                 console.error(error);
+                if(error.status == 404) this.eror404 = true;
                 this.setStatusOfUser('IN_ACTIVE');
                 this.switchStatusInfo = true;
                 this.confirmedRejestration = false;
@@ -344,6 +394,14 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             this.cols = 2;
             this.rowHeight = '2:1';
         }
+    }
+
+    getAccountTypeByTranslation(accountTypeTranslation: string): string {
+        let accountTypeKeys = [...this.accountTypeMap.entries()]
+        .filter(({ 1: v }) => v === accountTypeTranslation)
+        .map(([k]) => k);
+
+        return accountTypeKeys[0];
     }
 
     fillEditForm(): void {
