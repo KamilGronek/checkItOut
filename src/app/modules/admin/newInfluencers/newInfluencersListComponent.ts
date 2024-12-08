@@ -96,7 +96,7 @@ implements OnInit, AfterViewInit, OnDestroy
 
     influencersTableColumns: string[] = [
         'id',
-        'date',
+        'lastUpdateTime',
         'firstName',
         'lastName',
         'email',
@@ -215,7 +215,7 @@ implements OnInit, AfterViewInit, OnDestroy
     {
         this.editInfluencerFormGroup = this.fb.group({
             id: ['', [Validators.required]],
-            date: ['', [Validators.required]],
+            lastUpdateTime: ['', [Validators.required]],
             firstName: ['', [Validators.required]],
             lastName: ['', [Validators.required]],
             email: ['', [Validators.required]],
