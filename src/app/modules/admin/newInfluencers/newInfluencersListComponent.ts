@@ -2,6 +2,7 @@ import { CommonModule, CurrencyPipe, DatePipe, NgClass } from '@angular/common';
 import {
     AfterViewInit,
     ChangeDetectionStrategy,
+    ChangeDetectorRef,
     Component,
     OnDestroy,
     OnInit,
@@ -86,7 +87,7 @@ import { PageEvent } from '@angular/material/paginator';
     ],
 })
 export class newInfluencersListComponent
-    implements OnInit, AfterViewInit, OnDestroy
+implements OnInit, AfterViewInit, OnDestroy
 {
     @ViewChild(MatPaginator) paginator!: MatPaginator;
     @ViewChild('influencersTable', { read: MatSort })
@@ -208,7 +209,7 @@ export class newInfluencersListComponent
         private _influencerService: InfluencerService,
         private _formBuilder: UntypedFormBuilder,
         private buttonStateService: InfluencerService,
-
+        private changeDetectorRefs: ChangeDetectorRef,
         private fb: FormBuilder
     ) 
     {
@@ -394,10 +395,16 @@ export class newInfluencersListComponent
         this._influencerService
             .updateNoteFromAdmin(influencerUpdate, influencerId)
             .subscribe((updatedInfluencer) => {
-                const index = this.influencerList.findIndex(
-                    (influencer) => influencer.id === influencerId
-                );
-                this.influencerList[index] = updatedInfluencer;
+                updatedInfluencer.status = this.statusMap.get(updatedInfluencer.status);
+                updatedInfluencer.instagramAccountType = this.accountTypeMap.get(updatedInfluencer.instagramAccountType);
+
+                const idToUpdate: number = this.dataSource.data.findIndex(influ => influ.id === updatedInfluencer.id)
+                this.dataSource.data[idToUpdate] = updatedInfluencer;
+                this.dataSource._updateChangeSubscription()
+                this.changeDetectorRefs.detach()
+                this.fillEditForm()
+                this.changeDetectorRefs.markForCheck()
+                this.changeDetectorRefs.reattach()
             });
 
         const shouldDisable = true;
