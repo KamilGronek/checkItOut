@@ -1,8 +1,7 @@
-import { CommonModule, CurrencyPipe, DatePipe, NgClass } from '@angular/common';
+import { CommonModule, NgClass } from '@angular/common';
 import {
     AfterViewInit,
     ChangeDetectionStrategy,
-    ChangeDetectorRef,
     Component,
     inject,
     OnDestroy,
@@ -15,24 +14,21 @@ import {
 
 import { FormControl } from '@angular/forms';
 
-import { Inject } from '@angular/core';
-
 import { MatCardModule } from '@angular/material/card';
 import { MatGridListModule } from '@angular/material/grid-list';
 
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatSortModule } from '@angular/material/sort';
 
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Influencer } from 'app/services/influencer/Influencer';
 import { City } from 'app/services/influencer/Influencer';
 import { ApexOptions, NgApexchartsModule } from 'ng-apexcharts';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject} from 'rxjs';
 import { InfluencerService } from 'app/services/influencer/influencer.service';
 
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -50,6 +46,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { AuthService } from 'app/core/auth/auth.service';
 import { MatSelectModule, MatSelectChange } from '@angular/material/select';
+import { HttpEvent, HttpResponse } from '@angular/common/http';
 
 @Component({
     selector: 'profile',
@@ -75,8 +72,6 @@ import { MatSelectModule, MatSelectChange } from '@angular/material/select';
         MatSortModule,
         NgClass,
         MatProgressBarModule,
-        CurrencyPipe,
-        DatePipe,
         MatSelectModule,
     ],
     styleUrl: 'profile-list.styles.css',
@@ -113,9 +108,6 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     typeAccountList: any;
     cityOptions: string[] = [];
 
-    typeAccountOptions: any;
-    typeStatus: any;
-
     selectedCity: string = '';
     selectedTypeAccount: string = '';
     influencerId: number;
@@ -151,8 +143,25 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     userLength: number = 0;
     isInputVisible = true;
     isDisabled = false;
+    eror404: boolean = false;
+    
 
     chartNewVsReturning: ApexOptions;
+
+    statusMap: Map<string, string> = new Map([
+        ["IN_VALIDATION", "W walidacji"],
+        ["ACTIVE", "Aktywne"],
+        ["INACTIVE", "Nieaktywne"]
+      ]);
+
+    accountTypeMap: Map<string, string> = new Map([
+        ["PUBLIC", "Publiczne"],
+        ["NONPUBLIC", "Niepubliczne"],
+        ["NA", "NA"]
+    ])
+
+    typeStatus: string[] = ["W walidacji", "Aktywne", "Nieaktywne"]
+    typeAccountOptions: string[] = ["Publiczne", "Niepubliczne", "NA"];
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -185,21 +194,13 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             email: ['', [Validators.required]],
             city: ['', [Validators.required]],
             instagramAccountType: ['', [Validators.required]],
-            noteFromAdmin: ['', [Validators.required]],
+            noteFromAdmin: [],
         });
 
-        this.welcomeText;
-        //this.setStatusOfUser("IN_ACTIVE");
-
         this.getCityList()
-            .then(() => {
-                this.getTypeAccount();
-            })
-            .then(() => {
-                this.loadInfluencer();
-            });
-
-        this.getStatus();
+        .then(() => {
+            this.loadInfluencer();
+        });;
     }
 
     private async getCityList(): Promise<void> {
@@ -207,28 +208,6 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             next: (response) => {
                 this.cityList = response;
                 this.cityOptions = this.cityList.map((city) => city.name);
-            },
-            error: (error) => {
-                console.error('Error fetching influencer list', error);
-            },
-        });
-    }
-
-    private async getTypeAccount(): Promise<void> {
-        this._influencerService.getInfluencerTypeAccount().subscribe({
-            next: (response) => {
-                this.typeAccountOptions = response;
-            },
-            error: (error) => {
-                console.error('Error fetching influencer list', error);
-            },
-        });
-    }
-
-    getStatus() {
-        this._influencerService.getInfluencerStatus().subscribe({
-            next: (response) => {
-                this.typeStatus = response;
             },
             error: (error) => {
                 console.error('Error fetching influencer list', error);
@@ -261,9 +240,17 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         );
     }
 
+    updateOrCreateInfluencer() {
+        if (this.eror404) {
+            this.createNewInfluencer()
+        } else {
+            this.updateInfluencer();
+        }
+    }
+
     updateInfluencer() {
-        const influencer: Influencer =
-            this.editInfluencerFormGroup.getRawValue();
+        let influencer: Influencer = this.editInfluencerFormGroup.getRawValue();
+        influencer.instagramAccountType = this.getAccountTypeByTranslation(influencer.instagramAccountType)
 
         this._influencerService
             .updateInfluencer(influencer, this.influencerUser.id)
@@ -274,6 +261,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.confirmedRejestration = true;
                     this.isInputVisible = false;
                     this.confirmedStatusInfo = true;
+                    this.eror404 = false;
 
                     this.editInfluencerFormGroup.patchValue({
                         instagramId: this.influencerUser.instagramId,
@@ -281,8 +269,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                         lastName: this.influencerUser.lastName,
                         email: this.influencerUser.email,
                         city: this.influencerUser.city,
-                        instagramAccountType:
-                            this.influencerUser.instagramAccountType,
+                        instagramAccountType: this.accountTypeMap.get(this.influencerUser.instagramAccountType),
                         noteFromAdmin: this.influencerUser.noteFromAdmin,
                     });
 
@@ -290,7 +277,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                 },
                 error: (error) => {
                     console.error(
-                        'Error fetching influencer list:',
+                        'Error with influencer update:',
                         error.error.message
                     );
 
@@ -298,6 +285,43 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.error500 = true;
                 },
             });
+    }
+
+    createNewInfluencer() {
+        let influencer: Influencer = this.editInfluencerFormGroup.getRawValue();
+        influencer.instagramAccountType = this.getAccountTypeByTranslation(influencer.instagramAccountType)
+
+        this._influencerService.createAccountUserData(influencer).subscribe({
+            next: (influencer) => {
+                this.influencerUser = influencer;
+                this.switchStatusInfo = false;
+                this.confirmedRejestration = true;
+                this.isInputVisible = false;
+                this.confirmedStatusInfo = true;
+                this.eror404 = false;
+
+                this.editInfluencerFormGroup.patchValue({
+                    instagramId: this.influencerUser.instagramId,
+                    firstName: this.influencerUser.firstName,
+                    lastName: this.influencerUser.lastName,
+                    email: this.influencerUser.email,
+                    city: this.influencerUser.city,
+                    instagramAccountType: this.accountTypeMap.get(this.influencerUser.instagramAccountType),
+                    noteFromAdmin: this.influencerUser.noteFromAdmin,
+                });
+
+                this.setStatusOfUser(this.influencerUser.status);
+            },
+            error: (error) => {
+                console.error(
+                    'Error with influencer update:',
+                    error.error.message
+                );
+
+                this.errorMessage = 'Coś poszło nie tak';
+                this.error500 = true;
+            },
+        });
     }
 
     private async loadInfluencer(): Promise<void> {
@@ -308,6 +332,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.confirmedRejestration = true;
                 this.isInputVisible = false;
                 this.confirmedStatusInfo = true;
+                this.eror404 = false;
 
                 this.editInfluencerFormGroup.patchValue({
                     instagramId: this.influencerUser.instagramId,
@@ -315,20 +340,23 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                     lastName: this.influencerUser.lastName,
                     email: this.influencerUser.email,
                     city: this.influencerUser.city,
-                    instagramAccountType:
-                        this.influencerUser.instagramAccountType,
+                    instagramAccountType: this.accountTypeMap.get(this.influencerUser.instagramAccountType),
                     noteFromAdmin: this.influencerUser.noteFromAdmin,
                 });
 
                 this.setStatusOfUser(this.influencerUser.status);
             },
-            error: (error) => {
+            error: (error: HttpResponse<Influencer>) => {
                 console.error(error);
+                if(error.status == 404) this.eror404 = true;
                 this.setStatusOfUser('IN_ACTIVE');
                 this.switchStatusInfo = true;
                 this.confirmedRejestration = false;
                 this.isInputVisible = true;
-            },
+                this.editInfluencerFormGroup.patchValue({
+                    email: this.authService.getUserFromToken().email
+                });
+            }
         });
     }
 
@@ -364,6 +392,14 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             this.cols = 2;
             this.rowHeight = '2:1';
         }
+    }
+
+    getAccountTypeByTranslation(accountTypeTranslation: string): string {
+        let accountTypeKeys = [...this.accountTypeMap.entries()]
+        .filter(({ 1: v }) => v === accountTypeTranslation)
+        .map(([k]) => k);
+
+        return accountTypeKeys[0];
     }
 
     fillEditForm(): void {

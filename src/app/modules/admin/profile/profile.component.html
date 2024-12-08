@@ -62,7 +62,8 @@
                         <input matInput [formControlName]="'email'" />
                         <mat-icon class="icon-size-5" matSuffix [svgIcon]="'heroicons_solid:envelope'"></mat-icon>
                     </mat-form-field>
-                    <mat-form-field [subscriptSizing]="'dynamic'">
+
+                    <mat-form-field>
                         <mat-label>Miasto</mat-label>
                         <mat-select [(value)]="selectedCity" [formControlName]="'city'" (selectionChange)="onCityChange($event)">
                             <mat-option *ngFor="let city of cityOptions" [value]="city">
@@ -70,10 +71,8 @@
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
-                    <br>
-                    <br>
-                    <div> </div>
-                    <mat-form-field [subscriptSizing]="'dynamic'">
+
+                    <mat-form-field>
                         <mat-label>Typ konta</mat-label>
                         <mat-select [(value)]="selectedTypeAccount" [formControlName]="'instagramAccountType'" (selectionChange)="onTypeAccountChange($event)">
                             <mat-option *ngFor="let account of typeAccountOptions" [value]="account">
@@ -107,7 +106,7 @@
                 </p>
 
                 <button mat-flat-button class="w-1/4 buttonSubmit" #send type="submit" [color]="'primary'"
-                    (click)="updateInfluencer()" [disabled]="isDisabled">Wyślij
+                    (click)="updateOrCreateInfluencer()" [disabled]="isDisabled">Wyślij
                 </button>
 
                 <div class="mt-8">

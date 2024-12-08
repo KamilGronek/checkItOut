@@ -18,26 +18,11 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Influencer } from 'app/services/influencer/Influencer';
 import { InfluencerResponse } from 'app/services/influencer/Influencer';
-// import { MessageToInfluenser } from 'app/services/influencer/Influencer';
 
-// import { UserData } from 'app/services/userData/UserData';
-
-import { FinanceService } from 'app/mock-api/dashboards/finance/finance.service';
-import { FuseConfirmationService } from '@fuse/services/confirmation';
-import { ApexOptions, NgApexchartsModule } from 'ng-apexcharts';
-import {
-    Subject,
-    takeUntil,
-    BehaviorSubject,
-    debounceTime,
-    distinctUntilChanged,
-    startWith,
-    map,
-} from 'rxjs';
-// import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
+import { NgApexchartsModule } from 'ng-apexcharts';
+import { Subject} from 'rxjs';
 
 import { InfluencerService } from 'app/services/influencer/influencer.service';
-// import { UserDataService } from 'app/services/userData/userData.service';
 
 import {
     FormGroup,
@@ -47,7 +32,6 @@ import {
     UntypedFormBuilder,
     UntypedFormGroup,
     Validators,
-    UntypedFormControl,
     FormControl,
 } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -60,13 +44,11 @@ import {
     trigger,
 } from '@angular/animations';
 import { MatSelectModule, MatSelectChange } from '@angular/material/select';
-import { AuthService } from 'app/core/auth/auth.service';
-import { delay, Observable, of, switchMap, throwError } from 'rxjs';
+import { Observable} from 'rxjs';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatPaginator } from '@angular/material/paginator';
 
 import { PageEvent } from '@angular/material/paginator';
-import { serverTimestamp } from '@angular/fire/firestore';
 
 @Component({
     selector: 'newInfluencers',
@@ -98,16 +80,14 @@ import { serverTimestamp } from '@angular/fire/firestore';
         NgApexchartsModule,
         MatTableModule,
         MatSortModule,
-        NgClass,
         MatProgressBarModule,
-        CurrencyPipe,
         DatePipe,
         MatSelectModule,
         MatPaginatorModule,
     ],
 })
 export class newInfluencersListComponent
-    implements OnInit, AfterViewInit, OnDestroy
+implements OnInit, AfterViewInit, OnDestroy
 {
     @ViewChild(MatPaginator) paginator!: MatPaginator;
     @ViewChild('influencersTable', { read: MatSort })
@@ -116,7 +96,7 @@ export class newInfluencersListComponent
 
     influencersTableColumns: string[] = [
         'id',
-        'date',
+        'lastUpdateTime',
         'firstName',
         'lastName',
         'email',
@@ -132,31 +112,17 @@ export class newInfluencersListComponent
     ];
     expandedInfluencer: Influencer | null;
 
-    // expandedMessageToInfluenser: MessageToInfluenser | null;
-    // searchInputControl: UntypedFormControl = new UntypedFormControl();
-
-    // expandedNewInfluencer: UserData | null;
     formLaunched: boolean = false;
     editformLaunched: boolean = false;
     idOfEditedUser: number;
     flashMessage: 'success' | 'error' | null = null;
-    // influencerList: Influencer[];
-    // userDataList: UserData[];
-    // MessageToInfluenser: MessageToInfluenser[];
 
-    // addInfluencerFormGroup: UntypedFormGroup;
     editInfluencerFormGroup: UntypedFormGroup;
-
-    // editTextNoteToInfluenser: UntypedFormGroup;
-    // influencersDataSource: MatTableDataSource<any> = new MatTableDataSource();
 
     influencerList: Influencer[] = [];
     InfluencerResponse: { Influencer: any };
-    // influencerUpdate: Influencer[];
-
     dataSource: MatTableDataSource<Influencer>;
 
-    // dataSource = ELEMENT_DATA;
     resInput: any;
     form: FormGroup;
     selectedProduct: Influencer | null = null;
@@ -168,11 +134,6 @@ export class newInfluencersListComponent
     ascDescInfo: boolean = false;
 
     sortDirection: string = 'asc';
-    // filterByAccountType: string = '';
-    // filterByStatus: string = '';
-
-    // searchInputStatus = new FormControl('');
-    // searchInputAccountType = new FormControl('');
 
     myControl = new FormControl('');
     options: string[] = ['One', 'Two', 'Three'];
@@ -184,15 +145,11 @@ export class newInfluencersListComponent
 
     selectedSortOption = 'default';
 
-    // selectedTypeAccount: string = '';
-    // selectedStatus: string = '';
-
     fieldOptions: string[] = ['Imię', 'Nazwisko', 'Status', 'Rodzaj Konta'];
     statusOptions: string[] = [];
 
     arrStatus: string[] = [];
     statusReduceArr: string[] = [];
-    // statusChoose: string;
     dataToken: any;
 
     length = 100;
@@ -214,7 +171,6 @@ export class newInfluencersListComponent
     direction: string = 'asc';
     statusInflu: string = '';
     instagramAccountType: string = '';
-    // city: string = '';
     firstName: string = '';
     lastName: string = '';
 
@@ -222,15 +178,10 @@ export class newInfluencersListComponent
 
     statusTextTableHtml = false;
     statusTextTable: string = '';
-    // typeStatus: any;
 
     selectedTypeAccount: string = 'NONPUBLIC';
-    // NIEPUBLICZNE
-    typeAccountOptions: any = '';
 
     selectedStatus: string = 'IN_VALIDATION';
-    typeStatus: any = 'IN_VALIDATION';
-
     selectedFilter: string = 'Imię';
 
     filterByAccountType: string = '';
@@ -239,68 +190,32 @@ export class newInfluencersListComponent
     filteredStatus: string[] = [];
     influencerStatuses: any;
 
-    // id: number = 0;
+    statusMap: Map<string, string> = new Map([
+        ["IN_VALIDATION", "W walidacji"],
+        ["ACTIVE", "Aktywne"],
+        ["INACTIVE", "Nieaktywne"]
+      ]);
+
+    accountTypeMap: Map<string, string> = new Map([
+        ["PUBLIC", "Publiczne"],
+        ["NONPUBLIC", "Niepubliczne"],
+        ["NA", "NA"]
+    ])
+
+    typeStatus: string[] = ["W walidacji", "Aktywne", "Nieaktywne"]
+    typeAccountOptions: string[] = ["Publiczne", "Niepubliczne", "NA"];
 
     constructor(
         private _influencerService: InfluencerService,
         private _formBuilder: UntypedFormBuilder,
-        private _changeDetectorRef: ChangeDetectorRef,
-        private _fuseConfirmationService: FuseConfirmationService,
-        private _authService: AuthService,
         private buttonStateService: InfluencerService,
-
+        private changeDetectorRefs: ChangeDetectorRef,
         private fb: FormBuilder
-    ) {
-        this.form = this.fb.group({
-            noteFromAdmin: ['', [Validators.required]], // Dodajemy walidację
-        });
-    }
-
-    ngAfterViewInit(): void {
-        if (this.dataSource) {
-            console.log('this.dataSource', this.dataSource);
-            this.dataSource.paginator = this.paginator;
-
-            // console.log('typeStatus134:', this.typeStatus);
-
-            // this.getStatus();
-        }
-
-        this.dataSource = new MatTableDataSource<Influencer>(
-            this.influencerList
-        );
-
-        console.log('response:', this.influencerList);
-    }
-
-    ngOnInit(): void {
-        // this.filteredStatus = this.typeStatus.filter(
-        //     (type: any) => type !== 'IN_VALIDATION'
-        // );
-
-        console.log('typeStatus266:', this.typeStatus);
-        // console.log('filteredStatus:', this.filteredStatus);
-
-        // this.pageSize = 20;
-        this.initializeForm();
-        this.loadInfluencers(
-            this.pageIndex,
-            this.pageSize,
-            this.sortBy,
-            this.direction,
-            this.statusInflu,
-            this.instagramAccountType,
-            this.firstName,
-            this.lastName
-        );
-        // this.setupSearch();
-        this.getTypeAccount();
-    }
-
-    private initializeForm(): void {
-        this.editInfluencerFormGroup = this._formBuilder.group({
+    ) 
+    {
+        this.editInfluencerFormGroup = this.fb.group({
             id: ['', [Validators.required]],
-            date: ['', [Validators.required]],
+            lastUpdateTime: ['', [Validators.required]],
             firstName: ['', [Validators.required]],
             lastName: ['', [Validators.required]],
             email: ['', [Validators.required]],
@@ -309,8 +224,22 @@ export class newInfluencersListComponent
             followersAmount: ['', [Validators.required]],
             instagramAccountType: ['', [Validators.required]],
             status: ['', [Validators.required]],
+            noteFromAdmin: [],
         });
     }
+
+    ngAfterViewInit(): void {
+        if (this.dataSource) this.dataSource.paginator = this.paginator;
+
+        this.dataSource = new MatTableDataSource<Influencer>(
+            this.influencerList
+        );
+    }
+
+    ngOnInit(): void {
+        this.loadInfluencers(this.pageIndex);
+    }
+
 
     private setSearchFiltersToEmptyStrings() {
         this.firstName = '';
@@ -340,16 +269,7 @@ export class newInfluencersListComponent
         this.searchValue = searchInputValue;
         this.setSearchFiltersToEmptyStrings();
         this.setValueOfSelectedFilter(searchInputValue);
-        this.loadInfluencers(
-            0,
-            this.pageSize,
-            this.sortBy,
-            this.direction,
-            this.firstName,
-            this.lastName,
-            this.statusInflu,
-            this.instagramAccountType
-        );
+        this.loadInfluencers(0);
     }
 
     onSearchSelectChange(event?: any): void {
@@ -358,44 +278,38 @@ export class newInfluencersListComponent
     }
 
     private async loadInfluencers(
-        pageIndex: number,
-        pageSize: number,
-        sortBy: string,
-        direction: string,
-        statusInflu: string,
-        instagramAccountType: string,
-        firstName: string,
-        lastName: string
+        pageIndex: number
     ): Promise<void> {
         this._influencerService
-            // .getInfluencerList()
-            .getInfluencerPaged(
-                pageIndex,
-                this.pageSize,
-                this.sortBy,
-                this.direction,
-                this.statusInflu,
-                this.instagramAccountType,
-                this.firstName,
-                this.lastName
-            )
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe(
-                (response: InfluencerResponse) => {
-                    this.length = response.page.totalElements;
-                    this.pageIndex = response.page.number;
+        .getInfluencerPaged(
+            pageIndex,
+            this.pageSize,
+            this.sortBy,
+            this.direction,
+            this.statusInflu,
+            this.instagramAccountType,
+            this.firstName,
+            this.lastName
+        )
+        .subscribe({
+            next: (response: InfluencerResponse) => {
+                this.length = response.page.totalElements;
+                this.pageIndex = response.page.number;
+                this.paginator.length = response.page.totalElements;
+                this.paginator.pageIndex = response.page.number;
+                this.paginator.pageSize = response.page.size;
 
-                    this.paginator.length = response.page.totalElements;
-                    this.paginator.pageIndex = response.page.number;
-                    this.paginator.pageSize = response.page.size;
+                response.content.map(influ => {
+                    influ.status = this.statusMap.get(influ.status);
+                    influ.instagramAccountType = this.accountTypeMap.get(influ.instagramAccountType);
+                })
 
-                    this.dataSource.data = response.content;
-                    this.getStatus();
-                },
-                (error) => {
-                    console.error('Error fetching influencer list', error);
-                }
-            );
+                this.dataSource.data = response.content;
+            },
+            error: (error) => {
+                console.error('Error fetching influencer list', error);
+            }
+        });
     }
 
     pageSizeChanged(previousPageSize: number, newPageSize: number): boolean {
@@ -406,32 +320,14 @@ export class newInfluencersListComponent
         this.pageIndex = 0;
         this.pageSize = e.pageSize;
 
-        this.loadInfluencers(
-            0,
-            e.pageSize,
-            this.sortBy,
-            this.direction,
-            this.firstName,
-            this.lastName,
-            this.statusInflu,
-            this.instagramAccountType
-        );
+        this.loadInfluencers(0);
     }
 
     handlePageNavigationChange(e: PageEvent): void {
         this.pageIndex = e.pageIndex;
         this.pageSize = e.pageSize;
 
-        this.loadInfluencers(
-            e.pageIndex,
-            e.pageSize,
-            this.sortBy,
-            this.direction,
-            this.firstName,
-            this.lastName,
-            this.statusInflu,
-            this.instagramAccountType
-        );
+        this.loadInfluencers(e.pageIndex);
     }
 
     handlePageEvent(e: PageEvent) {
@@ -443,113 +339,40 @@ export class newInfluencersListComponent
     }
 
     onSortData(event: any): void {
-        console.log(event);
-
         this.ascDescInfo = true;
         this.direction = event.direction;
         this.sortBy = event.active;
 
-        this.loadInfluencers(
-            0,
-            this.pageSize,
-            this.sortBy,
-            this.direction,
-            this.statusInflu,
-            this.instagramAccountType,
-            this.firstName,
-            this.lastName
-        );
-    }
-
-    getStatus() {
-        this._influencerService
-            .getInfluencerStatus()
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe(
-                (response) => {
-                    this.typeStatus = response;
-                    // this.typeStatus.push('ALL');
-
-                    console.log('typeStatus:', this.typeStatus);
-                },
-                (error) => {
-                    console.error('Error fetching influencer list', error);
-                }
-            );
-    }
-
-    getTypeAccount() {
-        this._influencerService
-            .getInfluencerTypeAccount()
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe(
-                (response) => {
-                    this.typeAccountOptions = response;
-                    // this.typeAccountOptions.push('ALL');
-                },
-                (error) => {
-                    console.error('Error fetching influencer list', error);
-                }
-            );
+        this.loadInfluencers(0);
     }
 
     closeDetails(): void {
         this.selectedProduct = null;
     }
 
-    /**
-     * After view init
-     */
-
-    /**
-     * On destroy
-     */
     ngOnDestroy(): void {
-        // Unsubscribe from all subscriptions
         this._unsubscribeAll.next(null);
         this._unsubscribeAll.complete();
     }
 
-    // -----------------------------------------------------------------------------------------------------
-    // @ Public methods
-    // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * Track by function for ngFor loops
-     *
-     * @param index
-     * @param item
-     */
     trackByFn(index: number, item: any): any {
         return item.id || index;
     }
 
     sendToInluencer(influencerId: number): void {
-        const instagramId =
-            this.editInfluencerFormGroup.get('instagramId').value;
+        const instagramId = this.editInfluencerFormGroup.get('instagramId').value;
         const firstName = this.editInfluencerFormGroup.get('firstName').value;
         const lastName = this.editInfluencerFormGroup.get('lastName').value;
         const email = this.editInfluencerFormGroup.get('email').value;
         const city = this.editInfluencerFormGroup.get('city').value;
-        const followersAmount =
-            this.editInfluencerFormGroup.get('followersAmount').value;
-        const updatedNote = this.form.get('noteFromAdmin').value;
-        const influencerToUpdate = this.influencerList.find(
-            (influencer) => influencer.id === influencerId
-        );
+        const followersAmount = this.editInfluencerFormGroup.get('followersAmount').value;
+        const updatedNote = this.editInfluencerFormGroup.get('noteFromAdmin').value;
+        const updatedStatus = this.getStatusByTranslation(this.editInfluencerFormGroup.get('status').value);
+        const updatedAccountType = this.getAccountTypeByTranslation(this.editInfluencerFormGroup.get('instagramAccountType').value);
+        const influencerToUpdate = this.influencerList.find((influencer) => influencer.id === influencerId);
 
-        console.log('Influenscer id:', influencerId);
         this.confrimEditionInfo = true;
         this.followersAmountInfo = false;
-        // if (!influencerToUpdate) {
-        //     console.log('Influenscer o podanym ID nie został znaleziony');
-        //     return;
-        // }
-
-        if (this.selectedStatus == 'ACTIVE') {
-            const shouldDisable = true;
-            this.buttonStateService.setDisabledState(shouldDisable);
-        }
 
         const influencerUpdate = {
             ...influencerToUpdate,
@@ -560,13 +383,11 @@ export class newInfluencersListComponent
             city: city,
             followersAmount: followersAmount,
             noteFromAdmin: updatedNote,
-            status: this.selectedStatus,
-            instagramAccountType: this.selectedTypeAccount,
+            status: updatedStatus,
+            instagramAccountType: updatedAccountType,
         };
 
         if (followersAmount == null || followersAmount < 1) {
-            console.log('followersAmount:', followersAmount);
-
             this.followersAmountInfo = true;
             this.confrimEditionInfo = false;
         }
@@ -574,35 +395,43 @@ export class newInfluencersListComponent
         this._influencerService
             .updateNoteFromAdmin(influencerUpdate, influencerId)
             .subscribe((updatedInfluencer) => {
-                const index = this.influencerList.findIndex(
-                    (influencer) => influencer.id === influencerId
-                );
-                this.influencerList[index] = updatedInfluencer;
+                updatedInfluencer.status = this.statusMap.get(updatedInfluencer.status);
+                updatedInfluencer.instagramAccountType = this.accountTypeMap.get(updatedInfluencer.instagramAccountType);
 
-                console.log(
-                    'Influenser po wysłaniu:',
-                    this.influencerList[index]
-                );
+                const idToUpdate: number = this.dataSource.data.findIndex(influ => influ.id === updatedInfluencer.id)
+                this.dataSource.data[idToUpdate] = updatedInfluencer;
+                this.dataSource._updateChangeSubscription()
+                this.changeDetectorRefs.detach()
+                this.fillEditForm()
+                this.changeDetectorRefs.markForCheck()
+                this.changeDetectorRefs.reattach()
             });
-
-        this.getStatus();
 
         const shouldDisable = true;
         this.buttonStateService.setDisabledState(shouldDisable);
     }
 
+    getStatusByTranslation(statusTranslation: string): string {
+        let statusKeys = [...this.statusMap.entries()]
+        .filter(({ 1: v }) => v === statusTranslation)
+        .map(([k]) => k);
+
+        return statusKeys[0];
+    }
+
+    getAccountTypeByTranslation(accountTypeTranslation: string): string {
+        let accountTypeKeys = [...this.accountTypeMap.entries()]
+        .filter(({ 1: v }) => v === accountTypeTranslation)
+        .map(([k]) => k);
+
+        return accountTypeKeys[0];
+    }
+
     onTypeAccountChange(event: MatSelectChange): void {
         this.selectedTypeAccount = event.value;
-
-        // this.editInfluencerFormGroup.patchValue({
-        //     instagramAccountType: this.selectedTypeAccount,
-        // });
     }
 
     onStatusChange(event: MatSelectChange): void {
-        console.log('ruch');
-
-        console.log(event.value);
         this.selectedStatus = event.value;
     }
 
@@ -618,37 +447,16 @@ export class newInfluencersListComponent
 
     fillEditForm(): void {
         if (this.expandedInfluencer != null) {
-            this.editInfluencerFormGroup.controls['id'].setValue(
-                this.expandedInfluencer.id
-            );
-            // this.editInfluencerFormGroup.controls['date'].setValue(
-            //     this.expandedInfluencer.date
-            // );
-            this.editInfluencerFormGroup.controls['firstName'].setValue(
-                this.expandedInfluencer.firstName
-            );
-            this.editInfluencerFormGroup.controls['lastName'].setValue(
-                this.expandedInfluencer.lastName
-            );
-            this.editInfluencerFormGroup.controls['email'].setValue(
-                this.expandedInfluencer.email
-            );
-            this.editInfluencerFormGroup.controls['city'].setValue(
-                this.expandedInfluencer.city
-            );
-            this.editInfluencerFormGroup.controls['instagramId'].setValue(
-                this.expandedInfluencer.instagramId
-            );
-            this.editInfluencerFormGroup.controls['followersAmount'].setValue(
-                this.expandedInfluencer.followersAmount
-            );
-            this.editInfluencerFormGroup.controls[
-                'instagramAccountType'
-            ].setValue(this.expandedInfluencer.instagramAccountType);
-
-            this.editInfluencerFormGroup.controls['status'].setValue(
-                this.expandedInfluencer.status
-            );
+            this.editInfluencerFormGroup.controls['id'].setValue(this.expandedInfluencer.id);
+            this.editInfluencerFormGroup.controls['firstName'].setValue(this.expandedInfluencer.firstName);
+            this.editInfluencerFormGroup.controls['lastName'].setValue(this.expandedInfluencer.lastName);
+            this.editInfluencerFormGroup.controls['email'].setValue(this.expandedInfluencer.email);
+            this.editInfluencerFormGroup.controls['city'].setValue(this.expandedInfluencer.city);
+            this.editInfluencerFormGroup.controls['instagramId'].setValue(this.expandedInfluencer.instagramId);
+            this.editInfluencerFormGroup.controls['followersAmount'].setValue(this.expandedInfluencer.followersAmount);
+            this.editInfluencerFormGroup.controls['instagramAccountType'].setValue(this.expandedInfluencer.instagramAccountType);
+            this.editInfluencerFormGroup.controls['status'].setValue(this.expandedInfluencer.status);
+            this.editInfluencerFormGroup.controls['noteFromAdmin'].setValue(this.expandedInfluencer.noteFromAdmin);
             this.editInfluencerFormGroup.controls['id'].disable();
         }
     }
