@@ -197,8 +197,6 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             noteFromAdmin: [],
         });
 
-        this.welcomeText;
-
         this.getCityList()
         .then(() => {
             this.loadInfluencer();
