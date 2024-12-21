@@ -18,7 +18,7 @@ export interface Influencer {
     city: string;
     followersAmount: string;
     instagramAccountType: string;
-    status: string;
+    accountStatus: string;
     messageToAdmin: string;
     noteFromAdmin: string;
     adminNoteTime: string;
