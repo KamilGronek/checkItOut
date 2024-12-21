@@ -194,7 +194,7 @@
                                 </span>
                             </td>
                         </ng-container>
-                        <ng-container matColumnDef="status">
+                        <ng-container matColumnDef="accountStatus">
                             <th mat-header-cell mat-sort-header *matHeaderCellDef>
                                 Status
                             </th>
@@ -208,28 +208,28 @@
                                             sans-serif;
                                     " [ngStyle]="{
                                         'background-color':
-                                            influencer.status === 'Aktywne'
+                                            influencer.accountStatus === 'Aktywny'
                                                 ? '#bbf7d0'
-                                                : influencer.status ===
-                                                  'Nieaktywne'
+                                                : influencer.accountStatus ===
+                                                  'Nieaktywny'
                                                 ? '#FECACA'
-                                                : influencer.status ===
-                                                  'W walidacji'
+                                                : influencer.accountStatus ===
+                                                  'Walidowany'
                                                 ? '#f7f5bb'
                                                 : '#000000',
 
                                         color:
-                                            influencer.status === 'Aktywne'
+                                            influencer.accountStatus === 'Aktywny'
                                                 ? '#166534'
-                                                : influencer.status ===
-                                                  'Nieaktywne'
+                                                : influencer.accountStatus ===
+                                                  'Nieaktywny'
                                                 ? '#991b1b'
-                                                : influencer.status ===
-                                                  'W walidacji'
+                                                : influencer.accountStatus ===
+                                                  'Walidowany'
                                                 ? '#92400e'
                                                 : '#000000'
                                     }" class="leading-relaxed whitespace-nowrap">
-                                    {{ influencer.status }}
+                                    {{ influencer.accountStatus }}
                                 </span>
                             </td>
                         </ng-container>
@@ -329,7 +329,7 @@
                     </mat-form-field>
                     <mat-form-field>
                         <mat-label>Status</mat-label>
-                        <mat-select [formControlName]="'status'" [(value)]="selectedStatus"
+                        <mat-select [formControlName]="'accountStatus'" [(value)]="selectedStatus"
                             (selectionChange)="onStatusChange($event)">
                             <mat-option *ngFor="let status of typeStatus" [value]="status">
                                 {{ status }}
@@ -355,10 +355,6 @@
                 </form>
                 <p class="textWarning" *ngIf="updatedNoteInfo">
                     Przed wysłaniem, proszę uzupełnić notatkę
-                </p>
-
-                <p class="textWarning" *ngIf="followersAmountInfo">
-                    Przed wysłaniem, proszę info o followersach
                 </p>
 
                 <p class="textWarning" *ngIf="instagramAccountTypeInfo">
