@@ -1,0 +1,88 @@
+.example-h2 {
+    margin: 10px;
+}
+
+.example-section {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    height: 60px;
+}
+
+.example-margin {
+    margin: 0 10px;
+}
+
+.example-card {
+    margin-bottom: 10px;
+}
+
+
+.progress-container {
+    display: flex;
+    position: relative;
+    display: inline-block;
+    z-index: 0;
+}
+
+
+.custom-spinner {
+    stroke: #ff0000;
+}
+
+.plnElement,
+.dayElement,
+.collaboElement {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 35px;
+    width: 35px;
+    border-radius:20px;
+    background-color: rgb(121, 76, 211);
+    color: white;
+    z-index: 10;
+    left: 75%;
+    bottom: 20%;
+    font-size: 12px;
+}
+
+.dayElement{
+    border-radius: 30px;
+    background-color: rgb(121, 76, 211);
+    height: 48px;
+    width: 48px;
+}
+
+.collaboElement{
+    border-radius: 30px;
+    background-color: rgb(121, 76, 211);
+    height: 48px;
+    width: 48px;
+}
+  
+
+  .progress-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 30px; 
+    font-weight: bold;
+    color: #000; 
+    transition: font-size 0.6s cubic-bezier(0.4, 0.0, 0.2, 1); 
+  }
+
+  .progress-text.highlight {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 60px;
+  }
+
+
+/* .pln{
+    font-size: 10px;
+} */

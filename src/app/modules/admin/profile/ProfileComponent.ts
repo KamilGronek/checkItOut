@@ -1,4 +1,7 @@
 import { CommonModule, NgClass } from '@angular/common';
+import { FuseDrawerComponent } from '@fuse/components/drawer';
+import { DrawerService } from 'app/services/influencer/drawer.service';
+
 import {
     AfterViewInit,
     ChangeDetectionStrategy,
@@ -10,7 +13,16 @@ import {
     ViewEncapsulation,
     HostListener,
     ElementRef,
+    Input,
 } from '@angular/core';
+
+import {
+    FuseConfig,
+    FuseConfigService,
+    Scheme,
+    Theme,
+    Themes,
+} from '@fuse/services/config';
 
 import { FormControl } from '@angular/forms';
 
@@ -28,10 +40,10 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Influencer } from 'app/services/influencer/Influencer';
 import { City } from 'app/services/influencer/Influencer';
 import { ApexOptions, NgApexchartsModule } from 'ng-apexcharts';
-import { Subject} from 'rxjs';
 import { InfluencerService } from 'app/services/influencer/influencer.service';
 
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { Router, NavigationStart, NavigationEnd } from '@angular/router';
 
 import {
     FormsModule,
@@ -47,6 +59,17 @@ import { MatInputModule } from '@angular/material/input';
 import { AuthService } from 'app/core/auth/auth.service';
 import { MatSelectModule, MatSelectChange } from '@angular/material/select';
 import { HttpEvent, HttpResponse } from '@angular/common/http';
+
+import { MatDialogRef } from '@angular/material/dialog';
+
+import { MatTooltipModule } from '@angular/material/tooltip';
+
+import { DialogExampleComponent } from 'app/layout/common/settings/settings.component';
+import { interval } from 'rxjs';
+import { take } from 'rxjs/operators';
+import { takeWhile } from 'rxjs/operators';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
     selector: 'profile',
@@ -68,15 +91,22 @@ import { HttpEvent, HttpResponse } from '@angular/common/http';
         ReactiveFormsModule,
         MatDividerModule,
         NgApexchartsModule,
+        MatTooltipModule,
         MatTableModule,
         MatSortModule,
         NgClass,
         MatProgressBarModule,
         MatSelectModule,
+        MatProgressSpinnerModule,
     ],
     styleUrl: 'profile-list.styles.css',
 })
 export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
+    @Input() config: any;
+    private _unsubscribeAll: Subject<any> = new Subject<any>();
+
+    settingsDrawer!: FuseDrawerComponent;
+
     formFieldHelpers: string[] = [''];
     fixedSubscriptInput: FormControl = new FormControl('', [
         Validators.required,
@@ -144,32 +174,63 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     isInputVisible = true;
     isDisabled = false;
     eror404: boolean = false;
-    
 
     chartNewVsReturning: ApexOptions;
 
     statusMap: Map<string, string> = new Map([
-        ["IN_VALIDATION", "W walidacji"],
-        ["ACTIVE", "Aktywne"],
-        ["INACTIVE", "Nieaktywne"]
-      ]);
+        ['IN_VALIDATION', 'W walidacji'],
+        ['ACTIVE', 'Aktywne'],
+        ['INACTIVE', 'Nieaktywne'],
+    ]);
 
     accountTypeMap: Map<string, string> = new Map([
-        ["PUBLIC", "Publiczne"],
-        ["NONPUBLIC", "Niepubliczne"],
-        ["NA", "NA"]
-    ])
+        ['PUBLIC', 'Publiczne'],
+        ['NONPUBLIC', 'Niepubliczne'],
+        ['NA', 'NA'],
+    ]);
 
-    typeStatus: string[] = ["W walidacji", "Aktywne", "Nieaktywne"]
-    typeAccountOptions: string[] = ["Publiczne", "Niepubliczne", "NA"];
+    typeStatus: string[] = ['W walidacji', 'Aktywne', 'Nieaktywne'];
+    typeAccountOptions: string[] = ['Publiczne', 'Niepubliczne', 'NA'];
 
-    private _unsubscribeAll: Subject<any> = new Subject<any>();
+    fruits = ['Banana', 'Orange', 'Apple', 'Mango'];
+
+    // @ViewChild('settingsDrawer') settingsDrawer: any;
+    isOpen = false;
+
+    // @Input() config: FuseConfig;
+
+    maxValue = 3200;
+    currentValue = 0;
+    spinnerValue = 0;
+
+    value = 20;
+    progress = 0;
+
+    progressMoney = 0;
+    valueMoney = 0;
+    isHighlight = false;
+    isHighlight2 = false;
+    isHighlight3 = false;
+
+    progress1 = 0;
+    value1 = 0;
+
+    progress2 = 0;
+    value2 = 0;
+
+    progress3 = 0;
+    value3 = 0;
+
+    private previousUrl: string = '';
 
     constructor(
         private _influencerService: InfluencerService,
         private _formBuilder: UntypedFormBuilder,
         private authService: AuthService,
-        private fb: FormBuilder
+        private fb: FormBuilder,
+        private drawerService: DrawerService,
+        private router: Router,
+        private _fuseConfigService: FuseConfigService
     ) {
         this.form = this.fb.group({
             city: ['', Validators.required],
@@ -187,6 +248,20 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        this.dialog.open(DialogExampleComponent);
+
+        this._fuseConfigService.config$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((config: FuseConfig) => {
+                // Store the config
+                this.config = config;
+            });
+
+        // this.drawerService.drawerState$.subscribe((state) => {
+        //     this.isOpen = state;
+        //     console.log(this.isOpen);
+        // });
+
         this.editInfluencerFormGroup = this._formBuilder.group({
             instagramId: ['', [Validators.required]],
             firstName: ['', [Validators.required]],
@@ -197,10 +272,29 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             noteFromAdmin: [],
         });
 
-        this.getCityList()
-        .then(() => {
+        this.getCityList().then(() => {
             this.loadInfluencer();
-        });;
+        });
+
+        // this.drawerService.drawerState$.subscribe((state) => {
+        //     this.isOpen = state;
+        //     console.log(this.isOpen);
+        // });
+
+        // this.router.events.subscribe((event) => {
+        //     if (event instanceof NavigationEnd) {
+        //         console.log(this.previousUrl);
+        //         if (
+        //             this.previousUrl === '/sign-in' &&
+        //             event.url === '/profile'
+        //         ) {
+        //             if (this.settingsDrawer) {
+        //                 this.settingsDrawer.open();
+        //             }
+        //         }
+        //         this.previousUrl = event.url;
+        //     }
+        // });
     }
 
     private async getCityList(): Promise<void> {
@@ -242,7 +336,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
     updateOrCreateInfluencer() {
         if (this.eror404) {
-            this.createNewInfluencer()
+            this.createNewInfluencer();
         } else {
             this.updateInfluencer();
         }
@@ -250,7 +344,9 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
     updateInfluencer() {
         let influencer: Influencer = this.editInfluencerFormGroup.getRawValue();
-        influencer.instagramAccountType = this.getAccountTypeByTranslation(influencer.instagramAccountType)
+        influencer.instagramAccountType = this.getAccountTypeByTranslation(
+            influencer.instagramAccountType
+        );
 
         this._influencerService
             .updateInfluencer(influencer, this.influencerUser.id)
@@ -269,7 +365,9 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                         lastName: this.influencerUser.lastName,
                         email: this.influencerUser.email,
                         city: this.influencerUser.city,
-                        instagramAccountType: this.accountTypeMap.get(this.influencerUser.instagramAccountType),
+                        instagramAccountType: this.accountTypeMap.get(
+                            this.influencerUser.instagramAccountType
+                        ),
                         noteFromAdmin: this.influencerUser.noteFromAdmin,
                     });
 
@@ -289,7 +387,9 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
     createNewInfluencer() {
         let influencer: Influencer = this.editInfluencerFormGroup.getRawValue();
-        influencer.instagramAccountType = this.getAccountTypeByTranslation(influencer.instagramAccountType)
+        influencer.instagramAccountType = this.getAccountTypeByTranslation(
+            influencer.instagramAccountType
+        );
 
         this._influencerService.createAccountUserData(influencer).subscribe({
             next: (influencer) => {
@@ -306,7 +406,9 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                     lastName: this.influencerUser.lastName,
                     email: this.influencerUser.email,
                     city: this.influencerUser.city,
-                    instagramAccountType: this.accountTypeMap.get(this.influencerUser.instagramAccountType),
+                    instagramAccountType: this.accountTypeMap.get(
+                        this.influencerUser.instagramAccountType
+                    ),
                     noteFromAdmin: this.influencerUser.noteFromAdmin,
                 });
 
@@ -340,7 +442,9 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                     lastName: this.influencerUser.lastName,
                     email: this.influencerUser.email,
                     city: this.influencerUser.city,
-                    instagramAccountType: this.accountTypeMap.get(this.influencerUser.instagramAccountType),
+                    instagramAccountType: this.accountTypeMap.get(
+                        this.influencerUser.instagramAccountType
+                    ),
                     noteFromAdmin: this.influencerUser.noteFromAdmin,
                 });
 
@@ -348,15 +452,15 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             },
             error: (error: HttpResponse<Influencer>) => {
                 console.error(error);
-                if(error.status == 404) this.eror404 = true;
+                if (error.status == 404) this.eror404 = true;
                 this.setStatusOfUser('IN_ACTIVE');
                 this.switchStatusInfo = true;
                 this.confirmedRejestration = false;
                 this.isInputVisible = true;
                 this.editInfluencerFormGroup.patchValue({
-                    email: this.authService.getUserFromToken().email
+                    email: this.authService.getUserFromToken().email,
                 });
-            }
+            },
         });
     }
 
@@ -396,11 +500,21 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
     getAccountTypeByTranslation(accountTypeTranslation: string): string {
         let accountTypeKeys = [...this.accountTypeMap.entries()]
-        .filter(({ 1: v }) => v === accountTypeTranslation)
-        .map(([k]) => k);
+            .filter(({ 1: v }) => v === accountTypeTranslation)
+            .map(([k]) => k);
 
         return accountTypeKeys[0];
     }
+
+    // openDialog(): void {
+    //     this.dialog.open(DialogExampleComponent);
+    // }
+
+    // toggleDrawer(): void {
+    //     console.log(this.drawerService);
+
+    //     this.drawerService.openDrawer();
+    // }
 
     fillEditForm(): void {
         if (this.expandedInfluencer != null) {
