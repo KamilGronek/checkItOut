@@ -1,10 +1,8 @@
-import { MatDialogRef } from '@angular/material/dialog';
 import { NgClass } from '@angular/common';
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { Router } from '@angular/router';
 import { FuseDrawerComponent } from '@fuse/components/drawer';
 import {
     FuseConfig,
@@ -15,25 +13,19 @@ import {
 } from '@fuse/services/config';
 
 import { Subject, takeUntil } from 'rxjs';
-import { Input } from '@angular/core';
 
-import { DrawerService } from 'app/services/influencer/drawer.service';
-import { ApexOptions, NgApexchartsModule } from 'ng-apexcharts';
-import { AnalyticsService } from 'app/modules/admin/profile/analytics.service';
-import {
-    ProgressSpinnerMode,
-    MatProgressSpinnerModule,
-} from '@angular/material/progress-spinner';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSliderModule } from '@angular/material/slider';
 import { FormsModule } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { BrowserModule } from '@angular/platform-browser';
+
 import { interval } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { takeWhile } from 'rxjs/operators';
+import { Input, ElementRef, ViewChild } from '@angular/core';
+import { InfluencerService } from 'app/services/influencer/influencer.service';
 
 @Component({
     selector: 'settings',
@@ -71,33 +63,21 @@ import { takeWhile } from 'rxjs/operators';
     ],
     styleUrl: 'settingsComponent.css',
 })
-export class DialogExampleComponent implements OnInit, OnDestroy {
+export class SettingsComponent implements OnInit, OnDestroy {
+    @ViewChild('settingsButton') settingsButton!: ElementRef<HTMLDivElement>; // Odniesienie do przycisku
+
     // config: FuseConfig;
     layout: string;
-    // scheme: 'dark' | 'light';
-    // theme: string;
-    // themes: Themes;
+    scheme: 'dark' | 'light';
+    theme: string;
+    themes: Themes;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     @Input() config: FuseConfig;
-
-    // settingsDrawer!: FuseDrawerComponent;
-
-    // isOpen = false;
     data: any;
-
-    // chartNewVsReturning: ApexOptions;
-
-    // mode: ProgressSpinnerMode = 'determinate';
-
-    maxValue = 3200;
-    currentValue = 0;
-    spinnerValue = 0;
 
     value = 20;
     progress = 0;
 
-    progressMoney = 0;
-    valueMoney = 0;
     isHighlight = false;
     isHighlight2 = false;
     isHighlight3 = false;
@@ -111,20 +91,12 @@ export class DialogExampleComponent implements OnInit, OnDestroy {
     progress3 = 0;
     value3 = 0;
 
-    // toggleDrawer(): void {
-    //     if (this.settingsDrawer) {
-    //         this.settingsDrawer.toggle();
-    //     }
-    // }
     /**
      * Constructor
      */
     constructor(
-        private _router: Router,
         private _fuseConfigService: FuseConfigService,
-        // public dialogRef: MatDialogRef<DialogExampleComponent>,
-        private drawerService: DrawerService,
-        private _analyticsService: AnalyticsService
+        private _influencerService: InfluencerService
     ) {}
 
     // -----------------------------------------------------------------------------------------------------
@@ -134,12 +106,25 @@ export class DialogExampleComponent implements OnInit, OnDestroy {
     /**
      * On init
      */
+    dontShowPopUpAgain: boolean = true;
 
     ngOnInit(): void {
         this.updateSpinner1();
         this.updateSpinner2();
         this.updateSpinner3();
 
+        this.dontShowPopUpAgain =
+            this._influencerService.getdontshowPopUpAgain();
+
+        this._influencerService.isdontshowPopUpAgain$.subscribe((dontShow) => {
+            this.dontShowPopUpAgain = dontShow;
+        });
+
+        if (this.dontShowPopUpAgain) {
+            setTimeout(() => {
+                this.settingsButton.nativeElement.click();
+            }, 0);
+        }
         // Subscribe to config changes
         this._fuseConfigService.config$
             .pipe(takeUntil(this._unsubscribeAll))
@@ -147,11 +132,6 @@ export class DialogExampleComponent implements OnInit, OnDestroy {
                 // Store the config
                 this.config = config;
             });
-
-        // this.drawerService.drawerState$.subscribe((state) => {
-        //     this.isOpen = state;
-        //     console.log(this.isOpen);
-        // });
     }
 
     updateSpinner1(): void {
@@ -168,7 +148,6 @@ export class DialogExampleComponent implements OnInit, OnDestroy {
                 complete: () => {
                     this.progress1 = 3200;
                     this.value1 = 3200;
-
                     this.isHighlight = true;
                     setTimeout(() => {
                         this.isHighlight = false;
@@ -187,8 +166,6 @@ export class DialogExampleComponent implements OnInit, OnDestroy {
                 },
                 complete: () => {
                     this.progress2 = 4;
-                    // this.value2 = 80;
-
                     this.isHighlight2 = true;
                     setTimeout(() => {
                         this.isHighlight2 = false;
@@ -215,6 +192,10 @@ export class DialogExampleComponent implements OnInit, OnDestroy {
                     }, 300);
                 },
             });
+    }
+
+    resetPopUp() {
+        this._influencerService.setdontshowPopUpAgain(false);
     }
 
     /**
@@ -266,9 +247,5 @@ export class DialogExampleComponent implements OnInit, OnDestroy {
      */
     setTheme(theme: Theme): void {
         this._fuseConfigService.config = { theme };
-    }
-
-    close(): void {
-        // this.dialogRef.close();
     }
 }

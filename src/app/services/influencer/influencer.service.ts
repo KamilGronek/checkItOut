@@ -1,13 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-
 import { Observable, of } from 'rxjs';
-
 import { Influencer } from './Influencer';
 import { InfluencerResponse } from './Influencer';
 import { City } from './Influencer';
-// import { TypeAccount } from './Influencer';
-// import { MessageToInfluenser } from './Influencer';
 import { AuthService } from 'app/core/auth/auth.service';
 import { BehaviorSubject } from 'rxjs';
 
@@ -15,6 +11,8 @@ import { BehaviorSubject } from 'rxjs';
     providedIn: 'root',
 })
 export class InfluencerService {
+    influencerUser: Influencer;
+
     dataJson = [
         {
             id: 1,
@@ -87,10 +85,30 @@ export class InfluencerService {
 
     private isDisabled = new BehaviorSubject<boolean>(false);
 
+    private isPopUpVisible = new BehaviorSubject<boolean>(false);
+
+    private dontshowPopUpAgain = new BehaviorSubject<boolean>(true);
+
     isDisabled$ = this.isDisabled.asObservable();
+    isPopUpVisible$ = this.isPopUpVisible.asObservable();
+    isdontshowPopUpAgain$ = this.dontshowPopUpAgain.asObservable();
 
     setDisabledState(state: boolean) {
         this.isDisabled.next(state);
+    }
+
+    setPopUpState(status: boolean): void {
+        this.isPopUpVisible.next(status);
+    }
+
+    setdontshowPopUpAgain(status: boolean): void {
+        this.dontshowPopUpAgain.next(status);
+        localStorage.setItem('dontShowPopUpAgain', String(status));
+    }
+
+    getdontshowPopUpAgain(): boolean {
+        const storedValue = localStorage.getItem('dontShowPopUpAgain');
+        return storedValue === 'false' ? false : true;
     }
 
     httpOptions = {
@@ -156,20 +174,15 @@ export class InfluencerService {
     }
 
     createAccountUserData(influencer: any) {
-        return this.http.post<any>(
-            this.apiUrl,
-            influencer,
-            this.httpOptions
-        );
+        return this.http.post<any>(this.apiUrl, influencer, this.httpOptions);
     }
 
-    updateInfluencer(influencer: Influencer, influencerId: number): Observable<Influencer> {
+    updateInfluencer(
+        influencer: Influencer,
+        influencerId: number
+    ): Observable<Influencer> {
         var url = this.apiUrl + '/' + influencerId;
-        return this.http.patch<Influencer>(
-            url,
-            influencer,
-            this.httpOptions
-        )
+        return this.http.patch<Influencer>(url, influencer, this.httpOptions);
     }
 
     updateNoteFromAdmin(influencer: Influencer, id: number) {

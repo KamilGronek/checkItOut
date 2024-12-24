@@ -1,5 +1,6 @@
 <div
-    class="settings-cog fixed right-0 z-90 flex h-10 w-10 cursor-pointer items-center justify-center rounded-l-lg bg-red-600 bg-opacity-90 shadow-lg print:hidden"
+    class="dlaczegoWarto settings-cog absolute right-0 z-90 flex  cursor-pointer items-center justify-center  bg-opacity-90  print:hidden"
+    #settingsButton
     [class.lg:right-0]="
         config.layout === 'centered' || config.layout === 'material'
     "
@@ -9,23 +10,23 @@
     style="top: 275px"
     (click)="settingsDrawer.toggle()"
 >
-    Extraaa!
+    Dlaczego warto?
 </div>
 
-<fuse-drawer
-    class="z-999 w-screen min-w-screen sm:w-200 sm:min-w-200"
+<fuse-drawer 
+    class="z-999 w-screen min-w-screen sm:w-200 sm:min-w-200 overflow-auto"
     fixed
     [mode]="'over'"
     [name]="'settingsDrawer'"
     [position]="'right'"
     #settingsDrawer
 >
-    <div class="bg-card flex w-full flex-col">
+    <div class="bg-card flex w-full flex-col overflow-auto">
         <div
             class="flex h-20 min-h-20 flex-row items-center bg-primary px-6 text-white"
         >
             <div class="ml-3 text-2xl font-semibold tracking-tight">
-                Rejestracja - 3 powody dla których warto !
+                Dołącz do nas ! - 3 powody dla których warto !
             </div>
             <button
                 class="ml-auto"
@@ -137,10 +138,17 @@
                 </div>
             </div>
 
-            <div class="flex justify-center mt-10">
-                <button mat-flat-button class="w-1/4 buttonSubmit"  [color]="'primary'">Rejestruj</button>
-            </div>
+      
+            <div class="flex flex-col items-center mt-5">
+              <button mat-flat-button class="w-1/4 buttonSubmit"  [color]="'primary'"
+              (click)="settingsDrawer.close()"
+              >Dołączam</button>
+              <button mat-flat-button class="w-1/4 buttonSubmit"
+              (click)="settingsDrawer.close(); resetPopUp()"
 
+                  style="font-size: 10px;"
+                >Nie pokazuj więcej</button>
+            </div>
         </div>
     </div>
 </fuse-drawer>

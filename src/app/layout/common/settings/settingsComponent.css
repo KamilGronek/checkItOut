@@ -82,6 +82,16 @@
     font-size: 60px;
   }
 
+  .dlaczegoWarto{
+    color: rgba(119, 0, 254, 0.8);
+    transition: all 0.3s ease-in-out; 
+  }
+
+  .dlaczegoWarto:hover {
+    text-shadow: 0 0 10px rgba(119, 0, 254, 0.8); /* Efekt świecenia */
+    transform: scale(1.1); /* Powiększenie elementu */
+    color: rgba(119, 0, 254, 1); /* Opcjonalnie bardziej intensywny kolor */
+  }
 
 /* .pln{
     font-size: 10px;

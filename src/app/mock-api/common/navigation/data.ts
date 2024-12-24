@@ -77,13 +77,6 @@ export const unauthorizedUserNavigation: FuseNavigationItem[] = [
         icon: 'heroicons_outline:arrows-right-left',
         link: '/collaborations',
     },
-    {
-        id: 'popUp',
-        title: 'Pop Up',
-        type: 'basic',
-        icon: 'heroicons_outline:arrows-right-left',
-        link: '/popUp',
-    },
 ];
 
 export const influenserNavigation: FuseNavigationItem[] = [
