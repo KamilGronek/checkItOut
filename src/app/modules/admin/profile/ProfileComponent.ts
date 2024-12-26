@@ -224,6 +224,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                     this._influencerService.setPopUpState(false);
                 }
             });
+
         this.editInfluencerFormGroup = this._formBuilder.group({
             instagramId: ['', [Validators.required]],
             firstName: ['', [Validators.required]],
@@ -369,6 +370,8 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private async loadInfluencer(): Promise<void> {
+        // console.log(this.influencerUser.status);
+
         this._influencerService.getInfluencerUser().subscribe({
             next: (influencer: Influencer) => {
                 this.influencerUser = influencer;

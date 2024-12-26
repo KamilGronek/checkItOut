@@ -26,6 +26,7 @@ import { take } from 'rxjs/operators';
 import { takeWhile } from 'rxjs/operators';
 import { Input, ElementRef, ViewChild } from '@angular/core';
 import { InfluencerService } from 'app/services/influencer/influencer.service';
+import { Influencer } from 'app/services/influencer/Influencer';
 
 @Component({
     selector: 'settings',
@@ -91,6 +92,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
     progress3 = 0;
     value3 = 0;
 
+    influencerUser: Influencer;
     /**
      * Constructor
      */
@@ -120,19 +122,55 @@ export class SettingsComponent implements OnInit, OnDestroy {
             this.dontShowPopUpAgain = dontShow;
         });
 
+        this._influencerService.getInfluencerUser().subscribe({
+            next: (userData) => {
+                if (!userData || !userData.status) {
+                    this.openPopup();
+                    return;
+                }
+                const status = userData.status;
+
+                if (
+                    status === 'ACTIVE' ||
+                    status === 'IN_VALIDATION' ||
+                    status === 'INACTIVE'
+                ) {
+                    return;
+                }
+
+                if (this.dontShowPopUpAgain) {
+                    this.openPopup();
+                }
+            },
+            error: (error) => {
+                console.error(
+                    'Błąd podczas pobierania danych użytkownika:',
+                    error
+                );
+                this.openPopup();
+            },
+        });
+
+        this._fuseConfigService.config$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((config: FuseConfig) => {
+                this.config = config;
+            });
+    }
+
+    private openPopup(): void {
         if (this.dontShowPopUpAgain) {
             setTimeout(() => {
                 this.settingsButton.nativeElement.click();
             }, 0);
         }
-        // Subscribe to config changes
-        this._fuseConfigService.config$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((config: FuseConfig) => {
-                // Store the config
-                this.config = config;
-            });
     }
+
+    // if (this.dontShowPopUpAgain) {
+    //         setTimeout(() => {
+    //             this.settingsButton.nativeElement.click();
+    //         }, 0);
+    //     }
 
     updateSpinner1(): void {
         interval(25)
@@ -216,20 +254,6 @@ export class SettingsComponent implements OnInit, OnDestroy {
      *
      * @param layout
      */
-    // setLayout(layout: string): void {
-    //     // Clear the 'layout' query param to allow layout changes
-    //     this._router
-    //         .navigate([], {
-    //             queryParams: {
-    //                 layout: null,
-    //             },
-    //             queryParamsHandling: 'merge',
-    //         })
-    //         .then(() => {
-    //             // Set the config
-    //             this._fuseConfigService.config = { layout };
-    //         });
-    // }
 
     /**
      * Set the scheme on the config
