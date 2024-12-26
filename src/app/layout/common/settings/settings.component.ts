@@ -234,6 +234,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
     resetPopUp() {
         this._influencerService.setdontshowPopUpAgain(false);
+        this._influencerService.setPopUpState(false);
     }
 
     /**

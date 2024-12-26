@@ -183,19 +183,19 @@ export class AuthSignInComponent implements OnInit {
         this._authService
             .signInWithGoogle()
             .then(() => {
-                // this._influencerService
-                //     .getInfluencerUser()
-                //     .subscribe((userData) => {
-                //         const status = userData.status;
-                //         localStorage.setItem('userStatus', status);
+                this._influencerService
+                    .getInfluencerUser()
+                    .subscribe((userData) => {
+                        const status = userData.status;
+                        localStorage.setItem('userStatus', status);
 
-                //         if (status === 'ACTIVE') {
-                //             console.log('status:', status);
-                //             this._router.navigateByUrl('collaborations');
-                //         } else {
-                //             this._router.navigateByUrl('home');
-                //         }
-                //     });
+                        if (status === 'ACTIVE') {
+                            console.log('status:', status);
+                            this._router.navigateByUrl('collaborations');
+                        } else {
+                            this._router.navigateByUrl('home');
+                        }
+                    });
                 this._router.navigateByUrl('home');
             })
             .catch((error) => {

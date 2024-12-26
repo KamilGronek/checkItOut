@@ -97,18 +97,22 @@ export class InfluencerService {
         this.isDisabled.next(state);
     }
 
-    setPopUpState(status: boolean): void {
-        this.isPopUpVisible.next(status);
+    getPopUpState() {
+        return this.isPopUpVisible$;
     }
 
-    setdontshowPopUpAgain(status: boolean): void {
-        this.dontshowPopUpAgain.next(status);
-        localStorage.setItem('dontShowPopUpAgain', String(status));
+    setPopUpState(status: boolean): void {
+        this.isPopUpVisible.next(status);
     }
 
     getdontshowPopUpAgain(): boolean {
         const storedValue = localStorage.getItem('dontShowPopUpAgain');
         return storedValue === 'false' ? false : true;
+    }
+
+    setdontshowPopUpAgain(status: boolean): void {
+        this.dontshowPopUpAgain.next(status);
+        localStorage.setItem('dontShowPopUpAgain', String(status));
     }
 
     httpOptions = {

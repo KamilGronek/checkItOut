@@ -184,6 +184,8 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
     fruits = ['Banana', 'Orange', 'Apple', 'Mango'];
 
+    dontShowPopUpAgain: boolean = true;
+
     constructor(
         private _influencerService: InfluencerService,
         private _formBuilder: UntypedFormBuilder,

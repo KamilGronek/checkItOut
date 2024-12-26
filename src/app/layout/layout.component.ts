@@ -71,7 +71,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
         private _fuseConfigService: FuseConfigService,
         private _fuseMediaWatcherService: FuseMediaWatcherService,
         private _fusePlatformService: FusePlatformService,
-        private buttonStateService: InfluencerService
+        private _influencerService: InfluencerService
     ) {}
 
     // -----------------------------------------------------------------------------------------------------
@@ -82,7 +82,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
      * On init
      */
     ngOnInit(): void {
-        this.buttonStateService.isPopUpVisible$.subscribe((isVisible) => {
+        this._influencerService.isPopUpVisible$.subscribe((isVisible) => {
             this.shouldDisplay = isVisible;
         });
 
