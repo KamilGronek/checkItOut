@@ -11,7 +11,7 @@ import { BehaviorSubject } from 'rxjs';
     providedIn: 'root',
 })
 export class InfluencerService {
-    influencerUser: Influencer;
+    // influencerUser: Influencer;
 
     dataJson = [
         {

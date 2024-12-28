@@ -104,13 +104,20 @@ export const influenserNavigation: FuseNavigationItem[] = [
 ];
 
 export const adminNavigation: FuseNavigationItem[] = [
-    {
-        id: 'influencers',
-        title: 'Influenserzy',
-        type: 'basic',
-        icon: 'heroicons_outline:user',
-        link: '/influencers',
-    },
+    // {
+    //     id: 'influencers',
+    //     title: 'Influenserzy',
+    //     type: 'basic',
+    //     icon: 'heroicons_outline:user',
+    //     link: '/influencers',
+    // },
+    // {
+    //     id: 'ecommerce',
+    //     title: 'Ecommerce',
+    //     type: 'basic',
+    //     icon: 'heroicons_outline:building-storefront',
+    //     link: '/ecommerce',
+    // },
     {
         id: 'companies',
         title: 'Firmy',
