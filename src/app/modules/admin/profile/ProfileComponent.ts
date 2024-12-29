@@ -167,24 +167,10 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
     chartNewVsReturning: ApexOptions;
 
-    statusMap: Map<string, string> = new Map([
-        ['IN_VALIDATION', 'W walidacji'],
-        ['ACTIVE', 'Aktywne'],
-        ['INACTIVE', 'Nieaktywne'],
-    ]);
-
-    accountTypeMap: Map<string, string> = new Map([
-        ['PUBLIC', 'Publiczne'],
-        ['NONPUBLIC', 'Niepubliczne'],
-        ['NA', 'NA'],
-    ]);
-
-    typeStatus: string[] = ['W walidacji', 'Aktywne', 'Nieaktywne'];
+    typeStatus: string[] = ['Walidowany', 'Aktywny', 'Nieaktywny'];
     typeAccountOptions: string[] = ['Publiczne', 'Niepubliczne', 'NA'];
 
-    fruits = ['Banana', 'Orange', 'Apple', 'Mango'];
-
-    dontShowPopUpAgain: boolean = true;
+    // private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     constructor(
         private _influencerService: InfluencerService,
@@ -289,9 +275,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
     updateInfluencer() {
         let influencer: Influencer = this.editInfluencerFormGroup.getRawValue();
-        influencer.instagramAccountType = this.getAccountTypeByTranslation(
-            influencer.instagramAccountType
-        );
+        influencer.instagramAccountType = influencer.instagramAccountType;
 
         this._influencerService
             .updateInfluencer(influencer, this.influencerUser.id)
@@ -310,13 +294,12 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                         lastName: this.influencerUser.lastName,
                         email: this.influencerUser.email,
                         city: this.influencerUser.city,
-                        instagramAccountType: this.accountTypeMap.get(
-                            this.influencerUser.instagramAccountType
-                        ),
+                        instagramAccountType:
+                            this.influencerUser.instagramAccountType,
                         noteFromAdmin: this.influencerUser.noteFromAdmin,
                     });
 
-                    this.setStatusOfUser(this.influencerUser.status);
+                    this.setStatusOfUser(this.influencerUser.accountStatus);
                 },
                 error: (error) => {
                     console.error(
@@ -332,9 +315,8 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
     createNewInfluencer() {
         let influencer: Influencer = this.editInfluencerFormGroup.getRawValue();
-        influencer.instagramAccountType = this.getAccountTypeByTranslation(
-            influencer.instagramAccountType
-        );
+        influencer.accountStatus = 'Nieaktywny';
+        influencer.instagramAccountType = influencer.instagramAccountType;
 
         this._influencerService.createAccountUserData(influencer).subscribe({
             next: (influencer) => {
@@ -351,13 +333,13 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                     lastName: this.influencerUser.lastName,
                     email: this.influencerUser.email,
                     city: this.influencerUser.city,
-                    instagramAccountType: this.accountTypeMap.get(
-                        this.influencerUser.instagramAccountType
-                    ),
+                    instagramAccountType:
+                        this.influencerUser.instagramAccountType,
                     noteFromAdmin: this.influencerUser.noteFromAdmin,
+                    accountStatus: 'Aktywny',
                 });
 
-                this.setStatusOfUser(this.influencerUser.status);
+                this.setStatusOfUser(this.influencerUser.accountStatus);
             },
             error: (error) => {
                 console.error(
@@ -389,13 +371,12 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                     lastName: this.influencerUser.lastName,
                     email: this.influencerUser.email,
                     city: this.influencerUser.city,
-                    instagramAccountType: this.accountTypeMap.get(
-                        this.influencerUser.instagramAccountType
-                    ),
+                    instagramAccountType:
+                        this.influencerUser.instagramAccountType,
                     noteFromAdmin: this.influencerUser.noteFromAdmin,
                 });
 
-                this.setStatusOfUser(this.influencerUser.status);
+                this.setStatusOfUser(this.influencerUser.accountStatus);
             },
             error: (error: HttpResponse<Influencer>) => {
                 console.error(error);
@@ -412,20 +393,20 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private setStatusOfUser(rawStatusUser: string) {
-        console.log('rawStatusUser:', rawStatusUser);
+        console.log(rawStatusUser);
         switch (rawStatusUser) {
-            case 'ACTIVE':
-                this.statusUser = 'Aktywne';
+            case 'Aktywny':
+                this.statusUser = 'Aktywny';
                 this.isDisabled = false;
                 break;
-            case 'IN_ACTIVE':
-                this.statusUser = 'Nieaktywne';
+            case 'Nieaktywny':
+                this.statusUser = 'Nieaktywny';
                 break;
-            case 'IN_VALIDATION':
-                this.statusUser = 'W walidacji';
+            case 'Walidowany':
+                this.statusUser = 'Walidowany';
                 break;
             default:
-                this.statusUser = 'Nieaktywne';
+                this.statusUser = 'Nieaktywny';
         }
     }
 
@@ -442,14 +423,6 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             this.cols = 2;
             this.rowHeight = '2:1';
         }
-    }
-
-    getAccountTypeByTranslation(accountTypeTranslation: string): string {
-        let accountTypeKeys = [...this.accountTypeMap.entries()]
-            .filter(({ 1: v }) => v === accountTypeTranslation)
-            .map(([k]) => k);
-
-        return accountTypeKeys[0];
     }
 
     fillEditForm(): void {

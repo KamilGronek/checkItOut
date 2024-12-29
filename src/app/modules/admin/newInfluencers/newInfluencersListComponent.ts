@@ -4,6 +4,7 @@ import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
+    ElementRef,
     OnDestroy,
     OnInit,
     ViewChild,
@@ -18,7 +19,7 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Influencer } from 'app/services/influencer/Influencer';
 import { InfluencerResponse } from 'app/services/influencer/Influencer';
-
+import { MatSelect } from '@angular/material/select';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { Subject } from 'rxjs';
 
@@ -92,6 +93,10 @@ export class newInfluencersListComponent
     @ViewChild(MatPaginator) paginator!: MatPaginator;
     @ViewChild('influencersTable', { read: MatSort })
     influencersTableMatSort: MatSort;
+    @ViewChild('textItem')
+    textInput: ElementRef;
+    @ViewChild('selectItem')
+    selectInput: any;
     data: any;
 
     influencersTableColumns: string[] = [
@@ -104,7 +109,7 @@ export class newInfluencersListComponent
         'instagramId',
         'followersAmount',
         'instagramAccountType',
-        'status',
+        'accountStatus',
     ];
     columnsToDisplayWithExpand: string[] = [
         ...this.influencersTableColumns,
@@ -128,7 +133,6 @@ export class newInfluencersListComponent
     selectedProduct: Influencer | null = null;
     isLoading: boolean = false;
     updatedNoteInfo: boolean = false;
-    followersAmountInfo: boolean = false;
     instagramAccountTypeInfo: boolean = false;
     confrimEditionInfo: boolean = false;
     ascDescInfo: boolean = false;
@@ -175,6 +179,10 @@ export class newInfluencersListComponent
     lastName: string = '';
 
     searchValue: string = '';
+    searchOptions: string[];
+
+    isTextInput: boolean = true;
+    isSelectInput: boolean = false;
 
     statusTextTableHtml = false;
     statusTextTable: string = '';
@@ -190,19 +198,7 @@ export class newInfluencersListComponent
     filteredStatus: string[] = [];
     influencerStatuses: any;
 
-    statusMap: Map<string, string> = new Map([
-        ['IN_VALIDATION', 'W walidacji'],
-        ['ACTIVE', 'Aktywne'],
-        ['INACTIVE', 'Nieaktywne'],
-    ]);
-
-    accountTypeMap: Map<string, string> = new Map([
-        ['PUBLIC', 'Publiczne'],
-        ['NONPUBLIC', 'Niepubliczne'],
-        ['NA', 'NA'],
-    ]);
-
-    typeStatus: string[] = ['W walidacji', 'Aktywne', 'Nieaktywne'];
+    typeStatus: string[] = ['Walidowany', 'Aktywny', 'Nieaktywny'];
     typeAccountOptions: string[] = ['Publiczne', 'Niepubliczne', 'NA'];
 
     constructor(
@@ -222,7 +218,7 @@ export class newInfluencersListComponent
             instagramId: ['', [Validators.required]],
             followersAmount: ['', [Validators.required]],
             instagramAccountType: ['', [Validators.required]],
-            status: ['', [Validators.required]],
+            accountStatus: ['', [Validators.required]],
             noteFromAdmin: [],
         });
     }
@@ -263,16 +259,44 @@ export class newInfluencersListComponent
         }
     }
 
-    onSearchInputChange(searchInputValue: string): void {
+    onSearchInputChange(searchInputValue: string) {
         this.searchValue = searchInputValue;
+
         this.setSearchFiltersToEmptyStrings();
-        this.setValueOfSelectedFilter(searchInputValue);
+        this.setValueOfSelectedFilter(this.searchValue);
         this.loadInfluencers(0);
     }
 
-    onSearchSelectChange(event?: any): void {
+    onSearchSelectChange(event: any): void {
         this.selectedFilter = event.value;
-        this.onSearchInputChange(this.searchValue);
+
+        if (['Imię', 'Nazwisko'].includes(this.selectedFilter)) {
+            this.isTextInput = true;
+            this.isSelectInput = false;
+            setTimeout(() => {
+                this.textInput.nativeElement.focus();
+            }, 0);
+        }
+
+        if (this.selectedFilter === 'Status') {
+            this.isTextInput = false;
+            this.isSelectInput = true;
+            this.searchOptions = this.typeStatus;
+            setTimeout(() => {
+                this.selectInput.focus();
+            }, 0);
+        }
+
+        if (this.selectedFilter === 'Rodzaj Konta') {
+            this.isTextInput = false;
+            this.isSelectInput = true;
+            this.searchOptions = this.typeAccountOptions;
+            setTimeout(() => {
+                this.selectInput.focus();
+            }, 0);
+        }
+
+        this.onSearchInputChange('');
     }
 
     private async loadInfluencers(pageIndex: number): Promise<void> {
@@ -294,13 +318,6 @@ export class newInfluencersListComponent
                     this.paginator.length = response.page.totalElements;
                     this.paginator.pageIndex = response.page.number;
                     this.paginator.pageSize = response.page.size;
-
-                    response.content.map((influ) => {
-                        influ.status = this.statusMap.get(influ.status);
-                        influ.instagramAccountType = this.accountTypeMap.get(
-                            influ.instagramAccountType
-                        );
-                    });
 
                     this.dataSource.data = response.content;
                 },
@@ -368,18 +385,16 @@ export class newInfluencersListComponent
             this.editInfluencerFormGroup.get('followersAmount').value;
         const updatedNote =
             this.editInfluencerFormGroup.get('noteFromAdmin').value;
-        const updatedStatus = this.getStatusByTranslation(
-            this.editInfluencerFormGroup.get('status').value
-        );
-        const updatedAccountType = this.getAccountTypeByTranslation(
-            this.editInfluencerFormGroup.get('instagramAccountType').value
-        );
+        const updatedStatus =
+            this.editInfluencerFormGroup.get('accountStatus').value;
+        const updatedAccountType = this.editInfluencerFormGroup.get(
+            'instagramAccountType'
+        ).value;
         const influencerToUpdate = this.influencerList.find(
             (influencer) => influencer.id === influencerId
         );
 
         this.confrimEditionInfo = true;
-        this.followersAmountInfo = false;
 
         const influencerUpdate = {
             ...influencerToUpdate,
@@ -390,26 +405,17 @@ export class newInfluencersListComponent
             city: city,
             followersAmount: followersAmount,
             noteFromAdmin: updatedNote,
-            status: updatedStatus,
+            accountStatus: updatedStatus,
             instagramAccountType: updatedAccountType,
         };
-
-        if (followersAmount == null || followersAmount < 1) {
-            this.followersAmountInfo = true;
-            this.confrimEditionInfo = false;
-        }
 
         this._influencerService
             .updateNoteFromAdmin(influencerUpdate, influencerId)
             .subscribe((updatedInfluencer) => {
-                updatedInfluencer.status = this.statusMap.get(
-                    updatedInfluencer.status
-                );
+                updatedInfluencer.accountStatus =
+                    updatedInfluencer.accountStatus;
                 updatedInfluencer.instagramAccountType =
-                    this.accountTypeMap.get(
-                        updatedInfluencer.instagramAccountType
-                    );
-
+                    updatedInfluencer.instagramAccountType;
                 const idToUpdate: number = this.dataSource.data.findIndex(
                     (influ) => influ.id === updatedInfluencer.id
                 );
@@ -423,22 +429,6 @@ export class newInfluencersListComponent
 
         const shouldDisable = true;
         this.buttonStateService.setDisabledState(shouldDisable);
-    }
-
-    getStatusByTranslation(statusTranslation: string): string {
-        let statusKeys = [...this.statusMap.entries()]
-            .filter(({ 1: v }) => v === statusTranslation)
-            .map(([k]) => k);
-
-        return statusKeys[0];
-    }
-
-    getAccountTypeByTranslation(accountTypeTranslation: string): string {
-        let accountTypeKeys = [...this.accountTypeMap.entries()]
-            .filter(({ 1: v }) => v === accountTypeTranslation)
-            .map(([k]) => k);
-
-        return accountTypeKeys[0];
     }
 
     onTypeAccountChange(event: MatSelectChange): void {
@@ -485,8 +475,8 @@ export class newInfluencersListComponent
             this.editInfluencerFormGroup.controls[
                 'instagramAccountType'
             ].setValue(this.expandedInfluencer.instagramAccountType);
-            this.editInfluencerFormGroup.controls['status'].setValue(
-                this.expandedInfluencer.status
+            this.editInfluencerFormGroup.controls['accountStatus'].setValue(
+                this.expandedInfluencer.accountStatus
             );
             this.editInfluencerFormGroup.controls['noteFromAdmin'].setValue(
                 this.expandedInfluencer.noteFromAdmin

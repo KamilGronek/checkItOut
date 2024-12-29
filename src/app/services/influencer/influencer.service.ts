@@ -212,7 +212,7 @@ export class InfluencerService {
     ): Observable<InfluencerResponse> {
         const url =
             `${this.apiUrl}/paged?page=${pageIndex}&size=${pageSize}&sort=${sortBy},${direction}&firstName=${firstName}&lastName=${lastName}` +
-            (statusInflu ? `&status=${statusInflu}` : '') +
+            (statusInflu ? `&accountStatus=${statusInflu}` : '') +
             (instagramAccountType
                 ? `&instagramAccountType=${instagramAccountType}`
                 : '');

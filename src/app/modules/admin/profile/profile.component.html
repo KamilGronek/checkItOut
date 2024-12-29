@@ -21,13 +21,27 @@
                     'border-radius': '40px',
                     'font-weight': 'bold',
 
-                    'background-color': statusUser === 'Aktywne' ? '#bbf7d0' : 
-                    statusUser === 'Nieaktywne' ? '#FECACA' : 
-                    statusUser === 'W walidacji' ? '#fef3c7' : '#000000',
+                    'background-color':
+                        statusUser === 'Aktywny'
+                            ? '#bbf7d0'
+                            : statusUser ===
+                            'Nieaktywny'
+                            ? '#FECACA'
+                            : statusUser ===
+                            'Walidowany'
+                            ? '#f7f5bb'
+                            : '#000000',
 
-                    'color': statusUser === 'Aktywne' ? '#166534' : 
-                    statusUser === 'Nieaktywne' ? '#991b1b' : 
-                    statusUser === 'W walidacji' ? '#92400e' : '#000000',
+                    color:
+                        statusUser === 'Aktywny'
+                            ? '#166534'
+                            : statusUser ===
+                            'Nieaktywny'
+                            ? '#991b1b'
+                            : statusUser ===
+                            'Walidowany'
+                            ? '#92400e'
+                            : '#000000'
                 }">
                     {{statusUser}}
                 </span>

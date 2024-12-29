@@ -124,16 +124,16 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
         this._influencerService.getInfluencerUser().subscribe({
             next: (userData) => {
-                if (!userData || !userData.status) {
+                if (!userData || !userData.accountStatus) {
                     this.openPopup();
                     return;
                 }
-                const status = userData.status;
+                const status = userData.accountStatus;
 
                 if (
-                    status === 'ACTIVE' ||
-                    status === 'IN_VALIDATION' ||
-                    status === 'INACTIVE'
+                    status === 'Aktywny' ||
+                    status === 'Walidowany' ||
+                    status === 'Nieaktywny'
                 ) {
                     return;
                 }

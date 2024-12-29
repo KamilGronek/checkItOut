@@ -119,7 +119,7 @@ export class AuthSignInComponent implements OnInit {
                 this._influencerService
                     .getInfluencerUser()
                     .subscribe((userData) => {
-                        const status = userData.status;
+                        const status = userData.accountStatus;
                         localStorage.setItem('userStatus', status);
                         if (status === 'ACTIVE') {
                             console.log('status:', status);
@@ -186,7 +186,7 @@ export class AuthSignInComponent implements OnInit {
                 this._influencerService
                     .getInfluencerUser()
                     .subscribe((userData) => {
-                        const status = userData.status;
+                        const status = userData.accountStatus;
                         localStorage.setItem('userStatus', status);
 
                         if (status === 'ACTIVE') {
