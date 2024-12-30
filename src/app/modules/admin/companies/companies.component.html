@@ -57,11 +57,11 @@
                         </ng-container>
                         <ng-container matColumnDef="lastUpdateTime">
                             <th mat-header-cell mat-sort-header *matHeaderCellDef>
-                                Data
+                                Name
                             </th>
                             <td mat-cell *matCellDef="let influencer">
                                 <span class="pr-6 whitespace-nowrap">
-                                    {{influencer.lastUpdateTime | date:'yyyy-MM-dd HH:mm'}}
+                                    {{influencer.name}}
                                 </span>
                             </td>
                         </ng-container>
@@ -111,7 +111,7 @@
                             </th>
                             <td mat-cell *matCellDef="let influencer">
                                 <span class="leading-relaxed whitespace-nowrap">
-                                    {{influencer.instagramId}}
+                                    {{influencer.address}}
                                 </span>
                             </td>
                         </ng-container>
@@ -127,7 +127,7 @@
                                 </span>
                             </td>
                         </ng-container>
-                        <ng-container matColumnDef="instagramAccountType">
+                        <!-- <ng-container matColumnDef="instagramAccountType">
                             <th mat-header-cell mat-sort-header *matHeaderCellDef>
                                Rodzaj konta
                             </th>
@@ -155,8 +155,8 @@
                                         {{influencer.instagramAccountType}}
                                 </span>
                             </td>
-                        </ng-container>
-                        <ng-container matColumnDef="accountStatus">
+                        </ng-container> -->
+                        <!-- <ng-container matColumnDef="accountStatus">
                             <th mat-header-cell mat-sort-header *matHeaderCellDef>
                                 Status
                             </th>
@@ -176,7 +176,7 @@
                                     {{influencer.accountStatus}}
                                 </span>
                             </td>
-                        </ng-container>
+                        </ng-container> -->
                         <ng-container matColumnDef="expand">
                             <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
                             <td mat-cell *matCellDef="let influencer"> 
@@ -242,9 +242,10 @@
                 <form [formGroup]="editInfluencerFormGroup" class="flex flex-row">
                     <div class="flex w-full flex-col lg:w-1/4">
                         <div  class="h-44 w-32 overflow-hidden rounded border self-start">
+                           
                             <img 
-                                *ngIf="uploadedImageUrl; else noImage" 
-                                [src]="uploadedImageUrl" 
+                                *ngIf="imageUrl; else noImage" 
+                                [src]="imageUrl" 
                                 alt="Uploaded Image" 
                                 class="h-full w-full object-cover"
                             />
@@ -276,8 +277,8 @@
                     </div>
                     <div class="flex w-full flex-col sm:pl-5 lg:w-2/4 ">
                         <mat-form-field  class="pl-0">
-                            <mat-label>Nr</mat-label>
-                            <input matInput [formControlName]="'id'">
+                            <mat-label>Name</mat-label>
+                            <input matInput type="name" [formControlName]="'name'">
                         </mat-form-field>
                         <mat-form-field>
                             <mat-label>E-mail</mat-label>
@@ -285,7 +286,7 @@
                         </mat-form-field>
                         <mat-form-field>
                             <mat-label>Dokładny adres</mat-label>
-                            <input matInput  type="email" [formControlName]="'email'">
+                            <input matInput  type="address" [formControlName]="'address'">
                         </mat-form-field>
                     </div>
                     <div class="flex w-full flex-col sm:pl-5 lg:w-2/4 ">
@@ -300,9 +301,9 @@
                         <form  [formGroup]="editInfluencerFormGroup">
                             <mat-form-field appearance="outline" class="text-area pl-0">
                             <mat-label><b>Notatka:</b></mat-label>
-                            <textarea   [formControlName]="'noteFromAdmin'"
+                            <textarea   [formControlName]="'note'"
                                         matInput
-                                        formControlName="noteFromAdmin"
+                                        formControlName="note"
                                         placeholder="Wyślij notatkę...">
                             </textarea>
                             </mat-form-field>
@@ -315,13 +316,22 @@
                         </mat-form-field>
                         <mat-form-field>
                             <mat-label>Typ usługi</mat-label>
-                            <input matInput  type="lastName" [formControlName]="'lastName'">
+                            <input matInput  type="serviceType.id" [formControlNsame]="'serviceType.id'">
                         </mat-form-field>
-                        <button mat-button type="submit" class="justify-self-center self-center mt-5" 
-                                [color]="'primary'"
-                                (click)="sendToInluencer(getExpandedInfluencer().id)">
-                                Zatwierdź
-                        </button>
+                        <div class="flex items-center justify-end mt-4">
+                            <button mat-button type="submit" class="justify-self-center self-center" 
+                                    [color]="'primary'"
+                                    (click)="putOrPatchCompany(getExpandedInfluencer().id)">
+                                    Zatwierdź
+                            </button>
+                            <button
+                                class="mr-2"
+                                mat-flat-button
+                                type="button"
+                                (click)="delete(getExpandedInfluencer().id)">
+                                    Delete
+                            </button>
+                        </div>
                     </div>
                 </form>
                   <p class="textWarning" *ngIf="updatedNoteInfo">

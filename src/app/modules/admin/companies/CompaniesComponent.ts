@@ -17,13 +17,13 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { Influencer } from 'app/services/influencer/Influencer';
-import { InfluencerResponse } from 'app/services/influencer/Influencer';
+import { Company } from 'app/services/influencer/Company';
+import { CompanyResponse } from 'app/services/influencer/Company';
 
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { Subject } from 'rxjs';
 
-import { InfluencerService } from 'app/services/influencer/influencer.service';
+import { CompanyService } from 'app/services/influencer/company.service';
 
 import {
     FormGroup,
@@ -101,21 +101,20 @@ export class CompaniesComponent implements OnInit, AfterViewInit, OnDestroy {
 
     influencersTableColumns: string[] = [
         'id',
+        // 'name',
         'lastUpdateTime',
         'firstName',
         'lastName',
         'email',
         'city',
-        'instagramId',
-        'followersAmount',
-        'instagramAccountType',
-        'accountStatus',
+        // 'serviceType',
+        // 'address',
     ];
     columnsToDisplayWithExpand: string[] = [
         ...this.influencersTableColumns,
         'expand',
     ];
-    expandedInfluencer: Influencer | null;
+    expandedInfluencer: Company | null;
 
     formLaunched: boolean = false;
     editformLaunched: boolean = false;
@@ -124,17 +123,16 @@ export class CompaniesComponent implements OnInit, AfterViewInit, OnDestroy {
 
     editInfluencerFormGroup: UntypedFormGroup;
 
-    influencerList: Influencer[];
-    InfluencerResponse: { Influencer: any };
-    dataSource: MatTableDataSource<Influencer>;
+    companyList: Company[] = [];
+    CompanyResponse: { Company: any };
+    dataSource: MatTableDataSource<Company>;
 
     resInput: any;
     form: FormGroup;
-    selectedProduct: Influencer | null = null;
+    selectedProduct: Company | null = null;
     isLoading: boolean = false;
     updatedNoteInfo: boolean = false;
-    followersAmountInfo: boolean = false;
-    instagramAccountTypeInfo: boolean = false;
+    // followersAmountInfo: boolean = false;
     confrimEditionInfo: boolean = false;
     ascDescInfo: boolean = false;
 
@@ -146,7 +144,7 @@ export class CompaniesComponent implements OnInit, AfterViewInit, OnDestroy {
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
-    categories: Influencer[];
+    categories: Company[];
 
     selectedSortOption = 'default';
 
@@ -175,7 +173,6 @@ export class CompaniesComponent implements OnInit, AfterViewInit, OnDestroy {
     sortBy: string = 'id';
     direction: string = 'asc';
     statusInflu: string = '';
-    instagramAccountType: string = '';
     firstName: string = '';
     lastName: string = '';
 
@@ -205,56 +202,47 @@ export class CompaniesComponent implements OnInit, AfterViewInit, OnDestroy {
     selectedProductForm: UntypedFormGroup;
 
     selectedFile: File | null = null;
-    uploadedImageUrl: string | null = null;
+    imageUrl: string | null = null;
 
     nameSelect = '';
 
     constructor(
-        private _influencerService: InfluencerService,
+        // private _influencerService: InfluencerService,
+        private _companyService: CompanyService,
         private _formBuilder: UntypedFormBuilder,
-        private buttonStateService: InfluencerService,
         private changeDetectorRefs: ChangeDetectorRef,
         private fb: FormBuilder
     ) {
         this.editInfluencerFormGroup = this.fb.group({
             id: ['', [Validators.required]],
             lastUpdateTime: ['', [Validators.required]],
+            name: ['', [Validators.required]],
             firstName: ['', [Validators.required]],
             lastName: ['', [Validators.required]],
             email: ['', [Validators.required]],
             city: ['', [Validators.required]],
-            instagramId: ['', [Validators.required]],
-            followersAmount: ['', [Validators.required]],
-            instagramAccountType: ['', [Validators.required]],
-            accountStatus: ['', [Validators.required]],
-            noteFromAdmin: [],
+            address: ['', [Validators.required]],
+            phoneNumber: [''],
+            note: [''],
+            serviceType: [, [Validators.required]],
+            imageUrl: [''],
         });
     }
 
     ngAfterViewInit(): void {
         if (this.dataSource) this.dataSource.paginator = this.paginator;
 
-        this.dataSource = new MatTableDataSource<Influencer>(
-            this.influencerList
-        );
+        this.dataSource = new MatTableDataSource<Company>(this.companyList);
     }
 
     ngOnInit(): void {
-        this._influencerService
-            .getdataJson()
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((influencerList) => {
-                this.influencerList = influencerList;
-            });
-
-        this.loadInfluencers(this.pageIndex);
+        this.loadCompanies(this.pageIndex);
     }
 
     private setSearchFiltersToEmptyStrings() {
         this.firstName = '';
         this.lastName = '';
         this.statusInflu = '';
-        this.instagramAccountType = '';
     }
 
     private setValueOfSelectedFilter(valueOfSelectedFilter: string) {
@@ -268,9 +256,6 @@ export class CompaniesComponent implements OnInit, AfterViewInit, OnDestroy {
             case 'Status':
                 this.statusInflu = valueOfSelectedFilter;
                 break;
-            case 'Rodzaj Konta':
-                this.instagramAccountType = valueOfSelectedFilter;
-                break;
         }
     }
 
@@ -279,7 +264,7 @@ export class CompaniesComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.setSearchFiltersToEmptyStrings();
         this.setValueOfSelectedFilter(searchInputValue);
-        this.loadInfluencers(0);
+        this.loadCompanies(0);
     }
 
     onSearchSelectChange(event?: any): void {
@@ -314,26 +299,27 @@ export class CompaniesComponent implements OnInit, AfterViewInit, OnDestroy {
         this.onSearchInputChange('');
     }
 
-    private async loadInfluencers(pageIndex: number): Promise<void> {
-        this._influencerService
-            .getInfluencerPaged(
+    private async loadCompanies(pageIndex: number): Promise<void> {
+        this._companyService
+            .getCompanyPaged(
                 pageIndex,
                 this.pageSize,
                 this.sortBy,
                 this.direction,
                 this.statusInflu,
-                this.instagramAccountType,
                 this.firstName,
                 this.lastName
             )
             .subscribe({
-                next: (response: InfluencerResponse) => {
+                next: (response: CompanyResponse) => {
                     this.length = response.page.totalElements;
                     this.pageIndex = response.page.number;
                     this.paginator.length = response.page.totalElements;
                     this.paginator.pageIndex = response.page.number;
                     this.paginator.pageSize = response.page.size;
                     this.dataSource.data = response.content;
+
+                    console.log('data content:', this.dataSource.data);
                 },
                 error: (error) => {
                     console.error('Error fetching influencer list', error);
@@ -349,14 +335,14 @@ export class CompaniesComponent implements OnInit, AfterViewInit, OnDestroy {
         this.pageIndex = 0;
         this.pageSize = e.pageSize;
 
-        this.loadInfluencers(0);
+        this.loadCompanies(0);
     }
 
     handlePageNavigationChange(e: PageEvent): void {
         this.pageIndex = e.pageIndex;
         this.pageSize = e.pageSize;
 
-        this.loadInfluencers(e.pageIndex);
+        this.loadCompanies(e.pageIndex);
     }
 
     handlePageEvent(e: PageEvent) {
@@ -372,7 +358,7 @@ export class CompaniesComponent implements OnInit, AfterViewInit, OnDestroy {
         this.direction = event.direction;
         this.sortBy = event.active;
 
-        this.loadInfluencers(0);
+        this.loadCompanies(0);
     }
 
     closeDetails(): void {
@@ -388,62 +374,77 @@ export class CompaniesComponent implements OnInit, AfterViewInit, OnDestroy {
         return item.id || index;
     }
 
-    sendToInluencer(influencerId: number): void {
-        const instagramId =
-            this.editInfluencerFormGroup.get('instagramId').value;
+    putOrPatchCompany(companyId: number): void {
         const firstName = this.editInfluencerFormGroup.get('firstName').value;
         const lastName = this.editInfluencerFormGroup.get('lastName').value;
+        const name = this.editInfluencerFormGroup.get('name').value;
+
         const email = this.editInfluencerFormGroup.get('email').value;
         const city = this.editInfluencerFormGroup.get('city').value;
-        const followersAmount =
-            this.editInfluencerFormGroup.get('followersAmount').value;
-        const updatedNote =
-            this.editInfluencerFormGroup.get('noteFromAdmin').value;
-        const updatedStatus =
-            this.editInfluencerFormGroup.get('accountStatus').value;
-        const updatedAccountType = this.editInfluencerFormGroup.get(
-            'instagramAccountType'
-        ).value;
-        const influencerToUpdate = this.influencerList.find(
-            (influencer) => influencer.id === influencerId
+        const address = this.editInfluencerFormGroup.get('address').value;
+        const phoneNumber =
+            this.editInfluencerFormGroup.get('phoneNumber').value;
+        const note = this.editInfluencerFormGroup.get('note').value;
+
+        const serviceType =
+            this.editInfluencerFormGroup.get('serviceType').value;
+        // const imageUrl = this.editInfluencerFormGroup.get('imageUrl').value;
+        // const createdTime =
+        //     this.editInfluencerFormGroup.get('createdTime').value;
+        // const updater = this.editInfluencerFormGroup.get('updater').value;
+
+        const companyToUpdate = this.companyList.find(
+            (company) => company.id === companyId
         );
 
         this.confrimEditionInfo = true;
-        this.followersAmountInfo = false;
+        // this.followersAmountInfo = false;
 
-        const influencerUpdate = {
-            ...influencerToUpdate,
-            instagramId: instagramId,
+        const companyUpdate = {
+            ...companyToUpdate,
+            name: name,
             firstName: firstName,
             lastName: lastName,
             email: email,
             city: city,
-            followersAmount: followersAmount,
-            noteFromAdmin: updatedNote,
-            status: updatedStatus,
-            instagramAccountType: updatedAccountType,
+            address: address,
+            phoneNumber: phoneNumber,
+            imageUrl: this.imageUrl,
+            note: note,
+            serviceType: serviceType.id,
+            // createdTime: createdTime,
+            // updater: updater,
+            // noteFromAdmin: updatedNote,
         };
 
-        this._influencerService
-            .updateNoteFromAdmin(influencerUpdate, influencerId)
-            .subscribe((updatedInfluencer) => {
-                updatedInfluencer.accountStatus =
-                    updatedInfluencer.accountStatus;
-                updatedInfluencer.instagramAccountType =
-                    updatedInfluencer.instagramAccountType;
-                const idToUpdate: number = this.dataSource.data.findIndex(
-                    (influ) => influ.id === updatedInfluencer.id
-                );
-                this.dataSource.data[idToUpdate] = updatedInfluencer;
-                this.dataSource._updateChangeSubscription();
-                this.changeDetectorRefs.detach();
-                this.fillEditForm();
-                this.changeDetectorRefs.markForCheck();
-                this.changeDetectorRefs.reattach();
+        console.log('companyUpdate:', companyUpdate);
+
+        this._companyService
+            .updateCompanyPut(companyUpdate, companyId)
+            .subscribe({
+                next: (updatedCompany) => {
+                    console.log('updatedCompany:', updatedCompany);
+
+                    const idToUpdate: number = this.dataSource.data.findIndex(
+                        (company) => company.id === updatedCompany.id
+                    );
+
+                    console.log('idToUpdate:', idToUpdate);
+
+                    this.dataSource.data[idToUpdate] = updatedCompany;
+                    this.dataSource._updateChangeSubscription();
+                    this.changeDetectorRefs.detach();
+                    this.fillEditForm();
+                    this.changeDetectorRefs.markForCheck();
+                    this.changeDetectorRefs.reattach();
+                },
+                error: (err) => {
+                    console.error('Błąd podczas aktualizacji:', err);
+                },
             });
 
         const shouldDisable = true;
-        this.buttonStateService.setDisabledState(shouldDisable);
+        // this._companyService(shouldDisable);
     }
 
     onTypeAccountChange(event: MatSelectChange): void {
@@ -460,16 +461,26 @@ export class CompaniesComponent implements OnInit, AfterViewInit, OnDestroy {
         } else this.formLaunched = false;
     }
 
-    getExpandedInfluencer(): Influencer {
+    getExpandedInfluencer(): Company {
         return this.expandedInfluencer;
     }
 
     onFileSelected(event: Event, rowIndex: number): void {
         const input = event.target as HTMLInputElement;
 
+        console.log('files:', input);
+
         if (input?.files && input.files.length > 0) {
             this.selectedFile = input.files[0];
-            this.uploadedImageUrl = URL.createObjectURL(this.selectedFile);
+
+            this.imageUrl = URL.createObjectURL(this.selectedFile);
+
+            console.log('Selected file:', this.selectedFile.name);
+            console.log('Preview URL:', this.imageUrl);
+
+            this.editInfluencerFormGroup.patchValue({
+                imageUrl: this.imageUrl,
+            });
         }
     }
 
@@ -481,17 +492,31 @@ export class CompaniesComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    clearPreview(): void {
-        if (this.uploadedImageUrl) {
-            URL.revokeObjectURL(this.uploadedImageUrl);
-            this.uploadedImageUrl = null;
-        }
+    // clearPreview(): void {
+    //     if (this.uploadedImageUrl) {
+    //         URL.revokeObjectURL(this.uploadedImageUrl);
+    //         this.uploadedImageUrl = null;
+    //     }
+    // }
+
+    delete(companyId: number): void {
+        this._companyService.deleteCompany(companyId).subscribe({
+            next: () => {
+                this.loadCompanies(0);
+            },
+            error: (err) => {
+                console.error('Error deleting company:', err);
+            },
+        });
     }
 
     fillEditForm(): void {
         if (this.expandedInfluencer != null) {
             this.editInfluencerFormGroup.controls['id'].setValue(
                 this.expandedInfluencer.id
+            );
+            this.editInfluencerFormGroup.controls['name'].setValue(
+                this.expandedInfluencer.name
             );
             this.editInfluencerFormGroup.controls['firstName'].setValue(
                 this.expandedInfluencer.firstName
@@ -505,20 +530,20 @@ export class CompaniesComponent implements OnInit, AfterViewInit, OnDestroy {
             this.editInfluencerFormGroup.controls['city'].setValue(
                 this.expandedInfluencer.city
             );
-            this.editInfluencerFormGroup.controls['instagramId'].setValue(
-                this.expandedInfluencer.instagramId
+            this.editInfluencerFormGroup.controls['address'].setValue(
+                this.expandedInfluencer.address
             );
-            this.editInfluencerFormGroup.controls['followersAmount'].setValue(
-                this.expandedInfluencer.followersAmount
+            this.editInfluencerFormGroup.controls['phoneNumber'].setValue(
+                this.expandedInfluencer.phoneNumber
             );
-            this.editInfluencerFormGroup.controls[
-                'instagramAccountType'
-            ].setValue(this.expandedInfluencer.instagramAccountType);
-            this.editInfluencerFormGroup.controls['accountStatus'].setValue(
-                this.expandedInfluencer.accountStatus
+            this.editInfluencerFormGroup.controls['note'].setValue(
+                this.expandedInfluencer.note
             );
-            this.editInfluencerFormGroup.controls['noteFromAdmin'].setValue(
-                this.expandedInfluencer.noteFromAdmin
+            this.editInfluencerFormGroup.controls['serviceType'].setValue(
+                this.expandedInfluencer.serviceType
+            );
+            this.editInfluencerFormGroup.controls['imageUrl'].setValue(
+                this.expandedInfluencer.imageUrl
             );
             this.editInfluencerFormGroup.controls['id'].disable();
         }

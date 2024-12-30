@@ -11,8 +11,6 @@ import { BehaviorSubject } from 'rxjs';
     providedIn: 'root',
 })
 export class InfluencerService {
-    // influencerUser: Influencer;
-
     dataJson = [
         {
             id: 1,
@@ -196,9 +194,6 @@ export class InfluencerService {
             this.httpOptions
         );
     }
-
-    // &status=${statusInflu}
-    // &city=${city}
 
     getInfluencerPaged(
         pageIndex: number,

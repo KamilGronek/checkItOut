@@ -204,7 +204,7 @@ export class newInfluencersListComponent
     constructor(
         private _influencerService: InfluencerService,
         private _formBuilder: UntypedFormBuilder,
-        private buttonStateService: InfluencerService,
+        // private buttonStateService: InfluencerService,
         private changeDetectorRefs: ChangeDetectorRef,
         private fb: FormBuilder
     ) {
@@ -390,6 +390,9 @@ export class newInfluencersListComponent
         const updatedAccountType = this.editInfluencerFormGroup.get(
             'instagramAccountType'
         ).value;
+
+        console.log('influencerList', this.influencerList);
+
         const influencerToUpdate = this.influencerList.find(
             (influencer) => influencer.id === influencerId
         );
@@ -409,16 +412,17 @@ export class newInfluencersListComponent
             instagramAccountType: updatedAccountType,
         };
 
+        console.log('influencerUpdate:', influencerUpdate);
+
         this._influencerService
             .updateNoteFromAdmin(influencerUpdate, influencerId)
             .subscribe((updatedInfluencer) => {
-                updatedInfluencer.accountStatus =
-                    updatedInfluencer.accountStatus;
-                updatedInfluencer.instagramAccountType =
-                    updatedInfluencer.instagramAccountType;
                 const idToUpdate: number = this.dataSource.data.findIndex(
                     (influ) => influ.id === updatedInfluencer.id
                 );
+
+                console.log('idToUpdate:', idToUpdate);
+
                 this.dataSource.data[idToUpdate] = updatedInfluencer;
                 this.dataSource._updateChangeSubscription();
                 this.changeDetectorRefs.detach();
@@ -428,7 +432,7 @@ export class newInfluencersListComponent
             });
 
         const shouldDisable = true;
-        this.buttonStateService.setDisabledState(shouldDisable);
+        this._influencerService.setDisabledState(shouldDisable);
     }
 
     onTypeAccountChange(event: MatSelectChange): void {
