@@ -29,6 +29,7 @@
     "@types/jwt-decode": "^3.1.0",
     "apexcharts": "^3.47.0",
     "crypto-js": "4.2.0",
+    "firebase": "^11.1.0",
     "firebaseui": "^6.1.0",
     "highlight.js": "11.9.0",
     "jwt-decode": "^4.0.0",

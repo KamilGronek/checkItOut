@@ -16,18 +16,17 @@ import { appRoutes } from 'app/app.routes';
 import { provideIcons } from 'app/core/icons/icons.provider';
 import { mockApiServices } from 'app/mock-api';
 import { TranslocoHttpLoader } from './core/transloco/transloco.http-loader';
-
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { provideAuth, getAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { firebaseConfig } from '../environments/environment';
-
+import { provideStorage, getStorage } from '@angular/fire/storage';
 import { provideAuthInFuse } from './core/auth/auth.provider';
-// import { userRoutes, adminRoutes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
     providers: [
         provideFirebaseApp(() => initializeApp(firebaseConfig)),
+        provideStorage(() => getStorage()),
         provideAuth(() => getAuth()),
         provideFirestore(() => getFirestore()),
         provideAuthInFuse(),

@@ -9,6 +9,7 @@ import {
     OnInit,
     ViewChild,
     ViewEncapsulation,
+    inject,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
@@ -52,6 +53,11 @@ import { MatPaginator } from '@angular/material/paginator';
 import { PageEvent } from '@angular/material/paginator';
 import { InventoryCategory } from 'app/modules/admin/companies/inventory.types';
 import { takeUntil } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { AuthService } from 'app/core/auth/auth.service';
+// import { AngularFireStorage } from '@angular/fire/compat/storage';
+// import { finalize } from 'rxjs/operators';
+import { AngularFireModule } from '@angular/fire/compat';
 
 @Component({
     selector: 'companies',
@@ -202,16 +208,23 @@ export class CompaniesComponent implements OnInit, AfterViewInit, OnDestroy {
     selectedProductForm: UntypedFormGroup;
 
     selectedFile: File | null = null;
-    imageUrl: string | null = null;
+    // downloadURL: string | null = null;
 
+    imageUrl: string | null = null;
     nameSelect = '';
+    rows = [];
+    imgDisplay = false;
+
+    // private storage = inject(AngularFireStorage);
 
     constructor(
         // private _influencerService: InfluencerService,
         private _companyService: CompanyService,
         private _formBuilder: UntypedFormBuilder,
         private changeDetectorRefs: ChangeDetectorRef,
-        private fb: FormBuilder
+        private fb: FormBuilder,
+        private http: HttpClient,
+        private authService: AuthService
     ) {
         this.editInfluencerFormGroup = this.fb.group({
             id: ['', [Validators.required]],
@@ -320,6 +333,14 @@ export class CompaniesComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.dataSource.data = response.content;
 
                     console.log('data content:', this.dataSource.data);
+
+                    // this.rows = this.dataSource.data.map(
+                    //     (imageUrl) => imageUrl.imageUrl
+                    // );
+
+                    // this.imageUrl = this.rows[1];
+
+                    // console.log('this.imageUrl:', this.imageUrl);
                 },
                 error: (error) => {
                     console.error('Error fetching influencer list', error);
@@ -409,9 +430,8 @@ export class CompaniesComponent implements OnInit, AfterViewInit, OnDestroy {
             city: city,
             address: address,
             phoneNumber: phoneNumber,
-            imageUrl: this.imageUrl,
-            note: note,
             serviceType: serviceType.id,
+            imageUrl: this.imageUrl,
             // createdTime: createdTime,
             // updater: updater,
             // noteFromAdmin: updatedNote,
@@ -443,6 +463,25 @@ export class CompaniesComponent implements OnInit, AfterViewInit, OnDestroy {
                 },
             });
 
+        // if (influencer.selectedFile) {
+        //     const formData = new FormData();
+        //     formData.append('image', influencer.selectedFile);
+
+        //     this.http
+        //         .post(`/api/influencers/${influencer.id}/upload`, formData)
+        //         .subscribe(
+        //             (response: any) => {
+        //                 console.log('Image uploaded:', response);
+
+        //                 // Aktualizacja URL po zapisaniu na serwerze
+        //                 influencer.imageUrl = response.imageUrl;
+        //             },
+        //             (error) => {
+        //                 console.error('Error uploading image:', error);
+        //             }
+        //         );
+        // }
+
         const shouldDisable = true;
         // this._companyService(shouldDisable);
     }
@@ -465,32 +504,101 @@ export class CompaniesComponent implements OnInit, AfterViewInit, OnDestroy {
         return this.expandedInfluencer;
     }
 
-    onFileSelected(event: Event, rowIndex: number): void {
+    onFileSelected(event: Event): void {
         const input = event.target as HTMLInputElement;
 
-        console.log('files:', input);
+        // console.log('companyId:', companyId);
 
         if (input?.files && input.files.length > 0) {
             this.selectedFile = input.files[0];
+            // const selectedFile = input.files[0];
 
             this.imageUrl = URL.createObjectURL(this.selectedFile);
 
-            console.log('Selected file:', this.selectedFile.name);
-            console.log('Preview URL:', this.imageUrl);
+            // this.rows[i].imageUrl = this.imageUrl;
 
-            this.editInfluencerFormGroup.patchValue({
-                imageUrl: this.imageUrl,
-            });
+            // this.editInfluencerFormGroup.patchValue({
+            //     imageUrl: this.imageUrl,
+            // });
+            // this.uploadImage(this.selectedFile).subscribe({
+            //     next: (uploadedImageUrl) => {
+            //         this.imageUrl = uploadedImageUrl;
+            //         console.log('Image uploaded successfully:', this.imageUrl);
+            //     },
+            //     error: (error) => {
+            //         console.error('Error uploading image:', error);
+            //     },
+            // });
         }
     }
 
-    uploadFile(): void {
-        if (this.selectedFile) {
-            console.log('Wysyłanie pliku:', this.selectedFile);
-        } else {
-            console.log('Nie wybrano pliku!');
-        }
-    }
+    // uploadFile(event: Event): void {
+    //     const file = (event.target as HTMLInputElement).files?.[0];
+    //     if (file) {
+    //         const filePath = `uploads/${Date.now()}_${file.name}`;
+    //         const task = this.storage.upload(filePath, file);
+    //         task.percentageChanges().subscribe((progress) =>
+    //             console.log(progress)
+    //         );
+    //     }
+    // }
+
+    // uploadFile(): void {
+    //     if (this.selectedFile) {
+    //         console.log('Wysyłanie pliku:', this.selectedFile);
+    //     } else {
+    //         console.log('Nie wybrano pliku!');
+    //     }
+
+    //     //     const filePath = `images/${Date.now()}_${this.selectedFile.name}`;
+    //     //     const fileRef = this.storage.ref(filePath);
+    //     //     const task = this.storage.upload(filePath, this.selectedFile);
+
+    //     //     task.snapshotChanges()
+    //     //         .pipe(
+    //     //             finalize(() => {
+    //     //                 fileRef.getDownloadURL().subscribe((url) => {
+    //     //                     this.downloadURL = url;
+    //     //                     console.log('Download URL:', this.downloadURL);
+
+    //     //                     this.saveImageUrlToDatabase(this.downloadURL);
+    //     //                 });
+    //     //             })
+    //     //         )
+    //     //         .subscribe();
+    // }
+
+    // saveImageUrlToDatabase(url: string): void {
+    //     const apiUrl = 'https://twoja-api.com/images'; // Zmień na swój endpoint API
+    //     this.http.post(apiUrl, { imageUrl: url }).subscribe(
+    //         (response) => {
+    //             console.log('Image URL saved to database:', response);
+    //         },
+    //         (error) => {
+    //             console.error('Error saving image URL:', error);
+    //         }
+    //     );
+    // }
+
+    // uploadImage(influencer: any): void {
+    //     if (influencer.selectedFile) {
+    //         const formData = new FormData();
+    //         formData.append('image', influencer.selectedFile);
+
+    //         this.http
+    //             .post(`/api/influencers/${influencer.id}/upload`, formData)
+    //             .subscribe(
+    //                 () => {
+    //                     console.log(
+    //                         `Image uploaded for influencer with ID: ${influencer.id}`
+    //                     );
+    //                 },
+    //                 (error) => {
+    //                     console.error('Error uploading image:', error);
+    //                 }
+    //             );
+    //     }
+    // }
 
     // clearPreview(): void {
     //     if (this.uploadedImageUrl) {
