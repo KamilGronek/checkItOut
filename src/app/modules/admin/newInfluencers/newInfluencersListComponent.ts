@@ -9,6 +9,7 @@ import {
     OnInit,
     ViewChild,
     ViewEncapsulation,
+    inject,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
@@ -50,6 +51,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatPaginator } from '@angular/material/paginator';
 
 import { PageEvent } from '@angular/material/paginator';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SnackbarService } from 'app/services/snackbar/snackbar.service';
 
 @Component({
     selector: 'newInfluencers',
@@ -201,12 +204,15 @@ export class newInfluencersListComponent
     typeStatus: string[] = ['Walidowany', 'Aktywny', 'Nieaktywny'];
     typeAccountOptions: string[] = ['Publiczne', 'Niepubliczne', 'NA'];
 
+    private _snackBar = inject(MatSnackBar);
+
     constructor(
         private _influencerService: InfluencerService,
         private _formBuilder: UntypedFormBuilder,
         private buttonStateService: InfluencerService,
         private changeDetectorRefs: ChangeDetectorRef,
-        private fb: FormBuilder
+        private fb: FormBuilder,
+        private snackbarService: SnackbarService
     ) {
         this.editInfluencerFormGroup = this.fb.group({
             id: ['', [Validators.required]],
@@ -386,9 +392,10 @@ export class newInfluencersListComponent
         const updatedNote =
             this.editInfluencerFormGroup.get('noteFromAdmin').value;
         const updatedStatus =
-            this.editInfluencerFormGroup.get('accountStatus').value
-        const updatedAccountType =
-            this.editInfluencerFormGroup.get('instagramAccountType').value;
+            this.editInfluencerFormGroup.get('accountStatus').value;
+        const updatedAccountType = this.editInfluencerFormGroup.get(
+            'instagramAccountType'
+        ).value;
         const influencerToUpdate = this.influencerList.find(
             (influencer) => influencer.id === influencerId
         );
@@ -411,8 +418,10 @@ export class newInfluencersListComponent
         this._influencerService
             .updateNoteFromAdmin(influencerUpdate, influencerId)
             .subscribe((updatedInfluencer) => {
-                updatedInfluencer.accountStatus = updatedInfluencer.accountStatus;
-                updatedInfluencer.instagramAccountType = updatedInfluencer.instagramAccountType;
+                updatedInfluencer.accountStatus =
+                    updatedInfluencer.accountStatus;
+                updatedInfluencer.instagramAccountType =
+                    updatedInfluencer.instagramAccountType;
                 const idToUpdate: number = this.dataSource.data.findIndex(
                     (influ) => influ.id === updatedInfluencer.id
                 );
@@ -426,6 +435,8 @@ export class newInfluencersListComponent
 
         const shouldDisable = true;
         this.buttonStateService.setDisabledState(shouldDisable);
+
+        this.snackbarService.showSuccess('Sukces!');
     }
 
     onTypeAccountChange(event: MatSelectChange): void {

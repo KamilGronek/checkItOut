@@ -21,3 +21,11 @@
     color: rgb(100 116 139);
 }
 
+.snackbar-container {
+    --mdc-snackbar-container-color: transparent !important;
+}
+
+.snackbar-container div {
+    padding: 0 !important;
+    box-shadow: none !important;
+}
