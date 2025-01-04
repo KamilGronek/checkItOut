@@ -50,6 +50,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatPaginator } from '@angular/material/paginator';
 
 import { PageEvent } from '@angular/material/paginator';
+import { User } from 'app/core/user/user.types';
+import { InfluencerUser } from 'app/core/influencerUser/InfluencerUser.types';
 
 @Component({
     selector: 'newInfluencers',
@@ -115,14 +117,14 @@ export class newInfluencersListComponent
         ...this.influencersTableColumns,
         'expand',
     ];
-    expandedInfluencer: Influencer | null;
+    expandedUser: InfluencerUser | null;
 
     formLaunched: boolean = false;
     editformLaunched: boolean = false;
     idOfEditedUser: number;
     flashMessage: 'success' | 'error' | null = null;
 
-    editInfluencerFormGroup: UntypedFormGroup;
+    editUserFormGroup: UntypedFormGroup;
 
     influencerList: Influencer[] = [];
     InfluencerResponse: { Influencer: any };
@@ -208,7 +210,7 @@ export class newInfluencersListComponent
         private changeDetectorRefs: ChangeDetectorRef,
         private fb: FormBuilder
     ) {
-        this.editInfluencerFormGroup = this.fb.group({
+        this.editUserFormGroup = this.fb.group({
             id: ['', [Validators.required]],
             lastUpdateTime: ['', [Validators.required]],
             firstName: ['', [Validators.required]],
@@ -376,19 +378,19 @@ export class newInfluencersListComponent
 
     sendToInluencer(influencerId: number): void {
         const instagramId =
-            this.editInfluencerFormGroup.get('instagramId').value;
-        const firstName = this.editInfluencerFormGroup.get('firstName').value;
-        const lastName = this.editInfluencerFormGroup.get('lastName').value;
-        const email = this.editInfluencerFormGroup.get('email').value;
-        const city = this.editInfluencerFormGroup.get('city').value;
+            this.editUserFormGroup.get('instagramId').value;
+        const firstName = this.editUserFormGroup.get('firstName').value;
+        const lastName = this.editUserFormGroup.get('lastName').value;
+        const email = this.editUserFormGroup.get('email').value;
+        const city = this.editUserFormGroup.get('city').value;
         const followersAmount =
-            this.editInfluencerFormGroup.get('followersAmount').value;
+            this.editUserFormGroup.get('followersAmount').value;
         const updatedNote =
-            this.editInfluencerFormGroup.get('noteFromAdmin').value;
+            this.editUserFormGroup.get('noteFromAdmin').value;
         const updatedStatus =
-            this.editInfluencerFormGroup.get('accountStatus').value
+            this.editUserFormGroup.get('accountStatus').value
         const updatedAccountType =
-            this.editInfluencerFormGroup.get('instagramAccountType').value;
+            this.editUserFormGroup.get('instagramAccountType').value;
         const influencerToUpdate = this.influencerList.find(
             (influencer) => influencer.id === influencerId
         );
@@ -442,43 +444,43 @@ export class newInfluencersListComponent
         } else this.formLaunched = false;
     }
 
-    getExpandedInfluencer(): Influencer {
-        return this.expandedInfluencer;
+    getExpandedUser(): InfluencerUser {
+        return this.expandedUser;
     }
 
     fillEditForm(): void {
-        if (this.expandedInfluencer != null) {
-            this.editInfluencerFormGroup.controls['id'].setValue(
-                this.expandedInfluencer.id
+        if (this.expandedUser != null) {
+            this.editUserFormGroup.controls['id'].setValue(
+                this.expandedUser.influencer.id
             );
-            this.editInfluencerFormGroup.controls['firstName'].setValue(
-                this.expandedInfluencer.firstName
+            this.editUserFormGroup.controls['firstName'].setValue(
+                this.expandedUser.firstName
             );
-            this.editInfluencerFormGroup.controls['lastName'].setValue(
-                this.expandedInfluencer.lastName
+            this.editUserFormGroup.controls['lastName'].setValue(
+                this.expandedUser.lastName
             );
-            this.editInfluencerFormGroup.controls['email'].setValue(
-                this.expandedInfluencer.email
+            this.editUserFormGroup.controls['email'].setValue(
+                this.expandedUser.email
             );
-            this.editInfluencerFormGroup.controls['city'].setValue(
-                this.expandedInfluencer.city
+            this.editUserFormGroup.controls['city'].setValue(
+                this.expandedUser.influencer.city
             );
-            this.editInfluencerFormGroup.controls['instagramId'].setValue(
-                this.expandedInfluencer.instagramId
+            this.editUserFormGroup.controls['instagramId'].setValue(
+                this.expandedUser.influencer.instagramId
             );
-            this.editInfluencerFormGroup.controls['followersAmount'].setValue(
-                this.expandedInfluencer.followersAmount
+            this.editUserFormGroup.controls['followersAmount'].setValue(
+                this.expandedUser.influencer.followersAmount
             );
-            this.editInfluencerFormGroup.controls[
+            this.editUserFormGroup.controls[
                 'instagramAccountType'
-            ].setValue(this.expandedInfluencer.instagramAccountType);
-            this.editInfluencerFormGroup.controls['accountStatus'].setValue(
-                this.expandedInfluencer.accountStatus
+            ].setValue(this.expandedUser.influencer.instagramAccountType);
+            this.editUserFormGroup.controls['accountStatus'].setValue(
+                this.expandedUser.accountStatus
             );
-            this.editInfluencerFormGroup.controls['noteFromAdmin'].setValue(
-                this.expandedInfluencer.noteFromAdmin
+            this.editUserFormGroup.controls['noteFromAdmin'].setValue(
+                this.expandedUser.influencer.noteFromAdmin
             );
-            this.editInfluencerFormGroup.controls['id'].disable();
+            this.editUserFormGroup.controls['id'].disable();
         }
     }
 }

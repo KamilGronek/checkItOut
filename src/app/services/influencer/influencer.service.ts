@@ -83,7 +83,7 @@ export class InfluencerService {
 
     //=====================================================================
 
-    private apiUrl: string = 'http://localhost:8080/influencer';
+    private apiUrl: string = 'http://localhost:8080/user';
 
     private isDisabled = new BehaviorSubject<boolean>(false);
 
