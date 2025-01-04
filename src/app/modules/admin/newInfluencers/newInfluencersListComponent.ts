@@ -198,8 +198,10 @@ export class newInfluencersListComponent
     filteredStatus: string[] = [];
     influencerStatuses: any;
 
-    typeStatus: string[] = ['Walidowany', 'Aktywny', 'Nieaktywny'];
-    typeAccountOptions: string[] = ['Publiczne', 'Niepubliczne', 'NA'];
+    // typeStatus: string[] = ['Walidowany', 'Aktywny', 'Nieaktywny'];
+    // typeAccountOptions: string[] = ['Publiczne', 'Niepubliczne', 'NA'];
+    typeAccountOptions: string[];
+    typeStatus: string[];
 
     constructor(
         private _influencerService: InfluencerService,
@@ -233,6 +235,8 @@ export class newInfluencersListComponent
 
     ngOnInit(): void {
         this.loadInfluencers(this.pageIndex);
+        this.getAccountType();
+        this.getStatus();
     }
 
     private setSearchFiltersToEmptyStrings() {
@@ -297,6 +301,22 @@ export class newInfluencersListComponent
         }
 
         this.onSearchInputChange('');
+    }
+
+    getAccountType(): void {
+        this._influencerService
+            .getInfluencerTypeAccount()
+            .subscribe((accountType: any) => {
+                this.typeAccountOptions = accountType;
+            });
+    }
+
+    getStatus(): void {
+        this._influencerService
+            .getInfluencerStatus()
+            .subscribe((status: any) => {
+                this.typeStatus = status;
+            });
     }
 
     private async loadInfluencers(pageIndex: number): Promise<void> {
