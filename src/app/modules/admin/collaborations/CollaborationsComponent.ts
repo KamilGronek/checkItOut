@@ -189,6 +189,10 @@ export class CollaborationsComponent
     //     }
     // }
 
+    addCollaboration(): void {
+        this.router.navigate(['/newCollaboration']);
+    }
+
     goToDetails(id: number): void {
         this.router.navigate(['/collaborations', id]);
         console.log(`Navigating to /collaborations/${id}`);

@@ -183,6 +183,13 @@ export const appRoutes: Route[] = [
                         'app/modules/admin/collaborationsId/collaborationsId.routes'
                     ),
             },
+            {
+                path: 'newCollaboration',
+                loadChildren: () =>
+                    import(
+                        'app/modules/admin/newCollaboration/newCollaboration.routes'
+                    ),
+            },
         ],
     },
 ];

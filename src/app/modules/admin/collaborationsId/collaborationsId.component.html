@@ -1,162 +1,4 @@
-<!-- <div class="bg-card flex min-w-0 flex-auto flex-col dark:bg-transparent sm:inset-0 sm:overflow-hidden"
->
-<div><img src="./detale_kampanii_v4_files/cover.jpg" style="height: 200xpx" alt="Cover image"
-  class="h-40 object-cover lg:h-80">
-</div>
 
-
-      <div class="flex flex-0 flex-col border-b px-6 py-8 sm:flex-row sm:items-center md:px-8">
-        <div class="text-4xl font-extrabold tracking-tight">
-          Id zlecenia: {{id}}</div>
-      </div>
-
-
-
-    <div class="flex-auto p-6 sm:p-10" style="background-color: #ddd">
-      <button
-      class="ml-1.5"
-      mat-icon-button
-      (click)="goBackToMain()"
-      >
-      <mat-icon
-          [svgIcon]="'heroicons_outline:arrow-long-left'"
-      >
-    </mat-icon>
-
-  </button>
-
-      
-        <div *ngIf="collaborationData" class="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-8">        
-          <form class="bg-card flex flex-col overflow-hidden rounded-2xl p-8 pb-4 shadow lg:row-start-1 lg:col-start-1">
-            <div class="flex flex-col lg:flex-row">
-              <mat-form-field [ngClass]="formFieldHelpers" class="flex-auto lg:pr-3">
-                <mat-label>{{collaborationData.firstName}}</mat-label>
-                <input matInput />
-                <mat-icon
-                  class="icon-size-5"
-                  matSuffix
-                  [svgIcon]="'heroicons_solid:user-circle'"
-                ></mat-icon>
-              </mat-form-field>
-            </div>
-            <div class="flex flex-col lg:flex-row">
-              <mat-form-field [ngClass]="formFieldHelpers" class="flex-auto lg:pr-3">
-                <mat-label>{{collaborationData.instagram}}</mat-label>
-                <input matInput />
-                <mat-icon
-                  class="icon-size-5"
-                  matSuffix
-                  [svgIcon]="'heroicons_solid:user-circle'"
-                ></mat-icon>
-              </mat-form-field>
-            </div>
-          </form>
-        
-          <form class="bg-card flex flex-col overflow-hidden rounded-2xl p-8 pb-4 shadow lg:row-start-2 lg:col-start-1">
-            <div class="flex flex-col lg:flex-row">
-              <mat-form-field [ngClass]="formFieldHelpers" class="flex-auto lg:pr-3">
-                <mat-label>2 name</mat-label>
-                <input matInput />
-                <mat-icon
-                  class="icon-size-5"
-                  matSuffix
-                  [svgIcon]="'heroicons_solid:user-circle'"
-                ></mat-icon>
-              </mat-form-field>
-            </div>
-            <div class="flex flex-col lg:flex-row">
-              <mat-form-field [ngClass]="formFieldHelpers" class="flex-auto lg:pr-3">
-                <mat-label>First name</mat-label>
-                <input matInput />
-                <mat-icon
-                  class="icon-size-5"
-                  matSuffix
-                  [svgIcon]="'heroicons_solid:user-circle'"
-                ></mat-icon>
-              </mat-form-field>
-            </div>
-          </form>
-          
-
-        <form class="bg-card flex flex-col overflow-hidden rounded-2xl p-8 pb-4 shadow lg:row-start-3 lg:col-start-1">
-            <div class="flex flex-col lg:flex-row">
-              <mat-form-field [ngClass]="formFieldHelpers" class="flex-auto lg:pr-3">
-                <mat-label>3 name</mat-label>
-                <input matInput />
-                <mat-icon
-                  class="icon-size-5"
-                  matSuffix
-                  [svgIcon]="'heroicons_solid:user-circle'"
-                ></mat-icon>
-              </mat-form-field>
-            </div>
-            <div class="flex flex-col lg:flex-row">
-              <mat-form-field [ngClass]="formFieldHelpers" class="flex-auto lg:pr-3">
-                <mat-label>First name</mat-label>
-                <input matInput />
-                <mat-icon
-                  class="icon-size-5"
-                  matSuffix
-                  [svgIcon]="'heroicons_solid:user-circle'"
-                ></mat-icon>
-              </mat-form-field>
-            </div>
-          </form> 
-        
-          <form class="bg-card flex flex-col overflow-hidden rounded-2xl p-8 pb-4 shadow lg:row-start-1 lg:col-start-2">
-            <div class="flex flex-col lg:flex-row">
-              <mat-form-field [ngClass]="formFieldHelpers" class="flex-auto lg:pr-3">
-                <mat-label>4 name</mat-label>
-                <input matInput />
-                <mat-icon
-                  class="icon-size-5"
-                  matSuffix
-                  [svgIcon]="'heroicons_solid:user-circle'"
-                ></mat-icon>
-              </mat-form-field>
-            </div>
-            <div class="flex flex-col lg:flex-row">
-              <mat-form-field [ngClass]="formFieldHelpers" class="flex-auto lg:pr-3">
-                <mat-label>First name</mat-label>
-                <input matInput />
-                <mat-icon
-                  class="icon-size-5"
-                  matSuffix
-                  [svgIcon]="'heroicons_solid:user-circle'"
-                ></mat-icon>
-              </mat-form-field>
-            </div>
-          </form>
-          <form class="bg-card flex flex-col overflow-hidden rounded-2xl p-8 pb-4 shadow lg:row-start-2 lg:col-start-2">
-            <div class="flex flex-col lg:flex-row">
-              <mat-form-field [ngClass]="formFieldHelpers" class="flex-auto lg:pr-3">
-                <mat-label>5 name</mat-label>
-                <input matInput />
-                <mat-icon
-                  class="icon-size-5"
-                  matSuffix
-                  [svgIcon]="'heroicons_solid:user-circle'"
-                ></mat-icon>
-              </mat-form-field>
-            </div>
-            <div class="flex flex-col lg:flex-row">
-              <mat-form-field [ngClass]="formFieldHelpers" class="flex-auto lg:pr-3">
-                <mat-label>First name</mat-label>
-                <input matInput />
-                <mat-icon
-                  class="icon-size-5"
-                  matSuffix
-                  [svgIcon]="'heroicons_solid:user-circle'"
-                ></mat-icon>
-              </mat-form-field>
-            </div>
-          </form>
-        </div>
-        <div *ngIf="!collaborationData">
-          <p>Loading data...</p>
-        </div>
-      </div>
-</div> -->
 
 <div class="flex flex-auto flex-col">
   <div class="ng-star-inserted">
@@ -187,14 +29,109 @@
           <div class="mb-4 mt-8 flex items-center space-x-6 lg:m-0 lg:mr-8 lg:ml-auto">
             <div class="my-3 hidden items-center sm:flex border-y-0">
               <div class="rounded-l-xl border border-r-0 border-transparent p-2 leading-none">
-                <div class="text-secondary text-sm font-medium">Data rozpoczęcia</div>
-                <div class="mt-1 font-mono text-base">2 Luty 2025</div>
+                
+                <form [formGroup]="cardForm">
+                      <div >
+                        <div class="text-secondary text-sm font-medium">Data rozpoczęcia</div>
+                        <div
+                            class="relative mt-1.5 flex cursor-pointer items-center rounded-full px-4 leading-9"
+                            [ngClass]="{
+                                'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-300':
+                                    !card.dueDate,
+                                'bg-green-200 text-green-800 dark:bg-green-500 dark:text-green-100':
+                                    card.dueDate && !isOverdue(card.dueDate),
+                                'bg-red-200 text-red-800 dark:bg-red-500 dark:text-red-100':
+                                    card.dueDate && isOverdue(card.dueDate),
+                            }"
+                            (click)="dueDatePicker.open()"
+                        >
+                            <mat-icon
+                                class="text-current icon-size-5"
+                                [svgIcon]="'heroicons_solid:calendar'"
+                            ></mat-icon>
+                           
+                              @if (card.dueDate) {
+                              <span class="ml-2 text-md font-medium w-30">
+                                {{ card.dueDate| date: 'longDate' }}
+                              </span>
+                                }
+                                @if (!card.dueDate) {
+                                Not set
+                                }
+ 
+                            <mat-form-field
+                                class="fuse-mat-dense pointer-events-none invisible absolute inset-0 -mt-2.5 opacity-0"
+                                [subscriptSizing]="'dynamic'"
+                            >
+                                <input
+                                    matInput
+                                    [formControlName]="'dueDate'"
+                                    [matDatepicker]="dueDatePicker"
+                                />
+                                <mat-datepicker #dueDatePicker>
+                                    <mat-datepicker-actions>
+                                        <button
+                                            mat-button
+                                            (click)="clearDueDate()"
+                                            matDatepickerCancel
+                                        >
+                                            Clear
+                                        </button>
+                                        <button
+                                            mat-flat-button
+                                            [color]="'primary'"
+                                            matDatepickerApply
+                                            (click)="onDateSelected()"
+                                        >
+                                            Select
+                                        </button>
+                                    </mat-datepicker-actions>
+                                </mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- <mat-form-field appearance="fill">
+                  <mat-label>Wybierz zakres dat</mat-label>
+                  
+                  <mat-date-range-input [rangePicker]="rangePicker">
+                    <input matStartDate placeholder="Data początkowa" formControlName="startDate">
+                    <input matEndDate placeholder="Data końcowa" formControlName="endDate">
+                  </mat-date-range-input>
+                  <mat-datepicker-toggle matSuffix [for]="rangePicker"></mat-datepicker-toggle>
+
+                  <mat-date-range-picker #rangePicker>
+                    <mat-datepicker-actions>
+                      <button
+                        mat-button
+                        matDatepickerCancel
+                        (click)="clearDueDate()"
+                      >
+                        Wyczyść
+                      </button>
+                      <button
+                        mat-flat-button
+                        color="primary"
+                        matDatepickerApply
+                        (click)="onDateSelected()"
+                      >
+                        Zatwierdź
+                      </button>
+                    </mat-datepicker-actions>
+                  </mat-date-range-picker>
+                </mat-form-field> -->
+                
+                  <!-- //======================================= -->
+
+                
+                
               </div>
               <div class="mx-2 hidden h-8 border-l-2 lg:flex"></div>
-              <div class="rounded-r-xl border p-2 border-transparent leading-none">
+              <!-- <div class="rounded-r-xl border p-2 border-transparent leading-none">
                 <div class="text-secondary text-sm font-medium">Data zakończenia</div>
                 <div class="mt-1 font-mono text-base">22 Luty 2025</div>
-              </div>
+              </div> -->
             </div>
             <!-- <a
               class="mdc-button mdc-button--unelevated mat-mdc-unelevated-button mat-primary mat-mdc-button-base"
@@ -296,36 +233,21 @@
                   </svg></mat-icon><span class="leading-none">Wynagrodzenie #3</span></div>
             </div><!----><!---->
           </fuse-card></div>
-        <div class="flex flex-col items-start"><fuse-card
+        <div class="flex flex-col items-start">
+          <fuse-card
             class="flex w-full max-w-140 flex-col p-8 ng-tns-c2638821912-677 ng-star-inserted"><!---->
             <div class="text-2xl font-semibold leading-tight ng-tns-c2638821912-677 ng-star-inserted">Detale
               kampanii</div>
-            <div class="mt-4 ng-tns-c2638821912-677 ng-star-inserted">Lorem ipsum dolor sit amet, consectetur
-              adipiscing elit. Duis placerat, odio nec pellentesque consectetur, libero ligula ultricies diam,
-              a vehicula orci ipsum at ligula. Fusce vulputate, dolor in laoreet egestas, eros ex semper
-              tortor, eu euismod arcu risus vitae urna. Donec porta, metus quis elementum elementum, augue
-              diam mollis orci, nec bibendum quam nulla feugiat nisl. Nam dictum posuere turpis, at mattis
-              nibh finibus vel. Donec consequat gravida leo non laoreet. Morbi placerat imperdiet tristique.
-              Fusce ut arcu ac enim posuere aliquam.
-
-              Sed sodales facilisis elementum. Integer sollicitudin ornare cursus. Mauris tempus, risus ut
-              ultrices malesuada, arcu tortor congue ante, vel malesuada tellus ante sit amet velit. Phasellus
-              feugiat fringilla vehicula. In at ultricies ante. Aenean euismod accumsan elementum. Vestibulum
-              a nisi dui. Aliquam et nibh quam. Proin lacinia tincidunt turpis a lobortis. In vitae massa
-              porttitor, accumsan metus non, efficitur tortor. Proin aliquam dapibus massa, a aliquet massa.
-              Fusce maximus erat odio. Nulla dictum venenatis nisi, vitae suscipit lectus interdum ac. Etiam
-              dolor sem, faucibus et odio ut, imperdiet fermentum lectus. Nunc porttitor, nisl et congue
-              iaculis, sem leo lobortis enim, ut dignissim metus ipsum nec erat.
-
-              Nulla pellentesque risus sit amet ante feugiat eleifend. Sed mollis eleifend lacus, nec tempus
-              nibh ullamcorper a. Praesent elementum urna et nisl eleifend congue. Suspendisse quis hendrerit
-              urna. Suspendisse rhoncus, ligula ut fermentum vulputate, quam justo pretium lorem, vitae
-              dapibus urna dolor at magna. Donec viverra, magna ac facilisis ultricies, turpis mi faucibus
-              lectus, sit amet tempus ipsum sem sit amet mauris. Proin ligula nisi, elementum pulvinar maximus
-              eu, semper ac nisl. Etiam venenatis semper quam, vel pellentesque ex tincidunt ut. Donec non
-              pretium sapien. Proin mi arcu, ultricies vitae arcu sed, vehicula laoreet arcu.
-
-              <br><br>Tutaj jest opis ktory wpisuje sobie firma ktora chce sie reklamowac u nas
+            <div class="mt-4 ng-tns-c2638821912-677 ng-star-inserted">
+              <textarea style="height: 500px; width: 400px"
+                class="bg-transparent custom-textarea overflow-hidden"
+                [spellcheck]="'false'"
+                [value]="list.title"
+                (focusout)="updateListTitle($event)"
+                (keydown.enter)="listTitleInput.blur()"
+                (input)="autoResize($event)"
+                #listTitleInput
+            ></textarea>
             </div><!----><!---->
           </fuse-card></div>
       </div>
