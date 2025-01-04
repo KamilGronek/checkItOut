@@ -17,7 +17,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { Influencer } from 'app/services/influencer/Influencer';
+import { Influencer, InfluencerUserResponse } from 'app/services/influencer/Influencer';
 import { InfluencerResponse } from 'app/services/influencer/Influencer';
 import { MatSelect } from '@angular/material/select';
 import { NgApexchartsModule } from 'ng-apexcharts';
@@ -126,9 +126,9 @@ export class newInfluencersListComponent
 
     editUserFormGroup: UntypedFormGroup;
 
-    influencerList: Influencer[] = [];
+    influencerList: InfluencerUser[] = [];
     InfluencerResponse: { Influencer: any };
-    dataSource: MatTableDataSource<Influencer>;
+    dataSource: MatTableDataSource<InfluencerUser>;
 
     resInput: any;
     form: FormGroup;
@@ -228,7 +228,7 @@ export class newInfluencersListComponent
     ngAfterViewInit(): void {
         if (this.dataSource) this.dataSource.paginator = this.paginator;
 
-        this.dataSource = new MatTableDataSource<Influencer>(
+        this.dataSource = new MatTableDataSource<InfluencerUser>(
             this.influencerList
         );
     }
@@ -314,7 +314,7 @@ export class newInfluencersListComponent
                 this.lastName
             )
             .subscribe({
-                next: (response: InfluencerResponse) => {
+                next: (response: InfluencerUserResponse) => {
                     this.length = response.page.totalElements;
                     this.pageIndex = response.page.number;
                     this.paginator.length = response.page.totalElements;
@@ -376,7 +376,7 @@ export class newInfluencersListComponent
         return item.id || index;
     }
 
-    sendToInluencer(influencerId: number): void {
+    sendToInluencer(influencerUserId: number): void {
         const instagramId =
             this.editUserFormGroup.get('instagramId').value;
         const firstName = this.editUserFormGroup.get('firstName').value;
@@ -391,9 +391,9 @@ export class newInfluencersListComponent
             this.editUserFormGroup.get('accountStatus').value
         const updatedAccountType =
             this.editUserFormGroup.get('instagramAccountType').value;
-        const influencerToUpdate = this.influencerList.find(
-            (influencer) => influencer.id === influencerId
-        );
+        const influencerToUpdate = this.dataSource.data.find(
+            (influencer) => influencer.id === influencerUserId
+        ).influencer;
 
         this.confrimEditionInfo = true;
 
@@ -411,14 +411,12 @@ export class newInfluencersListComponent
         };
 
         this._influencerService
-            .updateNoteFromAdmin(influencerUpdate, influencerId)
+            .updateNoteFromAdmin(influencerUpdate, influencerUserId)
             .subscribe((updatedInfluencer) => {
-                updatedInfluencer.accountStatus = updatedInfluencer.accountStatus;
-                updatedInfluencer.instagramAccountType = updatedInfluencer.instagramAccountType;
                 const idToUpdate: number = this.dataSource.data.findIndex(
                     (influ) => influ.id === updatedInfluencer.id
                 );
-                this.dataSource.data[idToUpdate] = updatedInfluencer;
+                this.dataSource.data[idToUpdate].influencer = updatedInfluencer;
                 this.dataSource._updateChangeSubscription();
                 this.changeDetectorRefs.detach();
                 this.fillEditForm();

@@ -2,7 +2,7 @@ import { Influencer } from "app/services/influencer/Influencer"
 
 export interface InfluencerUser
 {
-    id: string;
+    id: number;
     firebaseUserId: string;
     userType: string;
     email: string;

@@ -3,13 +3,14 @@ import { Injectable } from '@angular/core';
 
 import { Observable, of } from 'rxjs';
 
-import { Influencer } from './Influencer';
+import { Influencer, InfluencerUserResponse } from './Influencer';
 import { InfluencerResponse } from './Influencer';
 import { City } from './Influencer';
 // import { TypeAccount } from './Influencer';
 // import { MessageToInfluenser } from './Influencer';
 import { AuthService } from 'app/core/auth/auth.service';
 import { BehaviorSubject } from 'rxjs';
+import { InfluencerUser } from 'app/core/influencerUser/InfluencerUser.types';
 
 @Injectable({
     providedIn: 'root',
@@ -83,7 +84,7 @@ export class InfluencerService {
 
     //=====================================================================
 
-    private apiUrl: string = 'http://localhost:8080/user';
+    private apiUrl: string = 'http://localhost:8080';
 
     private isDisabled = new BehaviorSubject<boolean>(false);
 
@@ -106,7 +107,7 @@ export class InfluencerService {
     }
 
     getInfluencerList(): Observable<Influencer[]> {
-        return this.http.get<Influencer[]>(this.apiUrl + '/list');
+        return this.http.get<Influencer[]>(this.apiUrl + "/user" + '/list');
     }
 
     getInfluencerCityList(): Observable<City[]> {
@@ -174,7 +175,7 @@ export class InfluencerService {
 
     updateNoteFromAdmin(influencer: Influencer, id: number) {
         return this.http.put<Influencer>(
-            this.apiUrl + `/${id}`,
+            this.apiUrl + "/influencer" + `/${id}`,
             influencer,
             this.httpOptions
         );
@@ -192,15 +193,15 @@ export class InfluencerService {
         instagramAccountType: string,
         firstName: string,
         lastName: string
-    ): Observable<InfluencerResponse> {
+    ): Observable<InfluencerUserResponse> {
         const url =
-            `${this.apiUrl}/paged?page=${pageIndex}&size=${pageSize}&sort=${sortBy},${direction}&firstName=${firstName}&lastName=${lastName}` +
+            `${this.apiUrl}/user/paged?page=${pageIndex}&size=${pageSize}&sort=${sortBy},${direction}&firstName=${firstName}&lastName=${lastName}` +
             (statusInflu ? `&accountStatus=${statusInflu}` : '') +
             (instagramAccountType
                 ? `&instagramAccountType=${instagramAccountType}`
                 : '');
 
-        return this.http.get<InfluencerResponse>(url);
+        return this.http.get<InfluencerUserResponse>(url);
     }
 
     getInfluencerUser() {
