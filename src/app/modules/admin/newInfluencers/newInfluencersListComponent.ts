@@ -198,8 +198,6 @@ export class newInfluencersListComponent
     filteredStatus: string[] = [];
     influencerStatuses: any;
 
-    // typeStatus: string[] = ['Walidowany', 'Aktywny', 'Nieaktywny'];
-    // typeAccountOptions: string[] = ['Publiczne', 'Niepubliczne', 'NA'];
     typeAccountOptions: string[];
     typeStatus: string[];
 
