@@ -1,13 +1,9 @@
-<div class="snackbar-content" [ngClass]="data.type">
-    <ng-container *ngIf="data.type === 'success'">
-        <mat-icon class="first-icon">check_circle</mat-icon>
-    </ng-container>
-    <ng-container *ngIf="data.type === 'failure'">
-        <mat-icon class="first-icon">error</mat-icon>
-    </ng-container>
+<fuse-alert *ngIf="data.type === 'success'" [appearance]="'soft'" [dismissible]="true" [dismissed]="false"
+    [name]="'alertBox1'" [type]="'success'">
+    {{data.message}}
+</fuse-alert>
 
-    <div class="message">{{ data.message }}</div>
-    <button class="close" (click)="data.dismiss()">
-        <mat-icon>close</mat-icon>
-    </button>
-</div>
+<fuse-alert *ngIf="data.type === 'failure'" [appearance]="'soft'" [dismissible]="true" [dismissed]="false"
+    [name]="'alertBox1'" [type]="'error'">
+    {{data.message}}
+</fuse-alert>
