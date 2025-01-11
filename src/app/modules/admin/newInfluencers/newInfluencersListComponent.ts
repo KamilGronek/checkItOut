@@ -52,6 +52,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { PageEvent } from '@angular/material/paginator';
 import { User } from 'app/core/user/user.types';
 import { InfluencerUser } from 'app/core/influencerUser/InfluencerUser.types';
+import { user } from '@angular/fire/auth';
 
 @Component({
     selector: 'newInfluencers',
@@ -376,56 +377,47 @@ export class newInfluencersListComponent
         return item.id || index;
     }
 
-    sendToInluencer(influencerUserId: number): void {
-        const instagramId =
-            this.editUserFormGroup.get('instagramId').value;
-        const firstName = this.editUserFormGroup.get('firstName').value;
-        const lastName = this.editUserFormGroup.get('lastName').value;
-        const email = this.editUserFormGroup.get('email').value;
-        const city = this.editUserFormGroup.get('city').value;
-        const followersAmount =
-            this.editUserFormGroup.get('followersAmount').value;
-        const updatedNote =
-            this.editUserFormGroup.get('noteFromAdmin').value;
-        const updatedStatus =
-            this.editUserFormGroup.get('accountStatus').value
-        const updatedAccountType =
-            this.editUserFormGroup.get('instagramAccountType').value;
-        const influencerToUpdate = this.dataSource.data.find(
-            (influencer) => influencer.id === influencerUserId
-        ).influencer;
-
-        this.confrimEditionInfo = true;
-
-        const influencerUpdate = {
-            ...influencerToUpdate,
-            instagramId: instagramId,
-            firstName: firstName,
-            lastName: lastName,
-            email: email,
-            city: city,
-            followersAmount: followersAmount,
-            noteFromAdmin: updatedNote,
-            accountStatus: updatedStatus,
-            instagramAccountType: updatedAccountType,
-        };
-
+    sendToInluencer(userIdToUpdate: number): void {
         this._influencerService
-            .updateNoteFromAdmin(influencerUpdate, influencerUserId)
-            .subscribe((updatedInfluencer) => {
+            .updateInfluencerUser(this.getUserToUpdate(userIdToUpdate), userIdToUpdate)
+            .subscribe((updatedUser) => {
                 const idToUpdate: number = this.dataSource.data.findIndex(
-                    (influ) => influ.id === updatedInfluencer.id
+                    (user) => user.id === updatedUser.id
                 );
-                this.dataSource.data[idToUpdate].influencer = updatedInfluencer;
-                this.dataSource._updateChangeSubscription();
-                this.changeDetectorRefs.detach();
+                this.dataSource.data[idToUpdate].accountStatus = updatedUser.accountStatus;
+                this.dataSource.data[idToUpdate].influencer = updatedUser.influencer;
                 this.fillEditForm();
-                this.changeDetectorRefs.markForCheck();
-                this.changeDetectorRefs.reattach();
             });
 
         const shouldDisable = true;
         this.buttonStateService.setDisabledState(shouldDisable);
+    }
+
+    getUserToUpdate(userIdToUpdate: number): InfluencerUser {
+        const userToUpdate = this.dataSource.data.find(
+            (user) => user.id === userIdToUpdate
+        );
+
+        let updatedUser: InfluencerUser = {
+            ...userToUpdate,
+            accountStatus: this.editUserFormGroup.get('accountStatus').value,
+            email: this.editUserFormGroup.get('email').value,
+            firstName: this.editUserFormGroup.get('firstName').value,
+            lastName: this.editUserFormGroup.get('lastName').value
+        }
+
+        updatedUser.influencer.instagramAccountType = 
+            this.editUserFormGroup.get('instagramAccountType').value;
+        updatedUser.influencer.city = 
+            this.editUserFormGroup.get('city').value;
+        updatedUser.influencer.followersAmount = 
+            this.editUserFormGroup.get('followersAmount').value;
+        updatedUser.influencer.noteFromAdmin = 
+            this.editUserFormGroup.get('noteFromAdmin').value;
+        updatedUser.influencer.instagramId = 
+            this.editUserFormGroup.get('instagramId').value;
+
+        return updatedUser;
     }
 
     onTypeAccountChange(event: MatSelectChange): void {
