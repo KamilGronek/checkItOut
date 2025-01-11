@@ -19,6 +19,8 @@ export class SnackbarService {
                 },
                 duration: 3000,
                 panelClass: 'snackbar-container',
+                verticalPosition: 'top',
+                horizontalPosition: 'right',
             }
         );
     }
@@ -34,6 +36,8 @@ export class SnackbarService {
                 },
                 duration: 3000,
                 panelClass: 'snackbar-container',
+                verticalPosition: 'top',
+                horizontalPosition: 'right',
             }
         );
     }

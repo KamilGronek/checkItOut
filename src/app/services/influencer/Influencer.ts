@@ -1,5 +1,17 @@
+import { InfluencerUser } from "app/core/influencerUser/InfluencerUser.types";
+
 export interface InfluencerResponse {
     content: Influencer[];
+    page: {
+        size: number;
+        number: number;
+        totalElements: number;
+        totalPages: number;
+    };
+}
+
+export interface InfluencerUserResponse {
+    content: InfluencerUser[];
     page: {
         size: number;
         number: number;
