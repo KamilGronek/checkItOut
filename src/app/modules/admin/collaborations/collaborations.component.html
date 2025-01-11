@@ -2,39 +2,68 @@
 >
       <div class="flex flex-0 flex-col border-b px-6 py-8 sm:flex-row sm:items-center md:px-8 justify-between">
         <div class="text-4xl font-extrabold tracking-tight">Współprace do podjęcia</div>
+        <form class="mr-4 px-6 flex flex-row gap-4" style="width: 600px">
+            <mat-form-field class="w-full ">
+                <mat-label>Kolumna:</mat-label>
+                <mat-select [value]="selectedFilter" (selectionChange)="onSearchSelectChange($event)">
+                    <mat-option *ngFor="let field of fieldOptions" [value]="field">
+                        {{ field }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="w-full">
+                <mat-label>Wartość:</mat-label>
+
+                <input matInput 
+                    [(value)]="searchValue" #textItem
+                    (input)="onSearchInputChange(textItem.value)" 
+                />
+            </mat-form-field>
+        </form>  
         <button 
-        class="px-3"
-        mat-button
-        [color]="'primary'"
-        (click)="addCollaboration()">
+          class="px-3"
+          mat-button
+          [color]="'primary'"
+          (click)="addCollaboration()">
           Dodaj współpracę
         </button>
       </div>
     <div class="flex-auto p-6 sm:p-10">
       <div class="-m-4 flex w-full max-w-400 flex-wrap items-start">
+        
+        
         <fuse-card 
         style="margin: 16px;"
-        *ngFor="let item of influencerList" class="filter-article filter-interactive flex w-full max-w-80 flex-col"
+        *ngFor="let item of collaborationList" class="filter-article filter-interactive flex w-full max-w-80 flex-col"
                 [flippable]="true"
                 [face]="'front'"
                 #flippableCard01="fuseCard"
             >
                 <ng-container fuseCardFront>
-                    <img  [src]="item.images"
+
+                    <img 
+                    *ngIf="item.company.imageUrl"
+                    [src]="item.company.imageUrl"
                         class="object-cover"
                         alt="Card cover image"
                     />
                     <div class="m-8 mb-4">
                         <div class="text-2xl font-semibold leading-tight">
-                          {{ item.firstName }}
+                          {{ item.name }}
                         </div>
                         <a class="whitespace-nowrap text-primary-500">
-                          {{ item.instagramId }}
+                          {{ item.city }}
                         </a>
                         <div class="mt-4">
-                            From rocky mountains to crystal clear lakes, there
-                            are the places you must see and enjoy.
+                            {{item.title}}
+                            <!-- From rocky mountains to crystal clear lakes, there
+                            are the places you must see and enjoy. -->
                         </div>
+                        <div class="mt-4">
+                          {{item.details}}
+                      </div>
+                        
                         <div class="-mx-3 mt-3">
                           <button 
                           class="px-3"
@@ -43,61 +72,19 @@
                           (click)="goToDetails(item.id)">
                             Szczegóły współpracy
                           </button>
-                            <!-- <button
-                                class="px-3"
-                                mat-button
-                                [color]="'primary'"
-                                (click)="
-                                    flippableCard01.face =
-                                        flippableCard01.face === 'front'
-                                            ? 'back'
-                                            : 'front'
-                                "
-                            >
-                                Read More
-                            </button> -->
                         </div>
                     </div>
                 </ng-container>
-                <!-- <ng-container fuseCardBack>
-                    <div class="m-4 flex flex-auto flex-col">
-                        <button
-                            class="ml-1.5"
-                            mat-icon-button
-                            (click)="
-                                flippableCard01.face =
-                                    flippableCard01.face === 'front'
-                                        ? 'back'
-                                        : 'front'
-                            "
-                        >
-                            <mat-icon
-                                [svgIcon]="'heroicons_outline:arrow-long-left'"
-                            ></mat-icon>
-                        </button>
-                        <div class="m-4 mt-3">
-                            <div class="text-2xl font-semibold leading-tight">
-                                Most beautiful and quite places to see
-                            </div>
-                            <div class="mt-4">
-                                From rocky mountains to crystal clear lakes,
-                                these are the places you must see and enjoy. You
-                                can bring your own food and have a little picnic
-                                on top of the amazing grasslands.
-                            </div>
-                            <div class="mt-4">
-                                From rocky mountains to crystal clear lakes,
-                                these are the places you must see and enjoy. You
-                                can bring your own food and have a little picnic
-                                on top of the amazing grasslands.
-                            </div>
-                        </div>
-                    </div>
-                </ng-container> -->
         </fuse-card>
       </div>
     </div>
-        
-      <!-- </div> -->
-       <!-- </div> -->
+    <div class="flex mb-10">
+        <mat-paginator class="demo-paginator" (page)="handlePageEvent($event)" [length]="length"
+            [pageSize]="pageSize" [disabled]="disabled" [showFirstLastButtons]="showFirstLastButtons"
+            [pageSizeOptions]="
+                showPageSizeOptions ? pageSizeOptions : []
+            " [hidePageSize]="hidePageSize" [pageIndex]="pageIndex" aria-label="Wybierz strone">
+        </mat-paginator>
+        <label class="pageNr">Strona nr: {{ pageIndex }}</label>
+    </div>
 </div>

@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 // import { Influencer } from './Influencer';
 import { Company } from './Company';
 import { CompanyResponse } from './Company';
-import { City } from './Influencer';
+import { City } from '../influencer/Influencer';
 import { AuthService } from 'app/core/auth/auth.service';
 import { BehaviorSubject } from 'rxjs';
 

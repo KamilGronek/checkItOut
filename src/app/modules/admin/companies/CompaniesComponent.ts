@@ -18,13 +18,13 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { Company } from 'app/services/influencer/Company';
-import { CompanyResponse } from 'app/services/influencer/Company';
+import { Company } from 'app/services/company/Company';
+import { CompanyResponse } from 'app/services/company/Company';
 
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { Subject } from 'rxjs';
 
-import { CompanyService } from 'app/services/influencer/company.service';
+import { CompanyService } from 'app/services/company/company.service';
 
 import {
     FormGroup,
