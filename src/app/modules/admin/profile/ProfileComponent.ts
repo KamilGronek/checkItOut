@@ -48,6 +48,8 @@ import { AuthService } from 'app/core/auth/auth.service';
 import { MatSelectModule, MatSelectChange } from '@angular/material/select';
 import { HttpEvent, HttpResponse } from '@angular/common/http';
 import { InfluencerUser } from 'app/core/influencerUser/InfluencerUser.types';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SnackbarService } from 'app/services/snackbar/snackbar.service';
 
 @Component({
     selector: 'profile',
@@ -102,6 +104,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     editformLaunched: boolean = false;
     idOfEditedUser: number;
     flashMessage: 'success' | 'error' | null = null;
+    
 
     influencerList: Influencer[];
     influencerUser: InfluencerUser;
@@ -152,12 +155,14 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     typeAccountOptions: string[] = ["Publiczne", "Niepubliczne", "NA"];
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
+        private _snackBar = inject(MatSnackBar);
 
     constructor(
         private _influencerService: InfluencerService,
         private _formBuilder: UntypedFormBuilder,
         private authService: AuthService,
-        private fb: FormBuilder
+        private fb: FormBuilder,
+        private snackbarService: SnackbarService
     ) {
         this.form = this.fb.group({
             city: ['', Validators.required],
@@ -256,13 +261,14 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             .subscribe({
                 next: (user) => {
                     this.setStatusOfUser(user.accountStatus);
+                    this.snackbarService.showSuccess('Edycja danych użytkownika zakończona powodzeniem!');
                 },
                 error: (error) => {
                     console.error(
                         'Error with influencer update:',
                         error.error.message
                     );
-                    this.errorMessage = 'Coś poszło nie tak';
+                    this.snackbarService.showFailure('Coś poszło nie tak');
                     this.error500 = true;
                 },
             });
@@ -305,6 +311,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                 });
 
                 this.setStatusOfUser(this.influencerUser.accountStatus);
+                this.snackbarService.showSuccess('Udało się utworzyć konto!');
             },
             error: (error) => {
                 console.error(
@@ -312,7 +319,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                     error.error.message
                 );
 
-                this.errorMessage = 'Coś poszło nie tak';
+                this.snackbarService.showFailure('Coś poszło nie tak');
                 this.error500 = true;
             },
         });
@@ -340,6 +347,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                 });
 
                 this.setStatusOfUser(this.influencerUser.accountStatus);
+                this.snackbarService.showSuccess('Jesteś zalogowany!');
             },
             error: (error: HttpResponse<InfluencerUser>) => {
                 console.error(error);
@@ -351,6 +359,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.editInfluencerFormGroup.patchValue({
                     email: this.authService.getUserFromToken().email
                 });
+                this.snackbarService.showFailure('Coś poszło nie tak');
             }
         });
     }

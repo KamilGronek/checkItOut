@@ -9,6 +9,7 @@ import {
     OnInit,
     ViewChild,
     ViewEncapsulation,
+    inject,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
@@ -18,8 +19,6 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Influencer, InfluencerUserResponse } from 'app/services/influencer/Influencer';
-import { InfluencerResponse } from 'app/services/influencer/Influencer';
-import { MatSelect } from '@angular/material/select';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { Subject } from 'rxjs';
 
@@ -50,9 +49,9 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatPaginator } from '@angular/material/paginator';
 
 import { PageEvent } from '@angular/material/paginator';
-import { User } from 'app/core/user/user.types';
 import { InfluencerUser } from 'app/core/influencerUser/InfluencerUser.types';
-import { user } from '@angular/fire/auth';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SnackbarService } from 'app/services/snackbar/snackbar.service';
 
 @Component({
     selector: 'newInfluencers',
@@ -204,12 +203,15 @@ export class newInfluencersListComponent
     typeStatus: string[] = ['Walidowany', 'Aktywny', 'Nieaktywny'];
     typeAccountOptions: string[] = ['Publiczne', 'Niepubliczne', 'NA'];
 
+    private _snackBar = inject(MatSnackBar);
+
     constructor(
         private _influencerService: InfluencerService,
         private _formBuilder: UntypedFormBuilder,
         private buttonStateService: InfluencerService,
         private changeDetectorRefs: ChangeDetectorRef,
-        private fb: FormBuilder
+        private fb: FormBuilder,
+        private snackbarService: SnackbarService
     ) {
         this.editUserFormGroup = this.fb.group({
             id: ['', [Validators.required]],
@@ -323,9 +325,11 @@ export class newInfluencersListComponent
                     this.paginator.pageSize = response.page.size;
 
                     this.dataSource.data = response.content;
+                    this.snackbarService.showSuccess('Dane użytkowników pobrane');
                 },
                 error: (error) => {
                     console.error('Error fetching influencer list', error);
+                    this.snackbarService.showFailure("Coś poszło nie tak")
                 },
             });
     }
@@ -387,6 +391,7 @@ export class newInfluencersListComponent
                 this.dataSource.data[idToUpdate].accountStatus = updatedUser.accountStatus;
                 this.dataSource.data[idToUpdate].influencer = updatedUser.influencer;
                 this.fillEditForm();
+                this.snackbarService.showSuccess('Edycja danych użytkownika zakończona powodzeniem');
             });
 
         const shouldDisable = true;

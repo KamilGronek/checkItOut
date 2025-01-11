@@ -46,23 +46,20 @@ tr.example-element-row:not(.example-expanded-row):active {
     opacity: 0.5;
 }
 
-.text-area{
+.text-area {
     width: 500px;
 }
 
-
 .info {
     display: flex;
-    justify-content: flex-end
+    justify-content: flex-end;
 }
 
-.info b{
+.info b {
     margin-left: 10px;
     margin-top: 10px;
     margin-bottom: 20px;
 }
-
-
 
 .info-button {
     display: flex;
@@ -72,8 +69,6 @@ tr.example-element-row:not(.example-expanded-row):active {
     margin-top: 20px;
     margin-left: 20px;
 }
-
-
 
 .container {
     display: flex;
@@ -85,23 +80,22 @@ tr.example-element-row:not(.example-expanded-row):active {
     color: white;
 }
 
-
 .custom-green-button {
     background-color: lightgreen;
     color: white;
 }
 
-.textWarning{
+.textWarning {
     color: red;
     padding-bottom: 20px;
 }
 
-.textConfirm{
+.textConfirm {
     color: lightgreen;
     padding-bottom: 20px;
 }
 
-  .text-green {
+.text-green {
     background-color: lightgreen;
 }
 
@@ -113,10 +107,10 @@ tr.example-element-row:not(.example-expanded-row):active {
     background-color: yellow;
 }
 
-.displayNoneActive{
+.displayNoneActive {
     display: none;
 }
-.displayNoneInActive{
+.displayNoneInActive {
     display: none;
 }
 
@@ -126,18 +120,16 @@ tr.example-element-row:not(.example-expanded-row):active {
     max-width: 200px;
 }
 
-.pageNr{
+.pageNr {
     margin-top: 25px;
     font-size: 12px;
 }
 
-.recordNr{
+.recordNr {
     margin-top: 25px;
     font-size: 12px;
     margin-left: 20px;
 }
-
-
 
 @media (max-width: 1500px) {
     table {
