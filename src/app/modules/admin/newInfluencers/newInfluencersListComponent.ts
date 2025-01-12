@@ -9,6 +9,7 @@ import {
     OnInit,
     ViewChild,
     ViewEncapsulation,
+    inject,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
@@ -17,9 +18,10 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { Influencer } from 'app/services/influencer/Influencer';
-import { InfluencerResponse } from 'app/services/influencer/Influencer';
-import { MatSelect } from '@angular/material/select';
+import {
+    Influencer,
+    InfluencerUserResponse,
+} from 'app/services/influencer/Influencer';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { Subject } from 'rxjs';
 
@@ -50,6 +52,9 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatPaginator } from '@angular/material/paginator';
 
 import { PageEvent } from '@angular/material/paginator';
+import { InfluencerUser } from 'app/core/influencerUser/InfluencerUser.types';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SnackbarService } from 'app/services/snackbar/snackbar.service';
 
 @Component({
     selector: 'newInfluencers',
@@ -115,18 +120,18 @@ export class newInfluencersListComponent
         ...this.influencersTableColumns,
         'expand',
     ];
-    expandedInfluencer: Influencer | null;
+    expandedUser: InfluencerUser | null;
 
     formLaunched: boolean = false;
     editformLaunched: boolean = false;
     idOfEditedUser: number;
     flashMessage: 'success' | 'error' | null = null;
 
-    editInfluencerFormGroup: UntypedFormGroup;
+    editUserFormGroup: UntypedFormGroup;
 
-    influencerList: Influencer[] = [];
+    influencerList: InfluencerUser[] = [];
     InfluencerResponse: { Influencer: any };
-    dataSource: MatTableDataSource<Influencer>;
+    dataSource: MatTableDataSource<InfluencerUser>;
 
     resInput: any;
     form: FormGroup;
@@ -201,14 +206,17 @@ export class newInfluencersListComponent
     typeAccountOptions: string[];
     typeStatus: string[];
 
+    private _snackBar = inject(MatSnackBar);
+
     constructor(
         private _influencerService: InfluencerService,
         private _formBuilder: UntypedFormBuilder,
         // private buttonStateService: InfluencerService,
         private changeDetectorRefs: ChangeDetectorRef,
-        private fb: FormBuilder
+        private fb: FormBuilder,
+        private snackbarService: SnackbarService
     ) {
-        this.editInfluencerFormGroup = this.fb.group({
+        this.editUserFormGroup = this.fb.group({
             id: ['', [Validators.required]],
             lastUpdateTime: ['', [Validators.required]],
             firstName: ['', [Validators.required]],
@@ -226,7 +234,7 @@ export class newInfluencersListComponent
     ngAfterViewInit(): void {
         if (this.dataSource) this.dataSource.paginator = this.paginator;
 
-        this.dataSource = new MatTableDataSource<Influencer>(
+        this.dataSource = new MatTableDataSource<InfluencerUser>(
             this.influencerList
         );
     }
@@ -330,7 +338,7 @@ export class newInfluencersListComponent
                 this.lastName
             )
             .subscribe({
-                next: (response: InfluencerResponse) => {
+                next: (response: InfluencerUserResponse) => {
                     this.length = response.page.totalElements;
                     this.pageIndex = response.page.number;
                     this.paginator.length = response.page.totalElements;
@@ -338,9 +346,13 @@ export class newInfluencersListComponent
                     this.paginator.pageSize = response.page.size;
 
                     this.dataSource.data = response.content;
+                    this.snackbarService.showSuccess(
+                        'Dane użytkowników pobrane'
+                    );
                 },
                 error: (error) => {
                     console.error('Error fetching influencer list', error);
+                    this.snackbarService.showFailure('Coś poszło nie tak');
                 },
             });
     }
@@ -392,65 +404,54 @@ export class newInfluencersListComponent
         return item.id || index;
     }
 
-    sendToInluencer(influencerId: number): void {
-        const instagramId =
-            this.editInfluencerFormGroup.get('instagramId').value;
-        const firstName = this.editInfluencerFormGroup.get('firstName').value;
-        const lastName = this.editInfluencerFormGroup.get('lastName').value;
-        const email = this.editInfluencerFormGroup.get('email').value;
-        const city = this.editInfluencerFormGroup.get('city').value;
-        const followersAmount =
-            this.editInfluencerFormGroup.get('followersAmount').value;
-        const updatedNote =
-            this.editInfluencerFormGroup.get('noteFromAdmin').value;
-        const updatedStatus =
-            this.editInfluencerFormGroup.get('accountStatus').value;
-        const updatedAccountType = this.editInfluencerFormGroup.get(
-            'instagramAccountType'
-        ).value;
-
-        console.log('influencerList', this.influencerList);
-
-        const influencerToUpdate = this.influencerList.find(
-            (influencer) => influencer.id === influencerId
-        );
-
-        this.confrimEditionInfo = true;
-
-        const influencerUpdate = {
-            ...influencerToUpdate,
-            instagramId: instagramId,
-            firstName: firstName,
-            lastName: lastName,
-            email: email,
-            city: city,
-            followersAmount: followersAmount,
-            noteFromAdmin: updatedNote,
-            accountStatus: updatedStatus,
-            instagramAccountType: updatedAccountType,
-        };
-
-        console.log('influencerUpdate:', influencerUpdate);
-
+    sendToInluencer(userIdToUpdate: number): void {
         this._influencerService
-            .updateNoteFromAdmin(influencerUpdate, influencerId)
-            .subscribe((updatedInfluencer) => {
+            .updateInfluencerUser(
+                this.getUserToUpdate(userIdToUpdate),
+                userIdToUpdate
+            )
+            .subscribe((updatedUser) => {
                 const idToUpdate: number = this.dataSource.data.findIndex(
-                    (influ) => influ.id === updatedInfluencer.id
+                    (user) => user.id === updatedUser.id
                 );
-
-                console.log('idToUpdate:', idToUpdate);
-
-                this.dataSource.data[idToUpdate] = updatedInfluencer;
-                this.dataSource._updateChangeSubscription();
-                this.changeDetectorRefs.detach();
+                this.dataSource.data[idToUpdate].accountStatus =
+                    updatedUser.accountStatus;
+                this.dataSource.data[idToUpdate].influencer =
+                    updatedUser.influencer;
                 this.fillEditForm();
-                this.changeDetectorRefs.markForCheck();
-                this.changeDetectorRefs.reattach();
+                this.snackbarService.showSuccess(
+                    'Edycja danych użytkownika zakończona powodzeniem'
+                );
             });
 
         const shouldDisable = true;
-        this._influencerService.setDisabledState(shouldDisable);
+        // this.buttonStateService.setDisabledState(shouldDisable);
+    }
+
+    getUserToUpdate(userIdToUpdate: number): InfluencerUser {
+        const userToUpdate = this.dataSource.data.find(
+            (user) => user.id === userIdToUpdate
+        );
+
+        let updatedUser: InfluencerUser = {
+            ...userToUpdate,
+            accountStatus: this.editUserFormGroup.get('accountStatus').value,
+            email: this.editUserFormGroup.get('email').value,
+            firstName: this.editUserFormGroup.get('firstName').value,
+            lastName: this.editUserFormGroup.get('lastName').value,
+        };
+
+        updatedUser.influencer.instagramAccountType =
+            this.editUserFormGroup.get('instagramAccountType').value;
+        updatedUser.influencer.city = this.editUserFormGroup.get('city').value;
+        updatedUser.influencer.followersAmount =
+            this.editUserFormGroup.get('followersAmount').value;
+        updatedUser.influencer.noteFromAdmin =
+            this.editUserFormGroup.get('noteFromAdmin').value;
+        updatedUser.influencer.instagramId =
+            this.editUserFormGroup.get('instagramId').value;
+
+        return updatedUser;
     }
 
     onTypeAccountChange(event: MatSelectChange): void {
@@ -467,43 +468,43 @@ export class newInfluencersListComponent
         } else this.formLaunched = false;
     }
 
-    getExpandedInfluencer(): Influencer {
-        return this.expandedInfluencer;
+    getExpandedUser(): InfluencerUser {
+        return this.expandedUser;
     }
 
     fillEditForm(): void {
-        if (this.expandedInfluencer != null) {
-            this.editInfluencerFormGroup.controls['id'].setValue(
-                this.expandedInfluencer.id
+        if (this.expandedUser != null) {
+            this.editUserFormGroup.controls['id'].setValue(
+                this.expandedUser.influencer.id
             );
-            this.editInfluencerFormGroup.controls['firstName'].setValue(
-                this.expandedInfluencer.firstName
+            this.editUserFormGroup.controls['firstName'].setValue(
+                this.expandedUser.firstName
             );
-            this.editInfluencerFormGroup.controls['lastName'].setValue(
-                this.expandedInfluencer.lastName
+            this.editUserFormGroup.controls['lastName'].setValue(
+                this.expandedUser.lastName
             );
-            this.editInfluencerFormGroup.controls['email'].setValue(
-                this.expandedInfluencer.email
+            this.editUserFormGroup.controls['email'].setValue(
+                this.expandedUser.email
             );
-            this.editInfluencerFormGroup.controls['city'].setValue(
-                this.expandedInfluencer.city
+            this.editUserFormGroup.controls['city'].setValue(
+                this.expandedUser.influencer.city
             );
-            this.editInfluencerFormGroup.controls['instagramId'].setValue(
-                this.expandedInfluencer.instagramId
+            this.editUserFormGroup.controls['instagramId'].setValue(
+                this.expandedUser.influencer.instagramId
             );
-            this.editInfluencerFormGroup.controls['followersAmount'].setValue(
-                this.expandedInfluencer.followersAmount
+            this.editUserFormGroup.controls['followersAmount'].setValue(
+                this.expandedUser.influencer.followersAmount
             );
-            this.editInfluencerFormGroup.controls[
-                'instagramAccountType'
-            ].setValue(this.expandedInfluencer.instagramAccountType);
-            this.editInfluencerFormGroup.controls['accountStatus'].setValue(
-                this.expandedInfluencer.accountStatus
+            this.editUserFormGroup.controls['instagramAccountType'].setValue(
+                this.expandedUser.influencer.instagramAccountType
             );
-            this.editInfluencerFormGroup.controls['noteFromAdmin'].setValue(
-                this.expandedInfluencer.noteFromAdmin
+            this.editUserFormGroup.controls['accountStatus'].setValue(
+                this.expandedUser.accountStatus
             );
-            this.editInfluencerFormGroup.controls['id'].disable();
+            this.editUserFormGroup.controls['noteFromAdmin'].setValue(
+                this.expandedUser.influencer.noteFromAdmin
+            );
+            this.editUserFormGroup.controls['id'].disable();
         }
     }
 }

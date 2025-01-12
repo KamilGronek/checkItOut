@@ -1,11 +1,13 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { Influencer } from './Influencer';
+
+import { Influencer, InfluencerUserResponse } from './Influencer';
 import { InfluencerResponse } from './Influencer';
 import { City } from './Influencer';
 import { AuthService } from 'app/core/auth/auth.service';
 import { BehaviorSubject } from 'rxjs';
+import { InfluencerUser } from 'app/core/influencerUser/InfluencerUser.types';
 
 @Injectable({
     providedIn: 'root',
@@ -79,7 +81,7 @@ export class InfluencerService {
 
     //=====================================================================
 
-    private apiUrl: string = 'http://localhost:8080/influencer';
+    private apiUrl: string = 'http://localhost:8080';
 
     private isDisabled = new BehaviorSubject<boolean>(false);
 
@@ -126,7 +128,7 @@ export class InfluencerService {
     }
 
     getInfluencerList(): Observable<Influencer[]> {
-        return this.http.get<Influencer[]>(this.apiUrl + '/list');
+        return this.http.get<Influencer[]>(this.apiUrl + '/user' + '/list');
     }
 
     getInfluencerCityList(): Observable<City[]> {
@@ -157,14 +159,6 @@ export class InfluencerService {
         );
     }
 
-    // updateInfluencer(influencer: Influencer) {
-    //     return this.http.post<Influencer>(
-    //         this.apiUrl + '/update',
-    //         influencer,
-    //         this.httpOptions
-    //     );
-    // }
-
     getCollaborations() {
         return this.http.get('http://localhost:8080/collaborations');
     }
@@ -175,8 +169,12 @@ export class InfluencerService {
         );
     }
 
-    createAccountUserData(influencer: any) {
-        return this.http.post<any>(this.apiUrl, influencer, this.httpOptions);
+    createInfluencerUser(user: any) {
+        return this.http.post<InfluencerUser>(
+            this.apiUrl + '/user',
+            user,
+            this.httpOptions
+        );
     }
 
     updateInfluencer(
@@ -187,10 +185,10 @@ export class InfluencerService {
         return this.http.patch<Influencer>(url, influencer, this.httpOptions);
     }
 
-    updateNoteFromAdmin(influencer: Influencer, id: number) {
-        return this.http.put<Influencer>(
-            this.apiUrl + `/${id}`,
-            influencer,
+    updateInfluencerUser(influencerUser: InfluencerUser, id: number) {
+        return this.http.put<InfluencerUser>(
+            this.apiUrl + '/user' + `/${id}`,
+            influencerUser,
             this.httpOptions
         );
     }
@@ -204,44 +202,21 @@ export class InfluencerService {
         instagramAccountType: string,
         firstName: string,
         lastName: string
-    ): Observable<InfluencerResponse> {
+    ): Observable<InfluencerUserResponse> {
         const url =
-            `${this.apiUrl}/paged?page=${pageIndex}&size=${pageSize}&sort=${sortBy},${direction}&firstName=${firstName}&lastName=${lastName}` +
+            `${this.apiUrl}/user/paged?page=${pageIndex}&size=${pageSize}&sort=${sortBy},${direction}&firstName=${firstName}&lastName=${lastName}` +
             (statusInflu ? `&accountStatus=${statusInflu}` : '') +
             (instagramAccountType
                 ? `&instagramAccountType=${instagramAccountType}`
                 : '');
 
-        return this.http.get<InfluencerResponse>(url);
+        return this.http.get<InfluencerUserResponse>(url);
     }
 
     getInfluencerUser() {
         this.dataToken = this.authService.getDecodedToken();
-        return this.http.get<Influencer>(
-            this.apiUrl + `/user/${this.dataToken.sub}`
+        return this.http.get<InfluencerUser>(
+            this.apiUrl + `/user/user/${this.dataToken.sub}`
         );
     }
-
-    // updateInfluencerFollowers(influencerUpdateFollowers: any) {
-    //     return this.http.post(
-    //         this.apiUrl + '/changeFollowers',
-    //         influencerUpdateFollowers,
-    //         this.httpOptions
-    //     );
-    // }
-
-    // updateInfluencerStatus(influencerUpdateStatus: any) {
-    //     return this.http.post(
-    //         this.apiUrl + '/changeStatus',
-    //         influencerUpdateStatus,
-    //         this.httpOptions
-    //     );
-    // }
-
-    // deleteInfluencer(influencerId: any) {
-    //     return this.http.delete<Influencer>(
-    //         this.apiUrl + '/influencerId.id',
-    //         influencerId
-    //     );
-    // }
 }
