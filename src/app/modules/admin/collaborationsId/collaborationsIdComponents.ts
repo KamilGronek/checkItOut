@@ -84,6 +84,7 @@ export class CollaborationsIdComponent {
     id: number;
     influencerList: Influencer[];
     collaboration = {};
+    serviceType = {};
 
     card: any;
     cardForm: UntypedFormGroup;
@@ -93,6 +94,7 @@ export class CollaborationsIdComponent {
     };
 
     collaborationList: Collaboration[] = [];
+
     isLoading: boolean = true;
     error: string | null = null;
     configForm: UntypedFormGroup;

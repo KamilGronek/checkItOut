@@ -1,49 +1,34 @@
 import { CommonModule, CurrencyPipe, DatePipe, NgClass } from '@angular/common';
-
-import {
-    AfterViewInit,
-    ChangeDetectionStrategy,
-    ChangeDetectorRef,
-    Component,
-    inject,
-    OnDestroy,
-    OnInit,
-    ViewChild,
-    ViewChildren,
-    ViewEncapsulation,
-    ElementRef,
-    QueryList,
-} from '@angular/core';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 
 import { Router } from '@angular/router';
 
 import { Inject } from '@angular/core';
 
 import { MatCardModule } from '@angular/material/card';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-// import { Influencer } from 'app/services/influencer/Influencer';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
 import { CompanyService } from '../../../services/company/company.service';
 
 import { InfluencerService } from 'app/services/influencer/influencer.service';
 import { CollaborationService } from '../../../services/collaboration/collaboration.service';
 import { Collaboration } from '../../../services/collaboration/Collaboration';
 
+import { TypeService } from '../../../services/serviceType/serviceType.service';
+
 import { City } from 'app/services/influencer/Influencer';
-import { Company } from 'app/services/company/Company';
 
-import { FinanceService } from 'app/mock-api/dashboards/finance/finance.service';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
-import { ApexOptions, NgApexchartsModule } from 'ng-apexcharts';
-import { Subject, takeUntil } from 'rxjs';
+import { NgApexchartsModule } from 'ng-apexcharts';
+import { Subject } from 'rxjs';
 
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { DateTime } from 'luxon';
 
 import {
@@ -58,9 +43,14 @@ import { MatInputModule } from '@angular/material/input';
 import { FuseCardComponent } from '@fuse/components/card';
 import { ActivatedRoute } from '@angular/router';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 
 import { MatSelectModule, MatSelectChange } from '@angular/material/select';
+import { startWith, map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { AsyncPipe } from '@angular/common';
+import { MatDatepicker } from '@angular/material/datepicker';
 
 @Component({
     selector: 'newCollaboration',
@@ -88,6 +78,9 @@ import { MatSelectModule, MatSelectChange } from '@angular/material/select';
         FuseCardComponent,
         MatDatepickerModule,
         MatSelectModule,
+        MatCheckboxModule,
+        MatAutocompleteModule,
+        AsyncPipe,
     ],
     styleUrl: 'newCollaboration-list.styles.css',
 })
@@ -112,7 +105,6 @@ export class NewCollaborationComponent {
     };
 
     cityList: City[];
-    companyList: Company[];
     cityOptions: string[] = [];
 
     companyOptions: string[] = [];
@@ -124,19 +116,26 @@ export class NewCollaborationComponent {
     selectedCompany: string = '';
     selectedserviceType: string = '';
 
-    // companyOptions = [
-    //     { id: 1, name: 'Firma A' },
-    //     { id: 2, name: 'Firma B' },
-    //     { id: 3, name: 'Firma C' },
-    //     { id: 4, name: 'Firma D' },
-    //     { id: 5, name: 'Firma E' },
-    //     { id: 6, name: 'Firma F' },
-    // ];
-
     warning: boolean = false;
     isDisabled = false;
     configForm: UntypedFormGroup;
     companyId: number = 0;
+    // filteredCompanies = [];
+    searchTerm: string = '';
+
+    // form: FormGroup;
+
+    options = ['One', 'Two', 'Three'];
+    companyList = [];
+    serviceTypeList = [];
+
+    filteredCompanies!: Observable<string[]>;
+    filteredServiceTypes!: Observable<string[]>;
+
+    btnVisible = false;
+
+    @ViewChild('endDatePicker') endDatePicker: MatDatepicker<any>;
+
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     constructor(
@@ -146,9 +145,16 @@ export class NewCollaborationComponent {
         private _companyService: CompanyService,
         private _collaborationService: CollaborationService,
         private _influencerService: InfluencerService,
+        private _typeService: TypeService,
         private _formBuilder: UntypedFormBuilder,
-        private _fuseConfirmationService: FuseConfirmationService
+        private _fuseConfirmationService: FuseConfirmationService,
+        private _cdRef: ChangeDetectorRef
     ) {
+        // this.form = this.fb.group({
+        //     company: [''],
+        //     serviceType: [''],
+        // });
+
         this.editNewCollaborationFormGroup = this._formBuilder.group({
             name: ['', [Validators.required]],
             city: ['', [Validators.required]],
@@ -159,6 +165,7 @@ export class NewCollaborationComponent {
             serviceType: ['', [Validators.required]],
             startDate: ['', [Validators.required]],
             endDate: ['', [Validators.required]],
+            imageUrl: ['', [Validators.required]],
         });
         // this.cardForm = this.fb.group({
         //     startDate: [null],
@@ -172,6 +179,18 @@ export class NewCollaborationComponent {
     ngAfterViewInit(): void {}
 
     ngOnInit(): void {
+        this.editNewCollaborationFormGroup
+            .get('company')
+            ?.valueChanges.subscribe((value) => {
+                console.log('Company field value changed:', value);
+            });
+
+        this.editNewCollaborationFormGroup
+            .get('serviceType')
+            ?.valueChanges.subscribe((value) => {
+                console.log('Company field value changed:', value);
+            });
+
         this.configForm = this._formBuilder.group({
             title: 'Dodałeś nową wspołpracę',
             message:
@@ -202,10 +221,59 @@ export class NewCollaborationComponent {
             endDate: null,
         };
 
-        console.log(this.companyList);
+        console.log('companyList:', this.companyList);
 
         this.getCityList();
         this.getCompanyList();
+        this.getServiceTypeList();
+
+        this.filteredCompanies = this.editNewCollaborationFormGroup
+            .get('company')!
+            .valueChanges.pipe(
+                startWith(''),
+                map((value) => this._filterCompanies(value || ''))
+            );
+
+        this.filteredServiceTypes = this.editNewCollaborationFormGroup
+            .get('serviceType')!
+            .valueChanges.pipe(
+                startWith(''),
+                map((value) => this._filterServiceTypes(value || ''))
+            );
+    }
+
+    private _filterCompanies(value: string): string[] {
+        const filterValue = value.toLowerCase();
+
+        return this.companyList.filter((company) =>
+            company.name.toLowerCase().includes(filterValue)
+        );
+    }
+
+    private _filterServiceTypes(value: string): string[] {
+        const filterValue = value.toLowerCase();
+
+        return this.serviceTypeList.filter((serviceType) =>
+            serviceType.name.toLowerCase().includes(filterValue)
+        );
+    }
+
+    onCompanyChange(company: any): void {
+        this.editNewCollaborationFormGroup.get('company')?.setValue(company.id);
+    }
+
+    onServiceTypeChange(serviceType: any): void {
+        this.editNewCollaborationFormGroup
+            .get('serviceType')
+            ?.setValue(serviceType.id);
+    }
+
+    trackCompany(index: number, company: any): any {
+        return company.id;
+    }
+
+    trackCompany2(index: number, serviceType: any): any {
+        return serviceType.id;
     }
 
     createCollaboration() {
@@ -214,12 +282,15 @@ export class NewCollaborationComponent {
 
         console.log('collaboration:', collaboration);
 
+        collaboration.imageUrl = this.imageUrl.substring(5);
+
         if (
             collaboration.name == '' ||
             collaboration.requirements == '' ||
             collaboration.compensation == '' ||
             collaboration.startDate == '' ||
-            collaboration.endDate == ''
+            collaboration.endDate == '' ||
+            collaboration.imageUrl == ''
         ) {
             this.warning = true;
             console.warn('Nazwa nie może być pusta');
@@ -255,6 +326,7 @@ export class NewCollaborationComponent {
             serviceType: [''],
             startDate: [''],
             endDate: [''],
+            imageUrl: [''],
         });
 
         this._collaborationService
@@ -264,6 +336,8 @@ export class NewCollaborationComponent {
                     this.collaborationUser = collabo;
                     this.warning = false;
                     this.openConfirmationDialog();
+                    this.clearStartDate();
+                    this.clearEndDate();
                 },
                 error: (error) => {
                     console.error(
@@ -311,21 +385,30 @@ export class NewCollaborationComponent {
         });
     }
 
-    onCompanyChange(event: MatSelectChange): void {
-        this.selectedCompany = event.value;
+    private async getServiceTypeList(): Promise<void> {
+        this._typeService.getServiceTypeList().subscribe({
+            next: (response) => {
+                this.serviceTypeList = response;
+
+                console.log(this.serviceTypeList);
+            },
+            error: (error) => {
+                console.error('Error fetching influencer list', error);
+            },
+        });
     }
 
     onCityChange(event: MatSelectChange): void {
         this.selectedCity = event.value;
     }
 
-    onserviceTypeChange(event: MatSelectChange): void {
-        this.selectedserviceType = event.value;
+    // onserviceTypeChange(event: MatSelectChange): void {
+    //     this.selectedserviceType = event.value;
 
-        this.editNewCollaborationFormGroup.patchValue({
-            serviceType: this.selectedserviceType,
-        });
-    }
+    //     this.editNewCollaborationFormGroup.patchValue({
+    //         serviceType: this.selectedserviceType,
+    //     });
+    // }
 
     onFileSelected(event: Event): void {
         const input = event.target as HTMLInputElement;
@@ -336,6 +419,8 @@ export class NewCollaborationComponent {
 
             this.imageUrl = URL.createObjectURL(this.selectedFile);
         }
+
+        this.btnVisible = true;
     }
 
     goBackToMain(): void {
@@ -348,7 +433,6 @@ export class NewCollaborationComponent {
     }
 
     /**
-     * Focus on the given element to start editing the list title
      *
      * @param listTitleInput
      */
@@ -363,7 +447,6 @@ export class NewCollaborationComponent {
 
         const newTitle = element.value;
 
-        // If the title is empty...
         if (!newTitle || newTitle.trim() === '') {
             return;
         }
@@ -382,58 +465,26 @@ export class NewCollaborationComponent {
         );
     }
 
-    onDateSelected(): void {
+    startDateSelected(): void {
         const selectedDate =
             this.editNewCollaborationFormGroup.get('startDate')?.value;
         this.card.startDate = selectedDate;
-        console.log('Selected startdate:', this.card.startDate);
-
-        // if (this.card.startDate !== '') {
-        //     setTimeout(() => {
-        //         this.selectInput.open();
-        //     }, 0);
-        // }
+        this.endDatePicker.open();
     }
 
-    onDateSelected2(): void {
+    endDateSelected(): void {
         const selectedDate2 =
             this.editNewCollaborationFormGroup.get('endDate')?.value;
         this.card.endDate = selectedDate2;
-        console.log('Selected enddate:', this.card.endDate);
     }
 
-    clearDueDate(): void {
+    clearStartDate(): void {
         this.editNewCollaborationFormGroup.get('startDate')?.setValue(null);
         this.card.startDate = null;
-        console.log('Date cleared');
     }
 
-    clearDueDate2(): void {
+    clearEndDate(): void {
         this.editNewCollaborationFormGroup.get('endDate')?.setValue(null);
         this.card.endDate = null;
-        console.log('Date cleared');
     }
-
-    // fillEditForm(): void {
-    //     if (this.expandedInfluencer != null) {
-    //         this.editNewCollaborationFormGroup.controls['requirements'].setValue(
-    //             this.expandedInfluencer.requirements
-    //         );
-    //         this.editNewCollaborationFormGroup.controls['compensation'].setValue(
-    //             this.expandedInfluencer.compensation
-    //         );
-
-    //         this.editNewCollaborationFormGroup.controls['company'].setValue(
-    //             this.expandedInfluencer.company
-    //         );
-
-    //         this.editNewCollaborationFormGroup.controls['startDate'].setValue(
-    //             this.expandedInfluencer.startDate
-    //         );
-    //         this.editNewCollaborationFormGroup.controls['endDate'].setValue(
-    //             this.expandedInfluencer.endDate
-    //         );
-    //         this.editNewCollaborationFormGroup.controls['id'].disable();
-    //     }
-    // }
 }

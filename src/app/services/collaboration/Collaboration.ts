@@ -33,6 +33,7 @@ export interface Collaboration {
     createdTime: string;
     lastUpdateTime: string;
     updater: string;
+    imageUrl: string;
 }
 
 export interface CompanyCollaboration {

@@ -101,6 +101,7 @@ export class CollaborationsComponent
     res = '';
 
     collaborationList: Collaboration[];
+    blobImgCollaboration = [];
     collaborationUser: Collaboration;
     InfluencerResponse: { Collaboration: any };
 
@@ -160,6 +161,8 @@ export class CollaborationsComponent
 
     ngOnInit(): void {
         this.loadCollaboration(this.pageIndex);
+
+        console.log(this.collaborationList);
     }
 
     /**
@@ -193,7 +196,30 @@ export class CollaborationsComponent
                     this.paginator.pageSize = response.page.size;
 
                     this.collaborationList = response.content;
-                    console.log('response.content:', response.content);
+
+                    // this.blobImgCollaboration = this.collaborationList.map(
+                    //     (collaboration) => `blob:${collaboration.imageUrl}`
+                    // );
+                    // console.log(this.blobImgCollaboration);
+
+                    // this.collaborationList = this.collaborationList.map(
+                    //     (collaboration) => ({
+                    //         ...collaboration,
+                    //         imageUrl: `blob:${collaboration.imageUrl}`,
+                    //     })
+                    // );
+
+                    this.blobImgCollaboration = this.collaborationList.map(
+                        (collaboration) => {
+                            // Tworzenie obiektu Blob (jeśli collaboration.imageUrl zawiera dane obrazu)
+                            const blob = new Blob([collaboration.imageUrl], {
+                                type: 'image/jpeg',
+                            });
+                            return URL.createObjectURL(blob);
+                        }
+                    );
+
+                    console.log(this.blobImgCollaboration);
                 },
                 error: (error) => {
                     console.error('Error fetching influencer list', error);
