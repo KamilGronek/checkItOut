@@ -30,14 +30,12 @@ export class CollaborationService {
         pageSize: number,
         sortBy: string,
         direction: string,
-        // statusInflu: string,
         name: string,
         city: string,
         details: string,
         title: string
     ): Observable<CollaborationResponse> {
         const url = `${this.apiUrl}/paged?page=${pageIndex}&size=${pageSize}&sort=${sortBy},${direction}&name=${name}&city=${city}&details=${details}&title=${title}`;
-        // + (statusInflu ? `&accountStatus=${statusInflu}` : '');
 
         return this.http.get<CollaborationResponse>(url);
     }
@@ -56,23 +54,11 @@ export class CollaborationService {
         return this.http.delete<Collaboration>(this.apiUrl + `/${id}`);
     }
 
-    // updateCompanyPatch(company: Company, id: number): Observable<Company> {
-    //     return this.http.patch<Company>(
-    //         this.apiUrl + `/${id}`,
-    //         company,
-    //         this.httpOptions
-    //     );
-    // }
-
-    // updateCompanyPut(company: Company, id: number) {
-    //     return this.http.put<Company>(
-    //         this.apiUrl + `/${id}`,
-    //         company,
-    //         this.httpOptions
-    //     );
-    // }
-
-    // deleteCompany(id: number) {
-    //     return this.http.delete<Company>(this.apiUrl + `/${id}`);
-    // }
+    updateCollaboration(collaboration: Collaboration, id: number) {
+        return this.http.put<Collaboration>(
+            this.apiUrl + `/${id}`,
+            collaboration,
+            this.httpOptions
+        );
+    }
 }

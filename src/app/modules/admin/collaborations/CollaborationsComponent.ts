@@ -211,7 +211,6 @@ export class CollaborationsComponent
 
                     this.blobImgCollaboration = this.collaborationList.map(
                         (collaboration) => {
-                            // Tworzenie obiektu Blob (jeśli collaboration.imageUrl zawiera dane obrazu)
                             const blob = new Blob([collaboration.imageUrl], {
                                 type: 'image/jpeg',
                             });

@@ -150,11 +150,6 @@ export class NewCollaborationComponent {
         private _fuseConfirmationService: FuseConfirmationService,
         private _cdRef: ChangeDetectorRef
     ) {
-        // this.form = this.fb.group({
-        //     company: [''],
-        //     serviceType: [''],
-        // });
-
         this.editNewCollaborationFormGroup = this._formBuilder.group({
             name: ['', [Validators.required]],
             city: ['', [Validators.required]],
@@ -167,13 +162,6 @@ export class NewCollaborationComponent {
             endDate: ['', [Validators.required]],
             imageUrl: ['', [Validators.required]],
         });
-        // this.cardForm = this.fb.group({
-        //     startDate: [null],
-        //     endDate: [null],
-        // });
-        // this.card = {
-        //     startDate: null,
-        // };
     }
 
     ngAfterViewInit(): void {}
@@ -213,9 +201,7 @@ export class NewCollaborationComponent {
             }),
             dismissible: true,
         });
-        // this.editNewCollaborationFormGroup = this.fb.group({
-        //     startDate: [null],
-        // });
+
         this.card = {
             startDate: null,
             endDate: null,
@@ -280,17 +266,16 @@ export class NewCollaborationComponent {
         let collaboration: Collaboration =
             this.editNewCollaborationFormGroup.getRawValue();
 
-        console.log('collaboration:', collaboration);
+        console.log('get collaboration:', collaboration);
 
-        collaboration.imageUrl = this.imageUrl.substring(5);
+        collaboration.imageUrl = this.imageUrl?.substring(5);
 
         if (
             collaboration.name == '' ||
             collaboration.requirements == '' ||
             collaboration.compensation == '' ||
             collaboration.startDate == '' ||
-            collaboration.endDate == '' ||
-            collaboration.imageUrl == ''
+            collaboration.endDate == ''
         ) {
             this.warning = true;
             console.warn('Nazwa nie może być pusta');
@@ -308,11 +293,11 @@ export class NewCollaborationComponent {
 
         collaboration.startDate = collaboration.startDate
             .toString()
-            .substring(0, 19);
+            ?.substring(0, 19);
 
         collaboration.endDate = collaboration.endDate
             .toString()
-            .substring(0, 19);
+            ?.substring(0, 19);
 
         console.log('collaborationUser :', this.collaborationUser);
 
@@ -444,9 +429,7 @@ export class NewCollaborationComponent {
 
     updateListTitle(event: any): void {
         const element: HTMLInputElement = event.target;
-
         const newTitle = element.value;
-
         if (!newTitle || newTitle.trim() === '') {
             return;
         }
@@ -469,6 +452,7 @@ export class NewCollaborationComponent {
         const selectedDate =
             this.editNewCollaborationFormGroup.get('startDate')?.value;
         this.card.startDate = selectedDate;
+
         this.endDatePicker.open();
     }
 

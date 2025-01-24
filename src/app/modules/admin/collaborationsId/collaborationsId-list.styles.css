@@ -14,23 +14,22 @@
   }
 } */
 
-.card-container{
+.card-container {
     display: flex;
     /* flex-direction:column;
     justify-content: space-between; */
-  }
-  
-  .example-card {
+}
+
+.example-card {
     max-width: 200px;
-  }
-  
-  .example-header-image {
-    background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+}
+
+.example-header-image {
+    background-image: url("https://material.angular.io/assets/img/examples/shiba1.jpg");
     background-size: cover;
-  }
-  
-  
-  .card-container {
+}
+
+.card-container {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
@@ -38,62 +37,66 @@
     justify-content: center; /* Wyśrodkowanie kart w poziomie */
     margin-left: 100px;
     margin-top: 50px;
-  
-  }
-  
-  .card-item {
+}
+
+.card-item {
     flex: 1 1 calc(25% - 16px);
     /* min-width: 200px; */
-  
+
     box-sizing: border-box;
-  }
-  
-  .example-card {
+}
+
+.example-card {
     /* margin: 0;  */
     display: flex;
     flex-direction: column; /* Ustawienie kierunku wewnętrznego flexa */
     height: 100%; /* Spraw, aby karty miały pełną wysokość kontenera */
-  }
-  
-  
-  .green-button {
+}
+
+.green-button {
     background-color: green;
     color: white;
-  }
-  
-  .green-button:hover {
+}
+
+.green-button:hover {
     background-color: darkgreen;
-  }
+}
 
-
-  .editable-div {
+.editable-div {
     border: 1px solid transparent;
     padding: 8px;
     cursor: pointer;
-  }
-  
-  .editable-div:hover {
+}
+
+.editable-div:hover {
     border: 1px solid #ccc;
-  }
-  
-  .editable-textarea {
+}
+
+.editable-textarea {
     width: 100%;
     padding: 8px;
     font-family: inherit;
     font-size: inherit;
     border: 1px solid #ccc;
     border-radius: 4px;
-  }
+}
 
-  .custom-textarea {
-    border: 2px solid transparent; 
+.custom-textarea {
+    border: 2px solid transparent;
     padding: 8px;
-    border-radius: 4px; 
-    outline: none; 
-    transition: border 0.3s ease; 
-  }
-  
-  .custom-textarea:focus {
-    border: 2px solid #4A90E2; 
+    border-radius: 4px;
+    outline: none;
+    transition: border 0.3s ease;
+}
+
+.custom-textarea:focus {
+    border: 2px solid #4a90e2;
     box-shadow: 0 0 4px rgba(74, 144, 226, 0.5);
-  }
+}
+
+mat-form-field.small {
+  --mat-form-field-container-height: 10px;
+  --mat-form-field-container-width: 40px;
+  --mat-form-field-container-vertical-padding: 0px;
+}
+

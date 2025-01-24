@@ -1,8 +1,5 @@
 
 
-<!-- <div class="flex flex-auto flex-col">
-  <div class="ng-star-inserted"> -->
-
     <div class="flex min-w-0 flex-auto flex-col">
 
       <div class="bg-card flex flex-col shadow">
@@ -68,11 +65,10 @@
             <div #name class="text-lg font-bold leading-none">
             </div> 
           </div>
-          <!-- <div class="mb-4 mt-8 flex items-center space-x-6 lg:m-0 lg:mr-8 lg:ml-auto"> -->
             <div class="my-3  items-center sm:flex border-y-0">
               <div class="rounded-l-xl border border-r-0 border-transparent p-2 leading-none">
                     <form [formGroup]="editNewCollaborationFormGroup">
-                      <div >
+                      <!-- <div> -->
                         <div class="text-secondary text-sm font-medium">Data rozpoczęcia</div>
                         <div
                             class="relative mt-1.5 flex cursor-pointer items-center rounded-full px-4 leading-9"
@@ -129,13 +125,11 @@
                                 </mat-datepicker>
                             </mat-form-field>
                         </div>
-                    </div>
                 </form>
               </div>
               <div class="mx-2 hidden  h-8 border-l-2 lg:flex"></div>
               <div class="rounded-r-xl border p-2 border-transparent leading-none">
                 <form [formGroup]="editNewCollaborationFormGroup">
-                  <div >
                     <div class="text-secondary text-sm font-medium">Data zakończenia</div>
                     <div
                         class="relative mt-1.5 flex cursor-pointer items-center rounded-full px-4 leading-9"
@@ -193,7 +187,6 @@
                             </mat-datepicker>
                         </mat-form-field>
                     </div>
-                  </div>
                 </form>
               </div>
             </div>
@@ -206,18 +199,7 @@
                 [disabled]="isDisabled"
                 >Dodaj nową
               </button>
-              <!-- <button 
-                class="ml-1.5"
-                mat-icon-button
-                (click)="goBackToMain()"
-              >
-                <mat-icon
-                    [svgIcon]="'heroicons_outline:arrow-long-left'"
-                  >
-                </mat-icon>
-              </button> -->
             </div>
-        <!-- </div> -->
       </div>
 
       <div class="mx-auto flex w-full max-w-5xl flex-auto justify-center p-6 sm:p-8">
@@ -397,7 +379,6 @@
                       ></textarea>
                   </mat-form-field>
               </div>
-              <!-- <hr class="my-6 w-full border-t ng-tns-c2638821912-677 ng-star-inserted"> -->
               <div class="-mx-3 mt-6 flex sm:mt-8">
                   <div class="flex flex-col ng-tns-c2638821912-677 ng-star-inserted">
                       <div class="flex items-center  justify-between">
@@ -524,7 +505,6 @@
                       ></textarea>
                   </mat-form-field>
               </div>
-              
               <!-- <div class="mt-4 ng-tns-c2638821912-677 ng-star-inserted">
                 <textarea 
                   class="bg-transparent custom-textarea overflow-hidden w-100 h-20"
@@ -709,8 +689,3 @@
       </form>
       </div>
     </div>
-  <!-- </div>
-</div> -->
-<!-- <div *ngIf="!collaborationData">
-  <p>Loading data...</p>
-</div> -->

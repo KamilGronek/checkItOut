@@ -26,8 +26,8 @@ export interface Collaboration {
     details: string;
     requirements: string;
     compensation: string;
-    company: CompanyCollaboration;
-    serviceType: number;
+    company: CompanyCollaboration | number;
+    serviceType: ServiceTypeCollaboration | number;
     startDate: string;
     endDate: string;
     createdTime: string;
@@ -57,4 +57,11 @@ export interface CompanyCollaboration {
     lastUpdateTime: string;
     createdTime: string;
     updater: string;
+}
+
+export interface ServiceTypeCollaboration {
+    id: number | undefined;
+    name: string;
+    description: string;
+    category: string;
 }
