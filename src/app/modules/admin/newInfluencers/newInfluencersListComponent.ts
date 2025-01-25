@@ -203,15 +203,14 @@ export class newInfluencersListComponent
     filteredStatus: string[] = [];
     influencerStatuses: any;
 
-    typeAccountOptions: string[];
-    typeStatus: string[];
+    typeAccountOptions: string[] = [];
+    typeStatus: string[] = [];
 
     private _snackBar = inject(MatSnackBar);
 
     constructor(
         private _influencerService: InfluencerService,
         private _formBuilder: UntypedFormBuilder,
-        // private buttonStateService: InfluencerService,
         private changeDetectorRefs: ChangeDetectorRef,
         private fb: FormBuilder,
         private snackbarService: SnackbarService
@@ -310,11 +309,20 @@ export class newInfluencersListComponent
     }
 
     getAccountType(): void {
-        this._influencerService
-            .getInfluencerTypeAccount()
-            .subscribe((accountType: any) => {
+        this.isLoading = true;
+        this._influencerService.getInfluencerTypeAccount().subscribe({
+            next: (accountType: any) => {
                 this.typeAccountOptions = accountType;
-            });
+                this.isLoading = false;
+            },
+            error: (error) => {
+                console.error('Error fetching account types', error);
+                this.snackbarService.showFailure(
+                    'Failed to load account types'
+                );
+                this.isLoading = false;
+            },
+        });
     }
 
     getStatus(): void {
@@ -410,25 +418,34 @@ export class newInfluencersListComponent
                 this.getUserToUpdate(userIdToUpdate),
                 userIdToUpdate
             )
-            .subscribe((updatedUser) => {
-                const idToUpdate: number = this.dataSource.data.findIndex(
-                    (user) => user.id === updatedUser.id
-                );
-                this.dataSource.data[idToUpdate].accountStatus =
-                    updatedUser.accountStatus;
-                this.dataSource.data[idToUpdate].influencer =
-                    updatedUser.influencer;
-                this.fillEditForm();
-                this.snackbarService.showSuccess(
-                    'Edycja danych użytkownika zakończona powodzeniem'
-                );
+            .subscribe({
+                next: (updatedUser: InfluencerUser) => {
+                    const idToUpdate: number = this.dataSource.data.findIndex(
+                        (user) => user.id === updatedUser.id
+                    );
+                    this.dataSource.data[idToUpdate].accountStatus =
+                        updatedUser.accountStatus;
+                    this.dataSource.data[idToUpdate].influencer =
+                        updatedUser.influencer;
+                    this.fillEditForm();
+                    this.snackbarService.showSuccess(
+                        'Edycja danych użytkownika zakończona powodzeniem'
+                    );
+                },
+                error: (error) => {
+                    console.error('Error updating user', error);
+                    this.snackbarService.showFailure('Failed to update user');
+                },
             });
-
-        const shouldDisable = true;
-        // this.buttonStateService.setDisabledState(shouldDisable);
     }
 
     getUserToUpdate(userIdToUpdate: number): InfluencerUser {
+        if (!this.editUserFormGroup.valid) {
+            this.snackbarService.showFailure(
+                'Please fill all required fields correctly'
+            );
+            return null;
+        }
         const userToUpdate = this.dataSource.data.find(
             (user) => user.id === userIdToUpdate
         );

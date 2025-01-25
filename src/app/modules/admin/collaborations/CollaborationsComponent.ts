@@ -84,14 +84,16 @@ export class CollaborationsComponent
     implements OnInit, AfterViewInit, OnDestroy
 {
     @ViewChild(MatPaginator) paginator!: MatPaginator;
-    @ViewChild('textItem')
-    textInput: ElementRef;
+    @ViewChild('textItem') textInput: ElementRef;
+
     @ViewChild('selectItem')
     influencersTableMatSort: MatSort;
     data: any;
     influencersDataSource: MatTableDataSource<any> = new MatTableDataSource();
 
-    expandedInfluencer: Collaboration | null;
+    // expandedInfluencer: Collaboration | null;
+    expandedInfluencer = null;
+
     formLaunched: boolean = false;
     editformLaunched: boolean = false;
     idOfEditedUser: number;
@@ -105,7 +107,7 @@ export class CollaborationsComponent
     collaborationUser: Collaboration;
     InfluencerResponse: { Collaboration: any };
 
-    isLoading: boolean = true;
+    isLoading = true;
     error: string | null = null;
 
     fieldOptions: string[] = ['Nazwa', 'Miasto', 'Szukaj'];
@@ -197,18 +199,6 @@ export class CollaborationsComponent
 
                     this.collaborationList = response.content;
 
-                    // this.blobImgCollaboration = this.collaborationList.map(
-                    //     (collaboration) => `blob:${collaboration.imageUrl}`
-                    // );
-                    // console.log(this.blobImgCollaboration);
-
-                    // this.collaborationList = this.collaborationList.map(
-                    //     (collaboration) => ({
-                    //         ...collaboration,
-                    //         imageUrl: `blob:${collaboration.imageUrl}`,
-                    //     })
-                    // );
-
                     this.blobImgCollaboration = this.collaborationList.map(
                         (collaboration) => {
                             const blob = new Blob([collaboration.imageUrl], {
@@ -254,8 +244,6 @@ export class CollaborationsComponent
 
     onSearchInputChange(searchInputValue: string) {
         this.searchValue = searchInputValue;
-
-        console.log('searchValue:', this.searchValue);
 
         this.setSearchFiltersToEmptyStrings();
         this.setValueOfSelectedFilter(this.searchValue);

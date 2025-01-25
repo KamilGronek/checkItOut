@@ -5,6 +5,7 @@
       <div class="bg-card flex flex-col shadow">
           <div>
             <img src="../../../../assets/detale_kampanii_v4_files/cover.jpg" alt="Cover image"
+            
                   class="h-40 object-cover lg:h-80"/>
           </div>
 
@@ -104,6 +105,7 @@
                                     [formControlName]="'startDate'"
                                     [matDatepicker]="startDatePicker"
                                 />
+                                
                                 <mat-datepicker #startDatePicker>
                                     <mat-datepicker-actions>
                                         <button
@@ -364,6 +366,7 @@
               <p *ngIf="warning" [ngStyle]="{ color: 'red' }">
                 Przed wysłaniem, proszę uzupełnić wszystkie dane
               </p>
+              
               <div class="text-xl font-semibold">Nazwa</div>
               <div class="mt-8 flex flex-col items-start sm:flex-row">
                   <mat-form-field

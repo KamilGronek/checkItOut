@@ -280,7 +280,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     updateInfluencer() {
-        let userToUpdate = this.influencerUser;
+        const userToUpdate = this.influencerUser;
         userToUpdate.email = this.editInfluencerFormGroup.get('email').value;
         userToUpdate.firstName =
             this.editInfluencerFormGroup.get('firstName').value;
@@ -322,7 +322,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             ).value,
         };
 
-        let userToUpdate: any = {
+        const userToUpdate: any = {
             email: this.editInfluencerFormGroup.get('email').value,
             firstName: this.editInfluencerFormGroup.get('firstName').value,
             lastName: this.editInfluencerFormGroup.get('lastName').value,
@@ -407,7 +407,6 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private setStatusOfUser(rawStatusUser: string) {
-        console.log(rawStatusUser);
         switch (rawStatusUser) {
             case 'Aktywny':
                 this.statusUser = 'Aktywny';
@@ -427,6 +426,9 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     ngOnDestroy(): void {
         this._unsubscribeAll.next(null);
         this._unsubscribeAll.complete();
+        if (this.subscription) {
+            this.subscription.unsubscribe();
+        }
     }
 
     adjustGrid(width: number): void {

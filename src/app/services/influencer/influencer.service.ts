@@ -87,11 +87,12 @@ export class InfluencerService {
 
     private isPopUpVisible = new BehaviorSubject<boolean>(false);
 
-    private dontshowPopUpAgain = new BehaviorSubject<boolean>(true);
+    private hidePopUpPermanently = new BehaviorSubject<boolean>(true);
 
     isDisabled$ = this.isDisabled.asObservable();
     isPopUpVisible$ = this.isPopUpVisible.asObservable();
-    isdontshowPopUpAgain$ = this.dontshowPopUpAgain.asObservable();
+
+    hidePopUpPermanently$ = this.hidePopUpPermanently.asObservable();
 
     setDisabledState(state: boolean) {
         this.isDisabled.next(state);
@@ -105,14 +106,23 @@ export class InfluencerService {
         this.isPopUpVisible.next(status);
     }
 
-    getdontshowPopUpAgain(): boolean {
-        const storedValue = localStorage.getItem('dontShowPopUpAgain');
-        return storedValue === 'false' ? false : true;
+    getHidePopUpPermanently(): boolean {
+        try {
+            const storedValue = localStorage.getItem('hidePopUpPermanently');
+            return storedValue === 'true';
+        } catch (error) {
+            console.error('Error accessing localStorage:', error);
+            return false;
+        }
     }
 
-    setdontshowPopUpAgain(status: boolean): void {
-        this.dontshowPopUpAgain.next(status);
-        localStorage.setItem('dontShowPopUpAgain', String(status));
+    setHidePopUpPermanently(status: boolean): void {
+        this.hidePopUpPermanently.next(status);
+        try {
+            localStorage.setItem('hidePopUpPermanently', String(status));
+        } catch (error) {
+            console.error('Error saving to localStorage:', error);
+        }
     }
 
     httpOptions = {
@@ -171,7 +181,7 @@ export class InfluencerService {
 
     createInfluencerUser(user: any) {
         return this.http.post<InfluencerUser>(
-            this.apiUrl + '/user',
+            `${this.apiUrl}/user`,
             user,
             this.httpOptions
         );
@@ -181,13 +191,13 @@ export class InfluencerService {
         influencer: Influencer,
         influencerId: number
     ): Observable<Influencer> {
-        var url = this.apiUrl + '/' + influencerId;
+        const url = `${this.apiUrl}/${influencerId}`;
         return this.http.patch<Influencer>(url, influencer, this.httpOptions);
     }
 
     updateInfluencerUser(influencerUser: InfluencerUser, id: number) {
         return this.http.put<InfluencerUser>(
-            this.apiUrl + '/user' + `/${id}`,
+            `${this.apiUrl}/user/${id}`,
             influencerUser,
             this.httpOptions
         );

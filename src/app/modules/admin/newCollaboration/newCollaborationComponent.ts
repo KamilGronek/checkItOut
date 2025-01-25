@@ -112,16 +112,18 @@ export class NewCollaborationComponent {
     // companyOptions = [1, 2, 3, 4, 5, 6];
     serviceTypeOptions = [1, 2, 3, 4, 5, 6];
 
-    selectedCity: string = '';
-    selectedCompany: string = '';
-    selectedserviceType: string = '';
+    selectedCity = '';
+    selectedCompany = '';
+    selectedserviceType = '';
 
-    warning: boolean = false;
+    warning = false;
+    warningText: 'Przed wysłaniem, proszę uzupełnić wszystkie dane';
+
     isDisabled = false;
     configForm: UntypedFormGroup;
-    companyId: number = 0;
+    companyId = 0;
     // filteredCompanies = [];
-    searchTerm: string = '';
+    searchTerm = '';
 
     // form: FormGroup;
 
@@ -254,13 +256,13 @@ export class NewCollaborationComponent {
             ?.setValue(serviceType.id);
     }
 
-    trackCompany(index: number, company: any): any {
-        return company.id;
-    }
+    // trackCompany(index: number, company: any): any {
+    //     return company.id;
+    // }
 
-    trackCompany2(index: number, serviceType: any): any {
-        return serviceType.id;
-    }
+    // trackServiceType(index: number, serviceType: any): any {
+    //     return serviceType.id;
+    // }
 
     createCollaboration() {
         let collaboration: Collaboration =
@@ -302,16 +304,16 @@ export class NewCollaborationComponent {
         console.log('collaborationUser :', this.collaborationUser);
 
         this.editNewCollaborationFormGroup.patchValue({
-            name: [''],
-            city: [''],
-            details: [''],
-            requirements: [''],
-            compensation: [''],
-            company: [''],
-            serviceType: [''],
-            startDate: [''],
-            endDate: [''],
-            imageUrl: [''],
+            name: '',
+            city: '',
+            details: '',
+            requirements: '',
+            compensation: '',
+            company: '',
+            serviceType: '',
+            startDate: '',
+            endDate: '',
+            imageUrl: '',
         });
 
         this._collaborationService

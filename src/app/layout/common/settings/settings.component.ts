@@ -116,9 +116,9 @@ export class SettingsComponent implements OnInit, OnDestroy {
         this.updateSpinner3();
 
         this.dontShowPopUpAgain =
-            this._influencerService.getdontshowPopUpAgain();
+            this._influencerService.getHidePopUpPermanently();
 
-        this._influencerService.isdontshowPopUpAgain$.subscribe((dontShow) => {
+        this._influencerService.hidePopUpPermanently$.subscribe((dontShow) => {
             this.dontShowPopUpAgain = dontShow;
         });
 
@@ -233,7 +233,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
     }
 
     resetPopUp() {
-        this._influencerService.setdontshowPopUpAgain(false);
+        this._influencerService.setHidePopUpPermanently(false);
         this._influencerService.setPopUpState(false);
     }
 
