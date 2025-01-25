@@ -20,14 +20,14 @@ import { TranslocoHttpLoader } from './core/transloco/transloco.http-loader';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { provideAuth, getAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
-import { firebaseConfig } from '../environments/environment';
+import { environment } from 'environments/environment';
 
 import { provideAuthInFuse } from './core/auth/auth.provider';
 // import { userRoutes, adminRoutes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
     providers: [
-        provideFirebaseApp(() => initializeApp(firebaseConfig)),
+        provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
         provideAuth(() => getAuth()),
         provideFirestore(() => getFirestore()),
         provideAuthInFuse(),

@@ -10,6 +10,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
+    "start:test": "ng serve --configuration=test",
+    "start:prod": "ng serve --configuration=production",
     "test": "ng test"
   },
   "dependencies": {
