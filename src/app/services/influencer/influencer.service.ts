@@ -8,6 +8,7 @@ import { City } from './Influencer';
 import { AuthService } from 'app/core/auth/auth.service';
 import { BehaviorSubject } from 'rxjs';
 import { InfluencerUser } from 'app/core/influencerUser/InfluencerUser.types';
+import { environment } from 'environments/environment';
 
 @Injectable({
     providedIn: 'root',
@@ -81,7 +82,7 @@ export class InfluencerService {
 
     //=====================================================================
 
-    private apiUrl: string = 'http://localhost:8080';
+    private apiUrl: string = environment.apiUrl;
 
     private isDisabled = new BehaviorSubject<boolean>(false);
 
@@ -142,7 +143,7 @@ export class InfluencerService {
     }
 
     getInfluencerCityList(): Observable<City[]> {
-        return this.http.get<City[]>('http://localhost:8080/city/list');
+        return this.http.get<City[]>(this.apiUrl + '/city/list');
     }
 
     getInfluencerTypeAccount() {
@@ -170,12 +171,12 @@ export class InfluencerService {
     }
 
     getCollaborations() {
-        return this.http.get('http://localhost:8080/collaborations');
+        return this.http.get(this.apiUrl + '/collaborations');
     }
 
     getCollaborationId(id: number): Observable<Influencer> {
         return this.http.get<Influencer>(
-            `http://localhost:8080/collaborations/${id}`
+            this.apiUrl + `/collaborations/${id}`
         );
     }
 
