@@ -18,7 +18,10 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { Influencer, InfluencerUserResponse } from 'app/services/influencer/Influencer';
+import {
+    Influencer,
+    InfluencerUserResponse,
+} from 'app/services/influencer/Influencer';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { Subject } from 'rxjs';
 
@@ -200,15 +203,14 @@ export class newInfluencersListComponent
     filteredStatus: string[] = [];
     influencerStatuses: any;
 
-    typeStatus: string[] = ['Walidowany', 'Aktywny', 'Nieaktywny'];
-    typeAccountOptions: string[] = ['Publiczne', 'Niepubliczne', 'NA'];
+    typeAccountOptions: string[] = [];
+    typeStatus: string[] = [];
 
     private _snackBar = inject(MatSnackBar);
 
     constructor(
         private _influencerService: InfluencerService,
         private _formBuilder: UntypedFormBuilder,
-        private buttonStateService: InfluencerService,
         private changeDetectorRefs: ChangeDetectorRef,
         private fb: FormBuilder,
         private snackbarService: SnackbarService
@@ -238,6 +240,8 @@ export class newInfluencersListComponent
 
     ngOnInit(): void {
         this.loadInfluencers(this.pageIndex);
+        this.getAccountType();
+        this.getStatus();
     }
 
     private setSearchFiltersToEmptyStrings() {
@@ -304,6 +308,31 @@ export class newInfluencersListComponent
         this.onSearchInputChange('');
     }
 
+    getAccountType(): void {
+        this.isLoading = true;
+        this._influencerService.getInfluencerTypeAccount().subscribe({
+            next: (accountType: any) => {
+                this.typeAccountOptions = accountType;
+                this.isLoading = false;
+            },
+            error: (error) => {
+                console.error('Error fetching account types', error);
+                this.snackbarService.showFailure(
+                    'Failed to load account types'
+                );
+                this.isLoading = false;
+            },
+        });
+    }
+
+    getStatus(): void {
+        this._influencerService
+            .getInfluencerStatus()
+            .subscribe((status: any) => {
+                this.typeStatus = status;
+            });
+    }
+
     private async loadInfluencers(pageIndex: number): Promise<void> {
         this._influencerService
             .getInfluencerPaged(
@@ -325,11 +354,13 @@ export class newInfluencersListComponent
                     this.paginator.pageSize = response.page.size;
 
                     this.dataSource.data = response.content;
-                    this.snackbarService.showSuccess('Dane użytkowników pobrane');
+                    this.snackbarService.showSuccess(
+                        'Dane użytkowników pobrane'
+                    );
                 },
                 error: (error) => {
                     console.error('Error fetching influencer list', error);
-                    this.snackbarService.showFailure("Coś poszło nie tak")
+                    this.snackbarService.showFailure('Coś poszło nie tak');
                 },
             });
     }
@@ -383,22 +414,38 @@ export class newInfluencersListComponent
 
     sendToInluencer(userIdToUpdate: number): void {
         this._influencerService
-            .updateInfluencerUser(this.getUserToUpdate(userIdToUpdate), userIdToUpdate)
-            .subscribe((updatedUser) => {
-                const idToUpdate: number = this.dataSource.data.findIndex(
-                    (user) => user.id === updatedUser.id
-                );
-                this.dataSource.data[idToUpdate].accountStatus = updatedUser.accountStatus;
-                this.dataSource.data[idToUpdate].influencer = updatedUser.influencer;
-                this.fillEditForm();
-                this.snackbarService.showSuccess('Edycja danych użytkownika zakończona powodzeniem');
+            .updateInfluencerUser(
+                this.getUserToUpdate(userIdToUpdate),
+                userIdToUpdate
+            )
+            .subscribe({
+                next: (updatedUser: InfluencerUser) => {
+                    const idToUpdate: number = this.dataSource.data.findIndex(
+                        (user) => user.id === updatedUser.id
+                    );
+                    this.dataSource.data[idToUpdate].accountStatus =
+                        updatedUser.accountStatus;
+                    this.dataSource.data[idToUpdate].influencer =
+                        updatedUser.influencer;
+                    this.fillEditForm();
+                    this.snackbarService.showSuccess(
+                        'Edycja danych użytkownika zakończona powodzeniem'
+                    );
+                },
+                error: (error) => {
+                    console.error('Error updating user', error);
+                    this.snackbarService.showFailure('Failed to update user');
+                },
             });
-
-        const shouldDisable = true;
-        this.buttonStateService.setDisabledState(shouldDisable);
     }
 
     getUserToUpdate(userIdToUpdate: number): InfluencerUser {
+        if (!this.editUserFormGroup.valid) {
+            this.snackbarService.showFailure(
+                'Please fill all required fields correctly'
+            );
+            return null;
+        }
         const userToUpdate = this.dataSource.data.find(
             (user) => user.id === userIdToUpdate
         );
@@ -408,18 +455,17 @@ export class newInfluencersListComponent
             accountStatus: this.editUserFormGroup.get('accountStatus').value,
             email: this.editUserFormGroup.get('email').value,
             firstName: this.editUserFormGroup.get('firstName').value,
-            lastName: this.editUserFormGroup.get('lastName').value
-        }
+            lastName: this.editUserFormGroup.get('lastName').value,
+        };
 
-        updatedUser.influencer.instagramAccountType = 
+        updatedUser.influencer.instagramAccountType =
             this.editUserFormGroup.get('instagramAccountType').value;
-        updatedUser.influencer.city = 
-            this.editUserFormGroup.get('city').value;
-        updatedUser.influencer.followersAmount = 
+        updatedUser.influencer.city = this.editUserFormGroup.get('city').value;
+        updatedUser.influencer.followersAmount =
             this.editUserFormGroup.get('followersAmount').value;
-        updatedUser.influencer.noteFromAdmin = 
+        updatedUser.influencer.noteFromAdmin =
             this.editUserFormGroup.get('noteFromAdmin').value;
-        updatedUser.influencer.instagramId = 
+        updatedUser.influencer.instagramId =
             this.editUserFormGroup.get('instagramId').value;
 
         return updatedUser;
@@ -466,9 +512,9 @@ export class newInfluencersListComponent
             this.editUserFormGroup.controls['followersAmount'].setValue(
                 this.expandedUser.influencer.followersAmount
             );
-            this.editUserFormGroup.controls[
-                'instagramAccountType'
-            ].setValue(this.expandedUser.influencer.instagramAccountType);
+            this.editUserFormGroup.controls['instagramAccountType'].setValue(
+                this.expandedUser.influencer.instagramAccountType
+            );
             this.editUserFormGroup.controls['accountStatus'].setValue(
                 this.expandedUser.accountStatus
             );

@@ -70,13 +70,13 @@ export const unauthorizedUserNavigation: FuseNavigationItem[] = [
         icon: 'heroicons_outline:user-circle',
         link: '/profile',
     },
-    // {
-    //     id: 'newInfluencers',
-    //     title: 'Zgłoszenia Nowych Influeserów',
-    //     type: 'basic',
-    //     icon: 'heroicons_outline:paper-airplane',
-    //     link: '/newInfluencers',
-    // },
+    {
+        id: 'collaborations',
+        title: 'Współprace do podjęcia',
+        type: 'basic',
+        icon: 'heroicons_outline:arrows-right-left',
+        link: '/collaborations',
+    },
 ];
 
 export const influenserNavigation: FuseNavigationItem[] = [
@@ -104,13 +104,6 @@ export const influenserNavigation: FuseNavigationItem[] = [
 ];
 
 export const adminNavigation: FuseNavigationItem[] = [
-    {
-        id: 'influencers',
-        title: 'Influenserzy',
-        type: 'basic',
-        icon: 'heroicons_outline:user',
-        link: '/influencers',
-    },
     {
         id: 'companies',
         title: 'Firmy',

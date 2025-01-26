@@ -1,4 +1,5 @@
 import { CommonModule, NgClass } from '@angular/common';
+
 import {
     AfterViewInit,
     ChangeDetectionStrategy,
@@ -10,7 +11,16 @@ import {
     ViewEncapsulation,
     HostListener,
     ElementRef,
+    Input,
 } from '@angular/core';
+
+import {
+    FuseConfig,
+    FuseConfigService,
+    Scheme,
+    Theme,
+    Themes,
+} from '@fuse/services/config';
 
 import { FormControl } from '@angular/forms';
 
@@ -25,13 +35,16 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSortModule } from '@angular/material/sort';
 
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { Influencer, InfluencerUserResponse } from 'app/services/influencer/Influencer';
+import {
+    Influencer,
+    InfluencerUserResponse,
+} from 'app/services/influencer/Influencer';
 import { City } from 'app/services/influencer/Influencer';
 import { ApexOptions, NgApexchartsModule } from 'ng-apexcharts';
-import { Subject} from 'rxjs';
 import { InfluencerService } from 'app/services/influencer/influencer.service';
 
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
+import { Router, NavigationEnd } from '@angular/router';
 
 import {
     FormsModule,
@@ -51,6 +64,11 @@ import { InfluencerUser } from 'app/core/influencerUser/InfluencerUser.types';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarService } from 'app/services/snackbar/snackbar.service';
 
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { Subject, takeUntil, Subscription } from 'rxjs';
+
+import { filter } from 'rxjs/operators';
 @Component({
     selector: 'profile',
     standalone: true,
@@ -71,15 +89,20 @@ import { SnackbarService } from 'app/services/snackbar/snackbar.service';
         ReactiveFormsModule,
         MatDividerModule,
         NgApexchartsModule,
+        MatTooltipModule,
         MatTableModule,
         MatSortModule,
         NgClass,
         MatProgressBarModule,
         MatSelectModule,
+        MatProgressSpinnerModule,
     ],
     styleUrl: 'profile-list.styles.css',
 })
 export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
+    @Input() config: any;
+    private _unsubscribeAll: Subject<any> = new Subject<any>();
+
     formFieldHelpers: string[] = [''];
     fixedSubscriptInput: FormControl = new FormControl('', [
         Validators.required,
@@ -104,7 +127,6 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     editformLaunched: boolean = false;
     idOfEditedUser: number;
     flashMessage: 'success' | 'error' | null = null;
-    
 
     influencerList: Influencer[];
     influencerUser: InfluencerUser;
@@ -148,21 +170,21 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     isDisabled = false;
     eror404: boolean = false;
 
-
     chartNewVsReturning: ApexOptions;
 
-    typeStatus: string[] = ["Walidowany", "Aktywny", "Nieaktywny"]
-    typeAccountOptions: string[] = ["Publiczne", "Niepubliczne", "NA"];
+    typeStatus: string[] = ['Walidowany', 'Aktywny', 'Nieaktywny'];
+    typeAccountOptions: string[] = ['Publiczne', 'Niepubliczne', 'NA'];
 
-    private _unsubscribeAll: Subject<any> = new Subject<any>();
-        private _snackBar = inject(MatSnackBar);
+    // private _unsubscribeAll: Subject<any> = new Subject<any>();
+    private _snackBar = inject(MatSnackBar);
 
     constructor(
         private _influencerService: InfluencerService,
         private _formBuilder: UntypedFormBuilder,
         private authService: AuthService,
         private fb: FormBuilder,
-        private snackbarService: SnackbarService
+        private snackbarService: SnackbarService,
+        private router: Router
     ) {
         this.form = this.fb.group({
             city: ['', Validators.required],
@@ -171,6 +193,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             email: ['', [Validators.required, Validators.email]],
         });
     }
+    private subscription!: Subscription;
 
     ngAfterViewInit(): void {}
 
@@ -180,6 +203,22 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        if (this.router.url.includes('/profile')) {
+            this._influencerService.setPopUpState(true);
+        } else {
+            this._influencerService.setPopUpState(false);
+        }
+
+        this.subscription = this.router.events
+            .pipe(filter((event) => event instanceof NavigationEnd))
+            .subscribe((event: any) => {
+                if (event.url.includes('/profile')) {
+                    this._influencerService.setPopUpState(true);
+                } else {
+                    this._influencerService.setPopUpState(false);
+                }
+            });
+
         this.editInfluencerFormGroup = this._formBuilder.group({
             instagramId: ['', [Validators.required]],
             firstName: ['', [Validators.required]],
@@ -190,10 +229,9 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             noteFromAdmin: [],
         });
 
-        this.getCityList()
-        .then(() => {
+        this.getCityList().then(() => {
             this.loadInfluencer();
-        });;
+        });
     }
 
     private async getCityList(): Promise<void> {
@@ -235,25 +273,24 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
     updateOrCreateInfluencer() {
         if (this.eror404) {
-            this.createNewInfluencer()
+            this.createNewInfluencer();
         } else {
             this.updateInfluencer();
         }
     }
 
     updateInfluencer() {
-        let userToUpdate = this.influencerUser;
-        userToUpdate.email = 
-            this.editInfluencerFormGroup.get('email').value;
-        userToUpdate.firstName = 
+        const userToUpdate = this.influencerUser;
+        userToUpdate.email = this.editInfluencerFormGroup.get('email').value;
+        userToUpdate.firstName =
             this.editInfluencerFormGroup.get('firstName').value;
-        userToUpdate.lastName = 
+        userToUpdate.lastName =
             this.editInfluencerFormGroup.get('lastName').value;
         userToUpdate.influencer.instagramId =
             this.editInfluencerFormGroup.get('instagramId').value;
         userToUpdate.influencer.city =
             this.editInfluencerFormGroup.get('city').value;
-        userToUpdate.influencer.instagramAccountType = 
+        userToUpdate.influencer.instagramAccountType =
             this.editInfluencerFormGroup.get('instagramAccountType').value;
 
         this._influencerService
@@ -261,7 +298,9 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             .subscribe({
                 next: (user) => {
                     this.setStatusOfUser(user.accountStatus);
-                    this.snackbarService.showSuccess('Edycja danych użytkownika zakończona powodzeniem!');
+                    this.snackbarService.showSuccess(
+                        'Edycja danych użytkownika zakończona powodzeniem!'
+                    );
                 },
                 error: (error) => {
                     console.error(
@@ -278,17 +317,19 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         let influencerToUpdate = {
             instagramId: this.editInfluencerFormGroup.get('instagramId').value,
             city: this.editInfluencerFormGroup.get('city').value,
-            instagramAccountType: this.editInfluencerFormGroup.get('instagramAccountType').value,
-        }
+            instagramAccountType: this.editInfluencerFormGroup.get(
+                'instagramAccountType'
+            ).value,
+        };
 
-        let userToUpdate: any = {
+        const userToUpdate: any = {
             email: this.editInfluencerFormGroup.get('email').value,
             firstName: this.editInfluencerFormGroup.get('firstName').value,
             lastName: this.editInfluencerFormGroup.get('lastName').value,
             influencer: influencerToUpdate,
-            accountStatus: "Nieaktywny",
-            userType: "INFLUENCER",
-        }
+            accountStatus: 'Nieaktywny',
+            userType: 'INFLUENCER',
+        };
 
         this._influencerService.createInfluencerUser(userToUpdate).subscribe({
             next: (influencer) => {
@@ -305,9 +346,10 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                     lastName: this.influencerUser.lastName,
                     email: this.influencerUser.email,
                     city: this.influencerUser.influencer.city,
-                    instagramAccountType: this.influencerUser.influencer.instagramAccountType,
+                    instagramAccountType:
+                        this.influencerUser.influencer.instagramAccountType,
                     noteFromAdmin: this.influencerUser.influencer.noteFromAdmin,
-                    accountStatus: "Aktywny"
+                    accountStatus: 'Aktywny',
                 });
 
                 this.setStatusOfUser(this.influencerUser.accountStatus);
@@ -326,8 +368,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private async loadInfluencer(): Promise<void> {
-        this._influencerService.getInfluencerUser()
-        .subscribe({
+        this._influencerService.getInfluencerUser().subscribe({
             next: (influencer: InfluencerUser) => {
                 this.influencerUser = influencer;
                 this.switchStatusInfo = false;
@@ -342,7 +383,8 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                     lastName: this.influencerUser.lastName,
                     email: this.influencerUser.email,
                     city: this.influencerUser.influencer.city,
-                    instagramAccountType: this.influencerUser.influencer.instagramAccountType,
+                    instagramAccountType:
+                        this.influencerUser.influencer.instagramAccountType,
                     noteFromAdmin: this.influencerUser.influencer.noteFromAdmin,
                 });
 
@@ -351,21 +393,20 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             },
             error: (error: HttpResponse<InfluencerUser>) => {
                 console.error(error);
-                if(error.status == 404) this.eror404 = true;
+                if (error.status == 404) this.eror404 = true;
                 this.setStatusOfUser('IN_ACTIVE');
                 this.switchStatusInfo = true;
                 this.confirmedRejestration = false;
                 this.isInputVisible = true;
                 this.editInfluencerFormGroup.patchValue({
-                    email: this.authService.getUserFromToken().email
+                    email: this.authService.getUserFromToken().email,
                 });
                 this.snackbarService.showFailure('Coś poszło nie tak');
-            }
+            },
         });
     }
 
     private setStatusOfUser(rawStatusUser: string) {
-        console.log(rawStatusUser)
         switch (rawStatusUser) {
             case 'Aktywny':
                 this.statusUser = 'Aktywny';
@@ -385,9 +426,10 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     ngOnDestroy(): void {
         this._unsubscribeAll.next(null);
         this._unsubscribeAll.complete();
+        if (this.subscription) {
+            this.subscription.unsubscribe();
+        }
     }
-
-    readonly dialog = inject(MatDialog);
 
     adjustGrid(width: number): void {
         if (width <= 600) {
@@ -420,8 +462,9 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             this.editInfluencerFormGroup.controls['noteFromAdmin'].setValue(
                 this.expandedInfluencer.influencer.noteFromAdmin
             );
-            this.editInfluencerFormGroup.controls['instagramAccountType']
-                .setValue(this.expandedInfluencer.influencer.instagramAccountType);
+            this.editInfluencerFormGroup.controls[
+                'instagramAccountType'
+            ].setValue(this.expandedInfluencer.influencer.instagramAccountType);
 
             this.editInfluencerFormGroup.controls['id'].disable();
         }

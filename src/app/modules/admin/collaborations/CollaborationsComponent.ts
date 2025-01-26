@@ -8,10 +8,8 @@ import {
     OnDestroy,
     OnInit,
     ViewChild,
-    ViewChildren,
     ViewEncapsulation,
     ElementRef,
-    QueryList,
 } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -26,14 +24,10 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-// import { Influencer } from '../../../services/influencer/Influencer';
-import { Influencer } from 'app/services/influencer/Influencer';
 
-import { FinanceService } from 'app/mock-api/dashboards/finance/finance.service';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
-import { ApexOptions, NgApexchartsModule } from 'ng-apexcharts';
-import { Subject, takeUntil } from 'rxjs';
-// import { InfluencerService } from '../../../services/influencer/collaborations.service';
+import { NgApexchartsModule } from 'ng-apexcharts';
+import { Subject } from 'rxjs';
 import { InfluencerService } from 'app/services/influencer/influencer.service';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
@@ -41,20 +35,19 @@ import {
     FormsModule,
     ReactiveFormsModule,
     UntypedFormBuilder,
-    UntypedFormGroup,
-    Validators,
 } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FuseCardComponent } from '@fuse/components/card';
+import { CollaborationService } from '../../../services/collaboration/collaboration.service';
+import { Collaboration } from '../../../services/collaboration/Collaboration';
+import { CollaborationResponse } from 'app/services/collaboration/Collaboration';
 
-// import { animate, state, style, transition, trigger } from '@angular/animations';
+import { MatSelectModule } from '@angular/material/select';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator } from '@angular/material/paginator';
 
-// import { AfterViewInit, ChangeDetectorRef, ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-// import { MatButtonModule } from '@angular/material/button';
-// import { MatIconModule } from '@angular/material/icon';
-// import {MatCardModule} from '@angular/material/card';
-// import { Subject, takeUntil } from 'rxjs';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
     selector: 'collaborations',
@@ -82,40 +75,71 @@ import { FuseCardComponent } from '@fuse/components/card';
         CurrencyPipe,
         DatePipe,
         FuseCardComponent,
+        MatSelectModule,
+        MatPaginatorModule,
     ],
     styleUrl: 'collaborations-list.styles.css',
 })
 export class CollaborationsComponent
     implements OnInit, AfterViewInit, OnDestroy
 {
-    @ViewChild('influencersTable', { read: MatSort })
-    // @ViewChildren(FuseCardComponent, { read: ElementRef })
-    // private _fuseCards: QueryList<ElementRef>;
+    @ViewChild(MatPaginator) paginator!: MatPaginator;
+    @ViewChild('textItem') textInput: ElementRef;
+
+    @ViewChild('selectItem')
     influencersTableMatSort: MatSort;
     data: any;
     influencersDataSource: MatTableDataSource<any> = new MatTableDataSource();
-    influencersTableColumns: string[] = [
-        'id',
-        'firstName',
-        'lastName',
-        'instagramId',
-        'apiKey',
-    ];
-    columnsToDisplayWithExpand: string[] = [
-        ...this.influencersTableColumns,
-        'expand',
-    ];
-    expandedInfluencer: Influencer | null;
+
+    // expandedInfluencer: Collaboration | null;
+    expandedInfluencer = null;
+
     formLaunched: boolean = false;
     editformLaunched: boolean = false;
     idOfEditedUser: number;
     flashMessage: 'success' | 'error' | null = null;
-    influencerList: Influencer[];
-    addInfluencerFormGroup: UntypedFormGroup;
-    editInfluencerFormGroup: UntypedFormGroup;
-    dataSource: MatTableDataSource<Influencer>;
 
+    dataSource: MatTableDataSource<Collaboration>;
     res = '';
+
+    collaborationList: Collaboration[];
+    blobImgCollaboration = [];
+    collaborationUser: Collaboration;
+    InfluencerResponse: { Collaboration: any };
+
+    isLoading = true;
+    error: string | null = null;
+
+    fieldOptions: string[] = ['Nazwa', 'Miasto', 'Szukaj'];
+    selectedFilter: string = 'Nazwa';
+
+    length = 100;
+    pageSize = 20;
+    pageIndex = 0;
+    pageSizeOptions = [5, 10, 20, 50];
+
+    sortBy: string = 'id';
+    direction: string = 'asc';
+    instagramAccountType: string = '';
+
+    name: string = '';
+    city: string = '';
+    details: string = '';
+    title: string = '';
+
+    disabled = false;
+    showFirstLastButtons = true;
+    showPageSizeOptions = true;
+    hidePageSize = false;
+
+    isTextInput: boolean = true;
+    isSelectInput: boolean = false;
+    searchOptions: string[];
+    selectInput: any;
+    typeStatus: string[];
+
+    typeAccountOptions: string[];
+    searchValue: string = '';
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -124,25 +148,23 @@ export class CollaborationsComponent
         private _formBuilder: UntypedFormBuilder,
         private _changeDetectorRef: ChangeDetectorRef,
         private _fuseConfirmationService: FuseConfirmationService,
-        private router: Router
+        private router: Router,
+        private _collaborationService: CollaborationService,
+        private _cdRef: ChangeDetectorRef
     ) {}
 
-    ngAfterViewInit(): void {}
+    ngAfterViewInit(): void {
+        if (this.dataSource) this.dataSource.paginator = this.paginator;
+
+        this.dataSource = new MatTableDataSource<Collaboration>(
+            this.collaborationList
+        );
+    }
 
     ngOnInit(): void {
-        this._influencerService
-            .getdataJson()
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((influencerList) => {
-                this.influencerList = influencerList;
-            });
+        this.loadCollaboration(this.pageIndex);
 
-        // this._influencerService
-        //     .getCollaborations()
-        //     .pipe(takeUntil(this._unsubscribeAll))
-        //     .subscribe((influencerList: Influencer[]) => {
-        //         this.influencerList = influencerList;
-        //     });
+        console.log(this.collaborationList);
     }
 
     /**
@@ -155,43 +177,128 @@ export class CollaborationsComponent
 
     readonly dialog = inject(MatDialog);
 
-    // openDescription(idCollabo: any) {
-    //     const product = this.dataJson.find(
-    //         (product) => product.id === idCollabo
-    //     );
-    //     if (product) {
-    //         const dialogRef = this.dialog.open(DialogContentExampleDialog, {
-    //             data: { firstName: product.firstName },
-    //         });
+    private async loadCollaboration(pageIndex: number): Promise<void> {
+        this._collaborationService
+            .getCollaborationPaged(
+                pageIndex,
+                this.pageSize,
+                this.sortBy,
+                this.direction,
+                this.name,
+                this.city,
+                this.details,
+                this.title
+            )
+            .subscribe({
+                next: (response: CollaborationResponse) => {
+                    this.length = response.page.totalElements;
+                    this.pageIndex = response.page.number;
+                    this.paginator.length = response.page.totalElements;
+                    this.paginator.pageIndex = response.page.number;
+                    this.paginator.pageSize = response.page.size;
 
-    //         dialogRef.afterClosed().subscribe((result) => {
-    //             console.log(`Dialog result: ${result}`);
-    //         });
-    //     } else {
-    //         console.log('false');
-    //     }
-    // }
+                    this.collaborationList = response.content;
 
-    // takePart(idCollabo: any) {
-    //     const product = this.dataJson.find(
-    //         (product) => product.id === idCollabo
-    //     );
-    //     if (product) {
-    //         const dialogRef = this.dialog.open(LetsActiveAccount, {
-    //             data: { firstName: product.firstName },
-    //         });
+                    this.blobImgCollaboration = this.collaborationList.map(
+                        (collaboration) => {
+                            const blob = new Blob([collaboration.imageUrl], {
+                                type: 'image/jpeg',
+                            });
+                            return URL.createObjectURL(blob);
+                        }
+                    );
 
-    //         dialogRef.afterClosed().subscribe((result) => {
-    //             console.log(`Dialog result: ${result}`);
-    //         });
-    //     } else {
-    //         console.log('false');
-    //     }
-    // }
+                    console.log(this.blobImgCollaboration);
+                },
+                error: (error) => {
+                    console.error('Error fetching influencer list', error);
+                },
+            });
+    }
+
+    pageSizeChanged(previousPageSize: number, newPageSize: number): boolean {
+        return previousPageSize != newPageSize;
+    }
+
+    handlePageSizeChange(e: PageEvent): void {
+        this.pageIndex = 0;
+        this.pageSize = e.pageSize;
+
+        this.loadCollaboration(0);
+    }
+
+    handlePageNavigationChange(e: PageEvent): void {
+        this.pageIndex = e.pageIndex;
+        this.pageSize = e.pageSize;
+
+        this.loadCollaboration(e.pageIndex);
+    }
+
+    handlePageEvent(e: PageEvent) {
+        if (this.pageSizeChanged(this.pageSize, e.pageSize)) {
+            this.handlePageSizeChange(e);
+        } else {
+            this.handlePageNavigationChange(e);
+        }
+    }
+
+    onSearchInputChange(searchInputValue: string) {
+        this.searchValue = searchInputValue;
+
+        this.setSearchFiltersToEmptyStrings();
+        this.setValueOfSelectedFilter(this.searchValue);
+        this.loadCollaboration(0);
+    }
+
+    private setSearchFiltersToEmptyStrings() {
+        this.name = '';
+        this.city = '';
+        this.details = '';
+        this.title = '';
+    }
+
+    onSearchSelectChange(event: any): void {
+        this.selectedFilter = event.value;
+
+        console.log(this.selectedFilter);
+
+        if (['Nazwa', 'Miasto', 'Szukaj'].includes(this.selectedFilter)) {
+            this.isTextInput = true;
+            this.isSelectInput = false;
+            setTimeout(() => {
+                this.textInput.nativeElement.focus();
+            }, 0);
+        }
+
+        this.onSearchInputChange('');
+    }
+
+    addCollaboration(): void {
+        this.router.navigate(['/newCollaboration']);
+    }
 
     goToDetails(id: number): void {
         this.router.navigate(['/collaborations', id]);
         console.log(`Navigating to /collaborations/${id}`);
+    }
+
+    private setValueOfSelectedFilter(valueOfSelectedFilter: string) {
+        switch (this.selectedFilter) {
+            case 'Nazwa':
+                this.name = valueOfSelectedFilter;
+                break;
+            case 'Miasto':
+                this.city = valueOfSelectedFilter;
+                break;
+            case 'Szukaj':
+                this.title = valueOfSelectedFilter;
+                // this.details = valueOfSelectedFilter;
+                break;
+        }
+    }
+
+    getExpandedInfluencer(): Collaboration {
+        return this.expandedInfluencer;
     }
 }
 

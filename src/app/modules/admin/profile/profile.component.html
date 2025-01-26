@@ -122,8 +122,11 @@
                 <button mat-flat-button class="w-1/4 buttonSubmit" #send type="submit" [color]="'primary'"
                     (click)="updateOrCreateInfluencer()" [disabled]="isDisabled">Wyślij
                 </button>
+              
+                <!-- <button mat-raised-button color="primary" (click)="openDialog()">Otwórz Popup</button> -->
 
-                <div class="mt-8">
+                
+                <!-- <div class="mt-8">
                     <div class="-my-3 divide-y">
                         <div class="grid grid-cols-3 py-3">
                             <div class="flex items-center">
@@ -136,8 +139,139 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </form>
         </div>
     </div>
 </div>
+<!-- <fuse-drawer
+    class="z-999 w-screen min-w-screen sm:w-200 sm:min-w-200"
+    fixed
+    [mode]="'over'"
+    [name]="'settingsDrawer'"
+    [position]="'right'"
+    #settingsDrawer
+>
+    <div class="bg-card flex w-full flex-col">
+        <div
+            class="flex h-20 min-h-20 flex-row items-center bg-primary px-6 text-white"
+        >
+            <div class="ml-3 text-2xl font-semibold tracking-tight">
+                Rejestracja - 3 powody dla których warto !
+            </div>
+            <button
+                class="ml-auto"
+                mat-icon-button
+                (click)="settingsDrawer.close()"
+            >
+                <mat-icon
+                    class="text-current"
+                    [svgIcon]="'heroicons_outline:x-mark'"
+                ></mat-icon>
+            </button>
+        </div>
+        <div class=" ml-3 grid w-full grid-cols-1 gap-8 sm:grid-cols-1 md:mt-8 lg:grid-cols-1">
+            <div class="absolute bottom-0 right-0 -m-6 h-24 w-24">
+                <mat-icon
+                    class="text-green-500 opacity-25 icon-size-24 dark:text-green-400"
+                    [svgIcon]="'heroicons_outline:check-circle'"
+                ></mat-icon>
+            </div>
+            <div 
+                class="absolute top-140 left-120"
+                style="transform: rotate(15deg); font-size: 120px; color: #4caf50; opacity: 0.3;"
+                >
+                $
+            </div>
+            <div 
+            class="absolute top-100 left-70 -m-6 h-32 w-32 flex items-center justify-center"
+            style="transform: rotate(-15deg); font-size: 70px; color: #4caf50; opacity: 0.3;"
+            >
+            $
+        </div>
+            
+            <div class="flex flex-row items-start">
+                <div class="ml-5 mt-2 text-xl font-medium leading-none w-10">
+                  1).
+                </div>
+                <div class="progress-container mt-6 flex-none">
+                  <mat-progress-spinner
+                    class="custom-spinner"
+                    [mode]="'determinate'"
+                    [value]="value1"
+                    [diameter]="140"
+                  ></mat-progress-spinner>
+                  <div class="plnElement">PLN*</div>
+                  <div class="progress-text" [ngClass]="{'highlight': isHighlight}">
+                    {{ progress1 }}
+                  </div>
+                </div>
+                <div class="mt-10 ml-15 mr-20 flex-1">
+                    Tyle jesteś w stanie zarabiać
+                    <span class="font-bold">pienędzy</span>
+                     w skali miesiąca.
+                    Rejestracja na naszej platformie daje dużo możliwości. 
+                    Dzięki swojemu zaangażowaniu możesz zarabiać coraz więcej.
+                  <div class="mt-10 font-bold text-sm">
+                    *Kwota jest uzależniona od ilości przyjętych zleceń
+                  </div>
+                </div>
+            </div>
+              
+            <hr class="my-3">
+            <div class="flex flex-row items-start">
+                <div class="ml-5 mt-2 text-xl font-medium leading-none w-10">
+                  2).
+                </div>
+                <div class="progress-container mt-6 flex-none">
+                  <mat-progress-spinner
+                    class="example-margin"
+                    [mode]="'determinate'"
+                    [value]="value2"
+                    [diameter]="140"
+                  ></mat-progress-spinner>
+                  <div class="dayElement">Dzień</div>
+                  <div class="progress-text" [ngClass]="{'highlight': isHighlight2}">
+                    {{ progress2 }}
+                  </div>
+                </div>
+                <div class="mt-10 ml-15 mr-20 flex-1">
+                    O tyle mniej więcej zwiększa się 
+                    <span class="font-bold">dzienna liczba</span>
+                    naszych klientów
+                    A my aby sprostać ich potrzebą stale poszukujemy nowych zleceniobiorców,
+                    którzy pomogą nam się rozwinąć.
+                </div>
+            </div>
+            <hr class="my-3">
+            <div class="flex flex-row items-start">
+                <div class="ml-5 mt-2 text-xl font-medium leading-none w-10">
+                  3).
+                </div>
+                <div class="progress-container mt-6 flex-none">
+                  <mat-progress-spinner
+                    class="example-margin"
+                    [mode]="'determinate'"
+                    [value]="value3"
+                    [diameter]="140"
+                  ></mat-progress-spinner>
+                  <div class="collaboElement">Zleceń</div>
+                  <div class="progress-text" [ngClass]="{'highlight': isHighlight3}">
+                    {{ progress3 }}
+                  </div>
+                </div>
+                <div class="mt-10 ml-15 mr-20 flex-1">
+                   Tyle do tej pory zrealizowaliśmy
+                   <span class="font-bold">zleceń</span>
+                    dzięki naszych influenserom.
+
+                    Mamy nadzeje że przyczynisz się i Ty do powiększania tej liczby.
+                </div>
+            </div>
+
+            <div class="flex justify-center mt-10">
+                <button mat-flat-button class="w-1/4 buttonSubmit"  [color]="'primary'">Rejestruj</button>
+            </div>
+        </div>
+    </div>
+</fuse-drawer> -->

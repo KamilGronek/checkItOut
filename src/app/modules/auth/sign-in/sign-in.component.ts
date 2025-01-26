@@ -19,6 +19,8 @@ import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertComponent, FuseAlertType } from '@fuse/components/alert';
 import { AuthService } from 'app/core/auth/auth.service';
 import { signInWithEmailAndPassword } from '@angular/fire/auth';
+import { InfluencerService } from 'app/services/influencer/influencer.service';
+import { Influencer } from 'app/services/influencer/Influencer';
 
 @Component({
     selector: 'auth-sign-in',
@@ -51,6 +53,8 @@ export class AuthSignInComponent implements OnInit {
     signInForm: UntypedFormGroup;
     showAlert: boolean = false;
 
+    influencerUser: Influencer;
+
     /**
      * Constructor
      */
@@ -58,7 +62,8 @@ export class AuthSignInComponent implements OnInit {
         private _activatedRoute: ActivatedRoute,
         private _authService: AuthService,
         private _formBuilder: UntypedFormBuilder,
-        private _router: Router
+        private _router: Router,
+        private _influencerService: InfluencerService
     ) {}
 
     // -----------------------------------------------------------------------------------------------------
@@ -78,6 +83,14 @@ export class AuthSignInComponent implements OnInit {
             password: ['admin', Validators.required],
             rememberMe: [''],
         });
+
+        const userStatus = localStorage.getItem('userStatus');
+
+        if (userStatus) {
+            console.log('Status użytkownika przed logowaniem:', userStatus);
+        } else {
+            console.log('Brak statusu użytkownika w localStorage');
+        }
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -103,11 +116,23 @@ export class AuthSignInComponent implements OnInit {
         this._authService
             .signInUsingEmailAndPassword(this.signInForm.value)
             .then(() => {
-                const redirectURL =
-                    this._activatedRoute.snapshot.queryParamMap.get(
-                        'redirectURL'
-                    ) || '/signed-in-redirect';
-                // Navigate to the redirect url
+                this._influencerService
+                    .getInfluencerUser()
+                    .subscribe((userData) => {
+                        const status = userData.accountStatus;
+                        localStorage.setItem('userStatus', status);
+                        if (status === 'ACTIVE') {
+                            console.log('status:', status);
+                            this._router.navigateByUrl('collaborations');
+
+                            const redirectURL =
+                                this._activatedRoute.snapshot.queryParamMap.get(
+                                    'redirectURL'
+                                ) || '/signed-in-redirect';
+                        } else {
+                            this._router.navigateByUrl('home');
+                        }
+                    });
                 this._router.navigateByUrl('home');
             })
             .catch((error) => {
@@ -158,6 +183,19 @@ export class AuthSignInComponent implements OnInit {
         this._authService
             .signInWithGoogle()
             .then(() => {
+                this._influencerService
+                    .getInfluencerUser()
+                    .subscribe((userData) => {
+                        const status = userData.accountStatus;
+                        localStorage.setItem('userStatus', status);
+
+                        if (status === 'ACTIVE') {
+                            console.log('status:', status);
+                            this._router.navigateByUrl('collaborations');
+                        } else {
+                            this._router.navigateByUrl('home');
+                        }
+                    });
                 this._router.navigateByUrl('home');
             })
             .catch((error) => {

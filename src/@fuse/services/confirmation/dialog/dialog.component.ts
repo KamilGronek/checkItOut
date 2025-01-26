@@ -6,18 +6,16 @@ import { MatIconModule } from '@angular/material/icon';
 import { FuseConfirmationConfig } from '@fuse/services/confirmation/confirmation.types';
 
 @Component({
-    selector     : 'fuse-confirmation-dialog',
-    templateUrl  : './dialog.component.html',
-    styles       : [
+    selector: 'fuse-confirmation-dialog',
+    templateUrl: './dialog.component.html',
+    styles: [
         `
             .fuse-confirmation-dialog-panel {
-
                 @screen md {
                     @apply w-128;
                 }
 
                 .mat-mdc-dialog-container {
-
                     .mat-mdc-dialog-surface {
                         padding: 0 !important;
                     }
@@ -26,16 +24,12 @@ import { FuseConfirmationConfig } from '@fuse/services/confirmation/confirmation
         `,
     ],
     encapsulation: ViewEncapsulation.None,
-    standalone   : true,
-    imports      : [NgIf, MatButtonModule, MatDialogModule, MatIconModule, NgClass],
+    standalone: true,
+    imports: [NgIf, MatButtonModule, MatDialogModule, MatIconModule, NgClass],
 })
-export class FuseConfirmationDialogComponent
-{
+export class FuseConfirmationDialogComponent {
     /**
      * Constructor
      */
-    constructor(@Inject(MAT_DIALOG_DATA) public data: FuseConfirmationConfig)
-    {
-    }
-
+    constructor(@Inject(MAT_DIALOG_DATA) public data: FuseConfirmationConfig) {}
 }
