@@ -55,10 +55,8 @@ import { InventoryCategory } from 'app/modules/admin/companies/inventory.types';
 import { takeUntil } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from 'app/core/auth/auth.service';
-// import { AngularFireStorage } from '@angular/fire/compat/storage';
-// import { finalize } from 'rxjs/operators';
-import { AngularFireModule } from '@angular/fire/compat';
 
+import { ImageService } from 'app/services/imageService/image.service';
 @Component({
     selector: 'companies',
     standalone: true,
@@ -208,14 +206,24 @@ export class CompaniesComponent implements OnInit, AfterViewInit, OnDestroy {
     selectedProductForm: UntypedFormGroup;
 
     selectedFile: File | null = null;
-    // downloadURL: string | null = null;
 
-    imageUrl: string | null = null;
+    imageUrl: string[] = [];
     nameSelect = '';
     rows = [];
     imgDisplay = false;
 
-    // private storage = inject(AngularFireStorage);
+    serviceTypeOptions = [
+        { id: 1, label: 'Placeholder 1' },
+        { id: 2, label: 'Placeholder 2' },
+        { id: 3, label: 'Placeholder 3' },
+        { id: 4, label: 'Placeholder 4' },
+        { id: 5, label: 'Placeholder 5' },
+        { id: 6, label: 'Placeholder 6' },
+        { id: 7, label: 'Placeholder 7' },
+        { id: 8, label: 'Placeholder 8' },
+        { id: 9, label: 'Placeholder 9' },
+        { id: 10, label: 'Placeholder 10' },
+    ];
 
     constructor(
         // private _influencerService: InfluencerService,
@@ -224,7 +232,8 @@ export class CompaniesComponent implements OnInit, AfterViewInit, OnDestroy {
         private changeDetectorRefs: ChangeDetectorRef,
         private fb: FormBuilder,
         private http: HttpClient,
-        private authService: AuthService
+        private authService: AuthService,
+        private imageService: ImageService
     ) {
         this.editInfluencerFormGroup = this.fb.group({
             id: ['', [Validators.required]],
@@ -238,12 +247,12 @@ export class CompaniesComponent implements OnInit, AfterViewInit, OnDestroy {
             phoneNumber: [''],
             note: [''],
             serviceType: [, [Validators.required]],
-            imageUrl: [''],
         });
     }
 
     ngAfterViewInit(): void {
         if (this.dataSource) this.dataSource.paginator = this.paginator;
+        console.log('dupa', this.companyList);
 
         this.dataSource = new MatTableDataSource<Company>(this.companyList);
     }
@@ -324,7 +333,7 @@ export class CompaniesComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.lastName
             )
             .subscribe({
-                next: (response: CompanyResponse) => {
+                next: async (response: CompanyResponse) => {
                     this.length = response.page.totalElements;
                     this.pageIndex = response.page.number;
                     this.paginator.length = response.page.totalElements;
@@ -332,15 +341,9 @@ export class CompaniesComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.paginator.pageSize = response.page.size;
                     this.dataSource.data = response.content;
 
-                    console.log('data content:', this.dataSource.data);
-
-                    // this.rows = this.dataSource.data.map(
-                    //     (imageUrl) => imageUrl.imageUrl
-                    // );
-
-                    // this.imageUrl = this.rows[1];
-
-                    // console.log('this.imageUrl:', this.imageUrl);
+                    for (let company of this.dataSource.data) {
+                        this.imageUrl[company.id] = company?.imageUrl || null;
+                    }
                 },
                 error: (error) => {
                     console.error('Error fetching influencer list', error);
@@ -409,47 +412,61 @@ export class CompaniesComponent implements OnInit, AfterViewInit, OnDestroy {
 
         const serviceType =
             this.editInfluencerFormGroup.get('serviceType').value;
-        // const imageUrl = this.editInfluencerFormGroup.get('imageUrl').value;
-        // const createdTime =
-        //     this.editInfluencerFormGroup.get('createdTime').value;
-        // const updater = this.editInfluencerFormGroup.get('updater').value;
 
-        const companyToUpdate = this.companyList.find(
+        const companyToUpdate = this.dataSource.data.find(
             (company) => company.id === companyId
         );
 
         this.confrimEditionInfo = true;
-        // this.followersAmountInfo = false;
 
-        const companyUpdate = {
-            ...companyToUpdate,
-            name: name,
-            firstName: firstName,
-            lastName: lastName,
-            email: email,
-            city: city,
-            address: address,
-            phoneNumber: phoneNumber,
-            serviceType: serviceType.id,
-            imageUrl: this.imageUrl,
-            // createdTime: createdTime,
-            // updater: updater,
-            // noteFromAdmin: updatedNote,
-        };
+        if (this.selectedFile) {
+            this.imageService
+                .deleteAllAndUpload(
+                    this.selectedFile,
+                    `companies/${companyId.toString()}`
+                )
+                .then((imageUrl) => {
+                    this.updateCompany(companyId, {
+                        ...companyToUpdate,
+                        name: name,
+                        firstName: firstName,
+                        lastName: lastName,
+                        email: email,
+                        city: city,
+                        address: address,
+                        phoneNumber: phoneNumber,
+                        serviceType: serviceType,
+                        note: note,
+                        imageUrl: imageUrl,
+                    });
+                })
+                .catch((error) => {
+                    console.error('Image upload failed:', error);
+                });
+        } else {
+            this.updateCompany(companyId, {
+                ...companyToUpdate,
+                name: name,
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                city: city,
+                address: address,
+                phoneNumber: phoneNumber,
+                note: note,
+                serviceType: serviceType,
+            });
+        }
+    }
 
-        console.log('companyUpdate:', companyUpdate);
-
+    private updateCompany(companyId: number, companyUpdate: any): void {
         this._companyService
             .updateCompanyPut(companyUpdate, companyId)
             .subscribe({
                 next: (updatedCompany) => {
-                    console.log('updatedCompany:', updatedCompany);
-
                     const idToUpdate: number = this.dataSource.data.findIndex(
                         (company) => company.id === updatedCompany.id
                     );
-
-                    console.log('idToUpdate:', idToUpdate);
 
                     this.dataSource.data[idToUpdate] = updatedCompany;
                     this.dataSource._updateChangeSubscription();
@@ -462,28 +479,30 @@ export class CompaniesComponent implements OnInit, AfterViewInit, OnDestroy {
                     console.error('Błąd podczas aktualizacji:', err);
                 },
             });
+    }
 
-        // if (influencer.selectedFile) {
-        //     const formData = new FormData();
-        //     formData.append('image', influencer.selectedFile);
+    deleteImage(companyId: number) {
+        const companyToUpdate = this.dataSource.data.find(
+            (company) => company.id === companyId
+        );
 
-        //     this.http
-        //         .post(`/api/influencers/${influencer.id}/upload`, formData)
-        //         .subscribe(
-        //             (response: any) => {
-        //                 console.log('Image uploaded:', response);
+        if (companyToUpdate.imageUrl === null) {
+            this.imageUrl[companyId] = null;
+            this.selectedFile = null;
+            return;
+        }
 
-        //                 // Aktualizacja URL po zapisaniu na serwerze
-        //                 influencer.imageUrl = response.imageUrl;
-        //             },
-        //             (error) => {
-        //                 console.error('Error uploading image:', error);
-        //             }
-        //         );
-        // }
-
-        const shouldDisable = true;
-        // this._companyService(shouldDisable);
+        this.imageService
+            .deleteAllFilesInFolder(`companies/${companyId.toString()}`)
+            .then(() => {
+                this.updateCompany(companyId, {
+                    ...companyToUpdate,
+                    imageUrl: null,
+                    serviceType: companyToUpdate.serviceType.id,
+                });
+                this.imageUrl[companyId] = null;
+            })
+            .catch((error) => console.log('Błąd podczas usuwania:', error));
     }
 
     onTypeAccountChange(event: MatSelectChange): void {
@@ -507,105 +526,14 @@ export class CompaniesComponent implements OnInit, AfterViewInit, OnDestroy {
     onFileSelected(event: Event): void {
         const input = event.target as HTMLInputElement;
 
-        // console.log('companyId:', companyId);
-
         if (input?.files && input.files.length > 0) {
             this.selectedFile = input.files[0];
-            // const selectedFile = input.files[0];
 
-            this.imageUrl = URL.createObjectURL(this.selectedFile);
-
-            // this.rows[i].imageUrl = this.imageUrl;
-
-            // this.editInfluencerFormGroup.patchValue({
-            //     imageUrl: this.imageUrl,
-            // });
-            // this.uploadImage(this.selectedFile).subscribe({
-            //     next: (uploadedImageUrl) => {
-            //         this.imageUrl = uploadedImageUrl;
-            //         console.log('Image uploaded successfully:', this.imageUrl);
-            //     },
-            //     error: (error) => {
-            //         console.error('Error uploading image:', error);
-            //     },
-            // });
+            this.imageUrl[this.expandedInfluencer.id] = URL.createObjectURL(
+                this.selectedFile
+            );
         }
     }
-
-    // uploadFile(event: Event): void {
-    //     const file = (event.target as HTMLInputElement).files?.[0];
-    //     if (file) {
-    //         const filePath = `uploads/${Date.now()}_${file.name}`;
-    //         const task = this.storage.upload(filePath, file);
-    //         task.percentageChanges().subscribe((progress) =>
-    //             console.log(progress)
-    //         );
-    //     }
-    // }
-
-    // uploadFile(): void {
-    //     if (this.selectedFile) {
-    //         console.log('Wysyłanie pliku:', this.selectedFile);
-    //     } else {
-    //         console.log('Nie wybrano pliku!');
-    //     }
-
-    //     //     const filePath = `images/${Date.now()}_${this.selectedFile.name}`;
-    //     //     const fileRef = this.storage.ref(filePath);
-    //     //     const task = this.storage.upload(filePath, this.selectedFile);
-
-    //     //     task.snapshotChanges()
-    //     //         .pipe(
-    //     //             finalize(() => {
-    //     //                 fileRef.getDownloadURL().subscribe((url) => {
-    //     //                     this.downloadURL = url;
-    //     //                     console.log('Download URL:', this.downloadURL);
-
-    //     //                     this.saveImageUrlToDatabase(this.downloadURL);
-    //     //                 });
-    //     //             })
-    //     //         )
-    //     //         .subscribe();
-    // }
-
-    // saveImageUrlToDatabase(url: string): void {
-    //     const apiUrl = 'https://twoja-api.com/images'; // Zmień na swój endpoint API
-    //     this.http.post(apiUrl, { imageUrl: url }).subscribe(
-    //         (response) => {
-    //             console.log('Image URL saved to database:', response);
-    //         },
-    //         (error) => {
-    //             console.error('Error saving image URL:', error);
-    //         }
-    //     );
-    // }
-
-    // uploadImage(influencer: any): void {
-    //     if (influencer.selectedFile) {
-    //         const formData = new FormData();
-    //         formData.append('image', influencer.selectedFile);
-
-    //         this.http
-    //             .post(`/api/influencers/${influencer.id}/upload`, formData)
-    //             .subscribe(
-    //                 () => {
-    //                     console.log(
-    //                         `Image uploaded for influencer with ID: ${influencer.id}`
-    //                     );
-    //                 },
-    //                 (error) => {
-    //                     console.error('Error uploading image:', error);
-    //                 }
-    //             );
-    //     }
-    // }
-
-    // clearPreview(): void {
-    //     if (this.uploadedImageUrl) {
-    //         URL.revokeObjectURL(this.uploadedImageUrl);
-    //         this.uploadedImageUrl = null;
-    //     }
-    // }
 
     delete(companyId: number): void {
         this._companyService.deleteCompany(companyId).subscribe({
@@ -648,10 +576,7 @@ export class CompaniesComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.expandedInfluencer.note
             );
             this.editInfluencerFormGroup.controls['serviceType'].setValue(
-                this.expandedInfluencer.serviceType
-            );
-            this.editInfluencerFormGroup.controls['imageUrl'].setValue(
-                this.expandedInfluencer.imageUrl
+                this.expandedInfluencer.serviceType?.id || null
             );
             this.editInfluencerFormGroup.controls['id'].disable();
         }
