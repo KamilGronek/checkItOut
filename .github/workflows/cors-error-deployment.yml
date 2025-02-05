@@ -3,19 +3,16 @@ name: Cors problem
 on: workflow_dispatch
 
 jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
+    build-and-deploy:
+        runs-on: ubuntu-latest
 
-    steps:
-      # (Optional) You can add tests, lint checks, etc. here if desired.
-
-      - name: Deploy via SSH
-        uses: appleboy/ssh-action@v0.1.8
-        with:
-          host: ${{ secrets.OVH_HOST }}       # e.g. 192.168.1.10 or yourdomain.com
-          username: ${{ secrets.OVH_USERNAME }}       # e.g. ubuntu or another user
-          key: ${{ secrets.OVH_PASSWORD }}            # Private SSH key stored in GitHub Secrets
-          # port: 22                             # If your SSH port is different, uncomment and set it
-          script: |
-            # 1) Go to the directory where you keep your project on the remote server
-            cd /var/www/my-angular-app
+        steps:
+            - name: Deploy to OVH
+              env:
+                  HOST: ${{ secrets.OVH_HOST }}
+                  USERNAME: ${{ secrets.OVH_USERNAME }}
+                  PASSWORD: ${{ secrets.OVH_PASSWORD }}
+              run: |
+                  sshpass -p "$PASSWORD" ssh -o StrictHostKeyChecking=no "$USERNAME@$HOST" "
+                  sudo ls &&
+                  sudo pwd
