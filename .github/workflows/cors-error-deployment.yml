@@ -1,4 +1,4 @@
-name: Frontend CI/CD
+name: Cors problem
 
 on: workflow_dispatch
 
