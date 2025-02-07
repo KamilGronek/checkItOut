@@ -61,6 +61,8 @@ import { AuthService } from 'app/core/auth/auth.service';
 import { MatSelectModule, MatSelectChange } from '@angular/material/select';
 import { HttpEvent, HttpResponse } from '@angular/common/http';
 import { InfluencerUser } from 'app/core/influencerUser/InfluencerUser.types';
+import { PopUpService } from 'app/services/popUp/popUp.service';
+
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarService } from 'app/services/snackbar/snackbar.service';
 
@@ -175,11 +177,11 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     typeStatus: string[] = ['Walidowany', 'Aktywny', 'Nieaktywny'];
     typeAccountOptions: string[] = ['Publiczne', 'Niepubliczne', 'NA'];
 
-    // private _unsubscribeAll: Subject<any> = new Subject<any>();
     private _snackBar = inject(MatSnackBar);
 
     constructor(
         private _influencerService: InfluencerService,
+        private _popUpService: PopUpService,
         private _formBuilder: UntypedFormBuilder,
         private authService: AuthService,
         private fb: FormBuilder,
@@ -204,18 +206,18 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
     ngOnInit(): void {
         if (this.router.url.includes('/profile')) {
-            this._influencerService.setPopUpState(true);
+            this._popUpService.setPopUpState(true);
         } else {
-            this._influencerService.setPopUpState(false);
+            this._popUpService.setPopUpState(false);
         }
 
         this.subscription = this.router.events
             .pipe(filter((event) => event instanceof NavigationEnd))
             .subscribe((event: any) => {
                 if (event.url.includes('/profile')) {
-                    this._influencerService.setPopUpState(true);
+                    this._popUpService.setPopUpState(true);
                 } else {
-                    this._influencerService.setPopUpState(false);
+                    this._popUpService.setPopUpState(false);
                 }
             });
 
@@ -365,6 +367,10 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.error500 = true;
             },
         });
+    }
+
+    resetPopUp() {
+        this._popUpService.setHidePopUpPermanently(false);
     }
 
     private async loadInfluencer(): Promise<void> {

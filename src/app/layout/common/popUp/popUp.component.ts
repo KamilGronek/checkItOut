@@ -26,14 +26,20 @@ import { take } from 'rxjs/operators';
 import { takeWhile } from 'rxjs/operators';
 import { Input, ElementRef, ViewChild } from '@angular/core';
 import { InfluencerService } from 'app/services/influencer/influencer.service';
+
+import { PopUpService } from 'app/services/popUp/popUp.service';
+
 import { Influencer } from 'app/services/influencer/Influencer';
+import { MatDrawer } from '@angular/material/sidenav';
+import { AuthService } from 'app/core/auth/auth.service';
+import { from } from 'rxjs';
 
 @Component({
-    selector: 'settings',
-    templateUrl: './settings.component.html',
+    selector: 'pop-up',
+    templateUrl: './popUp.component.html',
     styles: [
         `
-            settings {
+            pop-up {
                 position: static;
                 display: block;
                 flex: none;
@@ -41,7 +47,7 @@ import { Influencer } from 'app/services/influencer/Influencer';
             }
 
             @media (screen and min-width: 1280px) {
-                empty-layout + settings .settings-cog {
+                empty-layout + pop-up .pop-up-cog {
                     right: 0 !important;
                 }
             }
@@ -62,12 +68,13 @@ import { Influencer } from 'app/services/influencer/Influencer';
         MatProgressSpinnerModule,
         MatMenuModule,
     ],
-    styleUrl: 'settingsComponent.css',
+    styleUrl: 'popUpComponent.css',
 })
-export class SettingsComponent implements OnInit, OnDestroy {
-    @ViewChild('settingsButton') settingsButton!: ElementRef<HTMLDivElement>; // Odniesienie do przycisku
+export class PopUpComponent implements OnInit, OnDestroy {
+    @ViewChild('popUpButton') popUpButton!: ElementRef<HTMLDivElement>;
 
-    // config: FuseConfig;
+    @ViewChild(MatDrawer) settingsDrawer!: MatDrawer;
+
     layout: string;
     scheme: 'dark' | 'light';
     theme: string;
@@ -93,63 +100,20 @@ export class SettingsComponent implements OnInit, OnDestroy {
     value3 = 0;
 
     influencerUser: Influencer;
-    /**
-     * Constructor
-     */
+
     constructor(
         private _fuseConfigService: FuseConfigService,
-        private _influencerService: InfluencerService
+        private _influencerService: InfluencerService,
+        private _popUpService: PopUpService,
+        private _authService: AuthService
     ) {}
-
-    // -----------------------------------------------------------------------------------------------------
-    // @ Lifecycle hooks
-    // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * On init
-     */
-    dontShowPopUpAgain: boolean = true;
 
     ngOnInit(): void {
         this.updateSpinner1();
         this.updateSpinner2();
         this.updateSpinner3();
 
-        this.dontShowPopUpAgain =
-            this._influencerService.getHidePopUpPermanently();
-
-        this._influencerService.hidePopUpPermanently$.subscribe((dontShow) => {
-            this.dontShowPopUpAgain = dontShow;
-        });
-
-        this._influencerService.getInfluencerUser().subscribe({
-            next: (userData) => {
-                if (!userData || !userData.accountStatus) {
-                    this.openPopup();
-                    return;
-                }
-                const status = userData.accountStatus;
-
-                if (
-                    status === 'Aktywny' ||
-                    status === 'Walidowany' ||
-                    status === 'Nieaktywny'
-                ) {
-                    return;
-                }
-
-                if (this.dontShowPopUpAgain) {
-                    this.openPopup();
-                }
-            },
-            error: (error) => {
-                console.error(
-                    'Błąd podczas pobierania danych użytkownika:',
-                    error
-                );
-                this.openPopup();
-            },
-        });
+        this.loadUserEmailAndHandlePopup();
 
         this._fuseConfigService.config$
             .pipe(takeUntil(this._unsubscribeAll))
@@ -158,26 +122,50 @@ export class SettingsComponent implements OnInit, OnDestroy {
             });
     }
 
-    private openPopup(): void {
-        if (this.dontShowPopUpAgain) {
-            setTimeout(() => {
-                this.settingsButton.nativeElement.click();
-            }, 0);
+    private loadUserEmailAndHandlePopup(): void {
+        const user = this._authService.getUserFromToken();
+
+        if (user && user.email) {
+            this._popUpService.setUserKey(user.email);
+        } else {
+            console.warn('Nie udało się załadować adresu e-mail z tokenu.');
         }
+        this.loadUserDataAndHandlePopup();
     }
 
-    // if (this.dontShowPopUpAgain) {
-    //         setTimeout(() => {
-    //             this.settingsButton.nativeElement.click();
-    //         }, 0);
-    //     }
+    private loadUserDataAndHandlePopup(): void {
+        this._influencerService.getInfluencerUser().subscribe({
+            next: (userData) => {
+                const status = userData?.accountStatus;
+                console.log(`Status konta użytkownika: ${status}`);
+            },
+            error: (error) => {
+                console.error(
+                    'Błąd podczas pobierania danych użytkownika:',
+                    error
+                );
+
+                const isPopupHidden =
+                    this._popUpService.getInitialLocalStorageValue();
+                const isPopupOpen = this.settingsDrawer?.opened;
+                if (!isPopupHidden && !isPopupOpen) {
+                    this.openPopup();
+                }
+            },
+        });
+    }
+
+    private openPopup(): void {
+        this.popUpButton.nativeElement.click();
+    }
+
+    hidePermanently() {
+        this._popUpService.setHidePopUpPermanently(true);
+    }
 
     updateSpinner1(): void {
         interval(25)
-            .pipe(
-                take(101)
-                // takeWhile((value) => value <= 80)
-            )
+            .pipe(take(101))
             .subscribe({
                 next: (value) => {
                     this.progress1 = value;
@@ -230,11 +218,6 @@ export class SettingsComponent implements OnInit, OnDestroy {
                     }, 300);
                 },
             });
-    }
-
-    resetPopUp() {
-        this._influencerService.setHidePopUpPermanently(false);
-        this._influencerService.setPopUpState(false);
     }
 
     /**

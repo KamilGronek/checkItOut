@@ -122,7 +122,6 @@ export class AuthSignInComponent implements OnInit {
                         const status = userData.accountStatus;
                         localStorage.setItem('userStatus', status);
                         if (status === 'ACTIVE') {
-                            console.log('status:', status);
                             this._router.navigateByUrl('collaborations');
 
                             const redirectURL =
@@ -190,7 +189,6 @@ export class AuthSignInComponent implements OnInit {
                         localStorage.setItem('userStatus', status);
 
                         if (status === 'ACTIVE') {
-                            console.log('status:', status);
                             this._router.navigateByUrl('collaborations');
                         } else {
                             this._router.navigateByUrl('home');

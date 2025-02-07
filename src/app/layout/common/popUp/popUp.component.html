@@ -1,6 +1,6 @@
 <div
-    class="dlaczegoWarto settings-cog absolute right-0 z-90 flex  cursor-pointer items-center justify-center  bg-opacity-90  print:hidden"
-    #settingsButton
+    class="infoPopUp sm:mr-15 lg:mr-5 absolute right-0 z-90 flex  cursor-pointer items-center justify-center  bg-opacity-90  print:hidden"
+    #popUpButton
     [class.lg:right-0]="
         config.layout === 'centered' || config.layout === 'material'
     "
@@ -8,7 +8,7 @@
         config.layout !== 'centered' && config.layout !== 'material'
     "
     style="top: 275px"
-    (click)="settingsDrawer.toggle()"
+    (click)="popUpDrawer.toggle()"
 >
     Dlaczego warto?
 </div>
@@ -17,21 +17,21 @@
     class="z-999 w-screen min-w-screen sm:w-200 sm:min-w-200 overflow-auto"
     fixed
     [mode]="'over'"
-    [name]="'settingsDrawer'"
+    [name]="'popUpDrawer'"
     [position]="'right'"
-    #settingsDrawer
+    #popUpDrawer
 >
     <div class="bg-card flex w-full flex-col overflow-auto">
         <div
             class="flex h-20 min-h-20 flex-row items-center bg-primary px-6 text-white"
         >
             <div class="ml-3 text-2xl font-semibold tracking-tight">
-                Dołącz do nas ! - 3 powody dla których warto !
+                Dołącz do nas !
             </div>
             <button
                 class="ml-auto"
                 mat-icon-button
-                (click)="settingsDrawer.close()"
+                (click)="popUpDrawer.close()"
             >
                 <mat-icon
                     class="text-current"
@@ -60,7 +60,13 @@
             
             <div class="flex flex-row items-start">
                 <div class="ml-5 mt-2 text-xl font-medium leading-none w-10">
-                  1).
+                  <mat-icon
+                    class="text-green-500 h-10 w-10"
+
+                    [svgIcon]="
+                        'heroicons_outline:check'
+                    "
+                  ></mat-icon>
                 </div>
                 <div class="progress-container mt-6 flex-none">
                   <mat-progress-spinner
@@ -89,7 +95,13 @@
             <hr class="my-3">
             <div class="flex flex-row items-start">
                 <div class="ml-5 mt-2 text-xl font-medium leading-none w-10">
-                  2).
+                  <mat-icon
+                    class="text-green-500 h-10 w-10"
+
+                    [svgIcon]="
+                        'heroicons_outline:check'
+                    "
+                  ></mat-icon>
                 </div>
                 <div class="progress-container mt-6 flex-none">
                   <mat-progress-spinner
@@ -114,7 +126,13 @@
             <hr class="my-3">
             <div class="flex flex-row items-start">
                 <div class="ml-5 mt-2 text-xl font-medium leading-none w-10">
-                  3).
+                  <mat-icon
+                  class="text-green-500 h-10 w-10"
+
+                  [svgIcon]="
+                      'heroicons_outline:check'
+                  "
+                ></mat-icon>
                 </div>
                 <div class="progress-container mt-6 flex-none">
                   <mat-progress-spinner
@@ -144,10 +162,10 @@
       
             <div class="flex flex-col items-center mt-5">
               <button mat-flat-button class="w-1/4 buttonSubmit"  [color]="'primary'"
-              (click)="settingsDrawer.close()"
+              (click)="popUpDrawer.close()"
               >Dołącz do nas</button>
               <button mat-flat-button class="w-1/4 buttonSubmit"
-              (click)="settingsDrawer.close(); resetPopUp()"
+              (click)="popUpDrawer.close(); hidePermanently()"
 
                   style="font-size: 10px;"
                 >Nie pokazuj więcej</button>
@@ -155,17 +173,3 @@
         </div>
     </div>
 </fuse-drawer>
-
-
-<!-- Rozwijaj swoją markę jako lider opinii w Twojej okolicy. -->
-
-<!-- "Zarejestruj się teraz i zacznij zarabiać!"
-"Kliknij, aby dołączyć i zyskać darmowe współprace!"
-"Dołącz do najlepszych influencerów w swoim mieście!"
-"Sprawdź, ile możesz zarobić z nami!"
-"Wejdź do świata lokalnych współprac – zarejestruj się już dziś!" -->
-
-
-<!-- "Zarejestruj się teraz"
-"Pobierz za darmo"
-"Dołącz do nas" -->

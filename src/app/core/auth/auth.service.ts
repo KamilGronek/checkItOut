@@ -44,7 +44,6 @@ export class AuthService {
             this._authenticated = true;
             this.dataTokenRole = this.getRole();
 
-            // Opcjonalnie, można ponownie załadować dane użytkownika
             this._userService.user = this.getUserFromToken();
         }
     }
@@ -72,10 +71,17 @@ export class AuthService {
 
     getDecodedToken(): any {
         const token = this.getAccessToken();
-        if (token) {
-            return this.decodeToken(token);
+        if (!token) {
+            console.warn('Brak tokenu dostępowego.');
+            return null;
         }
-        return null;
+
+        try {
+            return this.decodeToken(token);
+        } catch (error) {
+            console.error('Błąd podczas dekodowania tokenu:', error);
+            return null;
+        }
     }
 
     //norbert.marchewka44@gmail.com   // Admin
@@ -100,9 +106,18 @@ export class AuthService {
 
     getUserFromToken(): User {
         const decodedToken = this.getDecodedToken();
-        let newUser = user;
-        newUser.email = decodedToken.email;
-        newUser.id = decodedToken.user_id;
+
+        if (!decodedToken) {
+            console.warn(
+                'Nie można utworzyć użytkownika — brak poprawnego tokenu.'
+            );
+            return {} as User;
+        }
+
+        let newUser = { ...user };
+        newUser.email = decodedToken.email || '';
+        newUser.id = decodedToken.user_id || null;
+
         return newUser;
     }
 

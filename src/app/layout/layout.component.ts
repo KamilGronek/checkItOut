@@ -13,7 +13,7 @@ import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { FusePlatformService } from '@fuse/services/platform';
 import { FUSE_VERSION } from '@fuse/version';
 import { combineLatest, filter, map, Subject, takeUntil } from 'rxjs';
-import { SettingsComponent } from './common/settings/settings.component';
+import { PopUpComponent } from './common/popUp/popUp.component';
 import { EmptyLayoutComponent } from './layouts/empty/empty.component';
 import { CenteredLayoutComponent } from './layouts/horizontal/centered/centered.component';
 import { EnterpriseLayoutComponent } from './layouts/horizontal/enterprise/enterprise.component';
@@ -26,6 +26,7 @@ import { DenseLayoutComponent } from './layouts/vertical/dense/dense.component';
 import { FuturisticLayoutComponent } from './layouts/vertical/futuristic/futuristic.component';
 import { ThinLayoutComponent } from './layouts/vertical/thin/thin.component';
 import { InfluencerService } from 'app/services/influencer/influencer.service';
+import { PopUpService } from 'app/services/popUp/popUp.service';
 
 @Component({
     selector: 'layout',
@@ -46,7 +47,7 @@ import { InfluencerService } from 'app/services/influencer/influencer.service';
         DenseLayoutComponent,
         FuturisticLayoutComponent,
         ThinLayoutComponent,
-        SettingsComponent,
+        PopUpComponent,
     ],
 })
 export class LayoutComponent implements OnInit, OnDestroy {
@@ -71,7 +72,8 @@ export class LayoutComponent implements OnInit, OnDestroy {
         private _fuseConfigService: FuseConfigService,
         private _fuseMediaWatcherService: FuseMediaWatcherService,
         private _fusePlatformService: FusePlatformService,
-        private _influencerService: InfluencerService
+        private _influencerService: InfluencerService,
+        private _popUpService: PopUpService
     ) {}
 
     // -----------------------------------------------------------------------------------------------------
@@ -82,7 +84,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
      * On init
      */
     ngOnInit(): void {
-        this._influencerService.isPopUpVisible$.subscribe((isVisible) => {
+        this._popUpService.isPopUpVisible$.subscribe((isVisible) => {
             this.shouldDisplay = isVisible;
         });
 

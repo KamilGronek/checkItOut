@@ -14,117 +14,9 @@ import { environment } from 'environments/environment';
     providedIn: 'root',
 })
 export class InfluencerService {
-    dataJson = [
-        {
-            id: 1,
-            firstName: 'Salon Fryzjerksi',
-            lastName: 'Wrocław',
-            instagramId: '@fastCat',
-            images: 'https://i.pinimg.com/736x/90/0d/4b/900d4b106c5484f0765396d0e69ab850.jpg',
-        },
-        {
-            id: 2,
-            firstName: 'Restauracja Galeon',
-            lastName: 'Warszawa',
-            instagramId: '@gessler',
-            images: 'https://i.pinimg.com/736x/b8/3c/92/b83c92b2bfa0e34179de0954c2e1acf9.jpg',
-        },
-        {
-            id: 3,
-            firstName: 'Cukiernia u Jagody',
-            lastName: 'Poznań',
-            instagramId: '@jagodzianka',
-            images: 'https://i.pinimg.com/736x/79/e8/16/79e81634cbd224b9feb85646384240ce.jpg',
-        },
-        {
-            id: 4,
-            firstName: 'Smart Kids Planet',
-            lastName: 'Warszawa',
-            instagramId: '@fso',
-            images: 'https://i.pinimg.com/736x/0c/8e/f1/0c8ef1e0828fe50c2bf0d4459c516c46.jpg',
-        },
-        {
-            id: 5,
-            firstName: 'Escape Room',
-            lastName: 'Wrocław',
-            instagramId: '@escapeRoom',
-            images: 'https://i.pinimg.com/736x/9d/c1/2f/9dc12fec4a03efe8217763c8919ba997.jpg',
-        },
-        {
-            id: 6,
-            firstName: 'Kwiaciarnia u Gabrieli',
-            lastName: 'Łeba',
-            instagramId: '@gabriela_kwiaty',
-            images: 'https://i.pinimg.com/236x/3c/4f/b9/3c4fb9fe635381f36fe18f9fbb49ee2d.jpg',
-        },
-        {
-            id: 7,
-            firstName: 'Sexblowsion',
-            lastName: 'Warszawa',
-            instagramId: '@sexblowsion',
-            images: 'https://i.pinimg.com/236x/54/a1/8e/54a18e4d96c3a867b9bf0cd23991f1b8.jpg',
-        },
-        {
-            id: 8,
-            firstName: 'Coffee shop Amnezja',
-            lastName: 'Radom',
-            instagramId: '@amnezja',
-            images: 'https://i.pinimg.com/736x/77/28/67/772867c683ee3e149edb327297b86e61.jpg',
-        },
-        {
-            id: 9,
-            firstName: 'Przedszkole "Mały Diabełek"',
-            lastName: 'Łysa Góra',
-            instagramId: '@spij_kochanie_spij',
-            images: 'https://i.pinimg.com/736x/da/bf/c8/dabfc884b236cd9703590c54a5faef79.jpg',
-        },
-    ];
-
     //=====================================================================
 
     private apiUrl: string = environment.apiUrl;
-
-    private isDisabled = new BehaviorSubject<boolean>(false);
-
-    private isPopUpVisible = new BehaviorSubject<boolean>(false);
-
-    private hidePopUpPermanently = new BehaviorSubject<boolean>(true);
-
-    isDisabled$ = this.isDisabled.asObservable();
-    isPopUpVisible$ = this.isPopUpVisible.asObservable();
-
-    hidePopUpPermanently$ = this.hidePopUpPermanently.asObservable();
-
-    setDisabledState(state: boolean) {
-        this.isDisabled.next(state);
-    }
-
-    getPopUpState() {
-        return this.isPopUpVisible$;
-    }
-
-    setPopUpState(status: boolean): void {
-        this.isPopUpVisible.next(status);
-    }
-
-    getHidePopUpPermanently(): boolean {
-        try {
-            const storedValue = localStorage.getItem('hidePopUpPermanently');
-            return storedValue === 'true';
-        } catch (error) {
-            console.error('Error accessing localStorage:', error);
-            return false;
-        }
-    }
-
-    setHidePopUpPermanently(status: boolean): void {
-        this.hidePopUpPermanently.next(status);
-        try {
-            localStorage.setItem('hidePopUpPermanently', String(status));
-        } catch (error) {
-            console.error('Error saving to localStorage:', error);
-        }
-    }
 
     httpOptions = {
         headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
@@ -133,10 +25,6 @@ export class InfluencerService {
     dataToken: any;
 
     constructor(private http: HttpClient, private authService: AuthService) {}
-
-    getdataJson(): Observable<any[]> {
-        return of(this.dataJson);
-    }
 
     getInfluencerList(): Observable<Influencer[]> {
         return this.http.get<Influencer[]>(this.apiUrl + '/user' + '/list');
@@ -175,9 +63,7 @@ export class InfluencerService {
     }
 
     getCollaborationId(id: number): Observable<Influencer> {
-        return this.http.get<Influencer>(
-            this.apiUrl + `/collaborations/${id}`
-        );
+        return this.http.get<Influencer>(this.apiUrl + `/collaborations/${id}`);
     }
 
     createInfluencerUser(user: any) {

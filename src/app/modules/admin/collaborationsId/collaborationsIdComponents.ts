@@ -54,6 +54,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { InfluencerService } from 'app/services/influencer/influencer.service';
 import { City } from 'app/services/influencer/Influencer';
 import { AsyncPipe } from '@angular/common';
+import { MatSliderModule } from '@angular/material/slider';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
     selector: 'collaborationsId',
@@ -87,6 +89,8 @@ import { AsyncPipe } from '@angular/common';
         MatNativeDateModule,
         MatSelectModule,
         AsyncPipe,
+        MatSliderModule,
+        MatCheckboxModule,
     ],
     styleUrl: 'collaborationsId-list.styles.css',
 })
@@ -125,6 +129,14 @@ export class CollaborationsIdComponent {
     selectedCity: string = '';
     cityList: City[];
     cityOptions: string[] = [];
+
+    disabled = false;
+    max = 100;
+    min = 0;
+    showTicks = false;
+    step = 1;
+    thumbLabel = false;
+    value = 0;
 
     constructor(
         private router: Router,
