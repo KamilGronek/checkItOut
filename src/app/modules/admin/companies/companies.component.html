@@ -175,7 +175,7 @@
                             <td mat-cell *matCellDef="let company">
                                 <button mat-icon-button aria-label="expand row" (click)="(expandedInfluencer = expandedInfluencer === company
                                     ? null : company);
-                                     $event.stopPropagation(); fillEditForm()" (click)="toggleDetails(product.id)">
+                                     $event.stopPropagation(); fillEditForm(); toggleDetails(product.id)">
                                     @if (expandedInfluencer === company) {
                                     <mat-icon>keyboard_arrow_up</mat-icon>
                                     } @else {
@@ -254,7 +254,7 @@
                                 </button>
 
                                 <input #fileInput type="file" accept="image/*" class="hidden"
-                                    (input)="onFileSelected($event)" onclick="this.value = null" />
+                                    (input)="onFileSelected($event)" (click)="onInputClick($event)" />
                             </div>
                         </div>
 
@@ -305,8 +305,7 @@
                             <form [formGroup]="editInfluencerFormGroup">
                                 <mat-form-field appearance="outline" class="text-area pl-0">
                                     <mat-label><b>Notatka:</b></mat-label>
-                                    <textarea [formControlName]="'note'" matInput formControlName="note"
-                                        placeholder="Wyślij notatkę...">
+                                    <textarea matInput formControlName="note" placeholder="Wyślij notatkę...">
                             </textarea>
                                 </mat-form-field>
                             </form>
@@ -335,7 +334,7 @@
                     Przed wysłaniem, proszę info o rodzaju konta
                 </p>
 
-                <p class="textConfirm" *ngIf="confrimEditionInfo">
+                <p class="textConfirm" *ngIf="confirmEditionInfo">
                     Influencer zatwierdzony
                 </p>
             </ng-template>

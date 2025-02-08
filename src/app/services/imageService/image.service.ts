@@ -13,31 +13,46 @@ export class ImageService {
     constructor(private storage: Storage) {}
 
     async uploadImage(file: File, path: string): Promise<string> {
-        const imagePath = `/images/${path}/${file.name}`;
-        const storageRef = ref(this.storage, imagePath);
+        try {
+            const imagePath = `/images/${path}/${file.name}`;
+            const storageRef = ref(this.storage, imagePath);
 
-        const snapshot = await uploadBytes(storageRef, file);
-        return await getDownloadURL(snapshot.ref);
+            const snapshot = await uploadBytes(storageRef, file);
+            return await getDownloadURL(snapshot.ref);
+        } catch (error) {
+            console.error('Error uploading image:', error);
+            throw new Error('Failed to upload image. Please try again.');
+        }
     }
 
     async deleteImage(path: string): Promise<void> {
-        const storageRef = ref(this.storage, path);
-        await deleteObject(storageRef);
+        try {
+            const storageRef = ref(this.storage, `/images/${path}`);
+            await deleteObject(storageRef);
+        } catch (error) {
+            console.error('Error deleting image:', error);
+            throw new Error('Failed to delete image. It may not exist.');
+        }
     }
 
     async deleteAllFilesInFolder(path: string): Promise<void> {
-        const folderRef = ref(this.storage, `/images/${path}`);
-        const result = await listAll(folderRef);
+        try {
+            const folderRef = ref(this.storage, `/images/${path}`);
+            const result = await listAll(folderRef);
 
-        const deletePromises = result.items.map((fileRef) =>
-            deleteObject(fileRef)
-        );
+            if (result.items.length === 0) {
+                console.warn('No files found in folder:', path);
+                return;
+            }
 
-        await Promise.all(deletePromises);
-    }
+            const deletePromises = result.items.map((fileRef) => {
+                deleteObject(fileRef);
+            });
 
-    async deleteAllAndUpload(file: File, path: string): Promise<string> {
-        await this.deleteAllFilesInFolder(path);
-        return await this.uploadImage(file, path);
+            await Promise.all(deletePromises);
+        } catch (error) {
+            console.error('Error deleting files in folder:', error);
+            throw new Error('Failed to delete files in the folder.');
+        }
     }
 }

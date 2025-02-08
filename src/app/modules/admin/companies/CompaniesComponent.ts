@@ -137,7 +137,7 @@ export class CompaniesComponent implements OnInit, AfterViewInit, OnDestroy {
     isLoading: boolean = false;
     updatedNoteInfo: boolean = false;
     // followersAmountInfo: boolean = false;
-    confrimEditionInfo: boolean = false;
+    confirmEditionInfo: boolean = false;
     ascDescInfo: boolean = false;
 
     sortDirection: string = 'asc';
@@ -207,7 +207,7 @@ export class CompaniesComponent implements OnInit, AfterViewInit, OnDestroy {
 
     selectedFile: File | null = null;
 
-    imageUrl: string[] = [];
+    imageUrl: { [id: number]: string | null } = {};
     nameSelect = '';
     rows = [];
     imgDisplay = false;
@@ -252,7 +252,6 @@ export class CompaniesComponent implements OnInit, AfterViewInit, OnDestroy {
 
     ngAfterViewInit(): void {
         if (this.dataSource) this.dataSource.paginator = this.paginator;
-        console.log('dupa', this.companyList);
 
         this.dataSource = new MatTableDataSource<Company>(this.companyList);
     }
@@ -333,7 +332,7 @@ export class CompaniesComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.lastName
             )
             .subscribe({
-                next: async (response: CompanyResponse) => {
+                next: (response: CompanyResponse) => {
                     this.length = response.page.totalElements;
                     this.pageIndex = response.page.number;
                     this.paginator.length = response.page.totalElements;
@@ -392,13 +391,20 @@ export class CompaniesComponent implements OnInit, AfterViewInit, OnDestroy {
     ngOnDestroy(): void {
         this._unsubscribeAll.next(null);
         this._unsubscribeAll.complete();
+
+        Object.keys(this.imageUrl).forEach((key) => {
+            const url = this.imageUrl[key];
+
+            if (typeof url === 'string' && url.startsWith('blob:'))
+                URL.revokeObjectURL(url);
+        });
     }
 
     trackByFn(index: number, item: any): any {
         return item.id || index;
     }
 
-    putOrPatchCompany(companyId: number): void {
+    async putOrPatchCompany(companyId: number): Promise<void> {
         const firstName = this.editInfluencerFormGroup.get('firstName').value;
         const lastName = this.editInfluencerFormGroup.get('lastName').value;
         const name = this.editInfluencerFormGroup.get('name').value;
@@ -417,32 +423,38 @@ export class CompaniesComponent implements OnInit, AfterViewInit, OnDestroy {
             (company) => company.id === companyId
         );
 
-        this.confrimEditionInfo = true;
+        if (!companyToUpdate) {
+            console.error(`Company with ID ${companyId} not found.`);
+            return;
+        }
+
+        this.confirmEditionInfo = true;
 
         if (this.selectedFile) {
-            this.imageService
-                .deleteAllAndUpload(
+            try {
+                await this.imageService.deleteAllFilesInFolder(
+                    `companies/${companyId.toString()}`
+                );
+                const url = await this.imageService.uploadImage(
                     this.selectedFile,
                     `companies/${companyId.toString()}`
-                )
-                .then((imageUrl) => {
-                    this.updateCompany(companyId, {
-                        ...companyToUpdate,
-                        name: name,
-                        firstName: firstName,
-                        lastName: lastName,
-                        email: email,
-                        city: city,
-                        address: address,
-                        phoneNumber: phoneNumber,
-                        serviceType: serviceType,
-                        note: note,
-                        imageUrl: imageUrl,
-                    });
-                })
-                .catch((error) => {
-                    console.error('Image upload failed:', error);
+                );
+                this.updateCompany(companyId, {
+                    ...companyToUpdate,
+                    name: name,
+                    firstName: firstName,
+                    lastName: lastName,
+                    email: email,
+                    city: city,
+                    address: address,
+                    phoneNumber: phoneNumber,
+                    serviceType: serviceType,
+                    note: note,
+                    imageUrl: url,
                 });
+            } catch (error) {
+                console.error('Image upload failed:', error);
+            }
         } else {
             this.updateCompany(companyId, {
                 ...companyToUpdate,
@@ -485,6 +497,11 @@ export class CompaniesComponent implements OnInit, AfterViewInit, OnDestroy {
         const companyToUpdate = this.dataSource.data.find(
             (company) => company.id === companyId
         );
+
+        if (!companyToUpdate) {
+            console.error(`Company with ID ${companyId} not found.`);
+            return;
+        }
 
         if (companyToUpdate.imageUrl === null) {
             this.imageUrl[companyId] = null;
@@ -529,10 +546,20 @@ export class CompaniesComponent implements OnInit, AfterViewInit, OnDestroy {
         if (input?.files && input.files.length > 0) {
             this.selectedFile = input.files[0];
 
+            const url = this.imageUrl[this.expandedInfluencer.id];
+            if (typeof url === 'string' && url.startsWith('blob:')) {
+                URL.revokeObjectURL(this.imageUrl[this.expandedInfluencer.id]);
+            }
+
             this.imageUrl[this.expandedInfluencer.id] = URL.createObjectURL(
                 this.selectedFile
             );
         }
+    }
+
+    onInputClick(event: Event): void {
+        const input = event.target as HTMLInputElement;
+        input.value = null;
     }
 
     delete(companyId: number): void {
