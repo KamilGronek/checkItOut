@@ -296,7 +296,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             this.editInfluencerFormGroup.get('instagramAccountType').value;
 
         this._influencerService
-            .updateInfluencerUser(userToUpdate, this.influencerUser.id)
+            .updateInfluencerUser(userToUpdate, userToUpdate.id)
             .subscribe({
                 next: (user) => {
                     this.setStatusOfUser(user.accountStatus);

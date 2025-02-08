@@ -6,12 +6,13 @@ import { ServiceType } from './ServiceType';
 import { CollaborationResponse } from '../collaboration/Collaboration';
 import { AuthService } from 'app/core/auth/auth.service';
 import { BehaviorSubject } from 'rxjs';
+import { environment } from 'environments/environment';
 
 @Injectable({
     providedIn: 'root',
 })
 export class TypeService {
-    private apiUrl: string = 'http://localhost:8080/service-type';
+    private apiUrl: string = environment.apiUrl + "/service-type";
 
     httpOptions = {
         headers: new HttpHeaders({ 'Content-Type': 'application/json' }),

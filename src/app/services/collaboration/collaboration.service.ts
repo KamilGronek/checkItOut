@@ -6,12 +6,14 @@ import { Collaboration } from './Collaboration';
 import { CollaborationResponse } from './Collaboration';
 import { AuthService } from 'app/core/auth/auth.service';
 import { BehaviorSubject } from 'rxjs';
+import { environment } from 'environments/environment';
 
 @Injectable({
     providedIn: 'root',
 })
 export class CollaborationService {
-    private apiUrl: string = 'http://localhost:8080/partnership-opportunity';
+    private apiUrl: string = environment.apiUrl + '/partnership-opportunity';
+
 
     httpOptions = {
         headers: new HttpHeaders({ 'Content-Type': 'application/json' }),

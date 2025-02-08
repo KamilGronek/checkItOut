@@ -217,7 +217,6 @@ export class newInfluencersListComponent
     ) {
         this.editUserFormGroup = this.fb.group({
             id: ['', [Validators.required]],
-            lastUpdateTime: ['', [Validators.required]],
             firstName: ['', [Validators.required]],
             lastName: ['', [Validators.required]],
             email: ['', [Validators.required]],
@@ -413,10 +412,8 @@ export class newInfluencersListComponent
     }
 
     sendToInluencer(userIdToUpdate: number): void {
-        this._influencerService
-            .updateInfluencerUser(
-                this.getUserToUpdate(userIdToUpdate),
-                userIdToUpdate
+        this._influencerService.updateInfluencerUser(
+                this.getUserToUpdate(userIdToUpdate), userIdToUpdate
             )
             .subscribe({
                 next: (updatedUser: InfluencerUser) => {
@@ -446,6 +443,7 @@ export class newInfluencersListComponent
             );
             return null;
         }
+        
         const userToUpdate = this.dataSource.data.find(
             (user) => user.id === userIdToUpdate
         );

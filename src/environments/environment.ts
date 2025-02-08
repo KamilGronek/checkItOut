@@ -1,6 +1,6 @@
 export const environment = {
     production: true,
-    apiUrl: 'http://my-prod-url',
+    apiUrl: 'https://app.check-it-out.pl/api',
     firebaseConfig: {
         apiKey: "AIzaSyBVAdNu1AolItY5tjdKVtq3TxiewsFv98M",
         authDomain: "check-it-out-47c50.firebaseapp.com",

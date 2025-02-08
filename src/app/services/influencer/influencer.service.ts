@@ -35,11 +35,11 @@ export class InfluencerService {
     }
 
     getInfluencerTypeAccount() {
-        return this.http.get(this.apiUrl + '/accounts/type');
+        return this.http.get(this.apiUrl + '/influencer/accounts/type');
     }
 
     getInfluencerStatus() {
-        return this.http.get(this.apiUrl + '/accounts/status');
+        return this.http.get(this.apiUrl + '/influencer/accounts/status');
     }
 
     getInfluencerById(id: number): Observable<Influencer> {
