@@ -1,18 +1,47 @@
-name: Cors problem
+name: Frontend CI/CD
 
-on: workflow_dispatch
+on:
+    push:
+        branches: ["main"]
+    workflow_dispatch:
 
 jobs:
     build-and-deploy:
         runs-on: ubuntu-latest
-
         steps:
-            - name: Deploy to OVH
+              # 1) Check out the source code
+            - name: Check out repository
+              uses: actions/checkout@v3
+
+              # 2) Set up Node (so we can run Angular builds)
+            - name: Use Node.js
+              uses: actions/setup-node@v3
+              with:
+                node-version: 18  # or 18, depending on your project
+
+             # 3) Install dependencies (npm ci is faster & safer for CI)
+            - name: Install dependencies
+              run: npm ci --legacy-peer-deps
+
+             # 4) Build the Angular app
+            - name: Build Angular
+              run: |
+               npm run build -- --configuration production
+
+            - name: Deploy with SCP
+              uses: appleboy/scp-action@v0.1.2
+              with:
+                host: ${{ secrets.OVH_HOST }}    # e.g., "my-server.com" or IP
+                username: ${{ secrets.UBUNTU_USERNAME }} # e.g., "ubuntu", "root"
+                key: ${{ secrets.OVH_SSH_KEY }}         # The private key you stored
+                source: "dist/fuse/*"              # Local files or directories
+                target: "/var/www/app.check-it-out.pl/"   
+
+            - name: Restart Nginx
               env:
                   HOST: ${{ secrets.OVH_HOST }}
-                  USERNAME: ${{ secrets.OVH_USERNAME }}
-                  PASSWORD: ${{ secrets.OVH_PASSWORD }}
+                  USERNAME: ${{ secrets.UBUNTU_USERNAME }}
+                  PASSWORD: ${{ secrets.UBUNTU_PASSWORD }}
               run: |
                   sshpass -p "$PASSWORD" ssh -o StrictHostKeyChecking=no "$USERNAME@$HOST" "
-                  sudo ls &&
-                  sudo pwd
+                  sudo systemctl reload nginx"
