@@ -46,7 +46,7 @@ export class ImageService {
             }
 
             const deletePromises = result.items.map((fileRef) => {
-                deleteObject(fileRef);
+                return deleteObject(fileRef);
             });
 
             await Promise.all(deletePromises);
