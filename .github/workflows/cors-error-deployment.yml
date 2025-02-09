@@ -28,6 +28,15 @@ jobs:
               run: |
                npm run build -- --configuration production
 
+            - name: Delete files from remote
+              env:
+                  HOST: ${{ secrets.OVH_HOST }}
+                  USERNAME: ${{ secrets.UBUNTU_USERNAME }}
+                  PASSWORD: ${{ secrets.UBUNTU_PASSWORD }}
+              run: |
+                  sshpass -p "$PASSWORD" ssh -o StrictHostKeyChecking=no "$USERNAME@$HOST" "
+                  sudo rm -rf /var/www/app.check-it-out.pl/*"     
+
             - name: Deploy with SCP
               uses: appleboy/scp-action@v0.1.2
               with:
@@ -37,11 +46,12 @@ jobs:
                 source: "dist/fuse/*"              # Local files or directories
                 target: "/var/www/app.check-it-out.pl/"   
 
-            - name: Restart Nginx
+            - name: Copy files and Restart Nginx
               env:
                   HOST: ${{ secrets.OVH_HOST }}
                   USERNAME: ${{ secrets.UBUNTU_USERNAME }}
                   PASSWORD: ${{ secrets.UBUNTU_PASSWORD }}
               run: |
                   sshpass -p "$PASSWORD" ssh -o StrictHostKeyChecking=no "$USERNAME@$HOST" "
+                  sudp cp /var/www/app.check-it-out.pl/dist/fuse/* /var/www/app.check-it-out.pl/ &&
                   sudo systemctl reload nginx"
