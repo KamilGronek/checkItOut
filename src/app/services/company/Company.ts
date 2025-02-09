@@ -21,7 +21,7 @@ export interface Company {
     apiKey: string;
     imageUrl: string;
     note: string;
-    serviceType: number;
+    serviceType: ServiceType;
     lastUpdateTime: string;
     createdTime: string;
     updater: string;
