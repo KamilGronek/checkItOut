@@ -17,7 +17,7 @@ jobs:
             - name: Use Node.js
               uses: actions/setup-node@v3
               with:
-                node-version: 18  # or 18, depending on your project
+                node-version: 23  # or 18, depending on your project
 
              # 3) Install dependencies (npm ci is faster & safer for CI)
             - name: Install dependencies
