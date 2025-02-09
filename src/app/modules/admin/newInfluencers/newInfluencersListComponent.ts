@@ -412,6 +412,7 @@ export class newInfluencersListComponent
     }
 
     sendToInluencer(userIdToUpdate: number): void {
+        console.log("Znaleziony influ: " + this.getUserToUpdate(userIdToUpdate));
         this._influencerService.updateInfluencerUser(
                 this.getUserToUpdate(userIdToUpdate), userIdToUpdate
             )
