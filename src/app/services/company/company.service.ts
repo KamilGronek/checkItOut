@@ -7,12 +7,13 @@ import { CompanyResponse } from './Company';
 import { City } from '../influencer/Influencer';
 import { AuthService } from 'app/core/auth/auth.service';
 import { BehaviorSubject } from 'rxjs';
+import { environment } from 'environments/environment';
 
 @Injectable({
     providedIn: 'root',
 })
 export class CompanyService {
-    private apiUrl: string = 'http://localhost:8080/company';
+    private apiUrl: string = environment.apiUrl + "/company";
 
     httpOptions = {
         headers: new HttpHeaders({ 'Content-Type': 'application/json' }),

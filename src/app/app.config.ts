@@ -25,8 +25,8 @@ import { provideAuthInFuse } from './core/auth/auth.provider';
 
 export const appConfig: ApplicationConfig = {
     providers: [
-        provideStorage(() => getStorage()),
         provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+        provideStorage(() => getStorage()),
         provideAuth(() => getAuth()),
         provideFirestore(() => getFirestore()),
         provideAuthInFuse(),

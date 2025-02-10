@@ -1,6 +1,6 @@
 export const environment = {
     development: true,
-    apiUrl: 'http://localhost:8080',
+    apiUrl: 'http://localhost:8080/api',
     firebaseConfig: {
         apiKey: 'AIzaSyBVAdNu1AolItY5tjdKVtq3TxiewsFv98M',
         authDomain: 'check-it-out-47c50.firebaseapp.com',
@@ -9,10 +9,5 @@ export const environment = {
         messagingSenderId: '918098393889',
         appId: '1:918098393889:web:950269fae0b0cc10249c60',
         measurementId: 'G-QMBC9R5QQ6',
-    },
-    instagram: {
-        clientId: '2658917770964963',
-        clientSecret: '3164b30e7f544e25d881b69ba6089989',
-        redirectUri: 'https://localhost:4200/auth/instagram/callback',
     },
 };

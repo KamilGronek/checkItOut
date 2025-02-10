@@ -6,7 +6,6 @@
             <img src="../../../../assets/detale_kampanii_v4_files/cover.jpg" alt="Cover image"
                   class="h-40 object-cover lg:h-80"/>
           </div>
-          <!-- lg:h-18 -->
         <div class=" bg-card mx-auto flex w-full max-w-5xl flex-0 flex-col items-center px-8  lg:flex-row">
           
           <div  class="mt-4 flex flex-col items-center lg:ml-8 lg:mt-0 lg:items-start">   
@@ -42,30 +41,33 @@
           
           </div>
           <div  class="mt-4 flex flex-col items-center lg:ml-8 lg:mt-0 lg:items-start">
-            <!-- <div  class="text-lg font-bold leading-none lg:ml-5">
-                {{collaboration.name}}  
-            </div> -->
             <form  [formGroup]="editCollaborationFormGroup">
+              <div [ngClass]="{ hidden: isEditing }">
                 <div  class="text-lg font-bold leading-none lg:ml-5">
                   {{collaboration.serviceType?.name}}
                 </div>
-            
-              <div class="text-secondary lg:ml-5">
-                {{collaboration.serviceType?.category}}
+                <div class="text-secondary lg:ml-5">
+                  {{collaboration.serviceType?.category}}
+                </div>
               </div>
-          </form>
+              <div class="mb-10" [ngClass]="{ hidden: !isEditing }">
+                <div  class="text-lg font-bold leading-none lg:ml-5">
+                  {{collaboration.serviceType?.name}}
+                </div>
+                <div class="text-secondary lg:ml-5">
+                  {{collaboration.serviceType?.category}}
+                </div>
+              </div>
+            </form>
           </div>
         
-          <div class="mb-4 mt-8 flex items-center space-x-6 lg:m-0 lg:mr-8 lg:ml-auto">
+          <div class="mb-4 mt-8 flex items-center space-x-6 lg:m-0 lg:mr-8 lg:ml-10">
             <div class="my-3 hidden items-center sm:flex border-y-0">
               <div class="rounded-l-xl border border-r-0 border-transparent p-2 leading-none cursor-pointer">
                 <form  [formGroup]="editCollaborationFormGroup">
-
                 <div class="text-secondary text-sm font-medium">Data rozpoczęcia</div>
-
-
                 <div 
-                class="relative mt-1.5 flex cursor-pointer items-center rounded-full px-4 leading-9"
+                class="relative mt-1.5 flex cursor-pointer items-center rounded-full px-4 leading-9 mb-10"
                 [ngClass]="{
                     'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-300':
                         !card?.startDate,
@@ -90,7 +92,6 @@
                     @if (!card?.startDate) {
                     Not set
                     }
-
                 <mat-form-field
                     class="fuse-mat-dense pointer-events-none invisible absolute inset-0 -mt-2.5 opacity-0"
                     [subscriptSizing]="'dynamic'"
@@ -107,7 +108,7 @@
                                 (click)="clearStartDate()"
                                 matDatepickerCancel
                             >
-                                Clear
+                                Wyczyść
                             </button>
                             <button
                                 mat-flat-button
@@ -115,31 +116,30 @@
                                 matDatepickerApply
                                 (click)="startDateSelected()"
                             >
-                                Select
+                                Wybierz
                             </button>
                         </mat-datepicker-actions>
                     </mat-datepicker>
                 </mat-form-field>
                 </div>
-
-
                 <div class="mt-1 font-mono text-base"
                   [ngClass]="{ hidden: isEditing }">
                     {{collaboration?.startDate | date: 'dd-MM-yyyy' }}
                 </div>
-
-
               </form>
-                <!-- <div class="mt-1 font-mono text-base">{{collaboration.startDate | date: 'dd-MM-yyyy' }}</div> -->
               </div>
-              <div class="mx-2 hidden h-8 border-l-2 lg:flex"></div>
+              <div [ngClass]="{ hidden: isEditing }">
+                <div class="mx-2 hidden h-8 border-l-2 lg:flex"></div>
+              </div>
+              <div [ngClass]="{ hidden: !isEditing }">
+                <div class="mx-2 hidden h-8 border-l-2 lg:flex mb-5"></div>
+              </div>
               <div class="rounded-r-xl border p-2 border-transparent leading-none">
-                
               <form  [formGroup]="editCollaborationFormGroup">
 
                 <div class="text-secondary text-sm font-medium">Data zakończenia</div>
                 <div
-                class="relative mt-1.5 flex cursor-pointer items-center rounded-full px-4 leading-9"
+                class="relative mt-1.5 flex cursor-pointer items-center rounded-full px-4 leading-9 mb-10"
                 [ngClass]="{
                     'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-300':
                         !card?.endDate,
@@ -181,7 +181,7 @@
                                 (click)="clearEndDate()"
                                 matDatepickerCancel
                             >
-                                Clear
+                              Wyczyść
                             </button>
                             <button
                                 mat-flat-button
@@ -189,7 +189,7 @@
                                 matDatepickerApply
                                 (click)="endDateSelected()"
                             >
-                                Select
+                                Wybierz
                             </button>
                         </mat-datepicker-actions>
                     </mat-datepicker>
@@ -201,32 +201,33 @@
                   {{collaboration?.endDate  | date: 'dd-MM-yyyy'}}</div>
               </div>
             </div>
-            <!-- <a
-              class="mdc-button mdc-button--unelevated mat-mdc-unelevated-button mat-primary mat-mdc-button-base"
-              href="https://angular-material.fusetheme.com/pages/profile">Zgłoś się</a> -->
-              <button mat-flat-button class="w-1/4 buttonSubmit ml-auto w-30 mr-16" 
-                type="button" 
-                [color]="'primary'"
-                (click)="editCollaboration(collaboration.id)"
+              <div *ngIf="isEditing; else editButton" class="flex flex-row mb-10">
+                <button 
+                  mat-button 
+                  color="warn" 
+                  (click)="openConfirmationDeleteDialog(collaboration.id)">
+                  Wyrzuć
+                </button>
+                <button mat-flat-button 
+                  type="button" 
+                  [color]="'primary'"
+                  (click)="editCollaboration(collaboration.id)"
                 >
-                {{ isEditing ? 'Zapisz' : 'Edytuj' }}
-              </button>
-              <button mat-flat-button class="w-1/4 buttonSubmit ml-auto w-30 mr-16" 
-                [color]="'warn'"
-                (click)="openConfirmationDeleteDialog(collaboration.id)"
-                >Wyrzuć
-              </button>
-              <!-- <button 
-                class="ml-1.5"
-                mat-icon-button
-                (click)="goBackToMain()"
-                >
-                <mat-icon
-                    [svgIcon]="'heroicons_outline:arrow-long-left'"
-                >
-              </mat-icon>
-              </button> -->
-          <!-- </div> -->
+                  Zapisz
+                </button> 
+              </div>
+              
+              <ng-template #editButton>
+                <button 
+                  mat-stroked-button 
+                  (click)="editCollaboration(collaboration.id)">
+                  <mat-icon 
+                    class="icon-size-5" 
+                    [svgIcon]="'heroicons_solid:pencil-square'">
+                  </mat-icon>
+                  <span class="ml-2">Edytuj</span>
+                </button>
+              </ng-template>
         </div>
       </div>
       
@@ -490,6 +491,67 @@
               <!-- <div class="mx-2 hidden h-70 border-l-2 lg:flex"></div> -->
                 <!-- </form> -->
           </fuse-card>
+           <fuse-card class="flex w-full max-w-140 flex-row p-8 mt-8 ng-tns-c2638821912-677 ng-star-inserted">
+            <mat-card>
+              <mat-card-content>
+                <h2 class="example-h2">Slider configuration</h2>
+            
+                <section class="example-section">
+                  <mat-form-field class="example-margin example-width">
+                    <mat-label>Value</mat-label>
+                    <input matInput type="number" [(ngModel)]="value">
+                  </mat-form-field>
+                  <mat-form-field class="example-margin example-width">
+                    <mat-label>Min value</mat-label>
+                    <input matInput type="number" [(ngModel)]="min">
+                  </mat-form-field>
+                  <mat-form-field class="example-margin example-width">
+                    <mat-label>Max value</mat-label>
+                    <input matInput type="number" [(ngModel)]="max">
+                  </mat-form-field>
+                  <mat-form-field class="example-margin example-width">
+                    <mat-label>Step size</mat-label>
+                    <input matInput type="number" [(ngModel)]="step">
+                  </mat-form-field>
+                </section>
+            
+                <section class="example-section">
+                  <mat-checkbox [(ngModel)]="showTicks">Show ticks</mat-checkbox>
+                </section>
+            
+                <section class="example-section">
+                  <mat-checkbox [(ngModel)]="thumbLabel">Show thumb label</mat-checkbox>
+                </section>
+            
+                <section class="example-section">
+                  <mat-checkbox [(ngModel)]="disabled">Disabled</mat-checkbox>
+                </section>
+              </mat-card-content>
+            </mat-card>
+            
+            <mat-card class="example-result-card">
+              <mat-card-content>
+                <h2>Result</h2>
+            
+                <div class="example-label-container">
+                  <label id="example-name-label" class="example-name-label">Value</label>
+                  <label class="example-value-label">{{slider.value}}</label>
+                </div>
+                <mat-slider
+                    class="example-margin"
+                    [disabled]="disabled"
+                    [max]="max"
+                    [min]="min"
+                    [step]="step"
+                    [discrete]="thumbLabel"
+                    [showTickMarks]="showTicks">
+                  <input matSliderThumb [(ngModel)]="value" #slider>
+                </mat-slider>
+              </mat-card-content>
+            </mat-card>
+            
+
+           </fuse-card>
           <fuse-card
             class="lg:hidden mt-8 flex w-full max-w-140 flex-col p-8 ng-tns-c2638821912-677 ng-star-inserted">
             <form  [formGroup]="editCollaborationFormGroup">

@@ -6,12 +6,13 @@ import { AppliedOpportunity } from './AppliedOpportunity';
 import { CollaborationResponse } from '../collaboration/Collaboration';
 import { AuthService } from 'app/core/auth/auth.service';
 import { BehaviorSubject } from 'rxjs';
+import { environment } from 'environments/environment';
 
 @Injectable({
     providedIn: 'root',
 })
 export class AppliedOpportunityService {
-    private apiUrl: string = 'http://localhost:8080/applied-opportunity';
+    private apiUrl: string = environment.apiUrl + '/applied-opportunity';
 
     httpOptions = {
         headers: new HttpHeaders({ 'Content-Type': 'application/json' }),

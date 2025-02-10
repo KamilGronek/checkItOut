@@ -18,6 +18,7 @@ import { UserService } from 'app/core/user/user.service';
 import { User } from 'app/core/user/user.types';
 import { Subject, takeUntil } from 'rxjs';
 import { InfluencerService } from 'app/services/influencer/influencer.service';
+import { PopUpService } from 'app/services/popUp/popUp.service';
 
 @Component({
     selector: 'user',
@@ -52,7 +53,7 @@ export class UserComponent implements OnInit, OnDestroy {
         private _changeDetectorRef: ChangeDetectorRef,
         private _router: Router,
         private _userService: UserService,
-        private buttonStateService: InfluencerService
+        private _popUpService: PopUpService
     ) {}
 
     // -----------------------------------------------------------------------------------------------------
@@ -113,6 +114,6 @@ export class UserComponent implements OnInit, OnDestroy {
     signOut(): void {
         this._router.navigate(['/sign-out']);
 
-        this.buttonStateService.setPopUpState(false);
+        this._popUpService.setPopUpState(false);
     }
 }
