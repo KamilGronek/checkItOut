@@ -1,0 +1,9 @@
+<div class="flex items-center justify-center h-full w-full bg-gray-600">
+    <div *ngIf="emailRequired()">
+        <app-provide-email
+            (emailSubmitted)="handleEmailSubmission($event)"
+            (canceled)="handleCancel()"
+        ></app-provide-email>
+    </div>
+    <div *ngIf="!emailRequired()">Loading...</div>
+</div>
