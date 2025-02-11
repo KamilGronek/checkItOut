@@ -45,16 +45,14 @@ export class InstagramCallbackComponent implements OnInit {
     private authenticateUser(code: string) {
         this._instagramAuth.exchangeToken(code).subscribe({
             next: (user) => {
-                console.log('Response from exchangeToken', user);
                 this.user.set(user.instagramUser);
-                console.log(this.user());
 
                 this._instagramAuth
                     .checkUserExists(user.instagramUser.user_id)
                     .subscribe({
                         next: ({ firebaseToken }) => {
                             if (firebaseToken) {
-                                console.log('User exists:', firebaseToken);
+                                console.log('User exists.');
                                 this._instagramAuth.signIn(firebaseToken);
                             } else {
                                 console.log('User does not exist.');
@@ -79,19 +77,10 @@ export class InstagramCallbackComponent implements OnInit {
     }
 
     handleEmailSubmission(email: string) {
-        console.log(this.user());
         const { user_id, username, access_token } = this.user();
-        console.log('User submitted email:', email);
-        console.log('User ID:', user_id);
-        console.log('Username:', username);
-        console.log('Access Token:', access_token);
         if (user_id && username && access_token && email !== '') {
-            this._instagramAuth.createUser(
-                user_id,
-                username,
-                access_token,
-                email
-            );
+            this.user.update((user) => ({ ...user, email: email }));
+            this._instagramAuth.createUser(this.user());
         }
     }
 

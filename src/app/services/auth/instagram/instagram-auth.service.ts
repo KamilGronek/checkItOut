@@ -24,37 +24,19 @@ export class InstagramAuthService {
         );
     }
 
-    createUser(
-        userId: string,
-        username: string,
-        accessToken: string,
-        email: string
-    ) {
+    createUser(instagramUser: any) {
         console.log('Creating user...');
-        this.generateFirebaseToken(
-            userId,
-            username,
-            accessToken,
-            email
-        ).subscribe({
+        this.generateFirebaseToken(instagramUser).subscribe({
             next: ({ customToken }) => this.signIn(customToken),
         });
     }
 
     generateFirebaseToken(
-        instagramUserId: string,
-        username: string,
-        accessToken: string,
-        email: string
+        instagramUser: any
     ): Observable<{ customToken: string }> {
         return this.http.post<{ customToken: string }>(
             `${environment.apiUrl}/auth/instagram/generate-firebase-token`,
-            {
-                instagramId: instagramUserId,
-                username: username,
-                accessToken: accessToken,
-                email: email,
-            }
+            instagramUser
         );
     }
 
@@ -70,7 +52,6 @@ export class InstagramAuthService {
             this._influencerService
                 .getInfluencerUser()
                 .subscribe((userData) => {
-                    console.log('userData from getInfluencerUser():', userData);
                     const status = userData.accountStatus;
                     localStorage.setItem('userStatus', status);
 
