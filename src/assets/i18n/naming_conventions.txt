@@ -1,0 +1,26 @@
+i18n Naming Conventions
+
+1. Use a Hierarchical Structure
+   - Group keys by feature or module (e.g., auth, home, errors).
+   - Example: "auth.login.submit" instead of "submitButton".
+
+2. Avoid Notation (fe.: snake_case or kebab-case)
+   - Preferred: "auth.login.submit"
+   - Avoid spaces, special characters, or inconsistent casing.
+
+3. Make Keys Descriptive
+   - Good: "auth.password.error"
+   - Bad: "error1" or "msg".
+
+4. Keep Keys and Values Language-Independent
+   - Use the same keys across all language files.
+   - Avoid "home.welcome.en", "home.welcome.pl". Use only when necessarry.
+
+5. Use Interpolation for Dynamic Values
+   - Example: "cart.items": "You have {{count}} items in your cart".
+   - Use it in code: translocoService.translate('cart.items', { count: 5 }).
+
+6. Use Pluralization Where Needed
+   - "cart.item_one": "You have 1 item",
+   - "cart.item_other": "You have {{count}} items".
+

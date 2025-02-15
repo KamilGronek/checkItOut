@@ -1,4 +1,5 @@
 import { CommonModule, NgClass } from '@angular/common';
+import { TranslocoModule } from '@ngneat/transloco';
 
 import {
     AfterViewInit,
@@ -98,6 +99,7 @@ import { filter } from 'rxjs/operators';
         MatProgressBarModule,
         MatSelectModule,
         MatProgressSpinnerModule,
+        TranslocoModule,
     ],
     styleUrl: 'profile-list.styles.css',
 })

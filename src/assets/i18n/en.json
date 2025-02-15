@@ -1,5 +1,39 @@
 {
-    "welcome-back": "Welcome back",
-    "Project": "Project",
-    "Analytics": "Analytics"
+    "user": {
+        "profile": {
+            "registration": {
+                "greeting": "Welcome!",
+                "complete_registration": "Complete your registration to start earning",
+                "account_status": "Account status",
+                "status_active": "Active",
+                "status_inactive": "Inactive",
+                "status_validated": "Validated",
+                "instagram_nickname": "Instagram nickname",
+                "first_name": "First name",
+                "last_name": "Last name",
+                "email": "Email",
+                "city": "City",
+                "account_type": "Account type",
+                "new_message": "New message",
+                "admin_message_placeholder": "Message from admin",
+                "warning_fill_data": "Please complete the data before submitting",
+                "error_message": "An error occurred",
+                "registration_confirmed": "You are registered!",
+                "submit_button": "Submit",
+                "reset_button": "Reset"
+            },
+            "advertisement": {
+                "why_join": "Why join?",
+                "join_us": "Join us!",
+                "earning_potential": "This is how much you can earn <span class='font-bold'>money</span> per month. Registering on our platform gives you many opportunities. With your engagement, you can earn more and more.",
+                "earning_note": "*The amount depends on the number of accepted orders",
+                "day": "Day",
+                "daily_growth": "This is how much <span class='font-bold'>daily client count</span> increases. To meet their needs, we are constantly looking for new contractors to help us grow.",
+                "completed_orders": "This is how many <span class='font-bold'>orders</span> we have completed thanks to our influencers. We hope you will contribute to increasing this number.",
+                "register_now": "Register now and start earning!",
+                "join_button": "Join us",
+                "hide_forever": "Do not show again"
+            }
+        }
+    }
 }
