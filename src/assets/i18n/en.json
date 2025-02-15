@@ -18,6 +18,46 @@
         "en": "English",
         "pl": "Polish"
     },
+    "admin": {
+        "new_influencers": {
+            "title": "Influencer List",
+            "filter": {
+                "column": "Column:",
+                "value": "Value:"
+            },
+            "table_headers": {
+                "id": "Id",
+                "date": "Date",
+                "first_name": "First Name",
+                "last_name": "Last Name",
+                "email": "E-mail",
+                "city": "City",
+                "instagram": "Instagram",
+                "followers": "Followers Count",
+                "account_type": "Account Type",
+                "status": "Status"
+            },
+            "pagination": {
+                "select_page": "Select page",
+                "page_number": "Page number: {{ pageIndex }}"
+            },
+            "edit_form": {
+                "city": "City",
+                "followers": "Followers Count",
+                "account_type": "Account Type",
+                "status": "Status",
+                "note": "Note:",
+                "note_placeholder": "Send a note...",
+                "submit": "Confirm"
+            },
+            "messages": {
+                "fill_note": "Please complete the note before submitting",
+                "fill_account_type": "Please provide account type information before submitting",
+                "confirmation": "Influencer approved"
+            },
+            "no_products": "There are no products!"
+        }
+    },
     "user": {
         "profile": {
             "registration": {

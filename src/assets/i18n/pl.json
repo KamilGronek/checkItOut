@@ -18,6 +18,46 @@
         "en": "Angielski",
         "pl": "Polski"
     },
+    "admin": {
+        "new_influencers": {
+            "title": "Lista influencerów",
+            "filter": {
+                "column": "Kolumna:",
+                "value": "Wartość:"
+            },
+            "table_headers": {
+                "id": "Id",
+                "date": "Data",
+                "first_name": "Imię",
+                "last_name": "Nazwisko",
+                "email": "E-mail",
+                "city": "Miasto",
+                "instagram": "Instagram",
+                "followers": "Ilość followersów",
+                "account_type": "Rodzaj konta",
+                "status": "Status"
+            },
+            "pagination": {
+                "select_page": "Wybierz stronę",
+                "page_number": "Strona nr: {{ pageIndex }}"
+            },
+            "edit_form": {
+                "city": "Miasto",
+                "followers": "Ilość followersów",
+                "account_type": "Rodzaj konta",
+                "status": "Status",
+                "note": "Notatka:",
+                "note_placeholder": "Wyślij notatkę...",
+                "submit": "Zatwierdź"
+            },
+            "messages": {
+                "fill_note": "Przed wysłaniem, proszę uzupełnić notatkę",
+                "fill_account_type": "Przed wysłaniem, proszę info o rodzaju konta",
+                "confirmation": "Influencer zatwierdzony"
+            },
+            "no_products": "Brak produktów!"
+        }
+    },
     "user": {
         "profile": {
             "registration": {
