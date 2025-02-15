@@ -1,4 +1,23 @@
 {
+    "layout": {
+        "nav": {
+            "horizontal": {
+                "fullscreen": "Pełny ekran"
+            },
+            "vertical": {
+                "profile": "Twoje dane",
+                "collaborations": "Współprace do podjęcia",
+                "companies": "Firmy",
+                "activeCooperation": "Aktywne współprace",
+                "posts": "Posty",
+                "newInfluencers": "Zgłoszenia Nowych Influeserów"
+            }
+        }
+    },
+    "languages": {
+        "en": "Angielski",
+        "pl": "Polski"
+    },
     "user": {
         "profile": {
             "registration": {

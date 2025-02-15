@@ -13,7 +13,11 @@ import {
     FuseNavigationService,
     FuseVerticalNavigationComponent,
 } from '@fuse/components/navigation';
-import { AvailableLangs, TranslocoService } from '@ngneat/transloco';
+import {
+    AvailableLangs,
+    TranslocoModule,
+    TranslocoService,
+} from '@ngneat/transloco';
 import { take } from 'rxjs';
 
 @Component({
@@ -23,7 +27,13 @@ import { take } from 'rxjs';
     changeDetection: ChangeDetectionStrategy.OnPush,
     exportAs: 'languages',
     standalone: true,
-    imports: [MatButtonModule, MatMenuModule, NgTemplateOutlet, NgFor],
+    imports: [
+        MatButtonModule,
+        MatMenuModule,
+        NgTemplateOutlet,
+        NgFor,
+        TranslocoModule,
+    ],
 })
 export class LanguagesComponent implements OnInit, OnDestroy {
     availableLangs: AvailableLangs;

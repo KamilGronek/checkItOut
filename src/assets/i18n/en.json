@@ -1,4 +1,23 @@
 {
+    "layout": {
+        "nav": {
+            "horizontal": {
+                "fullscreen": "Toggle Fullscreen"
+            },
+            "vertical": {
+                "profile": "Your profile",
+                "collaborations": "Collaborations to take",
+                "companies": "Companies",
+                "activeCooperation": "Active cooperations",
+                "posts": "Posts",
+                "newInfluencers": "New Influencers applications"
+            }
+        }
+    },
+    "languages": {
+        "en": "English",
+        "pl": "Polish"
+    },
     "user": {
         "profile": {
             "registration": {
