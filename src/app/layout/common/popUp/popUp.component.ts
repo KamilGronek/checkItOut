@@ -12,6 +12,8 @@ import {
     Themes,
 } from '@fuse/services/config';
 
+import { TranslocoModule } from '@ngneat/transloco';
+
 import { Subject, takeUntil } from 'rxjs';
 
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -67,6 +69,7 @@ import { from } from 'rxjs';
         MatSliderModule,
         MatProgressSpinnerModule,
         MatMenuModule,
+        TranslocoModule,
     ],
     styleUrl: 'popUpComponent.css',
 })

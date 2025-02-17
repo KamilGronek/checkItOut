@@ -1,5 +1,5 @@
 <div
-    class="infoPopUp sm:mr-15 lg:mr-5 absolute right-0 z-90 flex  cursor-pointer items-center justify-center  bg-opacity-90  print:hidden"
+    class="infoPopUp sm:mr-15 lg:mr-5 absolute right-0 z-90 flex cursor-pointer items-center justify-center bg-opacity-90 print:hidden"
     #popUpButton
     [class.lg:right-0]="
         config.layout === 'centered' || config.layout === 'material'
@@ -10,10 +10,10 @@
     style="top: 275px"
     (click)="popUpDrawer.toggle()"
 >
-    Dlaczego warto?
+    {{ "user.profile.advertisement.why_join" | transloco }}
 </div>
 
-<fuse-drawer 
+<fuse-drawer
     class="z-999 w-screen min-w-screen sm:w-200 sm:min-w-200 overflow-auto"
     fixed
     [mode]="'over'"
@@ -26,7 +26,7 @@
             class="flex h-20 min-h-20 flex-row items-center bg-primary px-6 text-white"
         >
             <div class="ml-3 text-2xl font-semibold tracking-tight">
-                Dołącz do nas !
+                {{ "user.profile.advertisement.join_us" | transloco }}
             </div>
             <button
                 class="ml-auto"
@@ -39,136 +39,168 @@
                 ></mat-icon>
             </button>
         </div>
-        <div class=" ml-3 grid w-full grid-cols-1 gap-8 sm:grid-cols-1 md:mt-8 lg:grid-cols-1">
+        <div
+            class="ml-3 grid w-full grid-cols-1 gap-8 sm:grid-cols-1 md:mt-8 lg:grid-cols-1"
+        >
             <div class="absolute bottom-0 right-0 -m-6 h-24 w-24">
                 <mat-icon
                     class="text-green-500 opacity-25 icon-size-24 dark:text-green-400"
                     [svgIcon]="'heroicons_outline:check-circle'"
                 ></mat-icon>
             </div>
-            <div 
+            <div
                 class="absolute top-140 left-120"
-                style="transform: rotate(15deg); font-size: 120px; color: #4caf50; opacity: 0.3;"
-                >
+                style="
+                    transform: rotate(15deg);
+                    font-size: 120px;
+                    color: #4caf50;
+                    opacity: 0.3;
+                "
+            >
                 $
             </div>
-            <div class="absolute top-100 left-70 -m-6 h-32 w-32 flex items-center justify-center"
-                style="transform: rotate(-15deg); font-size: 70px; color: #4caf50; opacity: 0.3;"
+            <div
+                class="absolute top-100 left-70 -m-6 h-32 w-32 flex items-center justify-center"
+                style="
+                    transform: rotate(-15deg);
+                    font-size: 70px;
+                    color: #4caf50;
+                    opacity: 0.3;
+                "
             >
-              $
+                $
             </div>
-            
+
             <div class="flex flex-row items-start">
                 <div class="ml-5 mt-2 text-xl font-medium leading-none w-10">
-                  <mat-icon
-                    class="text-green-500 h-10 w-10"
-
-                    [svgIcon]="
-                        'heroicons_outline:check'
-                    "
-                  ></mat-icon>
+                    <mat-icon
+                        class="text-green-500 h-10 w-10"
+                        [svgIcon]="'heroicons_outline:check'"
+                    ></mat-icon>
                 </div>
                 <div class="progress-container mt-6 flex-none">
-                  <mat-progress-spinner
-                    class="custom-spinner"
-                    [mode]="'determinate'"
-                    [value]="value1"
-                    [diameter]="140"
-                  ></mat-progress-spinner>
-                  <div class="plnElement">PLN*</div>
-                  <div class="progress-text" [ngClass]="{'highlight': isHighlight}">
-                    {{ progress1 }}
-                  </div>
+                    <mat-progress-spinner
+                        class="custom-spinner"
+                        [mode]="'determinate'"
+                        [value]="value1"
+                        [diameter]="140"
+                    ></mat-progress-spinner>
+                    <div class="plnElement">PLN*</div>
+                    <div
+                        class="progress-text"
+                        [ngClass]="{ highlight: isHighlight }"
+                    >
+                        {{ progress1 }}
+                    </div>
                 </div>
                 <div class="mt-10 ml-15 mr-20 flex-1">
-                    Tyle jesteś w stanie zarabiać
-                    <span class="font-bold">pienędzy</span>
-                     w skali miesiąca.
-                    Rejestracja na naszej platformie daje dużo możliwości. 
-                    Dzięki swojemu zaangażowaniu możesz zarabiać coraz więcej.
-                  <div class="mt-10 font-bold text-sm">
-                    *Kwota jest uzależniona od ilości przyjętych zleceń
-                  </div>
+                    <div
+                        [innerHTML]="
+                            'user.profile.advertisement.earning_potential'
+                                | transloco
+                        "
+                    ></div>
+                    <div class="mt-10 font-bold text-sm">
+                        {{
+                            "user.profile.advertisement.earning_note"
+                                | transloco
+                        }}
+                    </div>
                 </div>
             </div>
-              
-            <hr class="my-3">
+
+            <hr class="my-3" />
             <div class="flex flex-row items-start">
                 <div class="ml-5 mt-2 text-xl font-medium leading-none w-10">
-                  <mat-icon
-                    class="text-green-500 h-10 w-10"
-
-                    [svgIcon]="
-                        'heroicons_outline:check'
-                    "
-                  ></mat-icon>
+                    <mat-icon
+                        class="text-green-500 h-10 w-10"
+                        [svgIcon]="'heroicons_outline:check'"
+                    ></mat-icon>
                 </div>
                 <div class="progress-container mt-6 flex-none">
-                  <mat-progress-spinner
-                    class="example-margin"
-                    [mode]="'determinate'"
-                    [value]="value2"
-                    [diameter]="140"
-                  ></mat-progress-spinner>
-                  <div class="dayElement">Dzień</div>
-                  <div class="progress-text" [ngClass]="{'highlight': isHighlight2}">
-                    {{ progress2 }}
-                  </div>
+                    <mat-progress-spinner
+                        class="example-margin"
+                        [mode]="'determinate'"
+                        [value]="value2"
+                        [diameter]="140"
+                    ></mat-progress-spinner>
+                    <div class="dayElement">
+                        {{ "user.profile.advertisement.day" | transloco }}
+                    </div>
+                    <div
+                        class="progress-text"
+                        [ngClass]="{ highlight: isHighlight2 }"
+                    >
+                        {{ progress2 }}
+                    </div>
                 </div>
                 <div class="mt-10 ml-15 mr-20 flex-1">
-                    O tyle mniej więcej zwiększa się 
-                    <span class="font-bold">dzienna liczba</span>
-                    naszych klientów
-                    A my aby sprostać ich potrzebą stale poszukujemy nowych zleceniobiorców,
-                    którzy pomogą nam się rozwinąć.
+                    <div
+                        [innerHTML]="
+                            'user.profile.advertisement.daily_growth'
+                                | transloco
+                        "
+                    ></div>
                 </div>
             </div>
-            <hr class="my-3">
+            <hr class="my-3" />
             <div class="flex flex-row items-start">
                 <div class="ml-5 mt-2 text-xl font-medium leading-none w-10">
-                  <mat-icon
-                  class="text-green-500 h-10 w-10"
-
-                  [svgIcon]="
-                      'heroicons_outline:check'
-                  "
-                ></mat-icon>
+                    <mat-icon
+                        class="text-green-500 h-10 w-10"
+                        [svgIcon]="'heroicons_outline:check'"
+                    ></mat-icon>
                 </div>
                 <div class="progress-container mt-6 flex-none">
-                  <mat-progress-spinner
-                    class="example-margin"
-                    [mode]="'determinate'"
-                    [value]="value3"
-                    [diameter]="140"
-                  ></mat-progress-spinner>
-                  <div class="collaboElement">Zleceń</div>
-                  <div class="progress-text" [ngClass]="{'highlight': isHighlight3}">
-                    {{ progress3 }}
-                  </div>
+                    <mat-progress-spinner
+                        class="example-margin"
+                        [mode]="'determinate'"
+                        [value]="value3"
+                        [diameter]="140"
+                    ></mat-progress-spinner>
+                    <div class="collaboElement">Zleceń</div>
+                    <div
+                        class="progress-text"
+                        [ngClass]="{ highlight: isHighlight3 }"
+                    >
+                        {{ progress3 }}
+                    </div>
                 </div>
                 <div class="mt-10 ml-15 mr-20 flex-1">
-                   Tyle do tej pory zrealizowaliśmy
-                   <span class="font-bold">zleceń</span>
-                    dzięki naszych influenserom.
-
-                    Mamy nadzeje że przyczynisz się i Ty do powiększania tej liczby.
-                  <br>
-                  <br>
-                  <span class="font-bold mt-5">Zarejestruj się teraz i zacznij zarabiać!</span>
-
+                    <div
+                        [innerHTML]="
+                            'user.profile.advertisement.completed_orders'
+                                | transloco
+                        "
+                    ></div>
+                    <br />
+                    <br />
+                    <span class="font-bold mt-5">
+                        {{
+                            "user.profile.advertisement.register_now"
+                                | transloco
+                        }}
+                    </span>
                 </div>
             </div>
 
-      
             <div class="flex flex-col items-center mt-5">
-              <button mat-flat-button class="w-1/4 buttonSubmit"  [color]="'primary'"
-              (click)="popUpDrawer.close()"
-              >Dołącz do nas</button>
-              <button mat-flat-button class="w-1/4 buttonSubmit"
-              (click)="popUpDrawer.close(); hidePermanently()"
-
-                  style="font-size: 10px;"
-                >Nie pokazuj więcej</button>
+                <button
+                    mat-flat-button
+                    class="w-1/4 buttonSubmit"
+                    [color]="'primary'"
+                    (click)="popUpDrawer.close()"
+                >
+                    {{ "user.profile.advertisement.join_button" | transloco }}
+                </button>
+                <button
+                    mat-flat-button
+                    class="w-1/4 buttonSubmit"
+                    (click)="popUpDrawer.close(); hidePermanently()"
+                    style="font-size: 10px"
+                >
+                    {{ "user.profile.advertisement.hide_forever" | transloco }}
+                </button>
             </div>
         </div>
     </div>

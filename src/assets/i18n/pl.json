@@ -1,0 +1,98 @@
+{
+    "layout": {
+        "nav": {
+            "horizontal": {
+                "fullscreen": "Pełny ekran"
+            },
+            "vertical": {
+                "profile": "Twoje dane",
+                "collaborations": "Współprace do podjęcia",
+                "companies": "Firmy",
+                "activeCooperation": "Aktywne współprace",
+                "posts": "Posty",
+                "newInfluencers": "Zgłoszenia Nowych Influeserów"
+            }
+        }
+    },
+    "languages": {
+        "en": "Angielski",
+        "pl": "Polski"
+    },
+    "admin": {
+        "new_influencers": {
+            "title": "Lista influencerów",
+            "filter": {
+                "column": "Kolumna:",
+                "value": "Wartość:"
+            },
+            "table_headers": {
+                "id": "Id",
+                "date": "Data",
+                "first_name": "Imię",
+                "last_name": "Nazwisko",
+                "email": "E-mail",
+                "city": "Miasto",
+                "instagram": "Instagram",
+                "followers": "Ilość followersów",
+                "account_type": "Rodzaj konta",
+                "status": "Status"
+            },
+            "pagination": {
+                "select_page": "Wybierz stronę",
+                "page_number": "Strona nr: {{ pageIndex }}"
+            },
+            "edit_form": {
+                "city": "Miasto",
+                "followers": "Ilość followersów",
+                "account_type": "Rodzaj konta",
+                "status": "Status",
+                "note": "Notatka:",
+                "note_placeholder": "Wyślij notatkę...",
+                "submit": "Zatwierdź"
+            },
+            "messages": {
+                "fill_note": "Przed wysłaniem, proszę uzupełnić notatkę",
+                "fill_account_type": "Przed wysłaniem, proszę info o rodzaju konta",
+                "confirmation": "Influencer zatwierdzony"
+            },
+            "no_products": "Brak produktów!"
+        }
+    },
+    "user": {
+        "profile": {
+            "registration": {
+                "greeting": "Witaj!",
+                "complete_registration": "Dokończ rejestrację, żeby zacząć zarabiać",
+                "account_status": "Status konta",
+                "status_active": "Aktywny",
+                "status_inactive": "Nieaktywny",
+                "status_validated": "Walidowany",
+                "instagram_nickname": "Nick na Instagramie",
+                "first_name": "Imię",
+                "last_name": "Nazwisko",
+                "email": "Mail",
+                "city": "Miasto",
+                "account_type": "Typ konta",
+                "new_message": "Nowa wiadomość",
+                "admin_message_placeholder": "Wiadomość od admina",
+                "warning_fill_data": "Przed wysłaniem, proszę uzupełnić dane",
+                "error_message": "Wystąpił błąd",
+                "registration_confirmed": "Jesteś zarejestrowany!",
+                "submit_button": "Wyślij",
+                "reset_button": "Reset"
+            },
+            "advertisement": {
+                "why_join": "Dlaczego warto?",
+                "join_us": "Dołącz do nas!",
+                "earning_potential": "Tyle jesteś w stanie zarabiać <span class='font-bold'>pieniędzy</span> w skali miesiąca. Rejestracja na naszej platformie daje dużo możliwości. Dzięki swojemu zaangażowaniu możesz zarabiać coraz więcej.",
+                "earning_note": "*Kwota jest uzależniona od ilości przyjętych zleceń",
+                "day": "Dzień",
+                "daily_growth": "O tyle mniej więcej zwiększa się <span class='font-bold'>dzienna liczba</span> naszych klientów. A my, aby sprostać ich potrzebom, stale poszukujemy nowych zleceniobiorców, którzy pomogą nam się rozwinąć.",
+                "completed_orders": "Tyle do tej pory zrealizowaliśmy <span class='font-bold'>zleceń</span> dzięki naszym influencerom. Mamy nadzieję, że przyczynisz się i Ty do powiększania tej liczby.",
+                "register_now": "Zarejestruj się teraz i zacznij zarabiać!",
+                "join_button": "Dołącz do nas",
+                "hide_forever": "Nie pokazuj więcej"
+            }
+        }
+    }
+}

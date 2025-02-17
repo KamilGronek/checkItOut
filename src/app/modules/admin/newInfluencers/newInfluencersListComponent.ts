@@ -55,6 +55,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { InfluencerUser } from 'app/core/influencerUser/InfluencerUser.types';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarService } from 'app/services/snackbar/snackbar.service';
+import { TranslocoModule } from '@ngneat/transloco';
 
 @Component({
     selector: 'newInfluencers',
@@ -90,6 +91,7 @@ import { SnackbarService } from 'app/services/snackbar/snackbar.service';
         DatePipe,
         MatSelectModule,
         MatPaginatorModule,
+        TranslocoModule,
     ],
 })
 export class newInfluencersListComponent
@@ -412,9 +414,13 @@ export class newInfluencersListComponent
     }
 
     sendToInluencer(userIdToUpdate: number): void {
-        console.log("Znaleziony influ: " + this.getUserToUpdate(userIdToUpdate));
-        this._influencerService.updateInfluencerUser(
-                this.getUserToUpdate(userIdToUpdate), userIdToUpdate
+        console.log(
+            'Znaleziony influ: ' + this.getUserToUpdate(userIdToUpdate)
+        );
+        this._influencerService
+            .updateInfluencerUser(
+                this.getUserToUpdate(userIdToUpdate),
+                userIdToUpdate
             )
             .subscribe({
                 next: (updatedUser: InfluencerUser) => {
@@ -444,7 +450,7 @@ export class newInfluencersListComponent
             );
             return null;
         }
-        
+
         const userToUpdate = this.dataSource.data.find(
             (user) => user.id === userIdToUpdate
         );

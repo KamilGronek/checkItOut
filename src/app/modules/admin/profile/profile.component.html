@@ -1,129 +1,212 @@
-<div class="bg-card flex min-w-0 flex-auto flex-col dark:bg-transparent sm:inset-0">
-    <div style="display: flex; justify-content: space-between"
-        class="flex flex-0 flex-col border-b px-6 py-8 sm:flex-row sm:items-center md:px-8">
-        <div class="truncate text-2xl font-semibold leading-7 tracking-tight md:text-5xl md:leading-snug">Dzień dobry!
+<div
+    class="bg-card flex min-w-0 flex-auto flex-col dark:bg-transparent sm:inset-0"
+>
+    <div
+        style="display: flex; justify-content: space-between"
+        class="flex flex-0 flex-col border-b px-6 py-8 sm:flex-row sm:items-center md:px-8"
+    >
+        <div
+            class="truncate text-2xl font-semibold leading-7 tracking-tight md:text-5xl md:leading-snug"
+        >
+            {{ "user.profile.registration.greeting" | transloco }}
 
             <div class="prose prose-sm max-w-3xl">
                 <div class="flex items-center">
-                    <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:bell'"></mat-icon>
+                    <mat-icon
+                        class="icon-size-5"
+                        [svgIcon]="'heroicons_solid:bell'"
+                    ></mat-icon>
                     <div class="text-secondary ml-1.5 truncate leading-6">
-                        Dokończ rejestrację, żeby zacząć zarabiać
+                        {{
+                            "user.profile.registration.complete_registration"
+                                | transloco
+                        }}
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="flex">Status konta
+        <div class="flex">
+            {{ "user.profile.registration.account_status" | transloco }}
             <div class="text-status">
-
-                <span class="statusConfimed" [ngStyle]="{
-                    'padding':'2px 10px',
-                    'border-radius': '40px',
-                    'font-weight': 'bold',
-
-                    'background-color':
-                        statusUser === 'Aktywny'
-                            ? '#bbf7d0'
-                            : statusUser ===
-                            'Nieaktywny'
-                            ? '#FECACA'
-                            : statusUser ===
-                            'Walidowany'
-                            ? '#f7f5bb'
-                            : '#000000',
-
-                    color:
-                        statusUser === 'Aktywny'
-                            ? '#166534'
-                            : statusUser ===
-                            'Nieaktywny'
-                            ? '#991b1b'
-                            : statusUser ===
-                            'Walidowany'
-                            ? '#92400e'
-                            : '#000000'
-                }">
-                    {{statusUser}}
+                <span
+                    class="statusConfimed"
+                    [ngStyle]="{
+                        padding: '2px 10px',
+                        'border-radius': '40px',
+                        'font-weight': 'bold',
+                        'background-color':
+                            statusUser === 'Aktywny'
+                                ? '#bbf7d0'
+                                : statusUser === 'Nieaktywny'
+                                ? '#FECACA'
+                                : statusUser === 'Walidowany'
+                                ? '#f7f5bb'
+                                : '#000000',
+                        color:
+                            statusUser === 'Aktywny'
+                                ? '#166534'
+                                : statusUser === 'Nieaktywny'
+                                ? '#991b1b'
+                                : statusUser === 'Walidowany'
+                                ? '#92400e'
+                                : '#000000'
+                    }"
+                >
+                    {{ statusUser }}
                 </span>
-
             </div>
         </div>
     </div>
-    <div class="flex-auto p-6 sm:p-10" style="background-color: #F1F5F9">
+
+    <div class="flex-auto p-6 sm:p-10" style="background-color: #f1f5f9">
         <div class="container-forms bg-card rounded-2xl">
-            <form [formGroup]="editInfluencerFormGroup"
-                class="container-form1  mt-8 flex flex-col overflow-hidden  p-8 pb-4">
+            <form
+                [formGroup]="editInfluencerFormGroup"
+                class="container-form1 mt-8 flex flex-col overflow-hidden p-8 pb-4"
+            >
                 <div class="gt-xs:flex-row flex flex-col">
-                    <mat-form-field [ngClass]="formFieldHelpers" class="gt-xs:pr-3 flex-auto">
-                        <mat-label>Nick na instagramie</mat-label>
+                    <mat-form-field
+                        [ngClass]="formFieldHelpers"
+                        class="gt-xs:pr-3 flex-auto"
+                    >
+                        <mat-label>{{
+                            "user.profile.registration.instagram_nickname"
+                                | transloco
+                        }}</mat-label>
                         <input matInput [formControlName]="'instagramId'" />
-                        <mat-icon class="icon-size-5" matSuffix [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
                     </mat-form-field>
-                    <mat-form-field [ngClass]="formFieldHelpers" class="gt-xs:pl-3 flex-auto">
-                        <mat-label>Imię</mat-label>
+                    <mat-form-field
+                        [ngClass]="formFieldHelpers"
+                        class="gt-xs:pl-3 flex-auto"
+                    >
+                        <mat-label>{{
+                            "user.profile.registration.first_name" | transloco
+                        }}</mat-label>
                         <input matInput [formControlName]="'firstName'" />
-                        <mat-icon class="icon-size-5" matSuffix [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
                     </mat-form-field>
-                    <mat-form-field [ngClass]="formFieldHelpers" class="gt-xs:pl-3 flex-auto">
-                        <mat-label>Nazwisko</mat-label>
+                    <mat-form-field
+                        [ngClass]="formFieldHelpers"
+                        class="gt-xs:pl-3 flex-auto"
+                    >
+                        <mat-label>{{
+                            "user.profile.registration.last_name" | transloco
+                        }}</mat-label>
                         <input matInput [formControlName]="'lastName'" />
-                        <mat-icon class="icon-size-5" matSuffix [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
                     </mat-form-field>
                 </div>
                 <div class="gt-md:flex-row flex flex-col">
-                    <mat-form-field [ngClass]="formFieldHelpers" class="gt-md:pr-3 flex-auto">
-                        <mat-label>Mail</mat-label>
+                    <mat-form-field
+                        [ngClass]="formFieldHelpers"
+                        class="gt-md:pr-3 flex-auto"
+                    >
+                        <mat-label>{{
+                            "user.profile.registration.email" | transloco
+                        }}</mat-label>
                         <input matInput [formControlName]="'email'" />
-                        <mat-icon class="icon-size-5" matSuffix [svgIcon]="'heroicons_solid:envelope'"></mat-icon>
                     </mat-form-field>
 
                     <mat-form-field>
-                        <mat-label>Miasto</mat-label>
-                        <mat-select [(value)]="selectedCity" [formControlName]="'city'" (selectionChange)="onCityChange($event)">
-                            <mat-option *ngFor="let city of cityOptions" [value]="city">
-                                {{city}}
+                        <mat-label>{{
+                            "user.profile.registration.city" | transloco
+                        }}</mat-label>
+                        <mat-select
+                            [(value)]="selectedCity"
+                            [formControlName]="'city'"
+                            (selectionChange)="onCityChange($event)"
+                        >
+                            <mat-option
+                                *ngFor="let city of cityOptions"
+                                [value]="city"
+                            >
+                                {{ city }}
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
 
                     <mat-form-field>
-                        <mat-label>Typ konta</mat-label>
-                        <mat-select [(value)]="selectedTypeAccount" [formControlName]="'instagramAccountType'" (selectionChange)="onTypeAccountChange($event)">
-                            <mat-option *ngFor="let account of typeAccountOptions" [value]="account">
-                                {{account}}
+                        <mat-label>{{
+                            "user.profile.registration.account_type" | transloco
+                        }}</mat-label>
+                        <mat-select
+                            [(value)]="selectedTypeAccount"
+                            [formControlName]="'instagramAccountType'"
+                            (selectionChange)="onTypeAccountChange($event)"
+                        >
+                            <mat-option
+                                *ngFor="let account of typeAccountOptions"
+                                [value]="account"
+                            >
+                                {{ account }}
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
             </form>
-            <div style="
-              border-radius: 25px; width: 4px; height: max-width; background-color: #ddd; margin: 80px"></div>
-            <form [formGroup]="editInfluencerFormGroup" class="container-form2  mt-8 flex flex-col overflow-hidden rounded-br-2xl rounded-tr-2xl p-8 pb-4">
+
+            <div
+                style="
+                    border-radius: 25px;
+                    width: 4px;
+                    height: max-width;
+                    background-color: #ddd;
+                    margin: 80px;
+                "
+            ></div>
+
+            <form
+                [formGroup]="editInfluencerFormGroup"
+                class="container-form2 mt-8 flex flex-col overflow-hidden rounded-br-2xl rounded-tr-2xl p-8 pb-4"
+            >
                 <div class="flex">
                     <mat-form-field class="flex-auto">
-                        <mat-label>Nowa wiadomość</mat-label>
-                        <textarea matInput [formControlName]="'noteFromAdmin'" [placeholder]="
-                                'Wiadmość od admina'
-                            " [rows]="10" readonly></textarea>
-                        <mat-icon class="icon-size-5"></mat-icon>
+                        <mat-label>{{
+                            "user.profile.registration.new_message" | transloco
+                        }}</mat-label>
+                        <textarea
+                            matInput
+                            [formControlName]="'noteFromAdmin'"
+                            [placeholder]="
+                                'user.profile.registration.admin_message_placeholder'
+                                    | transloco
+                            "
+                            [rows]="10"
+                            readonly
+                        >
+                        </textarea>
                     </mat-form-field>
                 </div>
+
                 <p class="textWarning" *ngIf="warning">
-                    Przed wysłaniem, proszę uzupełnić dane
+                    {{
+                        "user.profile.registration.warning_fill_data"
+                            | transloco
+                    }}
                 </p>
                 <p class="textWarning" *ngIf="error500">
-                    {{errorMessage}}
+                    {{ "user.profile.registration.error_message" | transloco }}
                 </p>
-
                 <p class="textConfimed" *ngIf="confirmedRejestration">
-                    Jesteś zarejestrowany!
+                    {{
+                        "user.profile.registration.registration_confirmed"
+                            | transloco
+                    }}
                 </p>
 
-                <button mat-flat-button class="w-1/4 buttonSubmit" #send type="submit" [color]="'primary'"
-                    (click)="updateOrCreateInfluencer()" [disabled]="isDisabled">Wyślij
+                <button
+                    mat-flat-button
+                    class="w-1/4 buttonSubmit"
+                    #send
+                    type="submit"
+                    [color]="'primary'"
+                    (click)="updateOrCreateInfluencer()"
+                    [disabled]="isDisabled"
+                >
+                    {{ "user.profile.registration.submit_button" | transloco }}
                 </button>
+
                 <button (click)="resetPopUp()">
-                        Reset
+                    {{ "user.profile.registration.reset_button" | transloco }}
                 </button>
             </form>
         </div>
