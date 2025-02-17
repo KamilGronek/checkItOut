@@ -21,6 +21,7 @@ import { AuthService } from 'app/core/auth/auth.service';
 import { signInWithEmailAndPassword } from '@angular/fire/auth';
 import { InfluencerService } from 'app/services/influencer/influencer.service';
 import { Influencer } from 'app/services/influencer/Influencer';
+import { environment } from 'environments/environment';
 
 @Component({
     selector: 'auth-sign-in',
@@ -170,6 +171,10 @@ export class AuthSignInComponent implements OnInit {
 
                 this.showAlert = true;
             });
+    }
+    signInWithInstagram(): void {
+        var authUrl = `https://api.instagram.com/oauth/authorize?client_id=${environment.instagram.clientId}&redirect_uri=${environment.instagram.redirectUri}&scope=instagram_business_basic&response_type=code`;
+        window.location.href = authUrl;
     }
 
     signInWithGoogle(): void {

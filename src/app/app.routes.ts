@@ -94,6 +94,11 @@ export const appRoutes: Route[] = [
                 loadChildren: () =>
                     import('app/modules/auth/sign-up/sign-up.routes'),
             },
+            {
+                path: 'auth/instagram',
+                loadChildren: () =>
+                    import('app/modules/auth/instagram/instagram.routes'),
+            },
         ],
     },
 

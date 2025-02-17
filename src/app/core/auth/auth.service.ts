@@ -16,6 +16,8 @@ import {
     signOut,
     GoogleAuthProvider,
     UserCredential,
+    signInWithCustomToken,
+    getAuth,
 } from '@angular/fire/auth';
 import { user } from 'app/mock-api/common/user/data';
 import { jwtDecode } from 'jwt-decode';
@@ -243,6 +245,30 @@ export class AuthService {
                     resolve(true);
                 });
             });
+    }
+
+    /**
+     * Sign in with instagram
+     */
+    async signInWithInstagram(firebaseToken: string): Promise<void> {
+        if (this._authenticated) {
+            throwError(() => 'User is already logged in.');
+        }
+
+        try {
+            const userCredential = await signInWithCustomToken(
+                this.auth,
+                firebaseToken
+            );
+            const token = await userCredential.user.getIdToken();
+
+            this.accessToken = token;
+            this._authenticated = true;
+            this._userService.user = this.getUserFromToken();
+        } catch (error) {
+            console.error('Firebase Login Error:', error);
+            throw error;
+        }
     }
 
     /**
