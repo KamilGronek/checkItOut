@@ -69,6 +69,19 @@ export class AuthService {
         return jwtDecode(token);
     }
 
+    async refreshToken(): Promise<void> {
+        const token = this.getAccessToken();
+
+        if (!token || AuthUtils.isTokenExpired(token)) {
+            const user = this.auth.currentUser;
+            if (user) {
+                const newToken = await user.getIdToken(true); // Force refresh
+                this.accessToken = newToken;
+                console.log('Token refreshed:', newToken);
+            }
+        }
+    }
+
     dataTokenRole: any;
 
     getDecodedToken(): any {
