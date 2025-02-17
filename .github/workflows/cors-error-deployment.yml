@@ -35,7 +35,7 @@ jobs:
                   PASSWORD: ${{ secrets.UBUNTU_PASSWORD }}
               run: |
                   sshpass -p "$PASSWORD" ssh -o StrictHostKeyChecking=no "$USERNAME@$HOST" "
-                  sudo rm -rf /var/www/app.check-it-out.pl/*"     
+                  sudo rm -rf /var/www/app.check-it-out.pl/*"
 
             - name: Deploy with SCP
               uses: appleboy/scp-action@v0.1.2
@@ -44,7 +44,7 @@ jobs:
                 username: ${{ secrets.UBUNTU_USERNAME }} # e.g., "ubuntu", "root"
                 key: ${{ secrets.OVH_SSH_KEY }}         # The private key you stored
                 source: "dist/fuse/*"              # Local files or directories
-                target: "/var/www/app.check-it-out.pl/"   
+                target: "/var/www/app.check-it-out.pl/"
 
             - name: Copy files and Restart Nginx
               env:
@@ -53,5 +53,5 @@ jobs:
                   PASSWORD: ${{ secrets.UBUNTU_PASSWORD }}
               run: |
                   sshpass -p "$PASSWORD" ssh -o StrictHostKeyChecking=no "$USERNAME@$HOST" "
-                  sudo cp /var/www/app.check-it-out.pl/dist/fuse/* /var/www/app.check-it-out.pl/ &&
+                  sudo cp -r /var/www/app.check-it-out.pl/dist/fuse/* /var/www/app.check-it-out.pl/ &&
                   sudo systemctl reload nginx"
