@@ -56,6 +56,7 @@ import { City } from 'app/services/influencer/Influencer';
 import { AsyncPipe } from '@angular/common';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { TranslocoModule } from '@ngneat/transloco';
 
 @Component({
     selector: 'collaborationsId',
@@ -91,6 +92,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
         AsyncPipe,
         MatSliderModule,
         MatCheckboxModule,
+        TranslocoModule,
     ],
     styleUrl: 'collaborationsId-list.styles.css',
 })

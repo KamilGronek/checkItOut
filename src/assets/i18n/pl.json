@@ -56,6 +56,53 @@
                 "confirmation": "Influencer zatwierdzony"
             },
             "no_products": "Brak produktów!"
+        },
+        "companies": {
+            "title": "Lista firm",
+            "filter": {
+                "column": "Kolumna:",
+                "value": "Wartość:"
+            },
+            "table_headers": {
+                "id": "ID",
+                "name": "Nazwa",
+                "first_name": "Imię",
+                "last_name": "Nazwisko",
+                "email": "E-mail",
+                "city": "Miasto",
+                "instagram": "Instagram",
+                "followers": "Ilość followersów",
+                "phone_number": "Numer telefonu",
+                "service_type": "Typ usługi"
+            },
+            "edit_form": {
+                "no_image": "Brak zdjęcia",
+                "add_image": "Dodaj zdjęcie",
+                "delete_image": "Usuń zdjęcie",
+                "company_name": "Nazwa firmy",
+                "email": "E-mail",
+                "address": "Dokładny adres",
+                "first_name": "Imię",
+                "city": "Miasto",
+                "service_type": "Typ usługi",
+                "last_name": "Nazwisko",
+                "phone_number": "Numer telefonu",
+                "note": "Notatka:",
+                "note_placeholder": "Wyślij notatkę...",
+                "submit": "Zatwierdź",
+                "delete": "Usuń"
+            },
+            "messages": {
+                "fill_note": "Przed wysłaniem, proszę uzupełnić notatkę",
+                "fill_followers": "Przed wysłaniem, proszę info o followersach",
+                "fill_account_type": "Przed wysłaniem, proszę info o rodzaju konta",
+                "confirmation": "Influencer zatwierdzony"
+            },
+            "pagination": {
+                "select_page": "Wybierz stronę",
+                "page_number": "Strona nr: {{ pageIndex }}"
+            },
+            "no_products": "Brak produktów!"
         }
     },
     "user": {
@@ -92,6 +139,50 @@
                 "register_now": "Zarejestruj się teraz i zacznij zarabiać!",
                 "join_button": "Dołącz do nas",
                 "hide_forever": "Nie pokazuj więcej"
+            }
+        },
+        "collaborations": {
+            "all": {
+                "title": "Współprace do podjęcia",
+                "filter": {
+                    "column": "Kolumna:",
+                    "value": "Wartość:"
+                },
+                "add_collaboration": "Dodaj współpracę",
+                "collaboration_card": {
+                    "details_button": "Szczegóły współpracy"
+                },
+                "pagination": {
+                    "select_page": "Wybierz stronę",
+                    "page_number": "Strona nr: {{ pageIndex }}"
+                }
+            },
+            "details": {
+                "title": "Szczegóły Współpracy",
+                "start_date": "Data rozpoczęcia",
+                "end_date": "Data zakończenia",
+                "date_not_set": "Nie ustawiono",
+                "clear_button": "Wyczyść",
+                "pick_button": "Wybierz",
+                "delete_button": "Usuń",
+                "save_button": "Zapisz",
+                "edit_button": "Edytuj",
+                "requirements": "Wymagania",
+                "requirements_placeholder": "Wpisz wymagania dotyczące współpracy...",
+                "compensation": "Wynagrodzenie",
+                "compensation_placeholder": "Wpisz szczegóły wynagrodzenia...",
+                "campaign_details": "Detale Kampanii",
+                "campaign_details_placeholder": "Opisz detale nowej kampanii...",
+                "company_details": "Detale Firmy",
+                "slider_configuration": "Konfiguracja Suwaka",
+                "result": "Wynik",
+                "value": "Wartość",
+                "min_value": "Minimalna Wartość",
+                "max_value": "Maksymalna Wartość",
+                "step_size": "Rozmiar Kroku",
+                "show_ticks": "Pokaż Podziałkę",
+                "show_thumb_label": "Pokaż Etykietę",
+                "disabled": "Wyłączone"
             }
         }
     }

@@ -451,7 +451,10 @@
                         "
                         [hidePageSize]="hidePageSize"
                         [pageIndex]="pageIndex"
-                        aria-label="Select page"
+                        [attr.aria-label]="
+                            'admin.new_influencers.pagination.select_page'
+                                | transloco
+                        "
                     >
                     </mat-paginator>
                     <label class="h-full flex items-center text-sm">

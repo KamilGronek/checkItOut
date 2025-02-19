@@ -48,6 +48,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatPaginator } from '@angular/material/paginator';
 
 import { PageEvent } from '@angular/material/paginator';
+import { TranslocoModule } from '@ngneat/transloco';
 
 @Component({
     selector: 'collaborations',
@@ -77,6 +78,7 @@ import { PageEvent } from '@angular/material/paginator';
         FuseCardComponent,
         MatSelectModule,
         MatPaginatorModule,
+        TranslocoModule,
     ],
     styleUrl: 'collaborations-list.styles.css',
 })

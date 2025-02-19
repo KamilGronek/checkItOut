@@ -57,6 +57,7 @@ import { HttpClient } from '@angular/common/http';
 import { AuthService } from 'app/core/auth/auth.service';
 
 import { ImageService } from 'app/services/imageService/image.service';
+import { TranslocoModule } from '@ngneat/transloco';
 @Component({
     selector: 'companies',
     standalone: true,
@@ -91,6 +92,7 @@ import { ImageService } from 'app/services/imageService/image.service';
         DatePipe,
         MatSelectModule,
         MatPaginatorModule,
+        TranslocoModule,
     ],
 })
 export class CompaniesComponent implements OnInit, AfterViewInit, OnDestroy {

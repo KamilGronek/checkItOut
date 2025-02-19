@@ -56,6 +56,53 @@
                 "confirmation": "Influencer approved"
             },
             "no_products": "There are no products!"
+        },
+        "companies": {
+            "title": "Company List",
+            "filter": {
+                "column": "Column:",
+                "value": "Value:"
+            },
+            "table_headers": {
+                "id": "ID",
+                "name": "Name",
+                "first_name": "First Name",
+                "last_name": "Last Name",
+                "email": "E-mail",
+                "city": "City",
+                "instagram": "Instagram",
+                "followers": "Followers Count",
+                "phone_number": "Phone Number",
+                "service_type": "Service Type"
+            },
+            "edit_form": {
+                "no_image": "No image",
+                "add_image": "Add image",
+                "delete_image": "Delete image",
+                "company_name": "Company Name",
+                "email": "E-mail",
+                "address": "Exact Address",
+                "first_name": "First Name",
+                "city": "City",
+                "service_type": "Service Type",
+                "last_name": "Last Name",
+                "phone_number": "Phone Number",
+                "note": "Note:",
+                "note_placeholder": "Send a note...",
+                "submit": "Confirm",
+                "delete": "Delete"
+            },
+            "messages": {
+                "fill_note": "Please complete the note before submitting",
+                "fill_followers": "Please provide followers count before submitting",
+                "fill_account_type": "Please provide account type before submitting",
+                "confirmation": "Influencer approved"
+            },
+            "pagination": {
+                "select_page": "Select page",
+                "page_number": "Page number: {{ pageIndex }}"
+            },
+            "no_products": "There are no products!"
         }
     },
     "user": {
@@ -92,6 +139,50 @@
                 "register_now": "Register now and start earning!",
                 "join_button": "Join us",
                 "hide_forever": "Do not show again"
+            }
+        },
+        "collaborations": {
+            "all": {
+                "title": "Available Collaborations",
+                "filter": {
+                    "column": "Column:",
+                    "value": "Value:"
+                },
+                "add_collaboration": "Add Collaboration",
+                "collaboration_card": {
+                    "details_button": "Collaboration Details"
+                },
+                "pagination": {
+                    "select_page": "Select page",
+                    "page_number": "Page number: {{ pageIndex }}"
+                }
+            },
+            "details": {
+                "title": "Collaboration Details",
+                "start_date": "Start Date",
+                "end_date": "End Date",
+                "date_not_set": "Not set",
+                "clear_button": "Clear",
+                "pick_button": "Pick",
+                "delete_button": "Delete",
+                "save_button": "Save",
+                "edit_button": "Edit",
+                "requirements": "Requirements",
+                "requirements_placeholder": "Enter collaboration requirements here...",
+                "compensation": "Compensation",
+                "compensation_placeholder": "Enter compensation details here...",
+                "campaign_details": "Campaign Details",
+                "campaign_details_placeholder": "Describe the new campaign details...",
+                "company_details": "Company Details",
+                "slider_configuration": "Slider Configuration",
+                "result": "Result",
+                "value": "Value",
+                "min_value": "Min Value",
+                "max_value": "Max Value",
+                "step_size": "Step Size",
+                "show_ticks": "Show Ticks",
+                "show_thumb_label": "Show Thumb Label",
+                "disabled": "Disabled"
             }
         }
     }
