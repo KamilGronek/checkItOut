@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 
@@ -24,7 +24,7 @@ export class InfluencerService {
 
     dataToken: any;
 
-    constructor(private http: HttpClient, private authService: AuthService) { }
+    constructor(private http: HttpClient, private authService: AuthService) {}
 
     getInfluencerList(): Observable<Influencer[]> {
         return this.http.get<Influencer[]>(this.apiUrl + '/user' + '/list');
@@ -56,45 +56,6 @@ export class InfluencerService {
             influencer,
             this.httpOptions
         );
-    }
-
-    getInfluencersToRate(filterRateStatus?: string, opportunityStatus?: string, fromDate?: string, toDate?: string, page: number = 0, size: number = 12) {
-        let params = new HttpParams();
-        if (filterRateStatus) {
-            params = params.set('filterRateStatus', filterRateStatus);
-        }
-
-        if (opportunityStatus) {
-            params = params.set('opportunityStatus', opportunityStatus);
-        }
-
-        if (fromDate) {
-            params = params.set('fromDate', fromDate);
-        }
-
-        if (toDate) {
-            params = params.set('toDate', toDate);
-        }
-
-        params = params.set('page', page.toString());
-        params = params.set('size', size.toString());
-        return this.http.get(this.apiUrl + '/activecoop/influencers/rate', { params });
-    }
-
-    getIfluencersToAccept(minFollowers: number, maxFollowers: number, minPositiveRates: number){
-        let params = new HttpParams()
-        
-        if (minFollowers != null) {
-            params = params.set('minFollowers', minFollowers.toString());
-        }
-        if (maxFollowers != null) {
-            params = params.set('maxFollowers', maxFollowers.toString());
-        }
-        
-        if (minPositiveRates != null) {
-            params = params.set('minPositiveRates', minPositiveRates.toString());
-        }
-        return this.http.get(this.apiUrl + '/activecoop/influencers/accept', { params });
     }
 
     getCollaborations() {
@@ -129,15 +90,6 @@ export class InfluencerService {
             this.httpOptions
         );
     }
-
-    updateAppliedOpportunityStatus(id: number, updates: { opportunityStatus?: string; rateStatus?: string }) {
-        return this.http.patch(
-            `${this.apiUrl}/applied-opportunity/rate/update/${id}`,
-            updates,
-            { ...this.httpOptions, responseType: 'text' as 'json' }
-        );
-    }
-
 
     getInfluencerPaged(
         pageIndex: number,

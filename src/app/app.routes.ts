@@ -175,13 +175,6 @@ export const appRoutes: Route[] = [
                     import('app/modules/admin/companies/companies.routes'),
             },
             {
-                path: 'activeCooperation',
-                loadChildren: () =>
-                    import(
-                        'app/modules/admin/activeCooperation/activeCooperation.routes'
-                    ),
-            },
-            {
                 path: 'collaborations',
                 loadChildren: () =>
                     import(
