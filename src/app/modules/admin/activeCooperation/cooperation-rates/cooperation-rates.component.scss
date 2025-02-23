@@ -1,0 +1,32 @@
+.glow-wrapper {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+}
+
+.glow-like {
+    box-shadow: 0 0 20px 10px rgba(0, 255, 0, 0.5);
+    /* Zielona poświata */
+}
+
+.glow-neutral {
+    box-shadow: 0 0 20px 10px rgba(93, 88, 88, 0.5);
+    /* Biała poświata */
+}
+
+.glow-dislike {
+    box-shadow: 0 0 20px 10px rgba(255, 0, 0, 0.5);
+    /* Czerwona poświata */
+}
+
+img {
+    width: 128px;
+    /* Rozmiar obrazu */
+    height: 128px;
+    border-radius: 50%;
+}
+
+:host ::ng-deep .p-carousel-item {
+    max-width: 360px;
+}
