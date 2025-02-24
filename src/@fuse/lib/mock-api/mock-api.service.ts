@@ -1,27 +1,25 @@
-import { Injectable } from '@angular/core';
-import { FuseMockApiHandler } from '@fuse/lib/mock-api/mock-api.request-handler';
-import { FuseMockApiMethods } from '@fuse/lib/mock-api/mock-api.types';
-import { compact, fromPairs } from 'lodash-es';
+import {Injectable} from '@angular/core';
+import {FuseMockApiHandler} from '@fuse/lib/mock-api/mock-api.request-handler';
+import {FuseMockApiMethods} from '@fuse/lib/mock-api/mock-api.types';
+import {compact, fromPairs} from 'lodash-es';
 
 @Injectable({providedIn: 'root'})
-export class FuseMockApiService
-{
+export class FuseMockApiService {
     private _handlers: { [key: string]: Map<string, FuseMockApiHandler> } = {
-        'get'    : new Map<string, FuseMockApiHandler>(),
-        'post'   : new Map<string, FuseMockApiHandler>(),
-        'patch'  : new Map<string, FuseMockApiHandler>(),
-        'delete' : new Map<string, FuseMockApiHandler>(),
-        'put'    : new Map<string, FuseMockApiHandler>(),
-        'head'   : new Map<string, FuseMockApiHandler>(),
-        'jsonp'  : new Map<string, FuseMockApiHandler>(),
+        'get': new Map<string, FuseMockApiHandler>(),
+        'post': new Map<string, FuseMockApiHandler>(),
+        'patch': new Map<string, FuseMockApiHandler>(),
+        'delete': new Map<string, FuseMockApiHandler>(),
+        'put': new Map<string, FuseMockApiHandler>(),
+        'head': new Map<string, FuseMockApiHandler>(),
+        'jsonp': new Map<string, FuseMockApiHandler>(),
         'options': new Map<string, FuseMockApiHandler>(),
     };
 
     /**
      * Constructor
      */
-    constructor()
-    {
+    constructor() {
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -35,11 +33,13 @@ export class FuseMockApiService
      * @param method
      * @param url
      */
-    findHandler(method: string, url: string): { handler: FuseMockApiHandler | undefined; urlParams: { [key: string]: string } }
-    {
+    findHandler(method: string, url: string): {
+        handler: FuseMockApiHandler | undefined;
+        urlParams: { [key: string]: string }
+    } {
         // Prepare the return object
         const matchingHandler: { handler: FuseMockApiHandler | undefined; urlParams: { [key: string]: string } } = {
-            handler  : undefined,
+            handler: undefined,
             urlParams: {},
         };
 
@@ -50,11 +50,9 @@ export class FuseMockApiService
         const handlers = this._handlers[method.toLowerCase()];
 
         // Iterate through the handlers
-        handlers.forEach((handler, handlerUrl) =>
-        {
+        handlers.forEach((handler, handlerUrl) => {
             // Skip if there is already a matching handler
-            if ( matchingHandler.handler )
-            {
+            if (matchingHandler.handler) {
                 return;
             }
 
@@ -62,8 +60,7 @@ export class FuseMockApiService
             const handlerUrlParts = handlerUrl.split('/');
 
             // Skip if the lengths of the urls we are comparing are not the same
-            if ( urlParts.length !== handlerUrlParts.length )
-            {
+            if (urlParts.length !== handlerUrlParts.length) {
                 return;
             }
 
@@ -71,8 +68,7 @@ export class FuseMockApiService
             const matches = handlerUrlParts.every((handlerUrlPart, index) => handlerUrlPart === urlParts[index] || handlerUrlPart.startsWith(':'));
 
             // If there is a match...
-            if ( matches )
-            {
+            if (matches) {
                 // Assign the matching handler
                 matchingHandler.handler = handler;
 
@@ -92,8 +88,7 @@ export class FuseMockApiService
      * @param url - URL address of the mocked API endpoint
      * @param delay - Delay of the response in milliseconds
      */
-    onGet(url: string, delay?: number): FuseMockApiHandler
-    {
+    onGet(url: string, delay?: number): FuseMockApiHandler {
         return this._registerHandler('get', url, delay);
     }
 
@@ -103,8 +98,7 @@ export class FuseMockApiService
      * @param url - URL address of the mocked API endpoint
      * @param delay - Delay of the response in milliseconds
      */
-    onPost(url: string, delay?: number): FuseMockApiHandler
-    {
+    onPost(url: string, delay?: number): FuseMockApiHandler {
         return this._registerHandler('post', url, delay);
     }
 
@@ -114,8 +108,7 @@ export class FuseMockApiService
      * @param url - URL address of the mocked API endpoint
      * @param delay - Delay of the response in milliseconds
      */
-    onPatch(url: string, delay?: number): FuseMockApiHandler
-    {
+    onPatch(url: string, delay?: number): FuseMockApiHandler {
         return this._registerHandler('patch', url, delay);
     }
 
@@ -125,8 +118,7 @@ export class FuseMockApiService
      * @param url - URL address of the mocked API endpoint
      * @param delay - Delay of the response in milliseconds
      */
-    onDelete(url: string, delay?: number): FuseMockApiHandler
-    {
+    onDelete(url: string, delay?: number): FuseMockApiHandler {
         return this._registerHandler('delete', url, delay);
     }
 
@@ -136,8 +128,7 @@ export class FuseMockApiService
      * @param url - URL address of the mocked API endpoint
      * @param delay - Delay of the response in milliseconds
      */
-    onPut(url: string, delay?: number): FuseMockApiHandler
-    {
+    onPut(url: string, delay?: number): FuseMockApiHandler {
         return this._registerHandler('put', url, delay);
     }
 
@@ -147,8 +138,7 @@ export class FuseMockApiService
      * @param url - URL address of the mocked API endpoint
      * @param delay - Delay of the response in milliseconds
      */
-    onHead(url: string, delay?: number): FuseMockApiHandler
-    {
+    onHead(url: string, delay?: number): FuseMockApiHandler {
         return this._registerHandler('head', url, delay);
     }
 
@@ -158,8 +148,7 @@ export class FuseMockApiService
      * @param url - URL address of the mocked API endpoint
      * @param delay - Delay of the response in milliseconds
      */
-    onJsonp(url: string, delay?: number): FuseMockApiHandler
-    {
+    onJsonp(url: string, delay?: number): FuseMockApiHandler {
         return this._registerHandler('jsonp', url, delay);
     }
 
@@ -169,8 +158,7 @@ export class FuseMockApiService
      * @param url - URL address of the mocked API endpoint
      * @param delay - Delay of the response in milliseconds
      */
-    onOptions(url: string, delay?: number): FuseMockApiHandler
-    {
+    onOptions(url: string, delay?: number): FuseMockApiHandler {
         return this._registerHandler('options', url, delay);
     }
 
@@ -186,8 +174,7 @@ export class FuseMockApiService
      * @param delay
      * @private
      */
-    private _registerHandler(method: FuseMockApiMethods, url: string, delay?: number): FuseMockApiHandler
-    {
+    private _registerHandler(method: FuseMockApiMethods, url: string, delay?: number): FuseMockApiHandler {
         // Create a new instance of FuseMockApiRequestHandler
         const fuseMockHttp = new FuseMockApiHandler(url, delay);
 

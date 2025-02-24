@@ -1,0 +1,9 @@
+<fuse-alert *ngIf="data.type === 'success'" [appearance]="'soft'" [dismissible]="true" [dismissed]="false"
+            [name]="'alertBox1'" [type]="'success'">
+    {{ data.message }}
+</fuse-alert>
+
+<fuse-alert *ngIf="data.type === 'failure'" [appearance]="'soft'" [dismissible]="true" [dismissed]="false"
+            [name]="'alertBox1'" [type]="'error'">
+    {{ data.message }}
+</fuse-alert>

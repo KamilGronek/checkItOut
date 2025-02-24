@@ -5,12 +5,11 @@
                 "fullscreen": "Toggle Fullscreen"
             },
             "vertical": {
-                "profile": "Your profile",
-                "collaborations": "Collaborations to take",
-                "companies": "Companies",
-                "activeCooperation": "Active cooperations",
-                "posts": "Posts",
-                "newInfluencers": "New Influencers applications"
+                "user-profile": "Your profile",
+                "collaborations-list": "Collaborations to take",
+                "companies-list": "Companies",
+                "collaborations-influencers": "Active collaborations",
+                "influencers-new": "New Influencers applications"
             }
         }
     },

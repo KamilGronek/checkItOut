@@ -19,8 +19,7 @@ const jsonToSassMap = require(path.resolve(__dirname, ('../utils/json-to-sass-ma
  *
  * @param theme
  */
-const normalizeTheme = (theme) =>
-{
+const normalizeTheme = (theme) => {
     return _.fromPairs(_.map(_.omitBy(theme, (palette, paletteName) => paletteName.startsWith('on') || _.isEmpty(palette)),
         (palette, paletteName) => [
             paletteName,
@@ -36,11 +35,10 @@ const normalizeTheme = (theme) =>
 // @ FUSE TailwindCSS Main Plugin
 // -----------------------------------------------------------------------------------------------------
 const theming = plugin.withOptions((options) => ({
-        addComponents,
-        e,
-        theme,
-    }) =>
-    {
+                                                     addComponents,
+                                                     e,
+                                                     theme,
+                                                 }) => {
         /**
          * Create user themes object by going through the provided themes and
          * merging them with the provided "default" so, we can have a complete
@@ -101,24 +99,17 @@ const theming = plugin.withOptions((options) => ({
 
         /* Read the file and get its data */
         let data;
-        try
-        {
+        try {
             data = fs.readFileSync(filename, {encoding: 'utf8'});
-        }
-        catch ( err )
-        {
+        } catch (err) {
             console.error(err);
         }
 
         /* Write the file if the map has been changed */
-        if ( data !== sassMap )
-        {
-            try
-            {
+        if (data !== sassMap) {
+            try {
                 fs.writeFileSync(filename, sassMap, {encoding: 'utf8'});
-            }
-            catch ( err )
-            {
+            } catch (err) {
                 console.error(err);
             }
         }
@@ -148,8 +139,7 @@ const theming = plugin.withOptions((options) => ({
         /**
          * Generate scheme based css custom properties and utility classes
          */
-        const schemeCustomProps = _.map(['light', 'dark'], (colorScheme) =>
-        {
+        const schemeCustomProps = _.map(['light', 'dark'], (colorScheme) => {
             const isDark = colorScheme === 'dark';
             const background = theme(`fuse.customProps.background.${colorScheme}`);
             const foreground = theme(`fuse.customProps.foreground.${colorScheme}`);
@@ -190,8 +180,7 @@ const theming = plugin.withOptions((options) => ({
             };
         });
 
-        const schemeUtilities = (() =>
-        {
+        const schemeUtilities = (() => {
             /* Generate general styles & utilities */
             return {};
         })();
@@ -199,8 +188,7 @@ const theming = plugin.withOptions((options) => ({
         addComponents(schemeCustomProps);
         addComponents(schemeUtilities);
     },
-    (options) =>
-    {
+    (options) => {
         return {
             theme: {
                 extend: {
@@ -214,46 +202,46 @@ const theming = plugin.withOptions((options) => ({
                         [`on-${name}`, `rgba(var(--fuse-on-${name}-rgb), <alpha-value>)`],
                     ]))),
                 },
-                fuse  : {
+                fuse: {
                     customProps: {
                         background: {
                             light: {
-                                'bg-app-bar'   : '#FFFFFF',
-                                'bg-card'      : '#FFFFFF',
-                                'bg-default'   : colors.slate[100],
-                                'bg-dialog'    : '#FFFFFF',
-                                'bg-hover'     : chroma(colors.slate[400]).alpha(0.12).css(),
+                                'bg-app-bar': '#FFFFFF',
+                                'bg-card': '#FFFFFF',
+                                'bg-default': colors.slate[100],
+                                'bg-dialog': '#FFFFFF',
+                                'bg-hover': chroma(colors.slate[400]).alpha(0.12).css(),
                                 'bg-status-bar': colors.slate[300],
                             },
-                            dark : {
-                                'bg-app-bar'   : colors.slate[900],
-                                'bg-card'      : colors.slate[800],
-                                'bg-default'   : colors.slate[900],
-                                'bg-dialog'    : colors.slate[800],
-                                'bg-hover'     : 'rgba(255, 255, 255, 0.05)',
+                            dark: {
+                                'bg-app-bar': colors.slate[900],
+                                'bg-card': colors.slate[800],
+                                'bg-default': colors.slate[900],
+                                'bg-dialog': colors.slate[800],
+                                'bg-hover': 'rgba(255, 255, 255, 0.05)',
                                 'bg-status-bar': colors.slate[900],
                             },
                         },
                         foreground: {
                             light: {
-                                'text-default'  : colors.slate[800],
+                                'text-default': colors.slate[800],
                                 'text-secondary': colors.slate[500],
-                                'text-hint'     : colors.slate[400],
-                                'text-disabled' : colors.slate[400],
-                                'border'        : colors.slate[200],
-                                'divider'       : colors.slate[200],
-                                'icon'          : colors.slate[500],
-                                'mat-icon'      : colors.slate[500],
+                                'text-hint': colors.slate[400],
+                                'text-disabled': colors.slate[400],
+                                'border': colors.slate[200],
+                                'divider': colors.slate[200],
+                                'icon': colors.slate[500],
+                                'mat-icon': colors.slate[500],
                             },
-                            dark : {
-                                'text-default'  : '#FFFFFF',
+                            dark: {
+                                'text-default': '#FFFFFF',
                                 'text-secondary': colors.slate[400],
-                                'text-hint'     : colors.slate[500],
-                                'text-disabled' : colors.slate[600],
-                                'border'        : chroma(colors.slate[100]).alpha(0.12).css(),
-                                'divider'       : chroma(colors.slate[100]).alpha(0.12).css(),
-                                'icon'          : colors.slate[400],
-                                'mat-icon'      : colors.slate[400],
+                                'text-hint': colors.slate[500],
+                                'text-disabled': colors.slate[600],
+                                'border': chroma(colors.slate[100]).alpha(0.12).css(),
+                                'divider': chroma(colors.slate[100]).alpha(0.12).css(),
+                                'icon': colors.slate[400],
+                                'mat-icon': colors.slate[400],
                             },
                         },
                     },

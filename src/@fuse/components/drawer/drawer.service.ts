@@ -1,16 +1,14 @@
-import { Injectable } from '@angular/core';
-import { FuseDrawerComponent } from '@fuse/components/drawer/drawer.component';
+import {Injectable} from '@angular/core';
+import {FuseDrawerComponent} from '@fuse/components/drawer/drawer.component';
 
 @Injectable({providedIn: 'root'})
-export class FuseDrawerService
-{
+export class FuseDrawerService {
     private _componentRegistry: Map<string, FuseDrawerComponent> = new Map<string, FuseDrawerComponent>();
 
     /**
      * Constructor
      */
-    constructor()
-    {
+    constructor() {
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -23,8 +21,7 @@ export class FuseDrawerService
      * @param name
      * @param component
      */
-    registerComponent(name: string, component: FuseDrawerComponent): void
-    {
+    registerComponent(name: string, component: FuseDrawerComponent): void {
         this._componentRegistry.set(name, component);
     }
 
@@ -33,8 +30,7 @@ export class FuseDrawerService
      *
      * @param name
      */
-    deregisterComponent(name: string): void
-    {
+    deregisterComponent(name: string): void {
         this._componentRegistry.delete(name);
     }
 
@@ -43,8 +39,7 @@ export class FuseDrawerService
      *
      * @param name
      */
-    getComponent(name: string): FuseDrawerComponent | undefined
-    {
+    getComponent(name: string): FuseDrawerComponent | undefined {
         return this._componentRegistry.get(name);
     }
 }

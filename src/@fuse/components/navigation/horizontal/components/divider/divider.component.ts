@@ -1,19 +1,18 @@
-import { NgClass } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FuseHorizontalNavigationComponent } from '@fuse/components/navigation/horizontal/horizontal.component';
-import { FuseNavigationService } from '@fuse/components/navigation/navigation.service';
-import { FuseNavigationItem } from '@fuse/components/navigation/navigation.types';
-import { Subject, takeUntil } from 'rxjs';
+import {NgClass} from '@angular/common';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {FuseHorizontalNavigationComponent} from '@fuse/components/navigation/horizontal/horizontal.component';
+import {FuseNavigationService} from '@fuse/components/navigation/navigation.service';
+import {FuseNavigationItem} from '@fuse/components/navigation/navigation.types';
+import {Subject, takeUntil} from 'rxjs';
 
 @Component({
-    selector       : 'fuse-horizontal-navigation-divider-item',
-    templateUrl    : './divider.component.html',
+    selector: 'fuse-horizontal-navigation-divider-item',
+    templateUrl: './divider.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone     : true,
-    imports        : [NgClass],
+    standalone: true,
+    imports: [NgClass],
 })
-export class FuseHorizontalNavigationDividerItemComponent implements OnInit, OnDestroy
-{
+export class FuseHorizontalNavigationDividerItemComponent implements OnInit, OnDestroy {
     @Input() item: FuseNavigationItem;
     @Input() name: string;
 
@@ -26,8 +25,7 @@ export class FuseHorizontalNavigationDividerItemComponent implements OnInit, OnD
     constructor(
         private _changeDetectorRef: ChangeDetectorRef,
         private _fuseNavigationService: FuseNavigationService,
-    )
-    {
+    ) {
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -37,16 +35,14 @@ export class FuseHorizontalNavigationDividerItemComponent implements OnInit, OnD
     /**
      * On init
      */
-    ngOnInit(): void
-    {
+    ngOnInit(): void {
         // Get the parent navigation component
         this._fuseHorizontalNavigationComponent = this._fuseNavigationService.getComponent(this.name);
 
         // Subscribe to onRefreshed on the navigation component
         this._fuseHorizontalNavigationComponent.onRefreshed.pipe(
             takeUntil(this._unsubscribeAll),
-        ).subscribe(() =>
-        {
+        ).subscribe(() => {
             // Mark for check
             this._changeDetectorRef.markForCheck();
         });
@@ -55,8 +51,7 @@ export class FuseHorizontalNavigationDividerItemComponent implements OnInit, OnD
     /**
      * On destroy
      */
-    ngOnDestroy(): void
-    {
+    ngOnDestroy(): void {
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next(null);
         this._unsubscribeAll.complete();

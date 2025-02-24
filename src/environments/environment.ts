@@ -13,6 +13,6 @@ export const environment = {
     instagram: {
         clientId: '2658917770964963',
         clientSecret: '3164b30e7f544e25d881b69ba6089989',
-        redirectUri: 'https://localhost:4200/auth/instagram/callback',
+        redirectUri: 'https://app.check-it-out.pl/auth/instagram/callback',
     },
 };

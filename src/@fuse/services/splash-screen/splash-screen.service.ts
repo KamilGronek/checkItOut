@@ -1,27 +1,24 @@
-import { DOCUMENT } from '@angular/common';
-import { Inject, Injectable } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
-import { filter, take } from 'rxjs';
+import {DOCUMENT} from '@angular/common';
+import {Inject, Injectable} from '@angular/core';
+import {NavigationEnd, Router} from '@angular/router';
+import {filter, take} from 'rxjs';
 
 @Injectable({providedIn: 'root'})
-export class FuseSplashScreenService
-{
+export class FuseSplashScreenService {
     /**
      * Constructor
      */
     constructor(
         @Inject(DOCUMENT) private _document: any,
         private _router: Router,
-    )
-    {
+    ) {
         // Hide it on the first NavigationEnd event
         this._router.events
             .pipe(
                 filter(event => event instanceof NavigationEnd),
                 take(1),
             )
-            .subscribe(() =>
-            {
+            .subscribe(() => {
                 this.hide();
             });
     }
@@ -33,16 +30,14 @@ export class FuseSplashScreenService
     /**
      * Show the splash screen
      */
-    show(): void
-    {
+    show(): void {
         this._document.body.classList.remove('fuse-splash-screen-hidden');
     }
 
     /**
      * Hide the splash screen
      */
-    hide(): void
-    {
+    hide(): void {
         this._document.body.classList.add('fuse-splash-screen-hidden');
     }
 }

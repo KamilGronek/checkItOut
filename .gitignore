@@ -8,8 +8,8 @@
 /bazel-out
 
 #ssl
-server.key
-server.crt
+/server.key
+/server.crt
 
 # dependencies
 /node_modules

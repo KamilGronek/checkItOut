@@ -5,12 +5,11 @@
                 "fullscreen": "Pełny ekran"
             },
             "vertical": {
-                "profile": "Twoje dane",
-                "collaborations": "Współprace do podjęcia",
-                "companies": "Firmy",
-                "activeCooperation": "Aktywne współprace",
-                "posts": "Posty",
-                "newInfluencers": "Zgłoszenia Nowych Influeserów"
+                "user-profile": "Twoje dane",
+                "collaborations-list": "Współprace do podjęcia",
+                "companies-list": "Firmy",
+                "collaborations-influencers": "Aktywne współprace",
+                "influencers-new": "Zgłoszenia Nowych Influeserów"
             }
         }
     },

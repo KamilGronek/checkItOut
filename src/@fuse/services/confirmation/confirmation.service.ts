@@ -1,10 +1,10 @@
-import { inject, Injectable } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { FuseConfirmationConfig } from '@fuse/services/confirmation/confirmation.types';
-import { FuseConfirmationDialogComponent } from '@fuse/services/confirmation/dialog/dialog.component';
-import { merge } from 'lodash-es';
+import {inject, Injectable} from '@angular/core';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {FuseConfirmationConfig} from '@fuse/services/confirmation/confirmation.types';
+import {FuseConfirmationDialogComponent} from '@fuse/services/confirmation/dialog/dialog.component';
+import {merge} from 'lodash-es';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class FuseConfirmationService {
     private _matDialog: MatDialog = inject(MatDialog);
     private _defaultConfig: FuseConfirmationConfig = {
@@ -32,7 +32,8 @@ export class FuseConfirmationService {
     /**
      * Constructor
      */
-    constructor() {}
+    constructor() {
+    }
 
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods

@@ -1,25 +1,14 @@
-import { NgClass, NgIf, NgTemplateOutlet } from '@angular/common';
-import {
-    ChangeDetectionStrategy,
-    ChangeDetectorRef,
-    Component,
-    Input,
-    OnDestroy,
-    OnInit,
-} from '@angular/core';
-import { MatIconModule } from '@angular/material/icon';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import {
-    IsActiveMatchOptions,
-    RouterLink,
-    RouterLinkActive,
-} from '@angular/router';
-import { FuseNavigationService } from '@fuse/components/navigation/navigation.service';
-import { FuseNavigationItem } from '@fuse/components/navigation/navigation.types';
-import { FuseVerticalNavigationComponent } from '@fuse/components/navigation/vertical/vertical.component';
-import { FuseUtilsService } from '@fuse/services/utils/utils.service';
-import { TranslocoModule } from '@ngneat/transloco';
-import { Subject, takeUntil } from 'rxjs';
+import {NgClass, NgIf, NgTemplateOutlet} from '@angular/common';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit,} from '@angular/core';
+import {MatIconModule} from '@angular/material/icon';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {IsActiveMatchOptions, RouterLink, RouterLinkActive,} from '@angular/router';
+import {FuseNavigationService} from '@fuse/components/navigation/navigation.service';
+import {FuseNavigationItem} from '@fuse/components/navigation/navigation.types';
+import {FuseVerticalNavigationComponent} from '@fuse/components/navigation/vertical/vertical.component';
+import {FuseUtilsService} from '@fuse/services/utils/utils.service';
+import {TranslocoModule} from '@ngneat/transloco';
+import {Subject, takeUntil} from 'rxjs';
 
 @Component({
     selector: 'fuse-vertical-navigation-basic-item',
@@ -38,8 +27,7 @@ import { Subject, takeUntil } from 'rxjs';
     ],
 })
 export class FuseVerticalNavigationBasicItemComponent
-    implements OnInit, OnDestroy
-{
+    implements OnInit, OnDestroy {
     @Input() item: FuseNavigationItem;
     @Input() name: string;
 

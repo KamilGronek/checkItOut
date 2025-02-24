@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthService } from 'app/core/auth/auth.service';
-import { RouterOutlet } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
+import {Component, OnInit} from '@angular/core';
+import {AuthService} from 'app/core/services/authentication/auth.service';
+import {RouterOutlet} from '@angular/router';
+import {MatDialog} from '@angular/material/dialog';
 
 @Component({
     selector: 'app-root',
@@ -11,7 +11,8 @@ import { MatDialog } from '@angular/material/dialog';
     imports: [RouterOutlet],
 })
 export class AppComponent implements OnInit {
-    constructor(private authService: AuthService, private dialog: MatDialog) {}
+    constructor(private authService: AuthService, private dialog: MatDialog) {
+    }
 
     ngOnInit(): void {
         this.authService.check().subscribe((isAuthenticated) => {

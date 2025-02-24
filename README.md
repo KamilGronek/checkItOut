@@ -1,27 +1,35 @@
-# Fuse - Admin template and Starter project for Angular
+# Check It Out
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli)
+## Getting Started
 
-## Development server
+Follow these steps to set up and run the project locally.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+### Installation
 
-## Code scaffolding
+1. Clone the repository:
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+   ```
+   git clone https://github.com/Check-It-Out-Dev/checkItOut-fe.git
+   cd checkItOut-fe
+   ```
 
-## Build
+2. Install dependencies:
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+   ```
+   npm ci --legacy-peer-deps
+   ```
 
-## Running unit tests
+3. Copy SSL files:
+   ```
+   cp -r src/docs/mock-ssl/* ./
+   ```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### Running the Application
 
-## Running end-to-end tests
+Start the development server:
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice.  To use this command, you need to first add a package that implements end-to-end testing capabilities.
+```
+ng serve
+```
 
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Navigate to `https://localhost:4200/` in your browser to view the application.

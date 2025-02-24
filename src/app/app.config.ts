@@ -1,27 +1,22 @@
-import { provideHttpClient } from '@angular/common/http';
-import { APP_INITIALIZER, ApplicationConfig, inject } from '@angular/core';
-import { LuxonDateAdapter } from '@angular/material-luxon-adapter';
-import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
-import { provideAnimations } from '@angular/platform-browser/animations';
-import {
-    PreloadAllModules,
-    provideRouter,
-    withInMemoryScrolling,
-    withPreloading,
-} from '@angular/router';
-import { provideFuse } from '@fuse';
-import { provideTransloco, TranslocoService } from '@ngneat/transloco';
-import { firstValueFrom, from } from 'rxjs';
-import { appRoutes } from 'app/app.routes';
-import { provideIcons } from 'app/core/icons/icons.provider';
-import { mockApiServices } from 'app/mock-api';
-import { TranslocoHttpLoader } from './core/transloco/transloco.http-loader';
-import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
-import { provideAuth, getAuth } from '@angular/fire/auth';
-import { getFirestore, provideFirestore } from '@angular/fire/firestore';
-import { provideStorage, getStorage } from '@angular/fire/storage';
-import { environment } from 'environments/environment';
-import { provideAuthInFuse } from './core/auth/auth.provider';
+import {provideHttpClient} from '@angular/common/http';
+import {APP_INITIALIZER, ApplicationConfig, inject} from '@angular/core';
+import {LuxonDateAdapter} from '@angular/material-luxon-adapter';
+import {DateAdapter, MAT_DATE_FORMATS} from '@angular/material/core';
+import {provideAnimations} from '@angular/platform-browser/animations';
+import {PreloadAllModules, provideRouter, withInMemoryScrolling, withPreloading,} from '@angular/router';
+import {provideFuse} from '@fuse';
+import {provideTransloco, TranslocoService} from '@ngneat/transloco';
+import {firstValueFrom} from 'rxjs';
+import {appRoutes} from 'app/app.routes';
+import {provideIcons} from 'app/core/providers/icons.provider';
+import {TranslocoHttpLoader} from './core/services/i18n/transloco.service';
+import {initializeApp, provideFirebaseApp} from '@angular/fire/app';
+import {getAuth, provideAuth} from '@angular/fire/auth';
+import {getFirestore, provideFirestore} from '@angular/fire/firestore';
+import {getStorage, provideStorage} from '@angular/fire/storage';
+import {environment} from 'environments/environment';
+import {provideAuthInFuse} from './core/providers/auth.provider';
+import {mockApiServices} from 'app/core/mock-api';
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -35,7 +30,7 @@ export const appConfig: ApplicationConfig = {
         provideRouter(
             appRoutes,
             withPreloading(PreloadAllModules),
-            withInMemoryScrolling({ scrollPositionRestoration: 'enabled' })
+            withInMemoryScrolling({scrollPositionRestoration: 'enabled'})
         ),
 
         // Material Date Adapter
