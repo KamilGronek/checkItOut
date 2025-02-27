@@ -16,8 +16,8 @@ import {MatButton, MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {RouterLink} from '@angular/router';
-import {NotificationsService} from 'app/shared/components/layout/notifications/notifications.service';
-import {Notification} from 'app/shared/components/layout/notifications/notifications.types';
+import {NotificationsService} from 'app/core/services/notifications/notifications.service';
+import {Notification} from 'app/core/services/notifications/notifications.types';
 import {Subject, takeUntil} from 'rxjs';
 
 @Component({

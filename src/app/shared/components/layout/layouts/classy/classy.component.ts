@@ -1,4 +1,4 @@
-import {NgIf} from '@angular/common';
+import {NgIf, NgOptimizedImage} from '@angular/common';
 import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
@@ -8,7 +8,6 @@ import {FuseLoadingBarComponent} from '@fuse/components/loading-bar';
 import {FuseNavigationService, FuseVerticalNavigationComponent,} from '@fuse/components/navigation';
 import {FuseMediaWatcherService} from '@fuse/services/media-watcher';
 import {TranslocoModule} from '@ngneat/transloco';
-import {Navigation, NavigationService} from 'app/core/services/navigation.service';
 import {UserService} from 'app/feature/users/services/user.service';
 import {User} from 'app/feature/users/services/user.types';
 import {LanguagesComponent} from 'app/shared/components/layout/languages/languages.component';
@@ -17,13 +16,16 @@ import {SearchComponent} from 'app/shared/components/layout/search/search.compon
 import {Subject, takeUntil} from 'rxjs';
 import {
     UserProfileDialogComponent
-} from "../../../../../feature/users/components/user-profile-dialog/user-profile-dialog.component";
-import {AuthService} from "../../../../../core/services/authentication/auth.service";
+} from "app/feature/users/components/user-profile-dialog/user-profile-dialog.component";
+import {AuthService} from "app/core/services/authentication/auth.service";
 import {
     adminNavigation,
     influenserNavigation,
     unauthorizedUserNavigation
-} from "../../../../../core/mock-api/common/navigation/data";
+} from "app/core/utilities/navigation/navigation";
+
+import {Navigation} from "app/core/utilities/navigation/navigation.types";
+
 
 @Component({
     selector: 'classy-layout',
@@ -43,6 +45,7 @@ import {
         RouterOutlet,
         TranslocoModule,
         UserProfileDialogComponent,
+        NgOptimizedImage,
     ],
 })
 export class ClassyLayoutComponent implements OnInit, OnDestroy {
@@ -57,7 +60,6 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
     constructor(
         private _activatedRoute: ActivatedRoute,
         private _router: Router,
-        private _navigationService: NavigationService,
         private _userService: UserService,
         private _fuseMediaWatcherService: FuseMediaWatcherService,
         private _fuseNavigationService: FuseNavigationService,
@@ -84,43 +86,7 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
      * On init
      */
     ngOnInit(): void {
-        // Subscribe to navigation data
-        this.navigation = {
-            compact: [],
-            default: [],
-            futuristic: [],
-            horizontal: [],
-        }
-
-        let dataTokenRole = this._authService.getRole();
-
-        let resultNavigation = [];
-
-        switch (dataTokenRole) {
-            case 'INFLUENCER':
-                resultNavigation = influenserNavigation;
-                break;
-            case 'ADMIN':
-                resultNavigation = adminNavigation;
-                break;
-            case 'unauthorized':
-                resultNavigation = unauthorizedUserNavigation;
-                break;
-            default:
-                console.log('Invalid arry.');
-        }
-
-        this.navigation.default = resultNavigation;
-
-        console.log(this.navigation);
-
-        this._navigationService.navigation$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((navigation: Navigation) => {
-                console.log(navigation);
-
-                this.navigation = navigation;
-            });
+        this.initializeNavigation();
 
         // Subscribe to the user service
         this._userService.user$
@@ -150,6 +116,37 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
+
+    initializeNavigation(): void {
+        this.navigation = {
+            compact: [],
+            default: [],
+            futuristic: [],
+            horizontal: [],
+        }
+
+        let dataTokenRole = this._authService.getRole();
+
+        let resultNavigation = [];
+
+        switch (dataTokenRole) {
+            case 'INFLUENCER':
+                resultNavigation = influenserNavigation;
+                break;
+            case 'ADMIN':
+                resultNavigation = adminNavigation;
+                break;
+            case 'unauthorized':
+                resultNavigation = unauthorizedUserNavigation;
+                break;
+            default:
+                console.log('Invalid arry.');
+        }
+
+        this.navigation.default = resultNavigation;
+
+        console.log(this.navigation);
+    }
 
     /**
      * Toggle navigation

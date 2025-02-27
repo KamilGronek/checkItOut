@@ -17,7 +17,7 @@ import {Router} from '@angular/router';
 import {UserService} from 'app/feature/users/services/user.service';
 import {User} from 'app/feature/users/services/user.types';
 import {Subject, takeUntil} from 'rxjs';
-import {AdvertisementPopUpService} from 'app/shared/components/advertisement-pop-up/advertisement-pop-up.service';
+import {AdvertisementPopUpService} from 'app/core/services/advertisement-pop-up/advertisement-pop-up.service';
 
 @Component({
     selector: 'user-profile-dialog',

@@ -48,7 +48,7 @@ import {MatInputModule} from '@angular/material/input';
 import {AuthService} from 'app/core/services/authentication/auth.service';
 import {MatSelectChange, MatSelectModule} from '@angular/material/select';
 import {HttpResponse} from '@angular/common/http';
-import {AdvertisementPopUpService} from 'app/shared/components/advertisement-pop-up/advertisement-pop-up.service';
+import {AdvertisementPopUpService} from 'app/core/services/advertisement-pop-up/advertisement-pop-up.service';
 
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {SnackbarService} from 'app/core/services/custom-snackbar/custom-snackbar.service';

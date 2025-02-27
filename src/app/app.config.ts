@@ -16,7 +16,6 @@ import {getFirestore, provideFirestore} from '@angular/fire/firestore';
 import {getStorage, provideStorage} from '@angular/fire/storage';
 import {environment} from 'environments/environment';
 import {provideAuthInFuse} from './core/providers/auth.provider';
-import {mockApiServices} from 'app/core/mock-api';
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -89,10 +88,6 @@ export const appConfig: ApplicationConfig = {
         // Fuse
         provideIcons(),
         provideFuse({
-            mockApi: {
-                delay: 0,
-                services: mockApiServices,
-            },
             fuse: {
                 layout: 'classy',
                 scheme: 'light',

@@ -19,7 +19,7 @@ import {MatMenuModule} from '@angular/material/menu';
 import {take} from 'rxjs/operators';
 import {InfluencerService} from 'app/feature/influencers/services/influencer.service';
 
-import {AdvertisementPopUpService} from 'app/shared/components/advertisement-pop-up/advertisement-pop-up.service';
+import {AdvertisementPopUpService} from 'app/core/services/advertisement-pop-up/advertisement-pop-up.service';
 
 import {Influencer} from 'app/feature/influencers/services/influencer.types';
 import {MatDrawer} from '@angular/material/sidenav';

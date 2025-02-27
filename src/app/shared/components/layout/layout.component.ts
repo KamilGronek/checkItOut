@@ -9,7 +9,7 @@ import {combineLatest, filter, map, Subject, takeUntil} from 'rxjs';
 import {EmptyLayoutComponent} from './layouts/empty/empty.component';
 import {ClassyLayoutComponent} from './layouts/classy/classy.component';
 import {InfluencerService} from 'app/feature/influencers/services/influencer.service';
-import {AdvertisementPopUpService} from 'app/shared/components/advertisement-pop-up/advertisement-pop-up.service';
+import {AdvertisementPopUpService} from 'app/core/services/advertisement-pop-up/advertisement-pop-up.service';
 import {AdvertisementPopUpComponent} from "../advertisement-pop-up/advertisement-pop-up.component";
 
 @Component({
@@ -61,7 +61,9 @@ export class LayoutComponent implements OnInit, OnDestroy {
      */
     ngOnInit(): void {
         this._popUpService.isPopUpVisible$.subscribe((isVisible) => {
-            this.shouldDisplay = isVisible;
+            setTimeout(() => {
+                this.shouldDisplay = isVisible;
+            });
         });
 
         // Set the theme and scheme based on the configuration
