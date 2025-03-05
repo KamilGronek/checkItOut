@@ -1,14 +1,14 @@
-import {Component, OnInit} from '@angular/core';
-import {MatInputModule} from '@angular/material/input';
-import {FuseCardComponent} from '@fuse/components/card';
-import {MatIconModule} from '@angular/material/icon';
-import {MatButtonModule} from '@angular/material/button';
-import {CommonModule} from '@angular/common';
-import {InfluencerService} from 'app/feature/influencers/services/influencer.service';
-import {CarouselModule} from 'primeng/carousel';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {FormsModule} from '@angular/forms';
-import {provideNativeDateAdapter} from '@angular/material/core';
+import { Component, OnInit } from '@angular/core';
+import { MatInputModule } from '@angular/material/input';
+import { FuseCardComponent } from '@fuse/components/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { CommonModule } from '@angular/common';
+import { InfluencerService } from 'app/feature/influencers/services/influencer.service';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
+import { provideNativeDateAdapter } from '@angular/material/core';
+import { CarouselComponent } from '../carousel/carousel.component';
 
 @Component({
     selector: 'app-collaboration-registrations',
@@ -16,12 +16,12 @@ import {provideNativeDateAdapter} from '@angular/material/core';
     imports: [
         FuseCardComponent,
         CommonModule,
-        CarouselModule,
         MatFormFieldModule,
         MatInputModule,
         MatIconModule,
         MatButtonModule,
-        FormsModule
+        FormsModule,
+        CarouselComponent
     ],
     providers: [provideNativeDateAdapter()],
     templateUrl: './collaboration-registrations.component.html',
@@ -44,12 +44,6 @@ export class CollaborationRegistrationsComponent implements OnInit {
     toggleFilters(): void {
         this.showFilters = !this.showFilters;
     }
-
-    responsiveOptions = [
-        {breakpoint: '1600px', numVisible: 3, numScroll: 1},
-        {breakpoint: '1024px', numVisible: 2, numScroll: 1},
-        {breakpoint: '680px', numVisible: 1, numScroll: 1}
-    ];
 
     ngOnInit(): void {
         this.filterInfluencers();
@@ -76,13 +70,8 @@ export class CollaborationRegistrationsComponent implements OnInit {
             });
     }
 
-    // Obsługa zdarzenia zmiany strony (przewinięcia carouselu)
-    onPageChange(event: any): void {
-        console.log('Page event:', event);
-    }
-
     changeOpportunityStatus(id: number) {
-        const updates = {opportunityStatus: this.acceptShow ? 'ACCEPTED' : 'REJECTED'};
+        const updates = { opportunityStatus: this.acceptShow ? 'ACCEPTED' : 'REJECTED' };
         this._influencerService.updateAppliedOpportunityStatus(id, updates).subscribe({
             next: () => {
                 this.filterInfluencers();
