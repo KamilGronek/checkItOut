@@ -1,12 +1,14 @@
 import {NgIf} from '@angular/common';
 import {Component, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {
+    FormControl,
     FormsModule,
     NgForm,
     ReactiveFormsModule,
     UntypedFormBuilder,
     UntypedFormGroup,
     Validators,
+    FormGroup,
 } from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCheckboxModule} from '@angular/material/checkbox';
@@ -21,6 +23,15 @@ import {AuthService} from 'app/core/services/authentication/auth.service';
 import {InfluencerService} from 'app/feature/influencers/services/influencer.service';
 import {Influencer} from 'app/feature/influencers/services/influencer.types';
 import {environment} from 'environments/environment';
+import {ButtonComponent} from "../../../../shared/components/ui/button/button.component";
+import {InputComponent} from "../../../../shared/components/ui/input/input.component";
+import {LinkComponent} from "../../../../shared/components/ui/link/link.component";
+
+interface SignInForm {
+    email: FormControl<string | null>;
+    password: FormControl<string | null>;
+    rememberMe: FormControl<boolean | null>;
+}
 
 @Component({
     selector: 'auth-sign-in',
@@ -41,6 +52,9 @@ import {environment} from 'environments/environment';
         MatIconModule,
         MatCheckboxModule,
         MatProgressSpinnerModule,
+        ButtonComponent,
+        InputComponent,
+        LinkComponent,
     ],
 })
 export class AuthSignInComponent implements OnInit {
@@ -50,7 +64,7 @@ export class AuthSignInComponent implements OnInit {
         type: 'success',
         message: '',
     };
-    signInForm: UntypedFormGroup;
+    signInForm: FormGroup<SignInForm>;
     showAlert: boolean = false;
 
     influencerUser: Influencer;
@@ -75,14 +89,11 @@ export class AuthSignInComponent implements OnInit {
      * On init
      */
     ngOnInit(): void {
-        // Create the form
-        this.signInForm = this._formBuilder.group({
-            email: [
-                'hughes.brian@company.com',
-                [Validators.required, Validators.email],
-            ],
-            password: ['admin', Validators.required],
-            rememberMe: [''],
+        // Create the form with typed controls
+        this.signInForm = new FormGroup<SignInForm>({
+            email: new FormControl("tom.cruise@sigma.com", [Validators.required, Validators.email]),
+            password: new FormControl("*******", [Validators.required]),
+            rememberMe: new FormControl(false),
         });
 
         const userStatus = localStorage.getItem('userStatus');
@@ -115,7 +126,7 @@ export class AuthSignInComponent implements OnInit {
         this.showAlert = false;
 
         this._authService
-            .signInUsingEmailAndPassword(this.signInForm.value)
+            .signInUsingEmailAndPassword(this.signInForm.getRawValue())
             .then(() => {
                 this._influencerService
                     .getInfluencerUser()
@@ -228,7 +239,7 @@ export class AuthSignInComponent implements OnInit {
         this.showAlert = false;
 
         // Sign in
-        this._authService.signIn(this.signInForm.value).subscribe(
+        this._authService.signIn(this.signInForm.getRawValue()).subscribe(
             () => {
                 // Set the redirect url.
                 // The '/signed-in-redirect' is a dummy url to catch the request and redirect the user

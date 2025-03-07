@@ -7,98 +7,47 @@
         <div class="lg:text-4xl font-extrabold tracking-tight sm:text-3xl">
             {{ "user.collaborations.all.title" | transloco }}
         </div>
-        <form
-            class="mr-4 px-6 flex lg:flex-row sm:flex-col gap-4 sm:w-[300px] lg:w-[600px]"
-        >
-            <mat-form-field class="w-full">
-                <mat-label>{{
-                        "user.collaborations.all.filter.column" | transloco
-                    }}
-                </mat-label>
-                <mat-select
-                    [value]="selectedFilter"
-                    (selectionChange)="onSearchSelectChange($event)"
-                >
-                    <mat-option
-                        *ngFor="let field of fieldOptions"
-                        [value]="field"
-                    >
-                        {{ field }}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
+        <app-link routerLink="/collaborations/create">{{ "user.collaborations.all.add_collaboration" | transloco }}</app-link>
 
-            <mat-form-field class="w-full">
-                <mat-label>{{
-                        "user.collaborations.all.filter.value" | transloco
-                    }}
-                </mat-label>
-
-                <input
-                    matInput
-                    [(value)]="searchValue"
-                    #textItem
-                    (input)="onSearchInputChange(textItem.value)"
-                />
-            </mat-form-field>
-        </form>
-        <button
-            class="px-3"
-            mat-button
-            [color]="'primary'"
-            (click)="addCollaboration()"
-        >
-            {{ "user.collaborations.all.add_collaboration" | transloco }}
-        </button>
     </div>
-    <div class="flex-auto p-6 sm:p-10">
-        <div class="-m-4 flex w-full max-w-400 flex-wrap items-start">
-            <fuse-card
-                style="margin: 16px"
-                *ngFor="let item of collaborationList"
-                class="filter-article filter-interactive flex w-full max-w-80 flex-col"
-                [flippable]="true"
-                [face]="'front'"
-                #flippableCard01="fuseCard"
-            >
-                <ng-container fuseCardFront>
-                    <!-- *ngIf="item.company.imageUrl" -->
-                    <img
-                        [src]="item.company.imageUrl"
-                        class="object-cover"
-                        alt="Card cover image"
-                    />
-                    <div class="m-8 mb-4">
-                        <div class="text-2xl font-semibold leading-tight">
-                            {{ item.name }}
-                        </div>
-                        <a class="whitespace-nowrap text-primary-500">
-                            {{ item.city }}
-                        </a>
-                        <div class="mt-4">
-                            {{ item.title }}
-                        </div>
-                        <div class="mt-4">
-                            {{ item.details }}
-                        </div>
+    <div class="p-4 w-full grid grid-cols-[repeat(auto-fill,_minmax(300px,_1fr))] gap-4">
+        <app-card
+            *ngFor="let item of collaborationList"
+            [flippable]="false"
+            customClass="h-full"
+            [imgSrc]="item.company.imageUrl"
+            imgAlt="Collaboration card image">
+            <!-- Header -->
+            <div card-header>
+                <div class="text-2xl font-semibold leading-tight">
+                    {{ item.name }}
+                </div>
+                <a class="whitespace-nowrap text-primary-500">
+                    {{ item.city }}
+                </a>
+            </div>
 
-                        <div class="-mx-3 mt-3">
-                            <button
-                                class="px-3"
-                                mat-button
-                                [color]="'primary'"
-                                (click)="goToDetails(item.id)"
-                            >
-                                {{
-                                    "user.collaborations.all.collaboration_card.details_button"
-                                        | transloco
-                                }}
-                            </button>
-                        </div>
-                    </div>
-                </ng-container>
-            </fuse-card>
-        </div>
+            <!-- Main Content -->
+            <div class="space-y-2">
+                <p>
+                    {{ item.title }}
+                </p>
+                <p>
+                    {{ item.details }}
+                </p>
+            </div>
+
+            <!-- Footer -->
+            <div card-footer>
+                <app-link
+                    [routerLink]="'/collaborations/' + item.id">
+                    {{
+                        "user.collaborations.all.collaboration_card.details_button"
+                            | transloco
+                    }}
+                </app-link>
+            </div>
+        </app-card>
     </div>
     <div class="flex mb-10 items-center text-sm">
         <mat-paginator

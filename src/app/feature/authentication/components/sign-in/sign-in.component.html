@@ -17,24 +17,12 @@
                 Sign in
             </div>
             <div class="flex items-baseline mt-0.5 font-medium">
-                <div>Don't have an account?</div>
-                <a
-                    class="ml-1 text-primary-500 hover:underline"
+                <span>Don't have an account? </span>
+                <app-link
                     [routerLink]="['/auth/sign-up']"
                 >Sign up
-                </a>
+                </app-link>
             </div>
-
-            <!-- Alert -->
-            <fuse-alert
-                class="mt-8"
-                [appearance]="'outline'"
-                [showIcon]="false"
-                [type]="'info'"
-            >
-                You are browsing <strong>Fuse Demo</strong>. Click on the "Sign
-                in" button to access the Demo and Documentation.
-            </fuse-alert>
 
             <!-- Alert -->
             <fuse-alert
@@ -50,92 +38,47 @@
 
             <!-- Sign in form -->
             <form class="mt-8" [formGroup]="signInForm" #signInNgForm="ngForm">
-                <!-- Email field -->
-                <mat-form-field class="w-full">
-                    <mat-label>Email address</mat-label>
-                    <input id="email" matInput [formControlName]="'email'"/>
-                    <mat-error
-                        *ngIf="signInForm.get('email').hasError('required')"
-                    >
-                        Email address is required
-                    </mat-error>
-                    <mat-error
-                        *ngIf="signInForm.get('email').hasError('email')"
-                    >
-                        Please enter a valid email address
-                    </mat-error>
-                </mat-form-field>
+                <app-input
+                    label="Email"
+                    type="email"
+                    id="email"
+                    placeholder="Email address"
+                    [control]="signInForm.controls['email']"
+                ></app-input>
 
-                <!-- Password field -->
-                <mat-form-field class="w-full">
-                    <mat-label>Password</mat-label>
-                    <input
-                        id="password"
-                        matInput
-                        type="password"
-                        [formControlName]="'password'"
-                        #passwordField
-                    />
-                    <button
-                        mat-icon-button
-                        type="button"
-                        (click)="
-                            passwordField.type === 'password'
-                                ? (passwordField.type = 'text')
-                                : (passwordField.type = 'password')
-                        "
-                        matSuffix
-                    >
-                        <mat-icon
-                            class="icon-size-5"
-                            *ngIf="passwordField.type === 'password'"
-                            [svgIcon]="'heroicons_solid:eye'"
-                        ></mat-icon>
-                        <mat-icon
-                            class="icon-size-5"
-                            *ngIf="passwordField.type === 'text'"
-                            [svgIcon]="'heroicons_solid:eye-slash'"
-                        ></mat-icon>
-                    </button>
-                    <mat-error> Password is required</mat-error>
-                </mat-form-field>
+                <app-input
+                    label="Password"
+                    type="password"
+                    id="password"
+                    placeholder="Password"
+                    [control]="signInForm.controls['password']"
+                ></app-input>
 
                 <!-- Actions -->
-                <div
-                    class="inline-flex items-center justify-between w-full mt-1.5"
-                >
-                    <mat-checkbox
-                        class="-ml-2"
-                        [color]="'primary'"
-                        [formControlName]="'rememberMe'"
-                    >
-                        Remember me
-                    </mat-checkbox>
-                    <a
-                        class="text-md font-medium text-primary-500 hover:underline"
+                <div class="inline-flex items-center justify-between w-full mt-1.5">
+                    <app-input
+                        label="Remember me"
+                        type="checkbox"
+                        id="checkbox"
+                        [control]="signInForm.controls['rememberMe']"
+                    ></app-input>
+                    <app-link
+                        customClass="text-md"
                         [routerLink]="['/forgot-password']"
                     >Forgot password?
-                    </a>
+                    </app-link>
                 </div>
 
-                <!-- Submit button -->
-                <button
-                    class="fuse-mat-button-large w-full mt-6"
-                    mat-flat-button
-                    [color]="'primary'"
-                    [disabled]="signInForm.disabled"
+                <app-button
+                    class="text-white"
+                    color="primary"
+                    variant="flat"
+                    [loading]="signInForm.disabled"
                     (click)="signInWithEmailAndPassword()"
-                >
-                    <span *ngIf="!signInForm.disabled"> Sign in </span>
-                    <mat-progress-spinner
-                        *ngIf="signInForm.disabled"
-                        [diameter]="24"
-                        [mode]="'indeterminate'"
-                    ></mat-progress-spinner>
-                </button>
-
-                <h1>!Janekmapsa66!ppp!</h1>
-
+                    [icon]="'feather:log-in'">
+                    Sign in
+                </app-button>
+            </form>
                 <!-- Separator -->
                 <div class="flex items-center mt-8">
                     <div class="flex-auto mt-px border-t"></div>
@@ -145,49 +88,12 @@
 
                 <!-- Single sign-on buttons -->
                 <div class="flex items-center mt-8 space-x-4">
-                    <button
-                        (click)="signInWithFacebook()"
-                        class="flex-auto"
-                        type="button"
-                        mat-stroked-button
-                    >
-                        <mat-icon
-                            class="icon-size-5"
-                            [svgIcon]="'feather:facebook'"
-                        ></mat-icon>
-                    </button>
-                    <button
-                        (click)="signInWithInstagram()"
-                        class="flex-auto"
-                        type="button"
-                        mat-stroked-button
-                    >
-                        <mat-icon
-                            class="icon-size-5"
-                            [svgIcon]="'feather:instagram'"
-                        ></mat-icon>
-                    </button>
-                    <button
-                        (click)="signInWithGoogle()"
-                        class="flex-auto"
-                        type="button"
-                        mat-stroked-button
-                    >
-                        <div class="gsi-material-button-state"></div>
-                        <div class="gsi-material-button-content-wrapper">
-                            <div class="gsi-material-button-icon">
-                                <mat-icon
-                                    class="icon-size-5"
-                                    [svgIcon]="'feather:google'"
-                                ></mat-icon>
-                            </div>
-                            <span style="display: none"
-                            >Sign in with Google</span
-                            >
-                        </div>
-                    </button>
+                    <app-button class="flex-auto" variant="stroked" (click)="signInWithInstagram()" [icon]="'feather:instagram'"></app-button>
+<!--                    <app-button class="flex-auto" variant="stroked" (click)="signInWithFacebook()" [icon]="'feather:facebook'"></app-button>-->
+<!--                    <app-button class="flex-auto" variant="stroked" (click)="signInWithGoogle()" [icon]="'feather:google'">-->
+<!--                        <span style="display: none">Sign in with Google</span>-->
+<!--                    </app-button>-->
                 </div>
-            </form>
         </div>
     </div>
     <div

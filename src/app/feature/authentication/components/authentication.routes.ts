@@ -7,6 +7,7 @@ import {AuthResetPasswordComponent} from "./reset-password/reset-password.compon
 import {AuthSignInComponent} from "./sign-in/sign-in.component";
 import {AuthSignUpComponent} from "./sign-up/sign-up.component";
 import {InstagramCallbackComponent} from "./instagram/instagram-callback.component";
+import {AuthSignOutComponent} from "./sign-out/sign-out.component";
 
 export default [
     {
@@ -28,6 +29,10 @@ export default [
     {
         path: 'sign-up',
         component: AuthSignUpComponent,
+    },
+    {
+        path: 'sign-out',
+        component: AuthSignOutComponent,
     },
     {
         path: 'instagram/callback',

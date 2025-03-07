@@ -1,0 +1,33 @@
+<ng-container [ngSwitch]="variant">
+    <button *ngSwitchCase="'flat'" mat-flat-button [color]="color" [type]="type" [disabled]="disabled || loading" (click)="handleClick($event)" [ngClass]="'w-full ' + customClass">
+        <ng-container *ngTemplateOutlet="buttonContent"></ng-container>
+    </button>
+
+    <button *ngSwitchCase="'stroked'" mat-stroked-button [color]="color" [type]="type" [disabled]="disabled || loading" (click)="handleClick($event)" [ngClass]="'w-full ' + customClass">
+        <ng-container *ngTemplateOutlet="buttonContent"></ng-container>
+    </button>
+
+    <button *ngSwitchCase="'raised'" mat-raised-button [color]="color" [type]="type" [disabled]="disabled || loading" (click)="handleClick($event)" [ngClass]="'w-full ' + customClass">
+        <ng-container *ngTemplateOutlet="buttonContent"></ng-container>
+    </button>
+
+    <button *ngSwitchCase="'icon'" mat-icon-button [color]="color" [type]="type" [disabled]="disabled || loading" (click)="handleClick($event)" [ngClass]="'w-fit w-full ' + customClass">
+        <mat-progress-spinner *ngIf="loading" diameter="20" mode="indeterminate"></mat-progress-spinner>
+        <mat-icon *ngIf="!loading && icon" class="icon-size-5" [svgIcon]="icon"></mat-icon>
+    </button>
+
+    <button *ngSwitchCase="'text'" mat-button [color]="color" [type]="type" [disabled]="disabled || loading" (click)="handleClick($event)" [ngClass]="'w-full ' + customClass">
+        <ng-container *ngTemplateOutlet="buttonContent"></ng-container>
+    </button>
+</ng-container>
+
+<!-- Shared template for button content -->
+<ng-template #buttonContent>
+    <mat-progress-spinner *ngIf="loading" diameter="20" mode="indeterminate"></mat-progress-spinner>
+    <ng-container *ngIf="!loading">
+        <span class="flex items-center gap-2 flex-wrap">
+            <mat-icon *ngIf="icon" class="icon-size-5" [svgIcon]="icon"></mat-icon>
+            <ng-content></ng-content>
+        </span>
+    </ng-container>
+</ng-template>

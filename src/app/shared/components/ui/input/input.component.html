@@ -1,0 +1,47 @@
+<ng-container [ngSwitch]="type">
+    <!-- Checkbox -->
+    <mat-checkbox *ngSwitchCase="'checkbox'" [id]="id" [formControl]="control" [ngClass]="'w-full ' + customClass">
+        {{ label }}
+    </mat-checkbox>
+
+    <!-- Regular Input (text, email, password, etc.) -->
+    <mat-form-field *ngSwitchDefault class="w-full">
+        <mat-label>{{ label }}</mat-label>
+
+        <input
+            matInput
+            [id]="id"
+            [ngClass]="'w-full ' + customClass"
+            [type]="inputType"
+            [formControl]="control"
+            [placeholder]="placeholder"
+            (input)="handleInput($event)"
+            (keyup)="handleKeyup($event)"
+            [attr.aria-describedby]="hint ? id + '-hint' : null"
+            [attr.aria-invalid]="control?.invalid"
+        />
+
+        <!-- Prefix Icon -->
+        <mat-icon *ngIf="prefixIcon" matPrefix class="icon-size-5" [svgIcon]="prefixIcon"></mat-icon>
+
+        <!-- Password Toggle Button -->
+        <button
+            *ngIf="type === 'password'"
+            mat-icon-button
+            type="button"
+            (click)="togglePasswordVisibility()"
+            matSuffix
+        >
+            <mat-icon class="icon-size-5" [svgIcon]="inputType === 'password' ? 'heroicons_solid:eye' : 'heroicons_solid:eye-slash'">
+            </mat-icon>
+        </button>
+
+        <!-- Hint Text -->
+        <mat-hint *ngIf="hint" [id]="id + '-hint'">{{ hint }}</mat-hint>
+
+        <!-- Error Handling -->
+        <mat-error *ngIf="control?.invalid && control?.touched">
+            {{ getErrorMessage() }}
+        </mat-error>
+    </mat-form-field>
+</ng-container>

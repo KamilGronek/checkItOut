@@ -9,6 +9,9 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {ButtonComponent} from "app/shared/components/ui/button/button.component";
+import {InputComponent} from "app/shared/components/ui/input/input.component";
+import {LinkComponent} from "app/shared/components/ui/link/link.component";
 
 @Component({
     selector: 'app-callback',
@@ -24,6 +27,9 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
         MatButtonModule,
         MatProgressSpinnerModule,
         RouterLink,
+        ButtonComponent,
+        InputComponent,
+        LinkComponent,
     ],
 })
 export class InstagramCallbackComponent implements OnInit {

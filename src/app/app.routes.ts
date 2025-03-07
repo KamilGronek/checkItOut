@@ -3,8 +3,8 @@ import {AuthGuard} from 'app/core/guards/auth.guard';
 import {NoAuthGuard} from 'app/core/guards/no-auth.guard';
 import {RoleGuard} from './core/guards/role.guard';
 import {LayoutComponent} from 'app/shared/components/layout/layout.component';
-import {AuthSignOutComponent} from 'app/feature/authentication/components/sign-out/sign-out.component';
 import {AuthResolver} from 'app/core/resolvers/auth.resolver';
+import {ComponentSamplesComponent} from "./shared/components/ui/component-samples.component";
 
 // @formatter:off
 /* eslint-disable max-len */
@@ -37,13 +37,12 @@ export const appRoutes: Route[] = [
                     import(
                         'app/feature/authentication/components/authentication.routes'
                         ),
+            },
+            {
+                path: 'ui-component-samples',
+                component: ComponentSamplesComponent,
             }
         ],
-    },
-
-    {
-        path: 'auth/sign-out',
-        component: AuthSignOutComponent,
     },
 
     // Auth routes for authenticated users
@@ -55,24 +54,6 @@ export const appRoutes: Route[] = [
         data: {
             layout: 'empty',
         },
-    },
-
-    // Landing routes
-    {
-        path: '',
-        component: LayoutComponent,
-        data: {
-            layout: 'classy',
-        },
-        children: [
-            {
-                path: 'unlock-session',
-                loadChildren: () =>
-                    import(
-                        'app/feature/authentication/components/unlock-session/unlock-session.routes'
-                    ),
-            },
-        ],
     },
 
     // Admin routes

@@ -38,6 +38,8 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatPaginator, MatPaginatorModule, PageEvent,} from '@angular/material/paginator';
 import {TranslocoModule} from '@ngneat/transloco';
 import {FuseCardComponent} from "../../../../../@fuse/components/card";
+import {LinkComponent} from "../../../../shared/components/ui/link/link.component";
+import {CardComponent} from "../../../../shared/components/ui/card/card.component";
 
 @Component({
     selector: 'collaboration-list',
@@ -65,6 +67,8 @@ import {FuseCardComponent} from "../../../../../@fuse/components/card";
         MatPaginatorModule,
         TranslocoModule,
         FuseCardComponent,
+        LinkComponent,
+        CardComponent,
     ],
     styleUrl: 'collaboration-list.styles.css',
 })
@@ -260,15 +264,6 @@ export class CollaborationsListComponent
         }
 
         this.onSearchInputChange('');
-    }
-
-    addCollaboration(): void {
-        this.router.navigate(['/newCollaboration']);
-    }
-
-    goToDetails(id: number): void {
-        this.router.navigate(['/collaborations', id]);
-        console.log(`Navigating to /collaborations/${id}`);
     }
 
     private setValueOfSelectedFilter(valueOfSelectedFilter: string) {

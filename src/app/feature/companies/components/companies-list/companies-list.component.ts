@@ -36,7 +36,6 @@ import {
 } from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
-import {animate, state, style, transition, trigger,} from '@angular/animations';
 import {MatSelectChange, MatSelectModule} from '@angular/material/select';
 import {MatPaginator, MatPaginatorModule, PageEvent} from '@angular/material/paginator';
 import {HttpClient} from '@angular/common/http';
@@ -44,22 +43,15 @@ import {AuthService} from 'app/core/services/authentication/auth.service';
 
 import {ImageService} from 'app/core/services/image/image.service';
 import {TranslocoModule} from '@ngneat/transloco';
+import {SelectComponent} from "app/shared/components/ui/select/select.component";
+import {TableComponent} from "../../../../shared/components/ui/table/table.component";
+import {Column} from "../../../../shared/components/ui/table/table.types";
 
 @Component({
     selector: 'companies-list',
     standalone: true,
     templateUrl: './companies-list.component.html',
     styleUrl: './companies-list.styles.css',
-    animations: [
-        trigger('detailExpand', [
-            state('collapsed,void', style({height: '0px', minHeight: '0'})),
-            state('expanded', style({height: '*'})),
-            transition(
-                'expanded <=> collapsed',
-                animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')
-            ),
-        ]),
-    ],
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
@@ -79,6 +71,8 @@ import {TranslocoModule} from '@ngneat/transloco';
         MatSelectModule,
         MatPaginatorModule,
         TranslocoModule,
+        SelectComponent,
+        TableComponent,
     ],
 })
 export class CompaniesComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -91,68 +85,33 @@ export class CompaniesComponent implements OnInit, AfterViewInit, OnDestroy {
     selectInput: any;
     data: any;
 
-    influencersTableColumns: string[] = [
-        'id',
-        // 'name',
-        'lastUpdateTime',
-        'firstName',
-        'lastName',
-        'email',
-        'city',
-        // 'serviceType',
-        // 'address',
-    ];
-    columnsToDisplayWithExpand: string[] = [
-        ...this.influencersTableColumns,
-        'expand',
-    ];
     expandedInfluencer: Company | null;
-
-    formLaunched: boolean = false;
-    editformLaunched: boolean = false;
-    idOfEditedUser: number;
-    flashMessage: 'success' | 'error' | null = null;
 
     editInfluencerFormGroup: UntypedFormGroup;
 
     companyList: Company[] = [];
-    CompanyResponse: { Company: any };
     dataSource: MatTableDataSource<Company>;
 
-    resInput: any;
+    tableColumns: Column[]   = [
+        { key: 'name', label: 'admin.companies.table_headers.name' },
+        { key: 'city', label: 'admin.companies.table_headers.city' },
+        { key: 'address', label: 'admin.companies.table_headers.address' },
+        { key: 'email', label: 'admin.companies.table_headers.email' },
+        { key: 'phoneNumber', label: 'admin.companies.table_headers.phone_number' },
+    ];
+
     form: FormGroup;
-    selectedProduct: Company | null = null;
-    isLoading: boolean = false;
     updatedNoteInfo: boolean = false;
-    // followersAmountInfo: boolean = false;
     confirmEditionInfo: boolean = false;
-    ascDescInfo: boolean = false;
 
-    sortDirection: string = 'asc';
-
-    myControl = new FormControl('');
     options: string[] = ['One', 'Two', 'Three'];
-    filteredOptions: Observable<string[]>;
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
-
-    categories: Company[];
-
-    selectedSortOption = 'default';
-
-    fieldOptions: string[] = ['Imię', 'Nazwisko', 'Status', 'Rodzaj Konta'];
-    statusOptions: string[] = [];
-
-    arrStatus: string[] = [];
-    statusReduceArr: string[] = [];
-    dataToken: any;
 
     length = 100;
     pageSize = 20;
     pageIndex = 0;
     pageSizeOptions = [5, 10, 20, 50];
-
-    resNumberRecord = 0;
 
     hidePageSize = false;
     showPageSizeOptions = true;
@@ -160,45 +119,16 @@ export class CompaniesComponent implements OnInit, AfterViewInit, OnDestroy {
 
     disabled = false;
 
-    pageEvent: PageEvent;
-
     sortBy: string = 'id';
     direction: string = 'asc';
     statusInflu: string = '';
     firstName: string = '';
     lastName: string = '';
 
-    searchValue: string = '';
-    searchOptions: string[];
-
-    isTextInput: boolean = true;
-    isSelectInput: boolean = false;
-
-    statusTextTableHtml = false;
-    statusTextTable: string = '';
-
-    selectedTypeAccount: string = 'NONPUBLIC';
-
-    selectedStatus: string = 'IN_VALIDATION';
-    selectedFilter: string = 'Imię';
-
-    filterByAccountType: string = '';
-    filterByStatus: string = '';
-
-    filteredStatus: string[] = [];
-    influencerStatuses: any;
-
-    typeStatus: string[] = ['Walidowany', 'Aktywny', 'Nieaktywny'];
-    typeAccountOptions: string[] = ['Publiczne', 'Niepubliczne', 'NA'];
-
-    selectedProductForm: UntypedFormGroup;
-
     selectedFile: File | null = null;
 
     imageUrl: { [id: number]: string | null } = {};
-    nameSelect = '';
     rows = [];
-    imgDisplay = false;
 
     serviceTypeOptions = [
         {id: 1, label: 'Placeholder 1'},
@@ -241,71 +171,13 @@ export class CompaniesComponent implements OnInit, AfterViewInit, OnDestroy {
     ngAfterViewInit(): void {
         if (this.dataSource) this.dataSource.paginator = this.paginator;
 
+        console.log(this.companyList)
         this.dataSource = new MatTableDataSource<Company>(this.companyList);
+        console.log(this.dataSource);
     }
 
     ngOnInit(): void {
         this.loadCompanies(this.pageIndex);
-    }
-
-    private setSearchFiltersToEmptyStrings() {
-        this.firstName = '';
-        this.lastName = '';
-        this.statusInflu = '';
-    }
-
-    private setValueOfSelectedFilter(valueOfSelectedFilter: string) {
-        switch (this.selectedFilter) {
-            case 'Imię':
-                this.firstName = valueOfSelectedFilter;
-                break;
-            case 'Nazwisko':
-                this.lastName = valueOfSelectedFilter;
-                break;
-            case 'Status':
-                this.statusInflu = valueOfSelectedFilter;
-                break;
-        }
-    }
-
-    onSearchInputChange(searchInputValue: string): void {
-        this.searchValue = searchInputValue;
-
-        this.setSearchFiltersToEmptyStrings();
-        this.setValueOfSelectedFilter(searchInputValue);
-        this.loadCompanies(0);
-    }
-
-    onSearchSelectChange(event?: any): void {
-        this.selectedFilter = event.value;
-
-        if (['Imię', 'Nazwisko'].includes(this.selectedFilter)) {
-            this.isTextInput = true;
-            this.isSelectInput = false;
-            setTimeout(() => {
-                this.textInput.nativeElement.focus();
-            }, 0);
-        }
-
-        if (this.selectedFilter === 'Status') {
-            this.isTextInput = false;
-            this.isSelectInput = true;
-            this.searchOptions = this.typeStatus;
-            setTimeout(() => {
-                this.selectInput.focus();
-            }, 0);
-        }
-
-        if (this.selectedFilter === 'Rodzaj Konta') {
-            this.isTextInput = false;
-            this.isSelectInput = true;
-            this.searchOptions = this.typeAccountOptions;
-            setTimeout(() => {
-                this.selectInput.focus();
-            }, 0);
-        }
-
-        this.onSearchInputChange('');
     }
 
     private async loadCompanies(pageIndex: number): Promise<void> {
@@ -364,18 +236,6 @@ export class CompaniesComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    onSortData(event: any): void {
-        this.ascDescInfo = true;
-        this.direction = event.direction;
-        this.sortBy = event.active;
-
-        this.loadCompanies(0);
-    }
-
-    closeDetails(): void {
-        this.selectedProduct = null;
-    }
-
     ngOnDestroy(): void {
         this._unsubscribeAll.next(null);
         this._unsubscribeAll.complete();
@@ -386,10 +246,6 @@ export class CompaniesComponent implements OnInit, AfterViewInit, OnDestroy {
             if (typeof url === 'string' && url.startsWith('blob:'))
                 URL.revokeObjectURL(url);
         });
-    }
-
-    trackByFn(index: number, item: any): any {
-        return item.id || index;
     }
 
     async putOrPatchCompany(companyId: number): Promise<void> {
@@ -508,20 +364,6 @@ export class CompaniesComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.imageUrl[companyId] = null;
             })
             .catch((error) => console.log('Błąd podczas usuwania:', error));
-    }
-
-    onTypeAccountChange(event: MatSelectChange): void {
-        this.selectedTypeAccount = event.value;
-    }
-
-    onStatusChange(event: MatSelectChange): void {
-        this.selectedStatus = event.value;
-    }
-
-    openAddInfluencerForm(): void {
-        if (!this.formLaunched) {
-            this.formLaunched = true;
-        } else this.formLaunched = false;
     }
 
     getExpandedInfluencer(): Company {
