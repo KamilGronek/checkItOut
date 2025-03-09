@@ -8,7 +8,9 @@ export class ImageService {
 
     async uploadImage(file: File, path: string): Promise<string> {
         try {
-            const imagePath = `/images/${path}/${file.name}`;
+            const uniqueFileName = `${Date.now()}_${Math.random().toString(36).substring(2, 15)}_${file.name}`;
+
+            const imagePath = `/images/${path}/${uniqueFileName}`;
             const storageRef = ref(this.storage, imagePath);
 
             const snapshot = await uploadBytes(storageRef, file);

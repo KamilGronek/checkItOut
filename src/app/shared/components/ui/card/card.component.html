@@ -15,7 +15,7 @@
             [alt]="imgAlt"
         />
         <div
-            class="py-4 px-5 w-full h-full flex flex-col shadow-lg border">
+            class="py-5 px-6 w-full h-full flex flex-col shadow-lg">
             <!-- Header -->
             <div class="font-bold">
                 <ng-content select="[card-header]"></ng-content>
@@ -27,7 +27,7 @@
             </div>
 
             <!-- Footer -->
-            <div class="mt-auto">
+            <div class="mt-auto text-gray-600">
                 <ng-content select="[card-footer]"></ng-content>
             </div>
         </div>
@@ -35,7 +35,7 @@
 
     <!-- Back Side - Conditionally Render (Hidden by Default) -->
     <ng-container fuseCardBack>
-        <div class="py-4 px-5 w-full h-full shadow-lg border">
+        <div class="py-5 px-6 w-full h-full shadow-lg">
             <ng-content select="[card-back]"></ng-content>
         </div>
     </ng-container>

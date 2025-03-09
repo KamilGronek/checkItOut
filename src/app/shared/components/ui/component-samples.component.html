@@ -5,37 +5,37 @@
         <div class="flex gap-4 flex-wrap">
             <div class="flex flex-col">
                 <span>Flat:</span>
-                <app-button variant="flat" color="primary">Flat Button</app-button>
+                <app-button tooltip="Flat button" variant="flat" color="primary">Flat Button</app-button>
             </div>
 
             <div class="flex flex-col">
                 <span>Stroked:</span>
-                <app-button variant="stroked" color="accent">Stroked Button</app-button>
+                <app-button tooltip="Stroked button" variant="stroked" color="accent">Stroked Button</app-button>
             </div>
 
             <div class="flex flex-col">
                 <span>Raised:</span>
-                <app-button variant="raised" color="warn">Raised Button</app-button>
+                <app-button tooltip="Raised button" variant="raised" color="warn">Raised Button</app-button>
             </div>
 
             <div class="flex flex-col">
                 <span>Icon:</span>
-                <app-button variant="icon" color="accent" icon="edit"></app-button>
+                <app-button tooltip="Icon button" variant="icon" color="accent" icon="edit"></app-button>
             </div>
 
             <div class="flex flex-col">
                 <span>Text:</span>
-                <app-button variant="text" color="primary">Text Button</app-button>
+                <app-button tooltip="Text button" variant="text" color="primary">Text Button</app-button>
             </div>
 
             <div class="flex flex-col">
                 <span>Text with icon:</span>
-                <app-button variant="text" color="primary" icon="home">Text and Icon Button</app-button>
+                <app-button tooltip="Text with icon button" variant="text" color="primary" icon="home">Text and Icon Button</app-button>
             </div>
 
             <div class="flex flex-col">
                 <span>Loading:</span>
-                <app-button variant="raised" color="primary" [loading]="true">Loading...</app-button>
+                <app-button tooltip="Loading button" variant="raised" color="primary" [loading]="true">Loading...</app-button>
             </div>
         </div>
     </div>
@@ -91,6 +91,17 @@
     <div class="py-8">
         <h2 class="text-xl font-semibold">Input Variants (to fix: invisible placeholders)</h2>
         <div class="flex gap-4 flex-wrap">
+            <div class="flex flex-col w-64">
+                <span>Image input</span>
+                <app-input
+                    type="image"
+                    label="Profile picture"
+                    [control]="imageControl"
+                    storagePath="sample-images"
+                    acceptedFileTypes="image/jpeg,image/png,image/gif"
+                    (imageUploaded)="onImageUpload()"
+                ></app-input>
+            </div>
             <div class="flex flex-col w-64">
                 <span>Text Input:</span>
                 <app-input

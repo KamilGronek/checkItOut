@@ -12,6 +12,6 @@ type MatInputType =
     | 'week'
     | 'time';
 
-type OtherInputType = 'checkbox';
+type OtherInputType = 'checkbox' | 'textarea' | 'image';
 
 export { MatInputType, OtherInputType };

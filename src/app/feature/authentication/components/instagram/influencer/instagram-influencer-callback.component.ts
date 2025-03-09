@@ -14,8 +14,8 @@ import {InputComponent} from "app/shared/components/ui/input/input.component";
 import {LinkComponent} from "app/shared/components/ui/link/link.component";
 
 @Component({
-    selector: 'app-callback',
-    templateUrl: './instagram-callback.component.html',
+    selector: 'app-instagram-influencer-callback',
+    templateUrl: './instagram-influencer-callback.component.html',
     standalone: true,
     animations: fuseAnimations,
     imports: [
@@ -32,7 +32,7 @@ import {LinkComponent} from "app/shared/components/ui/link/link.component";
         LinkComponent,
     ],
 })
-export class InstagramCallbackComponent implements OnInit {
+export class InstagramInfluencerCallbackComponent implements OnInit {
     user = signal(null);
     emailRequired = signal(false);
     emailForm = new FormGroup({

@@ -10,6 +10,7 @@ import {
 } from '@angular/common';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { ButtonColor, ButtonVariant } from './button.types';
+import {MatTooltip} from "@angular/material/tooltip";
 
 @Component({
     selector: 'app-button',
@@ -23,6 +24,7 @@ import { ButtonColor, ButtonVariant } from './button.types';
         NgClass,
         MatProgressSpinner,
         NgTemplateOutlet,
+        MatTooltip,
     ],
     templateUrl: './button.component.html',
 })
@@ -33,6 +35,7 @@ export class ButtonComponent {
     @Input() disabled: boolean = false;
     @Input() icon?: string;
     @Input() loading: boolean = false; // Loading state
+    @Input() tooltip: string | null = null;
 
     @Input() customClass: string = ''; // Allow custom classes
 

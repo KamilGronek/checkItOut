@@ -4,8 +4,128 @@
         {{ label }}
     </mat-checkbox>
 
+    <!-- Image Input -->
+    <div *ngSwitchCase="'image'" [ngClass]="'w-full ' + customClass">
+        <div class="mb-2 font-medium">{{ label }}</div>
+
+        <!-- Hidden file input -->
+        <input
+            type="file"
+            [id]="id"
+            [accept]="acceptedFileTypes"
+            (change)="onFileSelected($event)"
+            style="display: none"
+            #fileInput
+            aria-label="Select an image file"
+        />
+
+        <!-- Image container with preview or placeholder -->
+        <div class="relative w-fit">
+            <!-- Placeholder when no image is selected -->
+            <div
+                *ngIf="!previewUrl && (!control.value || control.value.length === 0)"
+                class="h-32 w-32 border-2 border-dashed border-gray-300 rounded-md flex items-center justify-center cursor-pointer bg-gray-50"
+                (click)="fileInput.click()"
+            >
+                <div class="text-center p-4">
+                    <mat-icon class="text-gray-400 text-3xl mb-2">photo_camera</mat-icon>
+                    <p class="text-sm text-gray-500">Click to select image</p>
+                </div>
+            </div>
+
+            <!-- Preview image if available -->
+            <div *ngIf="previewUrl || (control.value && control.value.length > 0)" class="relative">
+                <div
+                    class="h-32 w-32 border rounded-md overflow-hidden cursor-pointer"
+                    (click)="fileInput.click()"
+                >
+                    <img
+                        [src]="previewUrl || control.value"
+                        class="w-full h-full object-cover"
+                        alt="Selected image"
+                    />
+                </div>
+
+                <!-- Remove button -->
+                <button
+                    mat-mini-fab
+                    color="warn"
+                    type="button"
+                    [disabled]="isUploading || control.disabled"
+                    (click)="removeImage()"
+                    class="absolute top-0 right-0 -translate-y-1/3 translate-x-1/3 scale-75"
+                >
+                    <mat-icon class="icon-size-5">delete</mat-icon>
+                </button>
+                <!-- Upload button -->
+                <button
+                    *ngIf="selectedFile && !control.value.startsWith('http')"
+                    mat-mini-fab
+                    color="primary"
+                    type="button"
+                    [disabled]="isUploading || control.disabled"
+                    (click)="uploadImage()"
+                    class="absolute bottom-0 right-0 translate-y-1/3 translate-x-1/3 scale-75"
+                >
+                    <mat-icon class="icon-size-5">upload</mat-icon>
+                </button>
+            </div>
+
+            <!-- Loading overlay -->
+            <div *ngIf="isUploading" class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center rounded-md">
+                <mat-progress-spinner mode="indeterminate" diameter="40" color="accent"></mat-progress-spinner>
+            </div>
+        </div>
+
+        <!-- Hint Text -->
+        <div *ngIf="hint" [id]="id + '-hint'" class="text-gray-600 text-sm mt-2">
+            {{ hint }}
+        </div>
+
+        <!-- Error Handling -->
+        <div *ngIf="control?.invalid && control?.touched" class="text-red-500 text-sm mt-1">
+            {{ getErrorMessage() }}
+        </div>
+    </div>
+
+    <!--  Textarea  -->
+    <mat-form-field appearance="fill" [floatLabel]="'always'" *ngSwitchCase="'textarea'" [ngClass]="'w-full ' + customClass">
+        <mat-label>{{ label }}</mat-label>
+
+        <textarea
+            matInput
+            [id]="id"
+            [ngClass]="'w-full ' + customClass"
+            [formControl]="control"
+            [placeholder]="placeholder"
+            [rows]="rows"
+            [attr.maxlength]="maxLength"
+            (input)="handleInput($event)"
+            (keyup)="handleKeyup($event)"
+            [attr.aria-describedby]="hint ? id + '-hint' : null"
+            [attr.aria-invalid]="control?.invalid"
+        ></textarea>
+
+        <!-- Character count -->
+        <mat-hint *ngIf="maxLength" align="end">
+            {{ control.value?.length || 0 }}/{{ maxLength }}
+        </mat-hint>
+
+        <!-- Prefix Icon -->
+        <mat-icon *ngIf="prefixIcon" matPrefix class="icon-size-5" [svgIcon]="prefixIcon"></mat-icon>
+
+        <!-- Hint Text -->
+        <mat-hint *ngIf="hint && !maxLength" [id]="id + '-hint'">{{ hint }}</mat-hint>
+        <mat-hint *ngIf="hint && maxLength" [id]="id + '-hint'" align="start">{{ hint }}</mat-hint>
+
+        <!-- Error Handling -->
+        <mat-error *ngIf="control?.invalid && control?.touched">
+            {{ getErrorMessage() }}
+        </mat-error>
+    </mat-form-field>
+
     <!-- Regular Input (text, email, password, etc.) -->
-    <mat-form-field *ngSwitchDefault class="w-full">
+    <mat-form-field appearance="fill" [floatLabel]="'always'" *ngSwitchDefault [ngClass]="'w-full ' + customClass">
         <mat-label>{{ label }}</mat-label>
 
         <input

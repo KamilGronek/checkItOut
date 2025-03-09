@@ -7,6 +7,7 @@ import {LinkComponent} from "./link/link.component";
 import {SelectComponent} from "./select/select.component";
 import {MatTableDataSource} from "@angular/material/table";
 import {TableComponent} from "./table/table.component";
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 @Component({
   selector: 'app-component-samples',
@@ -17,12 +18,14 @@ import {TableComponent} from "./table/table.component";
         InputComponent,
         LinkComponent,
         SelectComponent,
-        TableComponent
+        TableComponent,
+        MatFormFieldModule,
     ],
   templateUrl: './component-samples.component.html',
 })
 export class ComponentSamplesComponent {
     // Form controls for input examples
+    imageControl = new FormControl('', [Validators.required]);
     textControl = new FormControl('', [Validators.required]);
     passwordControl = new FormControl('', [Validators.required, Validators.minLength(8)]);
     emailControl = new FormControl('', [Validators.required, Validators.email]);
@@ -32,6 +35,11 @@ export class ComponentSamplesComponent {
     // Card click event handler
     handleCardClick(): void {
         alert("Card clicked");
+    }
+
+    onImageUpload(){
+        alert(this.imageControl.value);
+        console.log(this.imageControl);
     }
 
     // Form control for select example

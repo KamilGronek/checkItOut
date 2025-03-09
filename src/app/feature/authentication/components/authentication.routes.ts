@@ -6,8 +6,9 @@ import {AuthForgotPasswordComponent} from "./forgot-password/forgot-password.com
 import {AuthResetPasswordComponent} from "./reset-password/reset-password.component";
 import {AuthSignInComponent} from "./sign-in/sign-in.component";
 import {AuthSignUpComponent} from "./sign-up/sign-up.component";
-import {InstagramCallbackComponent} from "./instagram/instagram-callback.component";
+import {InstagramInfluencerCallbackComponent} from "./instagram/influencer/instagram-influencer-callback.component";
 import {AuthSignOutComponent} from "./sign-out/sign-out.component";
+import {BusinessSignUpComponent} from "./sign-up/business/business-sign-up.component";
 
 export default [
     {
@@ -31,12 +32,16 @@ export default [
         component: AuthSignUpComponent,
     },
     {
+        path: 'sign-up/business',
+        component: BusinessSignUpComponent,
+    },
+    {
         path: 'sign-out',
         component: AuthSignOutComponent,
     },
     {
-        path: 'instagram/callback',
-        component: InstagramCallbackComponent,
+        path: 'instagram/influencer/callback',
+        component: InstagramInfluencerCallbackComponent,
     },
 
 ] as Routes;
