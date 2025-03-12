@@ -26,6 +26,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 export class ComponentSamplesComponent {
     // Form controls for input examples
     imageControl = new FormControl('', [Validators.required]);
+    textAreaControl = new FormControl('', [Validators.required]);
     textControl = new FormControl('', [Validators.required]);
     passwordControl = new FormControl('', [Validators.required, Validators.minLength(8)]);
     emailControl = new FormControl('', [Validators.required, Validators.email]);

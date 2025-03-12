@@ -46,11 +46,29 @@
         <div class="grid grid-cols-4 gap-4 ">
             <div>
                 <span>Flippable Card:</span><br>
-                <app-card [flippable]="true">
+                <app-card tooltip="Click to show details" [tooltipShowDelay]="300" [flippable]="true">
                     <div card-header>Flippable Card Header</div>
                     <div>Main content goes here.</div>
                     <div card-footer>Footer content</div>
-                    <div card-back>Back side content</div>
+                    <div card-back>
+                        <p>Back side content</p>
+                        <p>Back side content</p>
+                        <p>Back side content</p>
+                        <p>Back side content</p>
+                        <p>Back side content</p>
+                        <p>Back side content</p>
+                        <p>Back side content</p>
+                        <p>Back side content</p>
+                        <p>Back side content</p>
+                        <p>Back side content</p>
+                        <p>Back side content</p>
+                        <p>Back side content</p>
+                        <p>Back side content</p>
+                        <p>Back side content</p>
+                        <p>Back side content</p>
+                        <p>Back side content</p>
+                        <p>Back side content</p>
+                    </div>
                 </app-card>
             </div>
 
@@ -95,62 +113,75 @@
                 <span>Image input</span>
                 <app-input
                     type="image"
-                    label="Profile picture"
                     [control]="imageControl"
                     storagePath="sample-images"
                     acceptedFileTypes="image/jpeg,image/png,image/gif"
                     (imageUploaded)="onImageUpload()"
-                ></app-input>
+                >Profile picture</app-input>
+            </div>
+            <div class="flex flex-col w-64">
+                <span>Textarea input</span>
+                <app-input
+                    type="textarea"
+                    hint="This a textarea component"
+                    placeholder="Enter a description..."
+                    rows="5"
+                    maxLength="600"
+                    [control]="textAreaControl"
+
+                >Textarea input</app-input>
             </div>
             <div class="flex flex-col w-64">
                 <span>Text Input:</span>
                 <app-input
-                    label="Username"
                     type="text"
                     [control]="textControl"
                     placeholder="Enter username"
                     hint="Enter your username">
+                    Username
                 </app-input>
             </div>
 
             <div class="flex flex-col w-64">
                 <span>Password Input:</span>
                 <app-input
-                    label="Password"
                     type="password"
                     [control]="passwordControl"
                     placeholder="Enter password">
+                    Password
                 </app-input>
             </div>
 
             <div class="flex flex-col w-64">
                 <span>Email Input:</span>
                 <app-input
-                    label="Email"
                     type="email"
                     [control]="emailControl"
                     placeholder="Enter email"
                     hint="We'll never share your email">
+                    Email
                 </app-input>
             </div>
 
             <div class="flex flex-col w-64">
                 <span>Input with Icon:</span>
                 <app-input
-                    label="Search"
                     type="search"
                     [control]="searchControl"
                     placeholder="Search..."
                     prefixIcon="search">
+                    Search
                 </app-input>
             </div>
 
             <div class="flex flex-col">
                 <span>Checkbox Input:</span>
                 <app-input
+                    hint="This a checkbox component"
                     label="Subscribe to newsletter"
                     type="checkbox"
                     [control]="checkboxControl">
+                    Subscribe to newsletter
                 </app-input>
             </div>
         </div>

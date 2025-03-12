@@ -15,7 +15,7 @@ import {
     NgIf,
     NgSwitch,
     NgSwitchCase,
-    NgSwitchDefault,
+    NgSwitchDefault, NgTemplateOutlet,
 } from '@angular/common';
 import { MatCheckbox } from '@angular/material/checkbox';
 import {
@@ -24,6 +24,7 @@ import {
 } from 'app/shared/components/ui/input/input.types';
 import { ImageService } from 'app/core/services/image/image.service'; // Update with correct path
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import {MatTooltip} from "@angular/material/tooltip";
 
 @Component({
     selector: 'app-input',
@@ -41,6 +42,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
         NgSwitchCase,
         NgClass,
         MatProgressSpinnerModule,
+        MatTooltip,
+        NgTemplateOutlet,
     ],
     templateUrl: './input.component.html',
 })
@@ -87,6 +90,14 @@ export class InputComponent implements AfterContentInit {
                 // No need to create a preview, the control.value will be used directly
             }
         }
+    }
+
+    isRequired(): boolean {
+        if (this.control.validator) {
+            const validatorFn = this.control.validator({} as any);
+            return validatorFn && validatorFn['required'];
+        }
+        return false;
     }
 
     handleInput(event: Event): void {

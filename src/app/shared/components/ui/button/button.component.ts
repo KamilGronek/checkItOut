@@ -36,6 +36,9 @@ export class ButtonComponent {
     @Input() icon?: string;
     @Input() loading: boolean = false; // Loading state
     @Input() tooltip: string | null = null;
+    @Input() tooltipShowDelay: number = 1000;
+    @Input() tooltipHideDelay: number = 300;
+
 
     @Input() customClass: string = ''; // Allow custom classes
 

@@ -1,306 +1,226 @@
-<div class="flex flex-col sm:flex-row items-center md:items-start sm:justify-center md:justify-start flex-auto min-w-0">
-    <div
-        class="bg-gray-100 overflow-y-auto max-h-screen md:flex md:justify-end w-full sm:w-auto md:h-full md:w-1/2 py-8 px-4 sm:p-12 md:p-16 sm:rounded-2xl md:rounded-none sm:shadow md:shadow-none sm:bg-card">
-        <div class="w-full mx-auto sm:mx-0">
-            <!-- Logo -->
-            <div class="w-12">
-                <img src="assets/images/logo/logo.svg">
-            </div>
-
-            <!-- Title -->
-            <div class="mt-8 text-4xl font-extrabold tracking-tight leading-tight">Sign up</div>
-            <div class="flex items-baseline mt-0.5 font-medium">
-                <div>Already have an account?</div>
-                <a
-                    class="ml-1 text-primary-500 hover:underline"
-                    [routerLink]="['/auth/sign-in']">Sign in
-                </a>
-            </div>
-
-            <!-- Business signup wizard -->
-            <mat-stepper class="bg-gray-100" [linear]="true" #stepper orientation="vertical">
-                <!-- Step 1: Business Information -->
-                <mat-step [completed]="businessFormCompleted">
-                    <ng-template matStepLabel>Business Information</ng-template>
-                    <div class="py-8">
-                        <h2 class="text-2xl font-medium mb-1">Tell us about your business</h2>
-                        <p class="text-gray-600 mb-8">This information will be used to set up your business profile</p>
-
-                        <div class="flex flex-col space-y-6 mb-8" [formGroup]="businessForm">
-                            <app-input
-                                type="image"
-                                label="Business logo"
-                                [control]="businessForm.controls.logo"
-                                storagePath="companies/logos"
-                                acceptedFileTypes="image/jpeg,image/png,image/gif"
-                                (imageUploaded)="onProfilePictureUploaded()"
-                            ></app-input>
-
-                            <app-input
-                                label="Business Name"
-                                [control]="businessForm.controls.name"
-                                placeholder="Enter your business name"
-                            ></app-input>
-
-                            <app-select
-                                label="Business Category"
-                                [options]="categories"
-                                [control]="businessForm.controls.category"
-                            ></app-select>
-
-                            <app-input
-                                type="textarea"
-                                label="Business Description"
-                                [control]="businessForm.controls.description"
-                                placeholder="Briefly describe your business (max 500 characters)"
-                                [rows]="3"
-                                [maxLength]="500"
-                            ></app-input>
-
-                            <app-input
-                                label="Email Address"
-                                type="email"
-                                [control]="businessForm.controls.email"
-                                placeholder="business@example.com"
-                            ></app-input>
-
-                            <app-input
-                                label="Phone Number"
-                                [control]="businessForm.controls.phone"
-                                placeholder="+1 (123) 456-7890"
-                            ></app-input>
-
-                            <app-input
-                                label="Country"
-                                [control]="businessForm.controls.country"
-                                placeholder="Enter your country"
-                            ></app-input>
-
-                            <!-- Address group -->
-                            <div class="bg-gray-200 border border-gray-200 rounded-lg p-6 mt-4" formGroupName="address">
-                                <h3 class="text-lg font-medium mt-0 mb-6">Business Address</h3>
-
-                                <app-input
-                                    label="Street Address"
-                                    [control]="businessForm.controls.address.controls.street"
-                                    placeholder="123 Main St"
-                                ></app-input>
-
-                                <div class="grid grid-cols-2 gap-4 mt-6">
-                                    <app-input
-                                        label="City"
-                                        [control]="businessForm.controls.address.controls.city"
-                                        placeholder="City"
-                                    ></app-input>
-
-                                    <app-input
-                                        label="State/Province"
-                                        [control]="businessForm.controls.address.controls.state"
-                                        placeholder="State"
-                                    ></app-input>
-                                </div>
-
-                                <div class="mt-6">
-                                    <app-input
-                                        label="Postal/ZIP Code"
-                                        [control]="businessForm.controls.address.controls.zip"
-                                        placeholder="12345"
-                                    ></app-input>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="flex justify-end space-x-4 mt-8">
-                            <app-button
-                                variant="stroked"
-                                color="primary"
-                                [disabled]="businessForm.invalid"
-                                (click)="completeBusinessForm()"
-                            >
-                                Continue
-                            </app-button>
-                        </div>
-                    </div>
-                </mat-step>
-
-                <!-- Step 2: Representative Information -->
-                <mat-step [completed]="representativeFormCompleted">
-                    <ng-template matStepLabel>Representative Information</ng-template>
-                    <div class="py-8">
-                        <h2 class="text-2xl font-medium mb-1">Representative Details</h2>
-                        <p class="text-gray-600 mb-8">Provide information about the primary contact person</p>
-
-                        <div class="flex flex-col space-y-6 mb-8" [formGroup]="representativeForm">
-                            <div class="grid grid-cols-2 gap-4">
-                                <app-input
-                                    label="First Name"
-                                    [control]="representativeForm.controls.firstName"
-                                    placeholder="First name"
-                                ></app-input>
-
-                                <app-input
-                                    label="Last Name"
-                                    [control]="representativeForm.controls.lastName"
-                                    placeholder="Last name"
-                                ></app-input>
-                            </div>
-
-                            <app-input
-                                label="Email Address"
-                                type="email"
-                                [control]="representativeForm.controls.email"
-                                placeholder="representative@example.com"
-                            ></app-input>
-
-                            <app-input
-                                label="Phone Number"
-                                [control]="representativeForm.controls.phone"
-                                placeholder="+1 (123) 456-7890"
-                            ></app-input>
-                        </div>
-
-                        <div class="flex justify-end space-x-4 mt-8">
-                            <app-button
-                                variant="text"
-                                color="primary"
-                                (click)="stepper.previous()"
-                            >
-                                Back
-                            </app-button>
-
-                            <app-button
-                                variant="stroked"
-                                color="primary"
-                                [disabled]="representativeForm.invalid"
-                                (click)="completeRepresentativeForm()"
-                            >
-                                Continue
-                            </app-button>
-                        </div>
-                    </div>
-                </mat-step>
-
-                <!-- Step 3: Account Credentials -->
-                <mat-step>
-                    <ng-template matStepLabel>Create Account</ng-template>
-                    <div class="py-8">
-                        <h2 class="text-2xl font-medium mb-1">Set Up Account Credentials</h2>
-                        <p class="text-gray-600 mb-8">Create login credentials for your business account</p>
-
-                        <div class="flex flex-col space-y-6 mb-8" [formGroup]="credentialsForm">
-                            <app-input
-                                label="Email Address"
-                                type="email"
-                                [control]="credentialsForm.controls.email"
-                                placeholder="your@email.com"
-                            ></app-input>
-
-                            <app-input
-                                label="Password"
-                                type="password"
-                                [control]="credentialsForm.controls.password"
-                                placeholder="Create a strong password"
-                                hint="Use at least 8 characters with uppercase, lowercase, numbers and symbols"
-                            ></app-input>
-
-                            <app-input
-                                label="Confirm Password"
-                                type="password"
-                                [control]="credentialsForm.controls.confirmPassword"
-                                placeholder="Confirm your password"
-                            ></app-input>
-
-                            <div *ngIf="credentialsForm.hasError('passwordMismatch')" class="text-red-500 text-sm -mt-4">
-                                Passwords do not match
-                            </div>
-                        </div>
-
-                        <div class="flex justify-end space-x-4 mt-8">
-                            <app-button
-                                variant="text"
-                                color="primary"
-                                (click)="stepper.previous()"
-                            >
-                                Back
-                            </app-button>
-
-                            <app-button
-                                variant="stroked"
-                                color="primary"
-                                [disabled]="credentialsForm.invalid"
-                                [loading]="isSubmitting"
-                                (click)="submitForms()"
-                            >
-                                Create Account
-                            </app-button>
-                        </div>
-                    </div>
-                </mat-step>
-            </mat-stepper>
-
-            <!-- Alert -->
-<!--            <fuse-alert-->
-<!--                class="mt-8"-->
-<!--                *ngIf="showAlert"-->
-<!--                [appearance]="'outline'"-->
-<!--                [showIcon]="false"-->
-<!--                [type]="alert.type"-->
-<!--                [@shake]="alert.type === 'error'">-->
-<!--                {{ alert.message }}-->
-<!--            </fuse-alert>-->
-        </div>
-    </div>
-    <div
-        class="relative hidden md:flex flex-auto items-center justify-center w-1/2 h-full p-16 lg:px-28 overflow-hidden bg-gray-800 dark:border-l">
-        <!-- Background - @formatter:off -->
-        <!-- Rings -->
-        <svg class="absolute inset-0 pointer-events-none"
-             viewBox="0 0 960 540" width="100%" height="100%" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
-            <g class="text-gray-700 opacity-25" fill="none" stroke="currentColor" stroke-width="100">
-                <circle r="234" cx="196" cy="23"></circle>
-                <circle r="234" cx="790" cy="491"></circle>
-            </g>
-        </svg>
-        <!-- Dots -->
-        <svg class="absolute -top-16 -right-16 text-gray-700"
-             viewBox="0 0 220 192" width="220" height="192" fill="none">
-            <defs>
-                <pattern id="837c3e70-6c3a-44e6-8854-cc48c737b659" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
-                    <rect x="0" y="0" width="4" height="4" fill="currentColor"></rect>
-                </pattern>
-            </defs>
-            <rect width="220" height="192" fill="url(#837c3e70-6c3a-44e6-8854-cc48c737b659)"></rect>
-        </svg>
-        <!-- @formatter:on -->
-        <!-- Content -->
-        <div class="z-10 relative w-full max-w-2xl">
-            <div class="text-7xl font-bold leading-none text-gray-100">
-                <div>Welcome to</div>
-                <div>our community</div>
-            </div>
-            <div class="mt-6 text-lg tracking-tight leading-6 text-gray-400">
-                Fuse helps developers to build organized and well coded dashboards full of beautiful and rich modules.
-                Join us and start building your application today.
-            </div>
-            <div class="flex items-center mt-8">
-                <div class="flex flex-0 items-center -space-x-1.5">
-                    <img
-                        class="flex-0 w-10 h-10 rounded-full ring-4 ring-offset-1 ring-gray-800 ring-offset-gray-800 object-cover"
-                        src="assets/images/avatars/female-18.jpg">
-                    <img
-                        class="flex-0 w-10 h-10 rounded-full ring-4 ring-offset-1 ring-gray-800 ring-offset-gray-800 object-cover"
-                        src="assets/images/avatars/female-11.jpg">
-                    <img
-                        class="flex-0 w-10 h-10 rounded-full ring-4 ring-offset-1 ring-gray-800 ring-offset-gray-800 object-cover"
-                        src="assets/images/avatars/male-09.jpg">
-                    <img
-                        class="flex-0 w-10 h-10 rounded-full ring-4 ring-offset-1 ring-gray-800 ring-offset-gray-800 object-cover"
-                        src="assets/images/avatars/male-16.jpg">
-                </div>
-                <div class="ml-4 font-medium tracking-tight text-gray-400">More than 17k people joined us, it's your
-                    turn
-                </div>
-            </div>
-        </div>
-    </div>
+<!-- Logo -->
+<div class="w-12">
+    <img src="assets/images/logo/logo.svg">
 </div>
+
+<!-- Title -->
+<div class="mt-8 text-4xl font-extrabold tracking-tight leading-tight">Sign up</div>
+<div class="flex items-baseline mt-0.5 font-medium">
+    <div>Already have an account?</div>
+    <a
+        class="ml-1 text-primary-500 hover:underline"
+        [routerLink]="['/auth/sign-in']">Sign in
+    </a>
+</div>
+
+<!-- Business signup wizard -->
+<mat-stepper class="bg-gray-100" [linear]="true" #stepper orientation="vertical">
+    <!-- Step 1: Business Information -->
+    <mat-step [completed]="businessFormCompleted">
+        <ng-template matStepLabel>Business Information</ng-template>
+        <div class="py-8">
+            <h2 class="text-2xl font-medium mb-1">Tell us about your business</h2>
+            <p class="text-gray-600 mb-8">This information will be used to set up your business profile</p>
+
+            <div class="flex flex-col space-y-6 mb-8" [formGroup]="businessForm">
+                <app-input
+                    type="image"
+                    [control]="businessForm.controls.logo"
+                    storagePath="companies/logos"
+                    acceptedFileTypes="image/jpeg,image/png,image/gif"
+                    (imageUploaded)="onProfilePictureUploaded()"
+                >Business logo</app-input>
+
+                <app-input
+                    [control]="businessForm.controls.name"
+                    placeholder="Enter your business name"
+                >Business Name</app-input>
+
+                <app-select
+                    [options]="categories"
+                    [control]="businessForm.controls.category"
+                >Business Category</app-select>
+
+                <app-input
+                    type="textarea"
+                    [control]="businessForm.controls.description"
+                    placeholder="Briefly describe your business (max 500 characters)"
+                    [rows]="3"
+                    [maxLength]="500"
+                >Business Description</app-input>
+
+                <app-input
+                    type="email"
+                    [control]="businessForm.controls.email"
+                    placeholder="business@example.com"
+                >Email Address</app-input>
+
+                <app-input
+                    [control]="businessForm.controls.phone"
+                    placeholder="+1 (123) 456-7890"
+                >Phone Number</app-input>
+
+                <app-input
+                    [control]="businessForm.controls.country"
+                    placeholder="Enter your country"
+                >Country</app-input>
+
+                <!-- Address group -->
+                <div class="bg-gray-200 border border-gray-200 rounded-lg p-6 mt-4" formGroupName="address">
+                    <h3 class="text-lg font-medium mt-0 mb-6">Business Address</h3>
+
+                    <app-input
+                        [control]="businessForm.controls.address.controls.street"
+                        placeholder="123 Main St"
+                    >Street Address</app-input>
+
+                    <div class="grid grid-cols-2 gap-4 mt-6">
+                        <app-input
+                            [control]="businessForm.controls.address.controls.city"
+                            placeholder="City"
+                        >City</app-input>
+
+                        <app-input
+                            [control]="businessForm.controls.address.controls.state"
+                            placeholder="State"
+                        >State/Province</app-input>
+                    </div>
+
+                    <div class="mt-6">
+                        <app-input
+                            [control]="businessForm.controls.address.controls.zip"
+                            placeholder="12345"
+                        >Postal/ZIP Code</app-input>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-end space-x-4 mt-8">
+                <app-button
+                    variant="stroked"
+                    color="primary"
+                    [disabled]="businessForm.invalid"
+                    (click)="completeBusinessForm()"
+                >
+                    Continue
+                </app-button>
+            </div>
+        </div>
+    </mat-step>
+
+    <!-- Step 2: Representative Information -->
+    <mat-step [completed]="representativeFormCompleted">
+        <ng-template matStepLabel>Representative Information</ng-template>
+        <div class="py-8">
+            <h2 class="text-2xl font-medium mb-1">Representative Details</h2>
+            <p class="text-gray-600 mb-8">Provide information about the primary contact person</p>
+
+            <div class="flex flex-col space-y-6 mb-8" [formGroup]="representativeForm">
+                <div class="grid grid-cols-2 gap-4">
+                    <app-input
+                        [control]="representativeForm.controls.firstName"
+                        placeholder="First name"
+                    >First Name</app-input>
+
+                    <app-input
+                        [control]="representativeForm.controls.lastName"
+                        placeholder="Last name"
+                    >Last Name</app-input>
+                </div>
+
+                <app-input
+                    type="email"
+                    [control]="representativeForm.controls.email"
+                    placeholder="representative@example.com"
+                >Email Address</app-input>
+
+                <app-input
+                    [control]="representativeForm.controls.phone"
+                    placeholder="+1 (123) 456-7890"
+                >Phone Number</app-input>
+            </div>
+
+            <div class="flex justify-end space-x-4 mt-8">
+                <app-button
+                    variant="text"
+                    color="primary"
+                    (click)="stepper.previous()"
+                >
+                    Back
+                </app-button>
+
+                <app-button
+                    variant="stroked"
+                    color="primary"
+                    [disabled]="representativeForm.invalid"
+                    (click)="completeRepresentativeForm()"
+                >
+                    Continue
+                </app-button>
+            </div>
+        </div>
+    </mat-step>
+
+    <!-- Step 3: Account Credentials -->
+    <mat-step>
+        <ng-template matStepLabel>Create Account</ng-template>
+        <div class="py-8">
+            <h2 class="text-2xl font-medium mb-1">Set Up Account Credentials</h2>
+            <p class="text-gray-600 mb-8">Create login credentials for your business account</p>
+
+            <div class="flex flex-col gap-3 mb-8" [formGroup]="credentialsForm">
+                <app-input
+                    type="email"
+                    [control]="credentialsForm.controls.email"
+                    placeholder="your@email.com"
+                >Email Address</app-input>
+
+                <app-input
+                    type="password"
+                    [control]="credentialsForm.controls.password"
+                    placeholder="Create a strong password"
+                    hint="Use at least 8 characters with uppercase, lowercase, numbers and symbols"
+                >Password</app-input>
+
+                <div>
+                    <app-input
+                        type="password"
+                        [control]="credentialsForm.controls.confirmPassword"
+                        placeholder="Confirm your password"
+                    >Confirm Password</app-input>
+
+                    <div *ngIf="credentialsForm.hasError('passwordMismatch')" class="text-red-500 text-sm -mt-4">
+                        Passwords do not match
+                    </div>
+                </div>
+
+                <app-input type="checkbox" [control]="credentialsForm.controls.termsOfService">
+                    <span class="flex gap-1">
+                        Agree to the <app-link routerLink="/tos">Terms and Conditions</app-link>
+                    </span>
+                </app-input>
+
+            </div>
+
+            <div class="flex justify-end space-x-4 mt-8">
+                <app-button
+                    variant="text"
+                    color="primary"
+                    (click)="stepper.previous()"
+                >
+                    Back
+                </app-button>
+
+                <app-button
+                    variant="stroked"
+                    color="primary"
+                    [disabled]="credentialsForm.invalid"
+                    [loading]="isSubmitting"
+                    (click)="submitForms()"
+                >
+                    Create Account
+                </app-button>
+            </div>
+        </div>
+    </mat-step>
+</mat-stepper>

@@ -5,7 +5,11 @@
     (keydown.enter)="handleCardClick($event)"
     (keydown.space)="handleCardClick($event)"
     tabindex="0"
-    [attr.aria-label]="'Flippable card' + (imgAlt ? ' with ' + imgAlt : '')">
+    [attr.aria-label]="'Flippable card' + (imgAlt ? ' with ' + imgAlt : '')"
+    [matTooltip]="tooltip"
+    [matTooltipDisabled]="tooltip == null"
+    [matTooltipShowDelay]="tooltipShowDelay"
+    [matTooltipHideDelay]="tooltipHideDelay">
     <!-- Front Side -->
     <ng-container fuseCardFront>
         <img
@@ -15,7 +19,7 @@
             [alt]="imgAlt"
         />
         <div
-            class="py-5 px-6 w-full h-full flex flex-col shadow-lg">
+            class="py-5 px-6 w-full h-full flex flex-col">
             <!-- Header -->
             <div class="font-bold">
                 <ng-content select="[card-header]"></ng-content>
@@ -35,7 +39,7 @@
 
     <!-- Back Side - Conditionally Render (Hidden by Default) -->
     <ng-container fuseCardBack>
-        <div class="py-5 px-6 w-full h-full shadow-lg">
+        <div class="py-5 px-6 w-full h-full">
             <ng-content select="[card-back]"></ng-content>
         </div>
     </ng-container>

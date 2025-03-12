@@ -11,6 +11,7 @@ import {ClassyLayoutComponent} from './layouts/classy/classy.component';
 import {InfluencerService} from 'app/feature/influencers/services/influencer.service';
 import {AdvertisementPopUpService} from 'app/core/services/advertisement-pop-up/advertisement-pop-up.service';
 import {AdvertisementPopUpComponent} from "../advertisement-pop-up/advertisement-pop-up.component";
+import {LayoutWithBannerComponent} from "./layouts/layout-with-banner/layout-with-banner.component";
 
 @Component({
     selector: 'layout',
@@ -23,6 +24,7 @@ import {AdvertisementPopUpComponent} from "../advertisement-pop-up/advertisement
         EmptyLayoutComponent,
         AdvertisementPopUpComponent,
         ClassyLayoutComponent,
+        LayoutWithBannerComponent,
     ],
 })
 export class LayoutComponent implements OnInit, OnDestroy {

@@ -1,25 +1,24 @@
 import {Component, inject, ViewChild} from '@angular/core';
-import {FuseAlertComponent, FuseAlertType} from "../../../../../../@fuse/components/alert";
 import {NgIf} from "@angular/common";
 import {RouterLink} from "@angular/router";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {MatStep, MatStepLabel, MatStepper, MatStepperNext, MatStepperPrevious} from "@angular/material/stepper";
-import {InputComponent} from "../../../../../shared/components/ui/input/input.component";
+import {MatStep, MatStepLabel, MatStepper} from "@angular/material/stepper";
+import {InputComponent} from "app/shared/components/ui/input/input.component";
 import {
     AccountCredentialsForm, businessCategories,
     businessCategoryDefault,
     BusinessFormGroup,
     BusinessRepresentativeForm
 } from "./business-sign-up.types";
-import {SelectComponent} from "../../../../../shared/components/ui/select/select.component";
-import {ButtonComponent} from "../../../../../shared/components/ui/button/button.component";
-import {SnackbarService} from "../../../../../core/services/custom-snackbar/custom-snackbar.service";
+import {SelectComponent} from "app/shared/components/ui/select/select.component";
+import {ButtonComponent} from "app/shared/components/ui/button/button.component";
+import {SnackbarService} from "app/core/services/custom-snackbar/custom-snackbar.service";
+import {LinkComponent} from "app/shared/components/ui/link/link.component";
 
 @Component({
   selector: 'app-business',
   standalone: true,
     imports: [
-        FuseAlertComponent,
         NgIf,
         RouterLink,
         MatStep,
@@ -28,7 +27,8 @@ import {SnackbarService} from "../../../../../core/services/custom-snackbar/cust
         MatStepLabel,
         MatStepper,
         SelectComponent,
-        ButtonComponent
+        ButtonComponent,
+        LinkComponent
     ],
   templateUrl: './business-sign-up.component.html'
 })
@@ -82,7 +82,8 @@ export class BusinessSignUpComponent {
             Validators.minLength(8),
             Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/)
         ]),
-        confirmPassword: this._formBuilder.control('', [Validators.required])
+        confirmPassword: this._formBuilder.control('', [Validators.required]),
+        termsOfService: this._formBuilder.control(false, [Validators.requiredTrue])
     }, { validators: this.passwordMatchValidator });
 
     // Custom validator to ensure password and confirmPassword match

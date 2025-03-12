@@ -28,6 +28,7 @@ type AccountCredentialsForm = {
     email: FormControl<string | null>;
     password: FormControl<string | null>;
     confirmPassword: FormControl<string | null>;
+    termsOfService: FormControl<boolean>;
 }
 
 const businessCategories: Option[] = [

@@ -349,7 +349,6 @@ export class AuthService {
         name: string;
         email: string;
         password: string;
-        company: string;
     }): Promise<any> {
         return createUserWithEmailAndPassword(
             this.auth,

@@ -15,6 +15,21 @@ export const appRoutes: Route[] = [
 
     { path: '', pathMatch: 'full', redirectTo: 'home' },
 
+    // Routes available for everyone from everywhere
+    {
+        path: '',
+        component: LayoutComponent,
+        data: {
+            layout: 'empty',
+        },
+        children: [
+            {
+                path: 'ui-component-samples',
+                component: ComponentSamplesComponent,
+            },
+        ],
+    },
+
     // Redirect signed-in user to the '/example'
     //
     // After the user signs in, the sign-in page will redirect the user to the 'signed-in-redirect'
@@ -28,7 +43,7 @@ export const appRoutes: Route[] = [
         canActivateChild: [NoAuthGuard],
         component: LayoutComponent,
         data: {
-            layout: 'empty',
+            layout: 'with-banner',
         },
         children: [
             {
@@ -37,10 +52,6 @@ export const appRoutes: Route[] = [
                     import(
                         'app/feature/authentication/components/authentication.routes'
                         ),
-            },
-            {
-                path: 'ui-component-samples',
-                component: ComponentSamplesComponent,
             }
         ],
     },

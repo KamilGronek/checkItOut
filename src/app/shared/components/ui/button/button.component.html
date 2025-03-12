@@ -1,22 +1,22 @@
 <ng-container [ngSwitch]="variant">
-    <button *ngSwitchCase="'flat'" mat-flat-button [matTooltip]="tooltip" [matTooltipDisabled]="tooltip == null" [matTooltipShowDelay]="1000"  [matTooltipHideDelay]="300" [color]="color" [type]="type" [disabled]="disabled || loading" (click)="handleClick($event)" [ngClass]="'w-full ' + customClass">
+    <button *ngSwitchCase="'flat'" mat-flat-button [matTooltip]="tooltip" [matTooltipDisabled]="tooltip == null" [matTooltipShowDelay]="tooltipShowDelay"  [matTooltipHideDelay]="tooltipHideDelay" [color]="color" [type]="type" [disabled]="disabled || loading" (click)="handleClick($event)" [ngClass]="'w-full ' + customClass">
         <ng-container *ngTemplateOutlet="buttonContent"></ng-container>
     </button>
 
-    <button *ngSwitchCase="'stroked'" mat-stroked-button [matTooltip]="tooltip" [matTooltipDisabled]="tooltip == null" [matTooltipShowDelay]="1000"  [matTooltipHideDelay]="300" [color]="color" [type]="type" [disabled]="disabled || loading" (click)="handleClick($event)" [ngClass]="'w-full ' + customClass">
+    <button *ngSwitchCase="'stroked'" mat-stroked-button [matTooltip]="tooltip" [matTooltipDisabled]="tooltip == null" [matTooltipShowDelay]="tooltipShowDelay"  [matTooltipHideDelay]="tooltipHideDelay" [color]="color" [type]="type" [disabled]="disabled || loading" (click)="handleClick($event)" [ngClass]="'w-full ' + customClass">
         <ng-container *ngTemplateOutlet="buttonContent"></ng-container>
     </button>
 
-    <button *ngSwitchCase="'raised'" mat-raised-button [matTooltip]="tooltip" [matTooltipDisabled]="tooltip == null" [matTooltipShowDelay]="1000"  [matTooltipHideDelay]="300" [color]="color" [type]="type" [disabled]="disabled || loading" (click)="handleClick($event)" [ngClass]="'w-full ' + customClass">
+    <button *ngSwitchCase="'raised'" mat-raised-button [matTooltip]="tooltip" [matTooltipDisabled]="tooltip == null" [matTooltipShowDelay]="tooltipShowDelay"  [matTooltipHideDelay]="tooltipHideDelay" [color]="color" [type]="type" [disabled]="disabled || loading" (click)="handleClick($event)" [ngClass]="'w-full ' + customClass">
         <ng-container *ngTemplateOutlet="buttonContent"></ng-container>
     </button>
 
-    <button *ngSwitchCase="'icon'" mat-icon-button [matTooltip]="tooltip" [matTooltipDisabled]="tooltip == null" [matTooltipShowDelay]="1000"  [matTooltipHideDelay]="300" [color]="color" [type]="type" [disabled]="disabled || loading" (click)="handleClick($event)" [ngClass]="'w-10 ' + customClass">
+    <button *ngSwitchCase="'icon'" mat-icon-button [matTooltip]="tooltip" [matTooltipDisabled]="tooltip == null" [matTooltipShowDelay]="tooltipShowDelay"  [matTooltipHideDelay]="tooltipHideDelay" [color]="color" [type]="type" [disabled]="disabled || loading" (click)="handleClick($event)" [ngClass]="'w-10 ' + customClass">
         <mat-progress-spinner *ngIf="loading" diameter="20" mode="indeterminate"></mat-progress-spinner>
         <mat-icon *ngIf="!loading && icon" class="icon-size-5" [svgIcon]="icon"></mat-icon>
     </button>
 
-    <button *ngSwitchCase="'text'" mat-button [matTooltip]="tooltip" [matTooltipDisabled]="tooltip == null" [matTooltipShowDelay]="1000"  [matTooltipHideDelay]="300" [color]="color" [type]="type" [disabled]="disabled || loading" (click)="handleClick($event)" [ngClass]="'w-full ' + customClass">
+    <button *ngSwitchCase="'text'" mat-button [matTooltip]="tooltip" [matTooltipDisabled]="tooltip == null" [matTooltipShowDelay]="tooltipShowDelay"  [matTooltipHideDelay]="tooltipHideDelay" [color]="color" [type]="type" [disabled]="disabled || loading" (click)="handleClick($event)" [ngClass]="'w-full ' + customClass">
         <ng-container *ngTemplateOutlet="buttonContent"></ng-container>
     </button>
 </ng-container>

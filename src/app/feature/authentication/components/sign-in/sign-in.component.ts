@@ -6,7 +6,6 @@ import {
     NgForm,
     ReactiveFormsModule,
     UntypedFormBuilder,
-    UntypedFormGroup,
     Validators,
     FormGroup,
 } from '@angular/forms';
@@ -23,10 +22,9 @@ import {AuthService} from 'app/core/services/authentication/auth.service';
 import {InfluencerService} from 'app/feature/influencers/services/influencer.service';
 import {Influencer} from 'app/feature/influencers/services/influencer.types';
 import {environment} from 'environments/environment';
-import {ButtonComponent} from "../../../../shared/components/ui/button/button.component";
-import {InputComponent} from "../../../../shared/components/ui/input/input.component";
-import {LinkComponent} from "../../../../shared/components/ui/link/link.component";
-
+import {ButtonComponent} from "app/shared/components/ui/button/button.component";
+import {InputComponent} from "app/shared/components/ui/input/input.component";
+import {LinkComponent} from "app/shared/components/ui/link/link.component";
 interface SignInForm {
     email: FormControl<string | null>;
     password: FormControl<string | null>;
@@ -36,7 +34,6 @@ interface SignInForm {
 @Component({
     selector: 'auth-sign-in',
     templateUrl: './sign-in.component.html',
-    styleUrl: './sign-in.styles.css',
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations,
     standalone: true,
@@ -91,8 +88,8 @@ export class AuthSignInComponent implements OnInit {
     ngOnInit(): void {
         // Create the form with typed controls
         this.signInForm = new FormGroup<SignInForm>({
-            email: new FormControl("tom.cruise@sigma.com", [Validators.required, Validators.email]),
-            password: new FormControl("*******", [Validators.required]),
+            email: new FormControl("", [Validators.required, Validators.email]),
+            password: new FormControl("", [Validators.required]),
             rememberMe: new FormControl(false),
         });
 

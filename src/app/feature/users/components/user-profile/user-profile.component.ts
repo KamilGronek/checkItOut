@@ -58,6 +58,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {Subject, Subscription} from 'rxjs';
 
 import {filter} from 'rxjs/operators';
+import {getAuth, onAuthStateChanged} from "@angular/fire/auth";
 
 @Component({
     selector: 'user-profile',
@@ -90,7 +91,7 @@ import {filter} from 'rxjs/operators';
     ],
     styleUrl: 'user-profile.styles.css',
 })
-export class UserProfileComponent implements OnInit, AfterViewInit, OnDestroy {
+export class UserProfileComponent implements OnInit, OnDestroy {
     @Input() config: any;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -186,9 +187,6 @@ export class UserProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private subscription!: Subscription;
-
-    ngAfterViewInit(): void {
-    }
 
     @HostListener('window:resize', ['$event'])
     onResize(event: any): void {
