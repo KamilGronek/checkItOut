@@ -74,13 +74,15 @@
                         placeholder="123 Main St"
                     >Street Address</app-input>
 
-                    <div class="grid grid-cols-2 gap-4 mt-6">
+                    <div class="flex flex-wrap gap-4 mt-6">
                         <app-input
+                            class="grow"
                             [control]="businessForm.controls.address.controls.city"
                             placeholder="City"
                         >City</app-input>
 
                         <app-input
+                            class="grow"
                             [control]="businessForm.controls.address.controls.state"
                             placeholder="State"
                         >State/Province</app-input>
