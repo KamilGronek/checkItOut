@@ -1,4 +1,4 @@
-import {CommonModule} from '@angular/common';
+import { CommonModule } from '@angular/common';
 import {
     AfterViewInit,
     ChangeDetectionStrategy,
@@ -73,7 +73,8 @@ import {CardComponent} from "../../../../shared/components/ui/card/card.componen
     styleUrl: 'collaboration-list.styles.css',
 })
 export class CollaborationsListComponent
-    implements OnInit, AfterViewInit, OnDestroy {
+    implements OnInit, AfterViewInit, OnDestroy
+{
     @ViewChild(MatPaginator) paginator!: MatPaginator;
     @ViewChild('textItem') textInput: ElementRef;
 
@@ -142,8 +143,7 @@ export class CollaborationsListComponent
         private router: Router,
         private _collaborationService: CollaborationService,
         private _cdRef: ChangeDetectorRef
-    ) {
-    }
+    ) {}
 
     ngAfterViewInit(): void {
         if (this.dataSource) this.dataSource.paginator = this.paginator;
@@ -264,6 +264,15 @@ export class CollaborationsListComponent
         }
 
         this.onSearchInputChange('');
+    }
+
+    addCollaboration(): void {
+        this.router.navigate(['/collaborations/create']);
+    }
+
+    goToDetails(id: number): void {
+        this.router.navigate(['/collaborations', id]);
+        console.log(`Navigating to /collaborations/${id}`);
     }
 
     private setValueOfSelectedFilter(valueOfSelectedFilter: string) {

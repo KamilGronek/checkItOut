@@ -1,1304 +1,623 @@
 <div *ngIf="collaboration" class="flex flex-auto flex-col">
-    <div class="ng-star-inserted">
-        <div class="flex min-w-0 flex-auto flex-col">
-            <div class="bg-card flex flex-col shadow">
-                <div>
-                    <img
-                        src="../../../../assets/detale_kampanii_v4_files/cover.jpg"
-                        alt="Cover image"
-                        class="h-40 object-cover lg:h-80"
-                    />
+  <div class="ng-star-inserted">
+    <div class="flex min-w-0 flex-auto flex-col">
+      <div class="bg-card flex flex-col shadow">
+          <div>
+            <img [src]="'assets/detale_kampanii_v4_files/cover.jpg'" alt="Cover image"
+                class="h-40 object-cover lg:h-80"/>
+          </div>
+
+        <div class=" bg-card mx-auto flex w-full max-w-5xl flex-0 flex-col items-center px-8  lg:flex-row">
+          
+          <div  class="mt-4 flex flex-col items-center lg:ml-8 lg:mt-0 lg:items-start">   
+            <form  [formGroup]="editCollaborationFormGroup">
+                <div class="text-lg font-bold leading-none">
+                  <mat-form-field class="small w-40 mt-5" appearance="outline" [ngClass]="{ hidden: !isEditing }">
+                    <input matInput type="text"
+                      [value]="collaboration.name"
+                      [formControlName]="'name'">
+                  </mat-form-field>
                 </div>
-                <div
-                    class="bg-card mx-auto flex w-full max-w-5xl flex-0 flex-col items-center px-8 lg:flex-row"
+
+                <div class="text-lg font-bold leading-none"
+                    [ngClass]="{ hidden: isEditing }">
+                    {{ collaboration.name }}
+                </div>
+
+                <div class="text-secondary">
+                  <mat-form-field class=" gt-xs:pr-3 flex-auto w-40 mr-3"
+                    [ngClass]="{ hidden: !isEditing }">
+                    <mat-select 
+                            [(value)]="selectedCity" 
+                            [formControlName]="'city'" 
+                            (selectionChange)="onCityChange($event)">
+                        <mat-option *ngFor="let city of cityOptions" [value]="city">
+                            {{city}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="text-secondary lg:ml-5"
+                [ngClass]="{ hidden: isEditing }">
+                    {{ collaboration.city }}
+              </div>
+          </form>
+          
+          </div>
+          <div  class="mt-4 flex flex-col items-center lg:ml-8 lg:mt-0 lg:items-start">
+            <form  [formGroup]="editCollaborationFormGroup">
+              <div [ngClass]="{ hidden: isEditing }">
+                <div  class="text-lg font-bold leading-none lg:ml-5">
+                  {{collaboration.serviceType?.name}}
+                </div>
+                <div class="text-secondary lg:ml-5">
+                  {{collaboration.serviceType?.category}}
+                </div>
+              </div>
+              <div class="mb-10" [ngClass]="{ hidden: !isEditing }">
+                <div  class="text-lg font-bold leading-none lg:ml-5">
+                  {{collaboration.serviceType?.name}}
+                </div>
+                <div class="text-secondary lg:ml-5">
+                  {{collaboration.serviceType?.category}}
+                </div>
+              </div>
+            </form>
+          </div>
+        
+          <div class="mb-4 mt-8 flex items-center space-x-6 lg:m-0 lg:mr-8 lg:ml-10">
+            <div class="my-3 hidden items-center sm:flex border-y-0">
+              <div class="rounded-l-xl border border-r-0 border-transparent p-2 leading-none cursor-pointer">
+                <form  [formGroup]="editCollaborationFormGroup">
+                <div class="text-secondary text-sm font-medium">  {{
+                    "user.collaborations.details.start_date"
+                        | transloco
+                }}</div>
+                <div 
+                class="relative mt-1.5 flex cursor-pointer items-center rounded-full px-4 leading-9 mb-10"
+                [ngClass]="{
+                    'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-300':
+                        !card?.startDate,
+                    'bg-green-200 text-green-800 dark:bg-green-500 dark:text-green-100':
+                        card?.startDate && !isOverdue(card?.startDate),
+                    'bg-red-200 text-red-800 dark:bg-red-500 dark:text-red-100':
+                        card?.startDate && isOverdue(card?.startDate),
+                        hidden: !isEditing 
+                }"
+                (click)="startDatePicker.open()"
+              >
+                <mat-icon
+                    class="text-current icon-size-5"
+                    [svgIcon]="'heroicons_solid:calendar'"
+                ></mat-icon>
+               
+                  @if (card?.startDate) {
+                  <span class="ml-2 text-md font-medium w-30">
+                    {{ card?.startDate| date: 'longDate' }}
+                  </span>
+                    }
+                    @if (!card?.startDate) {
+                        {{
+                            "user.collaborations.details.date_not_set"
+                                | transloco
+                        }}
+                    }
+                <mat-form-field
+                    class="fuse-mat-dense pointer-events-none invisible absolute inset-0 -mt-2.5 opacity-0"
+                    [subscriptSizing]="'dynamic'"
                 >
-                    <div
-                        class="mt-4 flex flex-col items-center lg:ml-8 lg:mt-0 lg:items-start"
-                    >
-                        <form [formGroup]="editCollaborationFormGroup">
-                            <div class="text-lg font-bold leading-none lg:ml-5">
-                                <mat-form-field
-                                    class="small w-30 mt-5"
-                                    appearance="outline"
-                                    [ngClass]="{ hidden: !isEditing }"
-                                >
-                                    <input
-                                        matInput
-                                        type="text"
-                                        [value]="collaboration.name"
-                                        [formControlName]="'name'"
-                                    />
-                                </mat-form-field>
-                            </div>
-
-                            <div
-                                class="text-lg font-bold leading-none lg:ml-5"
-                                [ngClass]="{ hidden: isEditing }"
-                            >
-                                {{ collaboration.name }}
-                            </div>
-
-                            <div class="text-secondary lg:ml-5">
-                                <mat-form-field
-                                    class="gt-xs:pr-3 flex-auto w-30 mr-3"
-                                    [ngClass]="{ hidden: !isEditing }"
-                                >
-                                    <mat-select
-                                        [(value)]="selectedCity"
-                                        [formControlName]="'city'"
-                                        (selectionChange)="onCityChange($event)"
-                                    >
-                                        <mat-option
-                                            *ngFor="let city of cityOptions"
-                                            [value]="city"
-                                        >
-                                            {{ city }}
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                            </div>
-                            <div
-                                class="text-secondary lg:ml-5"
-                                [ngClass]="{ hidden: isEditing }"
-                            >
-                                {{ collaboration.city }}
-                            </div>
-                        </form>
-                    </div>
-                    <div
-                        class="mt-4 flex flex-col items-center lg:ml-8 lg:mt-0 lg:items-start"
-                    >
-                        <form [formGroup]="editCollaborationFormGroup">
-                            <div [ngClass]="{ hidden: isEditing }">
-                                <div
-                                    class="text-lg font-bold leading-none lg:ml-5"
-                                >
-                                    {{ collaboration.serviceType?.name }}
-                                </div>
-                                <div class="text-secondary lg:ml-5">
-                                    {{ collaboration.serviceType?.category }}
-                                </div>
-                            </div>
-                            <div
-                                class="mb-10"
-                                [ngClass]="{ hidden: !isEditing }"
-                            >
-                                <div
-                                    class="text-lg font-bold leading-none lg:ml-5"
-                                >
-                                    {{ collaboration.serviceType?.name }}
-                                </div>
-                                <div class="text-secondary lg:ml-5">
-                                    {{ collaboration.serviceType?.category }}
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-
-                    <div
-                        class="mb-4 mt-8 flex items-center space-x-6 lg:m-0 lg:mr-8 lg:ml-10"
-                    >
-                        <div
-                            class="my-3 hidden items-center sm:flex border-y-0"
-                        >
-                            <div
-                                class="rounded-l-xl border border-r-0 border-transparent p-2 leading-none cursor-pointer"
-                            >
-                                <form [formGroup]="editCollaborationFormGroup">
-                                    <div
-                                        class="text-secondary text-sm font-medium"
-                                    >
-                                        {{
-                                            "user.collaborations.details.start_date"
-                                                | transloco
-                                        }}
-                                    </div>
-                                    <div
-                                        class="relative mt-1.5 flex cursor-pointer items-center rounded-full px-4 leading-9 mb-10"
-                                        [ngClass]="{
-                                            'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-300':
-                                                !card?.startDate,
-                                            'bg-green-200 text-green-800 dark:bg-green-500 dark:text-green-100':
-                                                card?.startDate &&
-                                                !isOverdue(card?.startDate),
-                                            'bg-red-200 text-red-800 dark:bg-red-500 dark:text-red-100':
-                                                card?.startDate &&
-                                                isOverdue(card?.startDate),
-                                            hidden: !isEditing
-                                        }"
-                                        (click)="startDatePicker.open()"
-                                    >
-                                        <mat-icon
-                                            class="text-current icon-size-5"
-                                            [svgIcon]="
-                                                'heroicons_solid:calendar'
-                                            "
-                                        ></mat-icon>
-
-                                        @if (card?.startDate) {
-                                            <span
-                                                class="ml-2 text-md font-medium w-30"
-                                            >
-                                            {{
-                                                    card?.startDate
-                                                        | date : "longDate"
-                                                }}
-                                        </span>
-                                        }
-                                        @if (!card?.startDate) {
-                                            {{
-                                                "user.collaborations.details.date_not_set"
-                                                    | transloco
-                                            }}
-                                        }
-                                        <mat-form-field
-                                            class="fuse-mat-dense pointer-events-none invisible absolute inset-0 -mt-2.5 opacity-0"
-                                            [subscriptSizing]="'dynamic'"
-                                        >
-                                            <input
-                                                matInput
-                                                [formControlName]="'startDate'"
-                                                [matDatepicker]="
-                                                    startDatePicker
-                                                "
-                                            />
-                                            <mat-datepicker #startDatePicker>
-                                                <mat-datepicker-actions>
-                                                    <button
-                                                        mat-button
-                                                        (click)="
-                                                            clearStartDate()
-                                                        "
-                                                        matDatepickerCancel
-                                                    >
-                                                        {{
-                                                            "user.collaborations.details.clear_button"
-                                                                | transloco
-                                                        }}
-                                                    </button>
-                                                    <button
-                                                        mat-flat-button
-                                                        [color]="'primary'"
-                                                        matDatepickerApply
-                                                        (click)="
-                                                            startDateSelected()
-                                                        "
-                                                    >
-                                                        {{
-                                                            "user.collaborations.details.pick_button"
-                                                                | transloco
-                                                        }}
-                                                    </button>
-                                                </mat-datepicker-actions>
-                                            </mat-datepicker>
-                                        </mat-form-field>
-                                    </div>
-                                    <div
-                                        class="mt-1 font-mono text-base"
-                                        [ngClass]="{ hidden: isEditing }"
-                                    >
-                                        {{
-                                            collaboration?.startDate
-                                                | date : "dd-MM-yyyy"
-                                        }}
-                                    </div>
-                                </form>
-                            </div>
-                            <div [ngClass]="{ hidden: isEditing }">
-                                <div
-                                    class="mx-2 hidden h-8 border-l-2 lg:flex"
-                                ></div>
-                            </div>
-                            <div [ngClass]="{ hidden: !isEditing }">
-                                <div
-                                    class="mx-2 hidden h-8 border-l-2 lg:flex mb-5"
-                                ></div>
-                            </div>
-                            <div
-                                class="rounded-r-xl border p-2 border-transparent leading-none"
-                            >
-                                <form [formGroup]="editCollaborationFormGroup">
-                                    <div
-                                        class="text-secondary text-sm font-medium"
-                                    >
-                                        {{
-                                            "user.collaborations.details.end_date"
-                                                | transloco
-                                        }}
-                                    </div>
-                                    <div
-                                        class="relative mt-1.5 flex cursor-pointer items-center rounded-full px-4 leading-9 mb-10"
-                                        [ngClass]="{
-                                            'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-300':
-                                                !card?.endDate,
-                                            'bg-green-200 text-green-800 dark:bg-green-500 dark:text-green-100':
-                                                card?.endDate &&
-                                                !isOverdue(card?.endDate),
-                                            'bg-red-200 text-red-800 dark:bg-red-500 dark:text-red-100':
-                                                card?.endDate &&
-                                                isOverdue(card?.endDate),
-                                            hidden: !isEditing
-                                        }"
-                                        (click)="endDatePicker.open()"
-                                    >
-                                        <mat-icon
-                                            class="text-current icon-size-5"
-                                            [svgIcon]="
-                                                'heroicons_solid:calendar'
-                                            "
-                                        ></mat-icon>
-
-                                        @if (card?.endDate) {
-                                            <span
-                                                class="ml-2 text-md font-medium w-30"
-                                            >
-                                            {{
-                                                    card.endDate | date : "longDate"
-                                                }}
-                                        </span>
-                                        }
-                                        @if (!card?.endDate) {
-                                            {{
-                                                "user.collaborations.details.date_not_set"
-                                                    | transloco
-                                            }}
-                                        }
-
-                                        <mat-form-field
-                                            class="fuse-mat-dense pointer-events-none invisible absolute inset-0 -mt-2.5 opacity-0"
-                                            [subscriptSizing]="'dynamic'"
-                                        >
-                                            <input
-                                                matInput
-                                                [formControlName]="'endDate'"
-                                                [matDatepicker]="endDatePicker"
-                                            />
-                                            <mat-datepicker #endDatePicker>
-                                                <mat-datepicker-actions>
-                                                    <button
-                                                        mat-button
-                                                        (click)="clearEndDate()"
-                                                        matDatepickerCancel
-                                                    >
-                                                        {{
-                                                            "user.collaborations.details.clear_button"
-                                                                | transloco
-                                                        }}
-                                                    </button>
-                                                    <button
-                                                        mat-flat-button
-                                                        [color]="'primary'"
-                                                        matDatepickerApply
-                                                        (click)="
-                                                            endDateSelected()
-                                                        "
-                                                    >
-                                                        {{
-                                                            "user.collaborations.details.pick_button"
-                                                                | transloco
-                                                        }}
-                                                    </button>
-                                                </mat-datepicker-actions>
-                                            </mat-datepicker>
-                                        </mat-form-field>
-                                    </div>
-                                </form>
-                                <div
-                                    class="mt-1 font-mono text-base"
-                                    [ngClass]="{ hidden: isEditing }"
-                                >
-                                    {{
-                                        collaboration?.endDate
-                                            | date : "dd-MM-yyyy"
-                                    }}
-                                </div>
-                            </div>
-                        </div>
-                        <div
-                            *ngIf="isEditing; else editButton"
-                            class="flex flex-row mb-10"
-                        >
+                    <input
+                        matInput
+                        [formControlName]="'startDate'"
+                        [matDatepicker]="startDatePicker"
+                    />
+                    <mat-datepicker #startDatePicker>
+                        <mat-datepicker-actions>
                             <button
                                 mat-button
-                                color="warn"
-                                (click)="
-                                    openConfirmationDeleteDialog(
-                                        collaboration.id
-                                    )
-                                "
+                                (click)="clearStartDate()"
+                                matDatepickerCancel
                             >
-                                {{
-                                    "user.collaborations.details.delete_button"
-                                        | transloco
-                                }}
+                            {{
+                                "user.collaborations.details.clear_button"
+                                    | transloco
+                            }}
                             </button>
                             <button
                                 mat-flat-button
-                                type="button"
                                 [color]="'primary'"
-                                (click)="editCollaboration(collaboration.id)"
+                                matDatepickerApply
+                                (click)="startDateSelected()"
                             >
-                                {{
-                                    "user.collaborations.details.save_button"
-                                        | transloco
-                                }}
+                            {{
+                                "user.collaborations.details.pick_button"
+                                    | transloco
+                            }}
                             </button>
-                        </div>
-
-                        <ng-template #editButton>
-                            <button
-                                mat-stroked-button
-                                (click)="editCollaboration(collaboration.id)"
-                            >
-                                <mat-icon
-                                    class="icon-size-5"
-                                    [svgIcon]="'heroicons_solid:pencil-square'"
-                                >
-                                </mat-icon>
-                                <span class="ml-2">{{
-                                        "user.collaborations.details.edit_button"
-                                            | transloco
-                                    }}</span>
-                            </button>
-                        </ng-template>
-                    </div>
+                        </mat-datepicker-actions>
+                    </mat-datepicker>
+                </mat-form-field>
                 </div>
+                <div class="mt-1 font-mono text-base"
+                  [ngClass]="{ hidden: isEditing }">
+                    {{collaboration?.startDate | date: 'dd-MM-yyyy' }}
+                </div>
+              </form>
+              </div>
+              <div [ngClass]="{ hidden: isEditing }">
+                <div class="mx-2 hidden h-8 border-l-2 lg:flex"></div>
+              </div>
+              <div [ngClass]="{ hidden: !isEditing }">
+                <div class="mx-2 hidden h-8 border-l-2 lg:flex mb-5"></div>
+              </div>
+              <div class="rounded-r-xl border p-2 border-transparent leading-none">
+              <form  [formGroup]="editCollaborationFormGroup">
 
+                <div class="text-secondary text-sm font-medium">
+                    {{
+                        "user.collaborations.details.end_date"
+                            | transloco
+                    }}
+                </div>
                 <div
-                    class="mx-auto flex w-full max-w-5xl flex-auto justify-center p-6 sm:p-8"
+                class="relative mt-1.5 flex cursor-pointer items-center rounded-full px-4 leading-9 mb-10"
+                [ngClass]="{
+                    'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-300':
+                        !card?.endDate,
+                    'bg-green-200 text-green-800 dark:bg-green-500 dark:text-green-100':
+                        card?.endDate && !isOverdue(card?.endDate),
+                    'bg-red-200 text-red-800 dark:bg-red-500 dark:text-red-100':
+                        card?.endDate && isOverdue(card?.endDate),
+                         hidden: !isEditing 
+                }"
+                (click)="endDatePicker.open()"
                 >
-                    <div class="mr-8 hidden flex-col items-start lg:flex">
-                        <fuse-card
-                            [formGroup]="editCollaborationFormGroup"
-                            class="flex w-full max-w-80 flex-col p-8 ng-tns-c2638821912-677 ng-star-inserted"
-                        ><!---->
-                            <!-- <form  [formGroup]="editCollaborationFormGroup"> -->
+                <mat-icon
+                    class="text-current icon-size-5"
+                    [svgIcon]="'heroicons_solid:calendar'"
+                ></mat-icon>
+               
+                  @if (card?.endDate) {
+                  <span class="ml-2 text-md font-medium w-30">
+                    {{ card.endDate| date: 'longDate' }}
+                  </span>
+                    }
+                    @if (!card?.endDate) {
+                    Not set
+                    }
 
-                            <div
-                                class="text-2xl w-80 font-semibold leading-tight ng-tns-c2638821912-677 ng-star-inserted"
+                <mat-form-field
+                    class="fuse-mat-dense pointer-events-none invisible absolute inset-0 -mt-2.5 opacity-0"
+                    [subscriptSizing]="'dynamic'"
+                >
+                    <input
+                        matInput
+                        [formControlName]="'endDate'"
+                        [matDatepicker]="endDatePicker"
+                    />
+                    <mat-datepicker #endDatePicker>
+                        <mat-datepicker-actions>
+                            <button
+                                mat-button
+                                (click)="clearEndDate()"
+                                matDatepickerCancel
                             >
-                                {{
-                                    "user.collaborations.details.requirements"
-                                        | transloco
-                                }}
-                            </div>
-                            <div
-                                class="mt-8 flex flex-col items-start sm:flex-row"
-                                [ngClass]="{ hidden: !isEditing }"
+                            {{
+                                "user.collaborations.details.clear_button"
+                                    | transloco
+                            }}
+                            </button>
+                            <button
+                                mat-flat-button
+                                [color]="'primary'"
+                                matDatepickerApply
+                                (click)="endDateSelected()"
                             >
-                                <mat-form-field
-                                    class="w-full justify-between"
-                                    [subscriptSizing]="'dynamic'"
-                                >
-                                    <textarea
-                                        class="overflow-hidden"
-                                        matInput
-                                        [formControlName]="'requirements'"
-                                        [placeholder]="
-                                            'user.collaborations.details.requirements_placeholder'
-                                                | transloco
-                                        "
-                                        [rows]="3"
-                                        cdkTextareaAutosize
-                                    ></textarea>
-                                </mat-form-field>
-                            </div>
-
-                            <div
-                                class="mt-4 w-80"
-                                [ngClass]="{ hidden: isEditing }"
-                            >
-                                {{ collaboration.requirements }}
-                            </div>
-
-                            <hr
-                                class="my-6 w-full border-t ng-tns-c2638821912-677 ng-star-inserted"
-                            />
-                            <div
-                                *ngIf="collaboration"
-                                class="flex flex-col ng-tns-c2638821912-677 ng-star-inserted"
-                            >
-                                <div class="flex items-center">
-                                    <mat-icon
-                                        role="img"
-                                        class="mat-icon notranslate mr-3 icon-size-5 mat-icon-no-color"
-                                        aria-hidden="true"
-                                        data-mat-icon-type="svg"
-                                        data-mat-icon-name="map-pin"
-                                        data-mat-icon-namespace="heroicons_solid"
-                                    >
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            viewBox="0 0 24 24"
-                                            fill="currentColor"
-                                            aria-hidden="true"
-                                            fit=""
-                                            height="100%"
-                                            width="100%"
-                                            preserveAspectRatio="xMidYMid meet"
-                                            focusable="false"
-                                        >
-                                            <path
-                                                fill-rule="evenodd"
-                                                d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z"
-                                                clip-rule="evenodd"
-                                            ></path>
-                                        </svg>
-                                    </mat-icon>
-
-                                    <mat-form-field
-                                        class="small w-30 mt-5"
-                                        appearance="outline"
-                                        [ngClass]="{ hidden: !isEditing }"
-                                    >
-                                        <input
-                                            matInput
-                                            type="text"
-                                            [value]="collaboration.requirements"
-                                            [formControlName]="'requirements'"
-                                        />
-                                    </mat-form-field>
-                                    <span
-                                        class="leading-none"
-                                        [ngClass]="{ hidden: isEditing }"
-                                    >
-                                        {{ collaboration.requirements }} #1
-                                    </span>
-                                </div>
-                                <div class="mt-4 flex items-center">
-                                    <mat-icon
-                                        role="img"
-                                        class="mat-icon notranslate mr-3 icon-size-5 mat-icon-no-color"
-                                        aria-hidden="true"
-                                        data-mat-icon-type="svg"
-                                        data-mat-icon-name="briefcase"
-                                        data-mat-icon-namespace="heroicons_solid"
-                                    >
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            viewBox="0 0 24 24"
-                                            fill="currentColor"
-                                            aria-hidden="true"
-                                            fit=""
-                                            height="100%"
-                                            width="100%"
-                                            preserveAspectRatio="xMidYMid meet"
-                                            focusable="false"
-                                        >
-                                            <path
-                                                fill-rule="evenodd"
-                                                d="M7.5 5.25a3 3 0 013-3h3a3 3 0 013 3v.205c.933.085 1.857.197 2.774.334 1.454.218 2.476 1.483 2.476 2.917v3.033c0 1.211-.734 2.352-1.936 2.752A24.726 24.726 0 0112 15.75c-2.73 0-5.357-.442-7.814-1.259-1.202-.4-1.936-1.541-1.936-2.752V8.706c0-1.434 1.022-2.7 2.476-2.917A48.814 48.814 0 017.5 5.455V5.25zm7.5 0v.09a49.488 49.488 0 00-6 0v-.09a1.5 1.5 0 011.5-1.5h3a1.5 1.5 0 011.5 1.5zm-3 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z"
-                                                clip-rule="evenodd"
-                                            ></path>
-                                            <path
-                                                d="M3 18.4v-2.796a4.3 4.3 0 00.713.31A26.226 26.226 0 0012 17.25c2.892 0 5.68-.468 8.287-1.335.252-.084.49-.189.713-.311V18.4c0 1.452-1.047 2.728-2.523 2.923-2.12.282-4.282.427-6.477.427a49.19 49.19 0 01-6.477-.427C4.047 21.128 3 19.852 3 18.4z"
-                                            ></path>
-                                        </svg>
-                                    </mat-icon>
-                                    <mat-form-field
-                                        class="small w-30 mt-5"
-                                        appearance="outline"
-                                        [ngClass]="{ hidden: !isEditing }"
-                                    >
-                                        <input
-                                            matInput
-                                            type="text"
-                                            [value]="collaboration.requirements"
-                                            [formControlName]="'requirements'"
-                                        />
-                                    </mat-form-field>
-                                    <span
-                                        class="leading-none"
-                                        [ngClass]="{ hidden: isEditing }"
-                                    >
-                                        {{ collaboration.requirements }} #2
-                                    </span>
-                                </div>
-                                <div class="mt-4 flex items-center">
-                                    <mat-icon
-                                        role="img"
-                                        class="mat-icon notranslate mr-3 icon-size-5 mat-icon-no-color"
-                                        aria-hidden="true"
-                                        data-mat-icon-type="svg"
-                                        data-mat-icon-name="cake"
-                                        data-mat-icon-namespace="heroicons_solid"
-                                    >
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            viewBox="0 0 24 24"
-                                            fill="currentColor"
-                                            aria-hidden="true"
-                                            fit=""
-                                            height="100%"
-                                            width="100%"
-                                            preserveAspectRatio="xMidYMid meet"
-                                            focusable="false"
-                                        >
-                                            <path
-                                                d="M15 1.784l-.796.796a1.125 1.125 0 101.591 0L15 1.784zM12 1.784l-.796.796a1.125 1.125 0 101.591 0L12 1.784zM9 1.784l-.796.796a1.125 1.125 0 101.591 0L9 1.784zM9.75 7.547c.498-.02.998-.035 1.5-.042V6.75a.75.75 0 011.5 0v.755c.502.007 1.002.021 1.5.042V6.75a.75.75 0 011.5 0v.88l.307.022c1.55.117 2.693 1.427 2.693 2.946v1.018a62.182 62.182 0 00-13.5 0v-1.018c0-1.519 1.143-2.829 2.693-2.946l.307-.022v-.88a.75.75 0 011.5 0v.797zM12 12.75c-2.472 0-4.9.184-7.274.54-1.454.217-2.476 1.482-2.476 2.916v.384a4.104 4.104 0 012.585.364 2.605 2.605 0 002.33 0 4.104 4.104 0 013.67 0 2.605 2.605 0 002.33 0 4.104 4.104 0 013.67 0 2.605 2.605 0 002.33 0 4.104 4.104 0 012.585-.364v-.384c0-1.434-1.022-2.7-2.476-2.917A49.138 49.138 0 0012 12.75zM21.75 18.131a2.604 2.604 0 00-1.915.165 4.104 4.104 0 01-3.67 0 2.604 2.604 0 00-2.33 0 4.104 4.104 0 01-3.67 0 2.604 2.604 0 00-2.33 0 4.104 4.104 0 01-3.67 0 2.604 2.604 0 00-1.915-.165v2.494c0 1.036.84 1.875 1.875 1.875h15.75c1.035 0 1.875-.84 1.875-1.875v-2.494z"
-                                            ></path>
-                                        </svg>
-                                    </mat-icon>
-
-                                    <mat-form-field
-                                        class="small w-30 mt-5"
-                                        appearance="outline"
-                                        [ngClass]="{ hidden: !isEditing }"
-                                    >
-                                        <input
-                                            matInput
-                                            type="text"
-                                            [value]="collaboration.requirements"
-                                            [formControlName]="'requirements'"
-                                        />
-                                    </mat-form-field>
-
-                                    <span
-                                        class="leading-none"
-                                        [ngClass]="{ hidden: isEditing }"
-                                    >
-                                        {{ collaboration.requirements }} #3
-                                    </span>
-                                </div>
-                            </div>
-                            <!-- </form> -->
-                        </fuse-card>
-                        <fuse-card
-                            class="flex w-full max-w-80 flex-col p-8 mt-8 ng-tns-c2638821912-677 ng-star-inserted"
-                        >
-                            <form [formGroup]="editCollaborationFormGroup">
-                                <div
-                                    class="text-2xl font-semibold leading-tight ng-tns-c2638821912-677 ng-star-inserted"
-                                >
-                                    {{
-                                        "user.collaborations.details.compensation"
-                                            | transloco
-                                    }}
-                                </div>
-                                <div
-                                    class="mt-8 flex flex-col items-start sm:flex-row"
-                                    [ngClass]="{ hidden: !isEditing }"
-                                >
-                                    <mat-form-field
-                                        class="w-full justify-between"
-                                        [subscriptSizing]="'dynamic'"
-                                    >
-                                        <textarea
-                                            class="overflow-hidden"
-                                            matInput
-                                            [formControlName]="'compensation'"
-                                            [placeholder]="
-                                                'user.collaborations.details.compensation_placeholder'
-                                                    | transloco
-                                            "
-                                            [rows]="3"
-                                            cdkTextareaAutosize
-                                        ></textarea>
-                                    </mat-form-field>
-                                </div>
-                                <div
-                                    class="mt-4 ng-tns-c2638821912-677 ng-star-inserted"
-                                    [ngClass]="{ hidden: isEditing }"
-                                >
-                                    {{ collaboration.compensation }}
-                                </div>
-                                <hr
-                                    class="my-6 w-full border-t ng-tns-c2638821912-677 ng-star-inserted"
-                                />
-                                <div
-                                    class="flex flex-col ng-tns-c2638821912-677 ng-star-inserted"
-                                >
-                                    <div class="flex items-center">
-                                        <mat-icon
-                                            role="img"
-                                            class="mat-icon notranslate mr-3 icon-size-5 mat-icon-no-color"
-                                            aria-hidden="true"
-                                            data-mat-icon-type="svg"
-                                            data-mat-icon-name="map-pin"
-                                            data-mat-icon-namespace="heroicons_solid"
-                                        >
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 24 24"
-                                                fill="currentColor"
-                                                aria-hidden="true"
-                                                fit=""
-                                                height="100%"
-                                                width="100%"
-                                                preserveAspectRatio="xMidYMid meet"
-                                                focusable="false"
-                                            >
-                                                <path
-                                                    fill-rule="evenodd"
-                                                    d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z"
-                                                    clip-rule="evenodd"
-                                                ></path>
-                                            </svg>
-                                        </mat-icon
-                                        >
-                                        <span class="leading-none">
-                                            <!-- {{collaboration.compensation}} #1 -->
-
-                                            <input
-                                                style="padding: 0; width: 80px"
-                                                class="bg-transparent custom-textarea"
-                                                [spellcheck]="'false'"
-                                                [value]="
-                                                    collaboration.compensation
-                                                "
-                                                matInput
-                                            />
-                                        </span>
-                                    </div>
-                                    <div class="mt-4 flex items-center">
-                                        <mat-icon
-                                            role="img"
-                                            class="mat-icon notranslate mr-3 icon-size-5 mat-icon-no-color"
-                                            aria-hidden="true"
-                                            data-mat-icon-type="svg"
-                                            data-mat-icon-name="briefcase"
-                                            data-mat-icon-namespace="heroicons_solid"
-                                        >
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 24 24"
-                                                fill="currentColor"
-                                                aria-hidden="true"
-                                                fit=""
-                                                height="100%"
-                                                width="100%"
-                                                preserveAspectRatio="xMidYMid meet"
-                                                focusable="false"
-                                            >
-                                                <path
-                                                    fill-rule="evenodd"
-                                                    d="M7.5 5.25a3 3 0 013-3h3a3 3 0 013 3v.205c.933.085 1.857.197 2.774.334 1.454.218 2.476 1.483 2.476 2.917v3.033c0 1.211-.734 2.352-1.936 2.752A24.726 24.726 0 0112 15.75c-2.73 0-5.357-.442-7.814-1.259-1.202-.4-1.936-1.541-1.936-2.752V8.706c0-1.434 1.022-2.7 2.476-2.917A48.814 48.814 0 017.5 5.455V5.25zm7.5 0v.09a49.488 49.488 0 00-6 0v-.09a1.5 1.5 0 011.5-1.5h3a1.5 1.5 0 011.5 1.5zm-3 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z"
-                                                    clip-rule="evenodd"
-                                                ></path>
-                                                <path
-                                                    d="M3 18.4v-2.796a4.3 4.3 0 00.713.31A26.226 26.226 0 0012 17.25c2.892 0 5.68-.468 8.287-1.335.252-.084.49-.189.713-.311V18.4c0 1.452-1.047 2.728-2.523 2.923-2.12.282-4.282.427-6.477.427a49.19 49.19 0 01-6.477-.427C4.047 21.128 3 19.852 3 18.4z"
-                                                ></path>
-                                            </svg>
-                                        </mat-icon
-                                        >
-                                        <span class="leading-none">
-                                            <!-- {{collaboration.compensation}} #2 -->
-                                            <input
-                                                style="padding: 0; width: 80px"
-                                                class="bg-transparent custom-textarea"
-                                                [spellcheck]="'false'"
-                                                [value]="
-                                                    collaboration.compensation
-                                                "
-                                                matInput
-                                            />
-                                        </span>
-                                    </div>
-                                    <div class="mt-4 flex items-center">
-                                        <mat-icon
-                                            role="img"
-                                            class="mat-icon notranslate mr-3 icon-size-5 mat-icon-no-color"
-                                            aria-hidden="true"
-                                            data-mat-icon-type="svg"
-                                            data-mat-icon-name="cake"
-                                            data-mat-icon-namespace="heroicons_solid"
-                                        >
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 24 24"
-                                                fill="currentColor"
-                                                aria-hidden="true"
-                                                fit=""
-                                                height="100%"
-                                                width="100%"
-                                                preserveAspectRatio="xMidYMid meet"
-                                                focusable="false"
-                                            >
-                                                <path
-                                                    d="M15 1.784l-.796.796a1.125 1.125 0 101.591 0L15 1.784zM12 1.784l-.796.796a1.125 1.125 0 101.591 0L12 1.784zM9 1.784l-.796.796a1.125 1.125 0 101.591 0L9 1.784zM9.75 7.547c.498-.02.998-.035 1.5-.042V6.75a.75.75 0 011.5 0v.755c.502.007 1.002.021 1.5.042V6.75a.75.75 0 011.5 0v.88l.307.022c1.55.117 2.693 1.427 2.693 2.946v1.018a62.182 62.182 0 00-13.5 0v-1.018c0-1.519 1.143-2.829 2.693-2.946l.307-.022v-.88a.75.75 0 011.5 0v.797zM12 12.75c-2.472 0-4.9.184-7.274.54-1.454.217-2.476 1.482-2.476 2.916v.384a4.104 4.104 0 012.585.364 2.605 2.605 0 002.33 0 4.104 4.104 0 013.67 0 2.605 2.605 0 002.33 0 4.104 4.104 0 013.67 0 2.605 2.605 0 002.33 0 4.104 4.104 0 012.585-.364v-.384c0-1.434-1.022-2.7-2.476-2.917A49.138 49.138 0 0012 12.75zM21.75 18.131a2.604 2.604 0 00-1.915.165 4.104 4.104 0 01-3.67 0 2.604 2.604 0 00-2.33 0 4.104 4.104 0 01-3.67 0 2.604 2.604 0 00-2.33 0 4.104 4.104 0 01-3.67 0 2.604 2.604 0 00-1.915-.165v2.494c0 1.036.84 1.875 1.875 1.875h15.75c1.035 0 1.875-.84 1.875-1.875v-2.494z"
-                                                ></path>
-                                            </svg>
-                                        </mat-icon
-                                        >
-                                        <span class="leading-none">
-                                            <!-- {{collaboration.compensation}} #3 -->
-                                            <input
-                                                style="padding: 0; width: 80px"
-                                                class="bg-transparent custom-textarea"
-                                                [spellcheck]="'false'"
-                                                [value]="
-                                                    collaboration.compensation
-                                                "
-                                                matInput
-                                            />
-                                        </span>
-                                    </div>
-                                </div>
-                            </form>
-                        </fuse-card>
-                    </div>
-                    <div class="flex flex-col items-start">
-                        <fuse-card
-                            class="flex w-full max-w-140 flex-col p-8 ng-tns-c2638821912-677 ng-star-inserted"
-                        >
-                            <form [formGroup]="editCollaborationFormGroup">
-                                <div
-                                    class="text-2xl font-semibold leading-tight ng-tns-c2638821912-677 ng-star-inserted"
-                                >
-                                    {{
-                                        "user.collaborations.details.campaign_details"
-                                            | transloco
-                                    }}
-                                </div>
-                                <div
-                                    class="mt-8 ng-tns-c2638821912-677 ng-star-inserted w-100 h-20"
-                                    [ngClass]="{ hidden: !isEditing }"
-                                >
-                                    <mat-form-field
-                                        class="w-full justify-between mb-4"
-                                        [subscriptSizing]="'dynamic'"
-                                    >
-                                        <textarea
-                                            matInput
-                                            [formControlName]="'details'"
-                                            [placeholder]="
-                                                'user.collaborations.details.campaign_details_placeholder'
-                                                    | transloco
-                                            "
-                                            [rows]="3"
-                                            cdkTextareaAutosize
-                                        ></textarea>
-                                    </mat-form-field>
-                                </div>
-                                <div
-                                    [ngClass]="{ hidden: isEditing }"
-                                    class="w-100 mt-4"
-                                >
-                                    {{ collaboration.details }}
-                                </div>
-                            </form>
-                        </fuse-card>
-                        <fuse-card
-                            class="flex w-full max-w-140 flex-row p-8 mt-8 ng-tns-c2638821912-677 ng-star-inserted"
-                        >
-                            <!-- <form  [formGroup]="editCollaborationFormGroup"> -->
-                            <div
-                                class="ng-tns-c2638821912-677 ng-star-inserted"
-                            >
-                                <div
-                                    class="text-2xl font-semibold leading-tight ng-tns-c2638821912-677 ng-star-inserted"
-                                >
-                                    {{
-                                        "user.collaborations.details.company_details"
-                                            | transloco
-                                    }}
-                                </div>
-                                <table class="mt-4 mr-2">
-                                    <tr>
-                                        <td>
-                                            {{ collaboration.company?.name }}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            {{
-                                                collaboration.company?.firstName
-                                            }}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            {{
-                                                collaboration.company?.lastName
-                                            }}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            {{ collaboration.company?.email }}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            {{
-                                                collaboration.company
-                                                    ?.phoneNumber
-                                            }}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            {{ collaboration.company?.city }}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            {{ collaboration.company?.address }}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            {{ collaboration.company?.note }}
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                            <!-- <div class="mx-2 hidden h-70 border-l-2 lg:flex"></div> -->
-                            <!-- </form> -->
-                        </fuse-card>
-                        <fuse-card
-                            class="flex w-full max-w-140 flex-row p-8 mt-8 ng-tns-c2638821912-677 ng-star-inserted"
-                        >
-                            <mat-card>
-                                <mat-card-content>
-                                    <h2 class="example-h2">
-                                        {{
-                                            "user.collaborations.details.slider_configuration"
-                                                | transloco
-                                        }}
-                                    </h2>
-
-                                    <section class="example-section">
-                                        <mat-form-field
-                                            class="example-margin example-width"
-                                        >
-                                            <mat-label>{{
-                                                    "user.collaborations.details.value"
-                                                        | transloco
-                                                }}
-                                            </mat-label>
-                                            <input
-                                                matInput
-                                                type="number"
-                                                [(ngModel)]="value"
-                                            />
-                                        </mat-form-field>
-                                        <mat-form-field
-                                            class="example-margin example-width"
-                                        >
-                                            <mat-label>{{
-                                                    "user.collaborations.details.min_value"
-                                                        | transloco
-                                                }}
-                                            </mat-label>
-                                            <input
-                                                matInput
-                                                type="number"
-                                                [(ngModel)]="min"
-                                            />
-                                        </mat-form-field>
-                                        <mat-form-field
-                                            class="example-margin example-width"
-                                        >
-                                            <mat-label>{{
-                                                    "user.collaborations.details.max_value"
-                                                        | transloco
-                                                }}
-                                            </mat-label>
-                                            <input
-                                                matInput
-                                                type="number"
-                                                [(ngModel)]="max"
-                                            />
-                                        </mat-form-field>
-                                        <mat-form-field
-                                            class="example-margin example-width"
-                                        >
-                                            <mat-label>{{
-                                                    "user.collaborations.details.step_size"
-                                                        | transloco
-                                                }}
-                                            </mat-label>
-                                            <input
-                                                matInput
-                                                type="number"
-                                                [(ngModel)]="step"
-                                            />
-                                        </mat-form-field>
-                                    </section>
-
-                                    <section class="example-section">
-                                        <mat-checkbox [(ngModel)]="showTicks">{{
-                                                "user.collaborations.details.show_ticks"
-                                                    | transloco
-                                            }}
-                                        </mat-checkbox>
-                                    </section>
-
-                                    <section class="example-section">
-                                        <mat-checkbox
-                                            [(ngModel)]="thumbLabel"
-                                        >{{
-                                                "user.collaborations.details.show_thumb_label"
-                                                    | transloco
-                                            }}
-                                        </mat-checkbox
-                                        >
-                                    </section>
-
-                                    <section class="example-section">
-                                        <mat-checkbox [(ngModel)]="disabled">{{
-                                                "user.collaborations.details.disabled"
-                                                    | transloco
-                                            }}
-                                        </mat-checkbox>
-                                    </section>
-                                </mat-card-content>
-                            </mat-card>
-
-                            <mat-card class="example-result-card">
-                                <mat-card-content>
-                                    <h2>
-                                        {{
-                                            "user.collaborations.details.result"
-                                                | transloco
-                                        }}
-                                    </h2>
-
-                                    <div class="example-label-container">
-                                        <label
-                                            id="example-name-label"
-                                            class="example-name-label"
-                                        >{{
-                                                "user.collaborations.details.value"
-                                                    | transloco
-                                            }}</label
-                                        >
-                                        <label class="example-value-label">{{
-                                                slider.value
-                                            }}</label>
-                                    </div>
-                                    <mat-slider
-                                        class="example-margin"
-                                        [disabled]="disabled"
-                                        [max]="max"
-                                        [min]="min"
-                                        [step]="step"
-                                        [discrete]="thumbLabel"
-                                        [showTickMarks]="showTicks"
-                                    >
-                                        <input
-                                            matSliderThumb
-                                            [(ngModel)]="value"
-                                            #slider
-                                        />
-                                    </mat-slider>
-                                </mat-card-content>
-                            </mat-card>
-                        </fuse-card>
-                        <fuse-card
-                            class="lg:hidden mt-8 flex w-full max-w-140 flex-col p-8 ng-tns-c2638821912-677 ng-star-inserted"
-                        >
-                            <form [formGroup]="editCollaborationFormGroup">
-                                <div
-                                    class="text-2xl font-semibold leading-tight ng-tns-c2638821912-677 ng-star-inserted"
-                                >
-                                    {{
-                                        "user.collaborations.details.requirements"
-                                            | transloco
-                                    }}
-                                </div>
-                                <div
-                                    class="mt-8 flex flex-col items-start sm:flex-row"
-                                    [ngClass]="{ hidden: !isEditing }"
-                                >
-                                    <mat-form-field
-                                        class="w-full justify-between"
-                                        [subscriptSizing]="'dynamic'"
-                                    >
-                                        <textarea
-                                            class="overflow-hidden"
-                                            matInput
-                                            [formControlName]="'requirements'"
-                                            [placeholder]="
-                                                'user.collaborations.details.requirements_placeholder'
-                                                    | transloco
-                                            "
-                                            [rows]="3"
-                                            cdkTextareaAutosize
-                                        ></textarea>
-                                    </mat-form-field>
-                                </div>
-
-                                <div
-                                    class="mt-4 w-80"
-                                    [ngClass]="{ hidden: isEditing }"
-                                >
-                                    {{ collaboration.requirements }}
-                                </div>
-                                <hr
-                                    class="my-6 w-full border-t ng-tns-c2638821912-677 ng-star-inserted"
-                                />
-                                <div
-                                    *ngIf="collaboration"
-                                    class="flex flex-col ng-tns-c2638821912-677 ng-star-inserted"
-                                >
-                                    <div class="flex items-center">
-                                        <mat-icon
-                                            role="img"
-                                            class="mat-icon notranslate mr-3 icon-size-5 mat-icon-no-color"
-                                            aria-hidden="true"
-                                            data-mat-icon-type="svg"
-                                            data-mat-icon-name="map-pin"
-                                            data-mat-icon-namespace="heroicons_solid"
-                                        >
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 24 24"
-                                                fill="currentColor"
-                                                aria-hidden="true"
-                                                fit=""
-                                                height="100%"
-                                                width="100%"
-                                                preserveAspectRatio="xMidYMid meet"
-                                                focusable="false"
-                                            >
-                                                <path
-                                                    fill-rule="evenodd"
-                                                    d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z"
-                                                    clip-rule="evenodd"
-                                                ></path>
-                                            </svg>
-                                        </mat-icon>
-                                        <span class="leading-none"
-                                        >{{
-                                                collaboration.requirements
-                                            }}
-                                            #1</span
-                                        >
-                                    </div>
-                                    <div class="mt-4 flex items-center">
-                                        <mat-icon
-                                            role="img"
-                                            class="mat-icon notranslate mr-3 icon-size-5 mat-icon-no-color"
-                                            aria-hidden="true"
-                                            data-mat-icon-type="svg"
-                                            data-mat-icon-name="briefcase"
-                                            data-mat-icon-namespace="heroicons_solid"
-                                        >
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 24 24"
-                                                fill="currentColor"
-                                                aria-hidden="true"
-                                                fit=""
-                                                height="100%"
-                                                width="100%"
-                                                preserveAspectRatio="xMidYMid meet"
-                                                focusable="false"
-                                            >
-                                                <path
-                                                    fill-rule="evenodd"
-                                                    d="M7.5 5.25a3 3 0 013-3h3a3 3 0 013 3v.205c.933.085 1.857.197 2.774.334 1.454.218 2.476 1.483 2.476 2.917v3.033c0 1.211-.734 2.352-1.936 2.752A24.726 24.726 0 0112 15.75c-2.73 0-5.357-.442-7.814-1.259-1.202-.4-1.936-1.541-1.936-2.752V8.706c0-1.434 1.022-2.7 2.476-2.917A48.814 48.814 0 017.5 5.455V5.25zm7.5 0v.09a49.488 49.488 0 00-6 0v-.09a1.5 1.5 0 011.5-1.5h3a1.5 1.5 0 011.5 1.5zm-3 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z"
-                                                    clip-rule="evenodd"
-                                                ></path>
-                                                <path
-                                                    d="M3 18.4v-2.796a4.3 4.3 0 00.713.31A26.226 26.226 0 0012 17.25c2.892 0 5.68-.468 8.287-1.335.252-.084.49-.189.713-.311V18.4c0 1.452-1.047 2.728-2.523 2.923-2.12.282-4.282.427-6.477.427a49.19 49.19 0 01-6.477-.427C4.047 21.128 3 19.852 3 18.4z"
-                                                ></path>
-                                            </svg>
-                                        </mat-icon
-                                        >
-                                        <span class="leading-none"
-                                        >{{
-                                                collaboration.requirements
-                                            }}
-                                            #2</span
-                                        >
-                                    </div>
-                                    <div class="mt-4 flex items-center">
-                                        <mat-icon
-                                            role="img"
-                                            class="mat-icon notranslate mr-3 icon-size-5 mat-icon-no-color"
-                                            aria-hidden="true"
-                                            data-mat-icon-type="svg"
-                                            data-mat-icon-name="cake"
-                                            data-mat-icon-namespace="heroicons_solid"
-                                        >
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 24 24"
-                                                fill="currentColor"
-                                                aria-hidden="true"
-                                                fit=""
-                                                height="100%"
-                                                width="100%"
-                                                preserveAspectRatio="xMidYMid meet"
-                                                focusable="false"
-                                            >
-                                                <path
-                                                    d="M15 1.784l-.796.796a1.125 1.125 0 101.591 0L15 1.784zM12 1.784l-.796.796a1.125 1.125 0 101.591 0L12 1.784zM9 1.784l-.796.796a1.125 1.125 0 101.591 0L9 1.784zM9.75 7.547c.498-.02.998-.035 1.5-.042V6.75a.75.75 0 011.5 0v.755c.502.007 1.002.021 1.5.042V6.75a.75.75 0 011.5 0v.88l.307.022c1.55.117 2.693 1.427 2.693 2.946v1.018a62.182 62.182 0 00-13.5 0v-1.018c0-1.519 1.143-2.829 2.693-2.946l.307-.022v-.88a.75.75 0 011.5 0v.797zM12 12.75c-2.472 0-4.9.184-7.274.54-1.454.217-2.476 1.482-2.476 2.916v.384a4.104 4.104 0 012.585.364 2.605 2.605 0 002.33 0 4.104 4.104 0 013.67 0 2.605 2.605 0 002.33 0 4.104 4.104 0 013.67 0 2.605 2.605 0 002.33 0 4.104 4.104 0 012.585-.364v-.384c0-1.434-1.022-2.7-2.476-2.917A49.138 49.138 0 0012 12.75zM21.75 18.131a2.604 2.604 0 00-1.915.165 4.104 4.104 0 01-3.67 0 2.604 2.604 0 00-2.33 0 4.104 4.104 0 01-3.67 0 2.604 2.604 0 00-2.33 0 4.104 4.104 0 01-3.67 0 2.604 2.604 0 00-1.915-.165v2.494c0 1.036.84 1.875 1.875 1.875h15.75c1.035 0 1.875-.84 1.875-1.875v-2.494z"
-                                                ></path>
-                                            </svg>
-                                        </mat-icon
-                                        >
-                                        <span class="leading-none"
-                                        >{{
-                                                collaboration.requirements
-                                            }}
-                                            #3</span
-                                        >
-                                    </div>
-                                </div>
-                            </form>
-                        </fuse-card>
-                        <fuse-card
-                            class="lg:hidden mt-8 flex w-full max-w-140 flex-col p-8 ng-tns-c2638821912-677 ng-star-inserted"
-                        >
-                            <form [formGroup]="editCollaborationFormGroup">
-                                <div
-                                    class="text-2xl font-semibold leading-tight ng-tns-c2638821912-677 ng-star-inserted"
-                                >
-                                    {{
-                                        "user.collaborations.details.compensation"
-                                            | transloco
-                                    }}
-                                </div>
-
-                                <div
-                                    class="mt-8 flex flex-col items-start sm:flex-row"
-                                    [ngClass]="{ hidden: !isEditing }"
-                                >
-                                    <mat-form-field
-                                        class="w-full justify-between"
-                                        [subscriptSizing]="'dynamic'"
-                                    >
-                                        <textarea
-                                            class="overflow-hidden"
-                                            matInput
-                                            [formControlName]="'compensation'"
-                                            [placeholder]="
-                                                'user.collaborations.details.compensation_placeholder'
-                                                    | transloco
-                                            "
-                                            [rows]="3"
-                                            cdkTextareaAutosize
-                                        ></textarea>
-                                    </mat-form-field>
-                                </div>
-                                <div
-                                    class="mt-4 ng-tns-c2638821912-677 ng-star-inserted"
-                                    [ngClass]="{ hidden: isEditing }"
-                                >
-                                    {{ collaboration.compensation }}
-                                </div>
-                                <hr
-                                    class="my-6 w-full border-t ng-tns-c2638821912-677 ng-star-inserted"
-                                />
-                                <div
-                                    *ngIf="collaboration"
-                                    class="flex flex-col ng-tns-c2638821912-677 ng-star-inserted"
-                                >
-                                    <div class="flex items-center">
-                                        <mat-icon
-                                            role="img"
-                                            class="mat-icon notranslate mr-3 icon-size-5 mat-icon-no-color"
-                                            aria-hidden="true"
-                                            data-mat-icon-type="svg"
-                                            data-mat-icon-name="map-pin"
-                                            data-mat-icon-namespace="heroicons_solid"
-                                        >
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 24 24"
-                                                fill="currentColor"
-                                                aria-hidden="true"
-                                                fit=""
-                                                height="100%"
-                                                width="100%"
-                                                preserveAspectRatio="xMidYMid meet"
-                                                focusable="false"
-                                            >
-                                                <path
-                                                    fill-rule="evenodd"
-                                                    d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z"
-                                                    clip-rule="evenodd"
-                                                ></path>
-                                            </svg>
-                                        </mat-icon>
-                                        <span class="leading-none"
-                                        >{{
-                                                collaboration.compensation
-                                            }}
-                                            #1</span
-                                        >
-                                    </div>
-                                    <div class="mt-4 flex items-center">
-                                        <mat-icon
-                                            role="img"
-                                            class="mat-icon notranslate mr-3 icon-size-5 mat-icon-no-color"
-                                            aria-hidden="true"
-                                            data-mat-icon-type="svg"
-                                            data-mat-icon-name="briefcase"
-                                            data-mat-icon-namespace="heroicons_solid"
-                                        >
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 24 24"
-                                                fill="currentColor"
-                                                aria-hidden="true"
-                                                fit=""
-                                                height="100%"
-                                                width="100%"
-                                                preserveAspectRatio="xMidYMid meet"
-                                                focusable="false"
-                                            >
-                                                <path
-                                                    fill-rule="evenodd"
-                                                    d="M7.5 5.25a3 3 0 013-3h3a3 3 0 013 3v.205c.933.085 1.857.197 2.774.334 1.454.218 2.476 1.483 2.476 2.917v3.033c0 1.211-.734 2.352-1.936 2.752A24.726 24.726 0 0112 15.75c-2.73 0-5.357-.442-7.814-1.259-1.202-.4-1.936-1.541-1.936-2.752V8.706c0-1.434 1.022-2.7 2.476-2.917A48.814 48.814 0 017.5 5.455V5.25zm7.5 0v.09a49.488 49.488 0 00-6 0v-.09a1.5 1.5 0 011.5-1.5h3a1.5 1.5 0 011.5 1.5zm-3 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z"
-                                                    clip-rule="evenodd"
-                                                ></path>
-                                                <path
-                                                    d="M3 18.4v-2.796a4.3 4.3 0 00.713.31A26.226 26.226 0 0012 17.25c2.892 0 5.68-.468 8.287-1.335.252-.084.49-.189.713-.311V18.4c0 1.452-1.047 2.728-2.523 2.923-2.12.282-4.282.427-6.477.427a49.19 49.19 0 01-6.477-.427C4.047 21.128 3 19.852 3 18.4z"
-                                                ></path>
-                                            </svg>
-                                        </mat-icon
-                                        >
-                                        <span class="leading-none"
-                                        >{{
-                                                collaboration.compensation
-                                            }}
-                                            #2</span
-                                        >
-                                    </div>
-                                    <div class="mt-4 flex items-center">
-                                        <mat-icon
-                                            role="img"
-                                            class="mat-icon notranslate mr-3 icon-size-5 mat-icon-no-color"
-                                            aria-hidden="true"
-                                            data-mat-icon-type="svg"
-                                            data-mat-icon-name="cake"
-                                            data-mat-icon-namespace="heroicons_solid"
-                                        >
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 24 24"
-                                                fill="currentColor"
-                                                aria-hidden="true"
-                                                fit=""
-                                                height="100%"
-                                                width="100%"
-                                                preserveAspectRatio="xMidYMid meet"
-                                                focusable="false"
-                                            >
-                                                <path
-                                                    d="M15 1.784l-.796.796a1.125 1.125 0 101.591 0L15 1.784zM12 1.784l-.796.796a1.125 1.125 0 101.591 0L12 1.784zM9 1.784l-.796.796a1.125 1.125 0 101.591 0L9 1.784zM9.75 7.547c.498-.02.998-.035 1.5-.042V6.75a.75.75 0 011.5 0v.755c.502.007 1.002.021 1.5.042V6.75a.75.75 0 011.5 0v.88l.307.022c1.55.117 2.693 1.427 2.693 2.946v1.018a62.182 62.182 0 00-13.5 0v-1.018c0-1.519 1.143-2.829 2.693-2.946l.307-.022v-.88a.75.75 0 011.5 0v.797zM12 12.75c-2.472 0-4.9.184-7.274.54-1.454.217-2.476 1.482-2.476 2.916v.384a4.104 4.104 0 012.585.364 2.605 2.605 0 002.33 0 4.104 4.104 0 013.67 0 2.605 2.605 0 002.33 0 4.104 4.104 0 013.67 0 2.605 2.605 0 002.33 0 4.104 4.104 0 012.585-.364v-.384c0-1.434-1.022-2.7-2.476-2.917A49.138 49.138 0 0012 12.75zM21.75 18.131a2.604 2.604 0 00-1.915.165 4.104 4.104 0 01-3.67 0 2.604 2.604 0 00-2.33 0 4.104 4.104 0 01-3.67 0 2.604 2.604 0 00-2.33 0 4.104 4.104 0 01-3.67 0 2.604 2.604 0 00-1.915-.165v2.494c0 1.036.84 1.875 1.875 1.875h15.75c1.035 0 1.875-.84 1.875-1.875v-2.494z"
-                                                ></path>
-                                            </svg>
-                                        </mat-icon
-                                        >
-                                        <span class="leading-none"
-                                        >{{
-                                                collaboration.compensation
-                                            }}
-                                            #3</span
-                                        >
-                                    </div>
-                                </div>
-                            </form>
-                        </fuse-card>
-                    </div>
-                </div>
+                            {{
+                                "user.collaborations.details.pick_button"
+                                    | transloco
+                            }}
+                            </button>
+                        </mat-datepicker-actions>
+                    </mat-datepicker>
+                </mat-form-field>
             </div>
+            </form>
+                <div class="mt-1 font-mono text-base"
+                    [ngClass]="{ hidden: isEditing }">
+                  {{collaboration?.endDate  | date: 'dd-MM-yyyy'}}</div>
+              </div>
+            </div>
+              <div *ngIf="isEditing; else editButton" class="flex flex-row mb-10">
+                <button 
+                    mat-button 
+                    color="warn" 
+                    (click)="openConfirmationDeleteDialog(collaboration.id)">
+                    {{ "user.collaborations.details.delete_button" | transloco }}
+                </button>
+
+                <button 
+                    mat-flat-button 
+                    type="button" 
+                    color="primary"
+                    (click)="saveCollaboration(collaboration.id, compensationAmount(compensationAmountMin), compensationAmount(compensationAmountMax))">
+                    {{ "user.collaborations.details.save_button" | transloco }}
+                </button> 
+              </div>
         </div>
+        <ng-template #editButton class="absolute flex flex-row ml-10">
+          <button  
+              mat-stroked-button 
+              (click)="editCollaboration()">
+              <mat-icon 
+                  class="icon-size-5" 
+                  [svgIcon]="'heroicons_solid:pencil-square'">
+              </mat-icon>
+              <span class="ml-2">
+                  {{ "user.collaborations.details.edit_button" | transloco }}
+              </span>
+          </button>
+        </ng-template>
+      </div>
+      <div class="mx-auto flex w-full max-w-5xl flex-auto justify-center p-6 sm:p-8">
+        <div class="mr-8 hidden flex-col items-start lg:flex">
+        <fuse-card class="flex w-full w-120 flex-col p-8 ng-tns-c2638821912-677 ng-star-inserted hidden-on-small">
+          <div  class="ng-tns-c2638821912-677 ng-star-inserted">
+            <div class="text-2xl font-semibold leading-tight ng-tns-c2638821912-677 ng-star-inserted">
+                {{
+                    "user.collaborations.details.requirements"
+                        | transloco
+                }}
+            </div>
+            <form [formGroup]="editCollaborationFormGroup">
+              <div class="mt-8 flex flex-col items-start sm:flex-row" [ngClass]="{ hidden: !isEditing }">
+                <mat-form-field 
+                    class="w-full justify-between"
+                    [subscriptSizing]="'dynamic'"
+                >
+                    <textarea class="overflow-hidden"
+                        matInput
+                        [formControlName]="'requirements'"
+                        [placeholder]="
+                        'user.collaborations.details.requirements_placeholder'
+                            | transloco"
+                        [rows]="3"
+                        cdkTextareaAutosize
+                    ></textarea>
+                </mat-form-field>
+              </div>
+
+                <div class="mt-4 w-80 max-w-[100%]"
+                  [ngClass]="{ hidden: isEditing }"
+                >
+                  {{collaboration.requirements}}
+                </div>
+            
+                <hr class="my-6 w-full border-t ng-tns-c2638821912-677 ng-star-inserted">
+                <div class="flex justify-between mt-5 mr-2.5 mb-5 ml-0 max-w-[284px]">
+                  <label id="example-name-label" class="font-semibold">
+                    {{"user.collaborations.details.followers_amount"
+                        | transloco}}
+                </label>
+                  <label class="example-value-label">
+                    <ng-container *ngIf="isEditing; else compensationValues">
+                        
+                      {{ compensationAmount(compensationAmountMin) || prevAmountMin }} - 
+                      {{ compensationAmount(compensationAmountMax) || prevAmountMax }}
+                      
+                    </ng-container>
+                    <ng-template #compensationValues>
+                      {{ prevAmountMin }} - {{ prevAmountMax }}
+                    </ng-template>
+                  </label>
+                  
+                </div>
+                  <div class="relative w-[390px]" 
+                    [ngClass]="{'disabled-chip':disabled}">
+                    <mat-slider 
+                        [min]="min" 
+                        [max]="max"
+                        class="w-full"
+                        [disabled]="disabled"
+                    >
+                      <input 
+                        matSliderStartThumb 
+                        formControlName="compensationAmountMin"
+                        [value]="compensationAmountMin" 
+                        (change)="onStartSliderChange($event)">
+                      <input matSliderEndThumb 
+                        formControlName="compensationAmountMax"
+                        [value]="compensationAmountMax" 
+                        (change)="onEndSliderChange($event)">
+                    </mat-slider>
+                    <div class="absolute top-1/2 left-2 w-full flex justify-between">
+                        <div *ngFor="let value of amountFollowers" class="mat-slider-dots"></div>
+                    </div>
+                  </div>
+                  <div class="flex w-[430px] justify-between mt-2.5 text-gray-500">
+                    <div *ngFor="let value of amountFollowers">
+                      {{value}}
+                    </div>
+                  </div>
+            </form>
+              <hr class="my-6 w-full border-t ng-tns-c2638821912-677 ng-star-inserted">
+              <form [formGroup]="editCollaborationFormGroup">
+                <div class="mt-4">
+                  <label class="font-semibold">
+                    {{
+                        "user.collaborations.details.content_type"
+                            | transloco
+                    }}
+                  </label>
+                  <div class="flex flex-row gap-2 mt-5"  
+                        [ngClass]="{'disabled-chip':disabled}">
+                    <button 
+                      *ngFor="let content of collaboration.contentTypes" 
+                      matTooltipClass="tooltip-html"
+                      class="content"
+                      [ngClass]="{ 'active-chip': content.active, 'disabled-chip': content.disabled }" 
+                      (click)="toggleChip('contentTypes', content)"
+                      [attr.type]="'button'"
+                      [disabled]="disabled"
+                      >
+                        {{content.name}}
+                    </button>
+                  </div>
+                </div>
+              </form>
+                <hr class="my-6 w-full border-t ng-tns-c2638821912-677 ng-star-inserted">
+                <label class="font-semibold">Platforma</label>
+                <div class="flex flex-row gap-2 mt-5"  [ngClass]="{'disabled-chip':disabled}">
+                  <button 
+                      *ngFor="let platform of collaboration.platforms" 
+                      [matTooltip]="getTooltipText(platform)"
+                      matTooltipClass="tooltip-html"
+                      class="mat-chip"
+                      [ngClass]="{ 'active-chip': platform.active }" 
+                      (click)="toggleChip('platforms', platform)"
+                      [disabled]="disabled"
+                      >
+                      <img [src]="platform.logoUrl" [alt]="platform.name + ' Logo'" />
+                  </button>
+                </div>
+          </div>
+        </fuse-card>
+        <fuse-card
+            class="flex w-full w-120 flex-col p-8 mt-8 ng-tns-c2638821912-677 ng-star-inserted">
+            <form  [formGroup]="editCollaborationFormGroup">
+
+            <div class="text-2xl font-semibold leading-tight ng-tns-c2638821912-677 ng-star-inserted">
+              
+                {{
+                    "user.collaborations.details.compensationType"
+                        | transloco
+                }}
+            </div>
+              <div class="mt-8 flex flex-col items-start sm:flex-row" [ngClass]="{ hidden: !isEditing }">
+                  {{collaboration.compensationType}}  
+              </div>
+            <div class="mt-4 ng-tns-c2638821912-677 ng-star-inserted"
+                [ngClass]="{ hidden: isEditing }"
+            >
+              {{collaboration.compensationType}}
+            </div>
+            </form>
+          </fuse-card>
+        </div>
+        <div class="flex flex-col items-start">
+          <fuse-card
+            class=" flex w-full max-w-140 flex-col p-8  ng-tns-c2638821912-677 ng-star-inserted">
+            <form  [formGroup]="editCollaborationFormGroup">
+                <div class="text-2xl font-semibold leading-tight ng-tns-c2638821912-677 ng-star-inserted">
+                    {{
+                        "user.collaborations.details.campaign_details"
+                            | transloco
+                    }}
+                </div>
+                <div class="mt-8 ng-tns-c2638821912-677 ng-star-inserted w-100 h-20"
+                [ngClass]="{ hidden: !isEditing }"
+                >
+                  <mat-form-field 
+                      class="w-full justify-between mb-4"
+                      [subscriptSizing]="'dynamic'"
+                  >
+                      <textarea
+                          matInput
+                          [formControlName]="'details'"
+                         
+                          [placeholder]="
+                          'user.collaborations.details.campaign_details_placeholder'
+                              | transloco
+                      "
+
+                          [rows]="3"
+                          cdkTextareaAutosize
+                      ></textarea>
+                  </mat-form-field>
+              </div>
+              <div 
+                [ngClass]="{ hidden: isEditing }"
+                class="w-100 mt-4">
+                {{collaboration.details}}
+              </div>
+            </form>
+          </fuse-card>
+          <fuse-card
+            class="flex w-full max-w-140 flex-row p-8 mt-8 ng-tns-c2638821912-677 ng-star-inserted">
+              <div class="ng-tns-c2638821912-677 ng-star-inserted">
+                <div class="text-2xl font-semibold leading-tight ng-tns-c2638821912-677 ng-star-inserted">
+                    {{
+                        "user.collaborations.details.company_details"
+                            | transloco
+                    }}
+                </div>
+
+              
+
+                <table class="mt-4 mr-2">
+                  <tr>
+                    <td>{{collaboration.company?.name}}</td>
+                  </tr>
+                  <tr>
+                    <td>{{collaboration.company?.firstName}}</td>
+                  </tr>
+                  <tr>
+                    <td>{{collaboration.company?.lastName}}</td>
+                  </tr>
+                  <tr>
+                    <td>{{collaboration.company?.email}}</td>
+                  </tr>
+                  <tr>
+                    <td>{{collaboration.company?.phoneNumber}}</td>
+                  </tr>
+                  <tr>
+                    <td>{{collaboration.company?.city}}</td>
+                  </tr>
+                  <tr>
+                    <td>{{collaboration.company?.address}}</td>
+                  </tr>
+                  <tr>
+                    <td>{{collaboration.company?.note}}</td>
+                  </tr>
+                </table>
+              </div>
+         </fuse-card>
+         <fuse-card class="lg:hidden flex w-full w-120 flex-col p-8 ng-tns-c2638821912-677 ng-star-inserted hidden-on-small">
+          <div  class="ng-tns-c2638821912-677 ng-star-inserted">
+            <div class="text-2xl font-semibold leading-tight ng-tns-c2638821912-677 ng-star-inserted">
+              Wymagania
+            </div>
+            <form [formGroup]="editCollaborationFormGroup">
+              <div class="mt-8 flex flex-col items-start sm:flex-row" [ngClass]="{ hidden: !isEditing }">
+                <mat-form-field 
+                    class="w-full justify-between"
+                    [subscriptSizing]="'dynamic'"
+                >
+                    <textarea class="overflow-hidden"
+                        matInput
+                        [formControlName]="'requirements'"
+                        [placeholder]="'Tutaj jest opis ktory wpisuje sobie firma ktora chce sie reklamowac u nas'"
+                        [rows]="3"
+                        cdkTextareaAutosize
+                    ></textarea>
+                </mat-form-field>
+              </div>
+
+                <div class="mt-4 w-80 max-w-[100%]"
+                  [ngClass]="{ hidden: isEditing }"
+                >
+                  {{collaboration.requirements}}
+                </div>
+            
+                <hr class="my-6 w-full border-t ng-tns-c2638821912-677 ng-star-inserted">
+                <div class="flex justify-between mt-5 mr-2.5 mb-5 ml-0 max-w-[284px]">
+                  <label id="example-name-label" class="font-semibold">
+                    {{"user.collaborations.details.followers_amount"
+                        | transloco}}
+                </label>
+                  <label class="example-value-label">
+                    <ng-container *ngIf="isEditing; else compensationValues">
+                      {{ compensationAmount(compensationAmountMin) || prevAmountMin }} - 
+                      {{ compensationAmount(compensationAmountMax) || prevAmountMax }}
+                    </ng-container>
+                    <ng-template #compensationValues>
+                      {{ prevAmountMin }} - {{ prevAmountMax }}
+                    </ng-template>
+                  </label>
+                </div>
+              
+                  <div class="relative w-[390px]" [ngClass]="{'disabled-chip':disabled}">
+                    <mat-slider 
+                     [min]="min"
+                     [max]="max"
+                     class="w-full"
+                    [disabled]="disabled"
+                    >
+                      <input 
+                        matSliderStartThumb 
+                        formControlName="compensationAmountMin"
+                        [value]="compensationAmountMin" 
+                        (change)="onStartSliderChange($event)">
+                      <input matSliderEndThumb 
+                        formControlName="compensationAmountMax"
+                        [value]="compensationAmountMax" 
+                        (change)="onEndSliderChange($event)">
+                    </mat-slider>
+                    <div class="absolute top-1/2 left-2 w-full flex justify-between">
+                        <div *ngFor="let value of amountFollowers" class="mat-slider-dots"></div>
+                      </div>
+                  </div>
+                  <div class="flex w-[430px] justify-between mt-2.5 text-gray-500">
+                    <div *ngFor="let value of amountFollowers">
+                      {{value}}
+                    </div>
+                  </div>
+            </form>
+
+              <hr class="my-6 w-full border-t ng-tns-c2638821912-677 ng-star-inserted">
+              <form [formGroup]="editCollaborationFormGroup">
+                <div class="mt-4">
+                  <label class="font-semibold">
+                    {{
+                        "user.collaborations.details.content_type"
+                            | transloco
+                    }}
+
+                  </label>
+
+                  <div class="flex flex-row gap-2 mt-5"  
+                        [ngClass]="{'disabled-chip':disabled}">
+                    <button 
+                      *ngFor="let content of collaboration.contentTypes" 
+                      matTooltipClass="tooltip-html"
+                      class="content"
+                      [ngClass]="{ 'active-chip': content.active, 'disabled-chip': content.disabled }" 
+                      (click)="toggleChip('contentTypes', content)"
+                      [attr.type]="'button'"
+                      [disabled]="disabled"
+                      >
+                        {{content.name}}
+                    </button>
+                  </div>
+                </div>
+              </form>
+                
+                <hr class="my-6 w-full border-t ng-tns-c2638821912-677 ng-star-inserted">
+                <label class="font-semibold">Platforma</label>
+                <div class="flex flex-row gap-2 mt-5"  [ngClass]="{'disabled-chip':disabled}">
+                  <button 
+                      *ngFor="let platform of collaboration.platforms" 
+                      [matTooltip]="getTooltipText(platform)"
+                      matTooltipClass="tooltip-html"
+                      class="mat-chip"
+                      [ngClass]="{ 'active-chip': platform.active }" 
+                      (click)="toggleChip('platforms', platform)"
+                      [disabled]="disabled"
+                      >
+                      <img [src]="platform.logoUrl" [alt]="platform.name + ' Logo'" />
+                  </button>
+                </div>
+          </div>
+        </fuse-card>
+        <fuse-card class="lg:hidden flex w-full w-120 flex-col p-8 mt-8 ng-tns-c2638821912-677 ng-star-inserted">
+          <form  [formGroup]="editCollaborationFormGroup">
+            <div class="text-2xl font-semibold leading-tight ng-tns-c2638821912-677 ng-star-inserted">
+                {{
+                    "user.collaborations.details.compensationType"
+                        | transloco
+                }}
+            </div>
+          <div class="mt-8 flex flex-col items-start sm:flex-row" [ngClass]="{ hidden: !isEditing }">
+              {{collaboration.compensationType}}
+          </div>
+          <div class="mt-4 ng-tns-c2638821912-677 ng-star-inserted"
+              [ngClass]="{ hidden: isEditing }">
+            {{collaboration.compensationType}}
+          </div>
+        </form>
+      </fuse-card>
+        </div>
+      </div>
     </div>
+  </div>
 </div>

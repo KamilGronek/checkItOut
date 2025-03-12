@@ -1,746 +1,688 @@
 <div class="flex min-w-0 flex-auto flex-col">
-
     <div class="bg-card flex flex-col shadow">
         <div>
-            <img src="../../../../assets/detale_kampanii_v4_files/cover.jpg" alt="Cover image"
-
-                 class="h-40 object-cover lg:h-80"/>
+          <img [src]="'assets/detale_kampanii_v4_files/cover.jpg'" alt="Cover image"
+          class="h-40 object-cover lg:h-80"/>
         </div>
+      <div class="bg-card mx-auto flex w-full max-w-5xl flex-0 flex-col items-center px-8 lg:h-18 lg:flex-row">
 
-        <div class="bg-card mx-auto flex w-full max-w-5xl flex-0 flex-col items-center px-8 lg:h-18 lg:flex-row">
-            <div class="-mt-26 rounded-full lg:-mt-22">
-                <div class="ring-bg-card h-40 w-40 rounded-full ring-4">
-                    <button *ngIf="btnVisible" mat-flat-button class="mt-15 ml-2 buttonVisible"
-                            style="position: absolute"
-                            (click)="fileInput.click()"
-                            [color]="'primary'"
-                    >
-                        <mat-icon
-                            [svgIcon]="'heroicons_outline:plus'"
-                        ></mat-icon>
-                        <span class="ml-2 mr-1" style="font-size: 10px;">Upload photo</span>
-                    </button>
-                    <input
-                        #fileInput
-                        type="file"
-                        accept="image/*"
-                        class="hidden"
-                        (change)="onFileSelected($event)"
-                    />
-                    <img
-                        *ngIf="imageUrl; else noImageProfil"
-                        [src]="imageUrl"
-                        alt="User avatar"
-                        [formControlName]="'imageUrl'"
-                        class="addPicture h-full w-full object-cover rounded-full ring-4"
-                    />
-                    <ng-template #noImageProfil>
-                  <span style="color: white; background-color: lightgray; cursor: pointer;"
-                        class="flex items-center justify-center h-full w-full text-lg font-semibold rounded-full "
-                  >
-                      <div class="mt-4 sm:mt-0">
-                        <button mat-flat-button class="w-32"
-                                [color]="'primary'"
-                                (click)="fileInput.click()"
-                        >
-                            <mat-icon
-                                [svgIcon]="'heroicons_outline:plus'"
-                            ></mat-icon>
-                            <span class="ml-2 mr-1" style="font-size: 10px;">Upload photo</span>
-                        </button>
-                        <input
-                            #fileInput
-                            type="file"
-                            accept="image/*"
-                            class="hidden"
-                            (change)="onFileSelected($event)"
-                        />
+      <div class="-mt-26 rounded-full lg:-mt-22">
+        <div class="ring-bg-card h-40 w-40 rounded-full ring-4">
+          <button *ngIf="isUploadButtonVisible" mat-flat-button 
+              class="mt-15 ml-2 buttonVisible absolute" 
+              (click)="fileInput.click()" 
+              [color]="'primary'">
+              <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+              <span class="ml-2 mr-1 text-xs">Upload photo</span>
+          </button>
+       
+          <input #fileInput type="file" accept="image/*" class="hidden" (change)="onFileSelected($event)" />
+
+          <img *ngIf="imageUrl; else noImageProfile" [src]="imageUrl" alt="User avatar"
+              class="addPicture h-full w-full object-cover rounded-full ring-4" />
+      
+          <ng-template #noImageProfile>
+              <div class="flex items-center justify-center h-full w-full text-lg font-semibold rounded-full bg-gray-300 text-white cursor-pointer">
+                  <button mat-flat-button class="w-32" [color]="'primary'" (click)="fileInput.click()">
+                      <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+                      <span class="ml-2 mr-1 text-xs">Upload photo</span>
+                  </button>
+              </div>
+          </ng-template>
+        </div>
+      </div>
+      <div class="mt-4 flex flex-col items-center lg:ml-8 lg:mt-0 lg:items-start">
+        <div #name class="text-lg font-bold leading-none">
+        </div> 
+      </div>
+        <div class="my-3  items-center sm:flex border-y-0">
+            <div class="rounded-l-xl border border-r-0 border-transparent p-2 leading-none">
+                  <form [formGroup]="editNewCollaborationFormGroup">
+                      <div class="text-secondary text-sm font-medium">
+                        {{
+                            "user.collaborations.details.start_date"
+                                | transloco
+                        }}
                       </div>
-                  </span>
-                    </ng-template>
-                </div>
-            </div>
-            <div class="mt-4 flex flex-col items-center lg:ml-8 lg:mt-0 lg:items-start">
-                <div #name class="text-lg font-bold leading-none">
-                </div>
-            </div>
-            <div class="my-3  items-center sm:flex border-y-0">
-                <div class="rounded-l-xl border border-r-0 border-transparent p-2 leading-none">
-                    <form [formGroup]="editNewCollaborationFormGroup">
-                        <!-- <div> -->
-                        <div class="text-secondary text-sm font-medium">Data rozpoczęcia</div>
-                        <div
-                            class="relative mt-1.5 flex cursor-pointer items-center rounded-full px-4 leading-9"
-                            [ngClass]="{
-                                'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-300':
-                                    !card.startDate,
-                                'bg-green-200 text-green-800 dark:bg-green-500 dark:text-green-100':
-                                    card.startDate && !isOverdue(card.startDate),
-                                'bg-red-200 text-red-800 dark:bg-red-500 dark:text-red-100':
-                                    card.startDate && isOverdue(card.startDate),
-                            }"
-                            (click)="startDatePicker.open()"
-                        >
-                            <mat-icon
-                                class="text-current icon-size-5"
-                                [svgIcon]="'heroicons_solid:calendar'"
-                            ></mat-icon>
-
+                      <div
+                          class="relative mt-1.5 flex cursor-pointer items-center rounded-full px-4 leading-9"
+                          [ngClass]="{
+                              'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-300':
+                                  !card.startDate,
+                              'bg-green-200 text-green-800 dark:bg-green-500 dark:text-green-100':
+                                  card.startDate && !isOverdue(card.startDate),
+                              'bg-red-200 text-red-800 dark:bg-red-500 dark:text-red-100':
+                                  card.startDate && isOverdue(card.startDate),
+                          }"
+                          (click)="startDatePicker.open()"
+                      >
+                          <mat-icon
+                              class="text-current icon-size-5"
+                              [svgIcon]="'heroicons_solid:calendar'"
+                          ></mat-icon>
+                         
                             @if (card.startDate) {
-                                <span class="ml-2 text-md font-medium w-30">
-                                {{ card.startDate| date: 'longDate' }}
-                              </span>
-                            }
-                            @if (!card.startDate) {
-                                Not set
-                            }
-                            <mat-form-field
-                                class="fuse-mat-dense pointer-events-none invisible absolute inset-0 -mt-2.5 opacity-0"
-                                [subscriptSizing]="'dynamic'"
-                            >
-                                <input
-                                    matInput
-                                    [formControlName]="'startDate'"
-                                    [matDatepicker]="startDatePicker"
-                                />
-
-                                <mat-datepicker #startDatePicker>
-                                    <mat-datepicker-actions>
-                                        <button
-                                            mat-button
-                                            (click)="clearStartDate()"
-                                            matDatepickerCancel
-                                        >
-                                            Clear
-                                        </button>
-                                        <button
-                                            mat-flat-button
-                                            [color]="'primary'"
-                                            matDatepickerApply
-                                            (click)="startDateSelected()"
-                                        >
-                                            Select
-                                        </button>
-                                    </mat-datepicker-actions>
-                                </mat-datepicker>
-                            </mat-form-field>
-                        </div>
-                    </form>
-                </div>
-                <div class="mx-2 hidden  h-8 border-l-2 lg:flex"></div>
-                <div class="rounded-r-xl border p-2 border-transparent leading-none">
-                    <form [formGroup]="editNewCollaborationFormGroup">
-                        <div class="text-secondary text-sm font-medium">Data zakończenia</div>
-                        <div
-                            class="relative mt-1.5 flex cursor-pointer items-center rounded-full px-4 leading-9"
-                            [ngClass]="{
-                            'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-300':
-                                !card.endDate,
-                            'bg-green-200 text-green-800 dark:bg-green-500 dark:text-green-100':
-                                card.endDate && !isOverdue(card.endDate),
-                            'bg-red-200 text-red-800 dark:bg-red-500 dark:text-red-100':
-                                card.endDate && isOverdue(card.endDate),
-                        }"
-                            (click)="endDatePicker.open()"
-                        >
-                            <mat-icon
-                                class="text-current icon-size-5"
-                                [svgIcon]="'heroicons_solid:calendar'"
-                            ></mat-icon>
-
-                            @if (card.endDate) {
-                                <span class="ml-2 text-md font-medium w-30">
-                            {{ card.endDate| date: 'longDate' }}
-                          </span>
-                            }
-                            @if (!card.endDate) {
-                                Not set
-                            }
-
-                            <mat-form-field
-                                class="fuse-mat-dense pointer-events-none invisible absolute inset-0 -mt-2.5 opacity-0"
-                                [subscriptSizing]="'dynamic'"
-                            >
-                                <input
-                                    matInput
-                                    [formControlName]="'endDate'"
-                                    [matDatepicker]="endDatePicker"
-                                />
-                                <mat-datepicker #endDatePicker>
-                                    <mat-datepicker-actions>
-                                        <button
-                                            mat-button
-                                            (click)="clearEndDate()"
-                                            matDatepickerCancel
-                                        >
-                                            Clear
-                                        </button>
-                                        <button
-                                            mat-flat-button
-                                            [color]="'primary'"
-                                            matDatepickerApply
-                                            (click)="endDateSelected()"
-                                        >
-                                            Select
-                                        </button>
-                                    </mat-datepicker-actions>
-                                </mat-datepicker>
-                            </mat-form-field>
-                        </div>
-                    </form>
-                </div>
+                            <span class="ml-2 text-md font-medium w-30">
+                              {{ card.startDate| date: 'longDate' }}
+                            </span>
+                              }
+                              @if (!card.startDate) {
+                                {{
+                                    "user.collaborations.details.date_not_set"
+                                        | transloco
+                                }}
+                              }
+                          <mat-form-field
+                              class="fuse-mat-dense pointer-events-none invisible absolute inset-0 -mt-2.5 opacity-0"
+                              [subscriptSizing]="'dynamic'"
+                          >
+                              <input
+                                  matInput
+                                  [formControlName]="'startDate'" 
+                                  [matDatepicker]="startDatePicker"
+                              />
+                              
+                              <mat-datepicker #startDatePicker>
+                                  <mat-datepicker-actions>
+                                      <button
+                                          mat-button
+                                          (click)="clearStartDate()"
+                                          matDatepickerCancel
+                                      >
+                                        {{
+                                            "user.collaborations.details.clear_button"
+                                                | transloco
+                                        }}
+                                      </button>
+                                      <button
+                                          mat-flat-button
+                                          [color]="'primary'"
+                                          matDatepickerApply
+                                          (click)="startDateSelected()"
+                                      >
+                                        {{
+                                            "user.collaborations.details.pick_button"
+                                                | transloco
+                                        }}
+                                      </button>
+                                  </mat-datepicker-actions>
+                              </mat-datepicker>
+                          </mat-form-field>
+                      </div>
+              </form>
             </div>
-            <button mat-flat-button
-                    class="mb-4 mt-8 flex items-center lg:m-0 lg:ml-auto"
-                    #send
-                    type="submit"
-                    [color]="'primary'"
-                    (click)="createCollaboration()"
-                    [disabled]="isDisabled"
-            >Dodaj nową
+            <div class="mx-2 hidden  h-8 border-l-2 lg:flex mt-5"></div>
+            <div class="rounded-r-xl border p-2 border-transparent leading-none">
+              <form [formGroup]="editNewCollaborationFormGroup">
+                  <div class="text-secondary text-sm font-medium"> {{
+                    "user.collaborations.details.end_date"
+                        | transloco
+                }}</div>
+                  <div
+                      class="relative mt-1.5 flex cursor-pointer items-center rounded-full px-4 leading-9"
+                      [ngClass]="{
+                          'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-300':
+                              !card.endDate,
+                          'bg-green-200 text-green-800 dark:bg-green-500 dark:text-green-100':
+                              card.endDate && !isOverdue(card.endDate),
+                          'bg-red-200 text-red-800 dark:bg-red-500 dark:text-red-100':
+                              card.endDate && isOverdue(card.endDate),
+                      }"
+                      (click)="endDatePicker.open()"
+                    >
+                      <mat-icon
+                          class="text-current icon-size-5"
+                          [svgIcon]="'heroicons_solid:calendar'"
+                      ></mat-icon>
+                     
+                        @if (card.endDate) {
+                        <span class="ml-2 text-md font-medium w-30">
+                          {{ card.endDate| date: 'longDate' }}
+                        </span>
+                          }
+                          @if (!card.endDate) {
+                            {{
+                                "user.collaborations.details.date_not_set"
+                                    | transloco
+                            }}
+                          }
+  
+                      <mat-form-field
+                          class="fuse-mat-dense pointer-events-none invisible absolute inset-0 -mt-2.5 opacity-0"
+                          [subscriptSizing]="'dynamic'"
+                      >
+                          <input
+                              matInput
+                               [formControlName]="'endDate'" 
+                              [matDatepicker]="endDatePicker"
+                          />
+                          <mat-datepicker #endDatePicker>
+                              <mat-datepicker-actions>
+                                  <button
+                                      mat-button
+                                      (click)="clearEndDate()"
+                                      matDatepickerCancel
+                                  >
+                                  {{
+                                    "user.collaborations.details.clear_button"
+                                        | transloco
+                                }}
+                                  </button>
+                                  <button
+                                      mat-flat-button
+                                      [color]="'primary'"
+                                      matDatepickerApply
+                                      (click)="endDateSelected()"
+                                  >
+                                  {{
+                                    "user.collaborations.details.pick_button"
+                                        | transloco
+                                }}
+                                  </button>
+                              </mat-datepicker-actions>
+                          </mat-datepicker>
+                      </mat-form-field>
+                  </div>
+              </form>
+            </div>
+          </div>
+  
+            <button mat-flat-button 
+            class="mb-4 mt-8 flex items-center lg:m-0 lg:ml-auto" 
+              #send
+              type="submit" 
+              [color]="'primary'"
+              (click)="createCollaboration(result(compensationAmountMin),result(compensationAmountMax))"
+              [disabled]="isDisabled"
+              >
+              {{ "user.collaborations.all.add_new_collaboration" | transloco }}
             </button>
         </div>
     </div>
-
+  
+    
+  
+  
     <div class="mx-auto flex w-full max-w-5xl flex-auto justify-center p-6 sm:p-8">
-        <div class="mr-8 hidden flex-col items-start lg:flex">
-            <form [formGroup]="editNewCollaborationFormGroup">
-                <fuse-card
-                    class="flex w-full max-w-80 flex-col p-8 ng-tns-c2638821912-677 ng-star-inserted">
-                    <div class="text-2xl font-semibold leading-tight ng-tns-c2638821912-677 ng-star-inserted">
-                        Wymagania
-                    </div>
-                    <!-- <div class="mt-4 ng-tns-c2638821912-677 ng-star-inserted">Tutaj jest opis ktory wpisuje sobie
-                      firma ktora chce sie reklamowac u nas
-                      <br>
-                    </div> -->
-                    <div class="mt-8 flex flex-col items-start sm:flex-row">
-                        <mat-form-field
-                            class="w-full justify-between"
-                            [subscriptSizing]="'dynamic'"
-                        >
-                  <textarea
-                      matInput
-                      [formControlName]="'requirements'"
-                      [placeholder]="'Tutaj jest opis ktory wpisuje sobie firma ktora chce sie reklamowac u nas'"
-                      [rows]="3"
-                      cdkTextareaAutosize
-                  ></textarea>
-                        </mat-form-field>
-                    </div>
-                    <hr class="my-6 w-full border-t ng-tns-c2638821912-677 ng-star-inserted">
-                    <div class="flex flex-col ng-tns-c2638821912-677 ng-star-inserted">
-                        <div class="flex items-center">
-                            <mat-icon role="img"
-                                      class="mat-icon notranslate mr-3 icon-size-5 mat-icon-no-color" aria-hidden="true"
-                                      data-mat-icon-type="svg" data-mat-icon-name="map-pin"
-                                      data-mat-icon-namespace="heroicons_solid">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                     viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" fit="" height="100%"
-                                     width="100%" preserveAspectRatio="xMidYMid meet" focusable="false">
-                                    <path fill-rule="evenodd"
-                                          d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z"
-                                          clip-rule="evenodd"></path>
-                                </svg>
-                            </mat-icon>
-                            <span class="leading-none">
-                    <mat-form-field [ngClass]="formFieldHelpers" class="gt-xs:pr-3 flex-auto w-50">
-                      <input matInput [formControlName]="'requirements'"/>
-                      <mat-icon class="icon-size-5" matSuffix [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+      <div class="mr-8 hidden flex-col items-start lg:flex">
+        <fuse-card class="flex w-full w-120 flex-col p-8 ng-tns-c2638821912-677 ng-star-inserted hidden-on-small">
+            <div class="ng-tns-c2638821912-677 ng-star-inserted">
+                  <div class="text-2xl font-semibold leading-tight ng-tns-c2638821912-677 ng-star-inserted">
+                    {{
+                        "user.collaborations.details.requirements"
+                            | transloco
+                    }}
+                  </div>
+                <form [formGroup]="editNewCollaborationFormGroup">
+                  <div class="mt-8 flex flex-col items-start sm:flex-row">
+                    <mat-form-field 
+                        class="w-full justify-between"
+                        [subscriptSizing]="'dynamic'"
+                    >
+                  
+                        <textarea class="overflow-hidden"
+                            matInput
+                            [formControlName]="'requirements'"
+                            [placeholder]="
+                            'user.collaborations.details.requirements_placeholder'
+                                | transloco
+                        "   [rows]="3"
+                            cdkTextareaAutosize
+                        ></textarea>
                     </mat-form-field>
-
-                    </span></div>
-                        <div class="flex items-center">
-                            <mat-icon role="img"
-                                      class="mat-icon notranslate mr-3 icon-size-5 mat-icon-no-color" aria-hidden="true"
-                                      data-mat-icon-type="svg" data-mat-icon-name="briefcase"
-                                      data-mat-icon-namespace="heroicons_solid">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                     viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" fit="" height="100%"
-                                     width="100%" preserveAspectRatio="xMidYMid meet" focusable="false">
-                                    <path fill-rule="evenodd"
-                                          d="M7.5 5.25a3 3 0 013-3h3a3 3 0 013 3v.205c.933.085 1.857.197 2.774.334 1.454.218 2.476 1.483 2.476 2.917v3.033c0 1.211-.734 2.352-1.936 2.752A24.726 24.726 0 0112 15.75c-2.73 0-5.357-.442-7.814-1.259-1.202-.4-1.936-1.541-1.936-2.752V8.706c0-1.434 1.022-2.7 2.476-2.917A48.814 48.814 0 017.5 5.455V5.25zm7.5 0v.09a49.488 49.488 0 00-6 0v-.09a1.5 1.5 0 011.5-1.5h3a1.5 1.5 0 011.5 1.5zm-3 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z"
-                                          clip-rule="evenodd"></path>
-                                    <path
-                                        d="M3 18.4v-2.796a4.3 4.3 0 00.713.31A26.226 26.226 0 0012 17.25c2.892 0 5.68-.468 8.287-1.335.252-.084.49-.189.713-.311V18.4c0 1.452-1.047 2.728-2.523 2.923-2.12.282-4.282.427-6.477.427a49.19 49.19 0 01-6.477-.427C4.047 21.128 3 19.852 3 18.4z">
-                                    </path>
-                                </svg>
-                            </mat-icon>
-                            <span class="leading-none">
-                    <mat-form-field [ngClass]="formFieldHelpers" class="gt-xs:pr-3 flex-auto w-50">
-                      <input matInput type="text"/>
-                      <mat-icon class="icon-size-5" matSuffix [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
-                </mat-form-field>
-                   </span>
-
-                        </div>
-                        <div class=" flex items-center">
-                            <mat-icon role="img"
-                                      class="mat-icon notranslate mr-3 icon-size-5 mat-icon-no-color" aria-hidden="true"
-                                      data-mat-icon-type="svg" data-mat-icon-name="cake"
-                                      data-mat-icon-namespace="heroicons_solid">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                     viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" fit="" height="100%"
-                                     width="100%" preserveAspectRatio="xMidYMid meet" focusable="false">
-                                    <path
-                                        d="M15 1.784l-.796.796a1.125 1.125 0 101.591 0L15 1.784zM12 1.784l-.796.796a1.125 1.125 0 101.591 0L12 1.784zM9 1.784l-.796.796a1.125 1.125 0 101.591 0L9 1.784zM9.75 7.547c.498-.02.998-.035 1.5-.042V6.75a.75.75 0 011.5 0v.755c.502.007 1.002.021 1.5.042V6.75a.75.75 0 011.5 0v.88l.307.022c1.55.117 2.693 1.427 2.693 2.946v1.018a62.182 62.182 0 00-13.5 0v-1.018c0-1.519 1.143-2.829 2.693-2.946l.307-.022v-.88a.75.75 0 011.5 0v.797zM12 12.75c-2.472 0-4.9.184-7.274.54-1.454.217-2.476 1.482-2.476 2.916v.384a4.104 4.104 0 012.585.364 2.605 2.605 0 002.33 0 4.104 4.104 0 013.67 0 2.605 2.605 0 002.33 0 4.104 4.104 0 013.67 0 2.605 2.605 0 002.33 0 4.104 4.104 0 012.585-.364v-.384c0-1.434-1.022-2.7-2.476-2.917A49.138 49.138 0 0012 12.75zM21.75 18.131a2.604 2.604 0 00-1.915.165 4.104 4.104 0 01-3.67 0 2.604 2.604 0 00-2.33 0 4.104 4.104 0 01-3.67 0 2.604 2.604 0 00-2.33 0 4.104 4.104 0 01-3.67 0 2.604 2.604 0 00-1.915-.165v2.494c0 1.036.84 1.875 1.875 1.875h15.75c1.035 0 1.875-.84 1.875-1.875v-2.494z">
-                                    </path>
-                                </svg>
-                            </mat-icon>
-                            <span class="leading-none">
-                    <mat-form-field [ngClass]="formFieldHelpers" class="gt-xs:pr-3 flex-auto w-50">
-                      <input matInput type="text"/>
-                      <mat-icon class="icon-size-5" matSuffix [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
-                </mat-form-field>
-                  </span>
+                  </div>
+                  <hr class="my-6 w-full border-t ng-tns-c2638821912-677 ng-star-inserted">
+                  <div class="flex justify-between mt-5 mr-2.5 mb-5 ml-0">
+                    <label id="example-name-label" class="font-semibold">
+                        {{
+                            "user.collaborations.details.followers_amount"
+                                | transloco
+                        }}
+                    </label>
+                    <label class="example-value-label">
+                        <span *ngIf="result(compensationAmountMin) === result(compensationAmountMax)">
+                            {{ result(compensationAmountMin) | number:'1.0-0' }} 
+                            <span *ngIf="result(compensationAmountMin) === '10000'">+</span>
+                        </span>
+                        <span *ngIf="result(compensationAmountMin) !== result(compensationAmountMax)">
+                            {{ result(compensationAmountMin) | number:'1.0-0' }} - 
+                            {{ result(compensationAmountMax) | number:'1.0-0' }}
+                        <span *ngIf="result(compensationAmountMax) === '10000'">+</span>
+                        </span>
+                    </label>
+                  </div>
+                    <div class="relative w-[390px]">
+                        <mat-slider 
+                            [min]="min" 
+                            [max]="max" 
+                            class="w-full">
+                          <input 
+                            matSliderStartThumb 
+                            formControlName="compensationAmountMin"
+                            [value]="compensationAmountMin" 
+                            (change)="onStartSliderChange($event)">
+                          <input matSliderEndThumb 
+                            formControlName="compensationAmountMax"
+                            [value]="compensationAmountMax" 
+                            (change)="onEndSliderChange($event)">
+                        </mat-slider>
+                        <div class="absolute top-1/2 left-2 w-full flex justify-between">
+                          <div *ngFor="let value of amountFollowers" class="mat-slider-dots"></div>
                         </div>
                     </div>
-                </fuse-card>
-                <fuse-card
-                    class="flex w-full max-w-80 flex-col p-8 mt-8 ng-tns-c2638821912-677 ng-star-inserted"><!---->
-                    <div class="text-2xl font-semibold leading-tight ng-tns-c2638821912-677 ng-star-inserted">
-                        Wynagrodzenie
-                    </div>
-                    <div class="mt-4 ng-tns-c2638821912-677 ng-star-inserted">
-                        <div class="mt-8 flex flex-col items-start sm:flex-row">
-                            <mat-form-field
-                                class="w-full justify-between"
-                                [subscriptSizing]="'dynamic'"
-                            >
-                    <textarea
-                        matInput
-                        [formControlName]="'compensation'"
-                        [placeholder]="'Tutaj jest opis wynagrodzenia które otrzymuje influencer za wpspolprace'"
-                        [rows]="3"
-                        cdkTextareaAutosize
-                    ></textarea>
-                            </mat-form-field>
+                    <div class="flex w-[430px] justify-between mt-2.5 text-gray-500">
+                        <div *ngFor="let value of amountFollowers">
+                          {{value}}
                         </div>
                     </div>
-                    <hr class="my-6 w-full border-t ng-tns-c2638821912-677 ng-star-inserted">
-                    <div class="flex flex-col ng-tns-c2638821912-677 ng-star-inserted">
-                        <div class="flex items-center">
-                            <mat-icon role="img"
-                                      class="mat-icon notranslate mr-3 icon-size-5 mat-icon-no-color" aria-hidden="true"
-                                      data-mat-icon-type="svg" data-mat-icon-name="map-pin"
-                                      data-mat-icon-namespace="heroicons_solid">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                     viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" fit="" height="100%"
-                                     width="100%" preserveAspectRatio="xMidYMid meet" focusable="false">
-                                    <path fill-rule="evenodd"
-                                          d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z"
-                                          clip-rule="evenodd"></path>
-                                </svg>
-                            </mat-icon>
-                            <span class="leading-none">
-                    <mat-form-field [ngClass]="formFieldHelpers" class="gt-xs:pr-3 flex-auto w-50">
-                      <input matInput [formControlName]="'compensation'"/>
-                      <mat-icon class="icon-size-5" matSuffix [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
-                </mat-form-field>
-                  </span></div>
-                        <div class="flex items-center">
-                            <mat-icon role="img"
-                                      class="mat-icon notranslate mr-3 icon-size-5 mat-icon-no-color" aria-hidden="true"
-                                      data-mat-icon-type="svg" data-mat-icon-name="briefcase"
-                                      data-mat-icon-namespace="heroicons_solid">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                     viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" fit="" height="100%"
-                                     width="100%" preserveAspectRatio="xMidYMid meet" focusable="false">
-                                    <path fill-rule="evenodd"
-                                          d="M7.5 5.25a3 3 0 013-3h3a3 3 0 013 3v.205c.933.085 1.857.197 2.774.334 1.454.218 2.476 1.483 2.476 2.917v3.033c0 1.211-.734 2.352-1.936 2.752A24.726 24.726 0 0112 15.75c-2.73 0-5.357-.442-7.814-1.259-1.202-.4-1.936-1.541-1.936-2.752V8.706c0-1.434 1.022-2.7 2.476-2.917A48.814 48.814 0 017.5 5.455V5.25zm7.5 0v.09a49.488 49.488 0 00-6 0v-.09a1.5 1.5 0 011.5-1.5h3a1.5 1.5 0 011.5 1.5zm-3 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z"
-                                          clip-rule="evenodd"></path>
-                                    <path
-                                        d="M3 18.4v-2.796a4.3 4.3 0 00.713.31A26.226 26.226 0 0012 17.25c2.892 0 5.68-.468 8.287-1.335.252-.084.49-.189.713-.311V18.4c0 1.452-1.047 2.728-2.523 2.923-2.12.282-4.282.427-6.477.427a49.19 49.19 0 01-6.477-.427C4.047 21.128 3 19.852 3 18.4z">
-                                    </path>
-                                </svg>
-                            </mat-icon>
-                            <span class="leading-none">
-                    <mat-form-field [ngClass]="formFieldHelpers" class="gt-xs:pr-3 flex-auto w-50">
-                      <input matInput [formControlName]=""/>
-                      <mat-icon class="icon-size-5" matSuffix [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
-                </mat-form-field>
-                  </span></div>
-                        <div class="flex items-center">
-                            <mat-icon role="img"
-                                      class="mat-icon notranslate mr-3 icon-size-5 mat-icon-no-color" aria-hidden="true"
-                                      data-mat-icon-type="svg" data-mat-icon-name="cake"
-                                      data-mat-icon-namespace="heroicons_solid">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                     viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" fit="" height="100%"
-                                     width="100%" preserveAspectRatio="xMidYMid meet" focusable="false">
-                                    <path
-                                        d="M15 1.784l-.796.796a1.125 1.125 0 101.591 0L15 1.784zM12 1.784l-.796.796a1.125 1.125 0 101.591 0L12 1.784zM9 1.784l-.796.796a1.125 1.125 0 101.591 0L9 1.784zM9.75 7.547c.498-.02.998-.035 1.5-.042V6.75a.75.75 0 011.5 0v.755c.502.007 1.002.021 1.5.042V6.75a.75.75 0 011.5 0v.88l.307.022c1.55.117 2.693 1.427 2.693 2.946v1.018a62.182 62.182 0 00-13.5 0v-1.018c0-1.519 1.143-2.829 2.693-2.946l.307-.022v-.88a.75.75 0 011.5 0v.797zM12 12.75c-2.472 0-4.9.184-7.274.54-1.454.217-2.476 1.482-2.476 2.916v.384a4.104 4.104 0 012.585.364 2.605 2.605 0 002.33 0 4.104 4.104 0 013.67 0 2.605 2.605 0 002.33 0 4.104 4.104 0 013.67 0 2.605 2.605 0 002.33 0 4.104 4.104 0 012.585-.364v-.384c0-1.434-1.022-2.7-2.476-2.917A49.138 49.138 0 0012 12.75zM21.75 18.131a2.604 2.604 0 00-1.915.165 4.104 4.104 0 01-3.67 0 2.604 2.604 0 00-2.33 0 4.104 4.104 0 01-3.67 0 2.604 2.604 0 00-2.33 0 4.104 4.104 0 01-3.67 0 2.604 2.604 0 00-1.915-.165v2.494c0 1.036.84 1.875 1.875 1.875h15.75c1.035 0 1.875-.84 1.875-1.875v-2.494z">
-                                    </path>
-                                </svg>
-                            </mat-icon>
-                            <span class="leading-none">
-                    <mat-form-field [ngClass]="formFieldHelpers" class="gt-xs:pr-3 flex-auto w-50">
-                      <input matInput type="text"/>
-                      <mat-icon class="icon-size-5" matSuffix [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
-                </mat-form-field>
-                </span></div>
+                </form>
+  
+                  <hr class="my-6 w-full border-t ng-tns-c2638821912-677 ng-star-inserted">
+                  <form [formGroup]="editNewCollaborationFormGroup">
+  
+                  <div class="mt-4">
+                    <label class="font-semibold">
+                        {{
+                            "user.collaborations.details.content_type"
+                                | transloco
+                        }}
+                    </label>
+                    <div class="flex flex-row gap-2 mt-5">
+                      <button 
+                          *ngFor="let content of contentItems" 
+                          matTooltipClass="tooltip-html"
+                          class="content"
+                          [ngClass]="{ 'active-chip': content.active}" 
+                          (click)="toggleChip('contentTypes', content)"
+                          [attr.type]="'button'"
+                        >
+                          {{content.name}}
+                      </button>
                     </div>
-                </fuse-card>
-            </form>
+                  </div>
+                  </form>
+                  
+                  <hr class="my-6 w-full border-t ng-tns-c2638821912-677 ng-star-inserted">
+                  <label class="font-semibold">Platforma</label>
+                  <div class="flex flex-row gap-2 mt-5">
+                    <button 
+                        *ngFor="let platform of platformList" 
+                        [matTooltip]="getTooltipText(platform)"
+                        matTooltipClass="tooltip-html"
+                        class="mat-chip"
+                        [ngClass]="{ 'active-chip': platform.active}"
+                        (click)="toggleChip('platforms', platform)"
+                        [attr.type]="'button'"
+                        >
+                        <img [src]="platform.logoUrl"  width="40" height="40" alt="{{ platform.name }}" />
+                    </button>
+                  </div>
+            </div>
+  
+        </fuse-card>
+        <fuse-card
+          class="flex w-full w-120 flex-col p-8 mt-8 ng-tns-c2638821912-677 ng-star-inserted"><!---->
+          <form [formGroup]="editNewCollaborationFormGroup">
+  
+          <div class="text-2xl font-semibold leading-tight ng-tns-c2638821912-677 ng-star-inserted">
+            
+            {{
+                "user.collaborations.details.compensationType"
+                    | transloco
+            }}
+        
+        
         </div>
-        <form [formGroup]="editNewCollaborationFormGroup">
-            <div class="flex flex-col items-start">
-                <fuse-card class="flex w-full max-w-140 flex-col p-6 pb-6 sm:p-8">
-                    <p *ngIf="warning" [ngStyle]="{ color: 'red' }">
-                        Przed wysłaniem, proszę uzupełnić wszystkie dane
-                    </p>
-
-                    <div class="text-xl font-semibold">Nazwa</div>
-                    <div class="mt-8 flex flex-col items-start sm:flex-row">
-                        <mat-form-field
-                            class="w-full justify-between"
-                            [subscriptSizing]="'dynamic'"
-                        >
-                      <textarea
-                          matInput
-                          [formControlName]="'name'"
-                          [placeholder]="'Napisz nazwę zlecenia'"
-                          [rows]="3"
-                          cdkTextareaAutosize
-                      ></textarea>
-                        </mat-form-field>
-                    </div>
-                    <div class="-mx-3 mt-6 flex sm:mt-8">
-                        <div class="flex flex-col ng-tns-c2638821912-677 ng-star-inserted">
-                            <div class="flex items-center  justify-between">
-                                <button class="mr-1 px-3" mat-button>
-                                    <mat-icon
-                                        class="icon-size-5"
-                                        [svgIcon]="'heroicons_solid:photo'"
-                                    ></mat-icon>
-                                    <span class="ml-2">Miasto</span>
-                                </button>
-                                <span class="leading-none">
-                            <mat-form-field [ngClass]="formFieldHelpers" class="gt-xs:pr-3 flex-auto w-80 mr-3">
-                              <mat-select [(value)]="selectedCity" [formControlName]="'city'"
-                                          (selectionChange)="onCityChange($event)">
-                                  <mat-option *ngFor="let city of cityOptions" [value]="city">
-                                      {{ city }}
-                                  </mat-option>
-                              </mat-select>
-                          </mat-form-field>
-                          </span>
-                            </div>
-                            <!-- <div class="flex items-center justify-between">
-                              <button class="mr-1 px-3" mat-button>
-                                <mat-icon
-                                    class="icon-size-5"
-                                    [svgIcon]="'heroicons_solid:user-circle'"
-                                ></mat-icon>
-                                <span class="ml-2">Firma</span>
-                              </button>
-                              <span class="leading-none">
-                                <mat-form-field [ngClass]="formFieldHelpers" class="gt-xs:pr-3 flex-auto w-90">
-                                  <mat-select
-                                    [(value)]="selectedCompany"
-                                    [formControlName]="'company'"
-                                    (selectionChange)="onCompanyChange($event)">
-                                      <mat-option *ngFor="let company of companyList" [value]="company.id">
-                                          {{company.name}}
-                                      </mat-option>
-
-                                  </mat-select>
-                              </mat-form-field>
-                              </span>
-                            </div> -->
-                            <div class="flex items-center justify-between">
-                                <button class="mr-1 px-3" mat-button>
-                                    <mat-icon
-                                        class="icon-size-5"
-                                        [svgIcon]="'heroicons_solid:user-circle'"
-                                    ></mat-icon>
-                                    <span class="ml-2">Firma</span>
-                                </button>
-                                <span class="leading-none">
-                          <mat-form-field class="gt-xs:pr-3 flex-auto w-80 mr-3">
-                            <input
-                                type="text"
-                                placeholder="Wpisz wartość"
-                                matInput
-                                [formControlName]="'company'"
-                                [matAutocomplete]="companyAuto"
-                            />
-                            <mat-autocomplete
-                                #companyAuto="matAutocomplete"
-                                (optionSelected)="onCompanyChange($event.option.value)"
-                            >
-                              <mat-option
-                                  *ngFor="let company of filteredCompanies | async"
-                                  [value]="company"
-                              >
-                                {{ company.name }}
-                              </mat-option>
-                            </mat-autocomplete>
-                          </mat-form-field>
-                        </span>
-                            </div>
-
-                            <div class="flex items-center justify-between">
-                                <button class="mr-1 px-3" mat-button>
-                                    <mat-icon
-                                        class="icon-size-5"
-                                        [svgIcon]="'heroicons_solid:wrench-screwdriver'"
-                                    ></mat-icon>
-                                    <span class="ml-2">Typ serwisu</span>
-                                </button>
-                                <span class="leading-none">
-                          <mat-form-field class="gt-xs:pr-3 flex-auto w-80  mr-3">
-                            <input
-                                type="text"
-                                placeholder="Wpisz wartość"
-                                matInput
-                                [formControlName]="'serviceType'"
-                                [matAutocomplete]="serviceTypeAuto"
-                            />
-                            <mat-autocomplete
-                                #serviceTypeAuto="matAutocomplete"
-                                (optionSelected)="onServiceTypeChange($event.option.value)"
-                            >
-                              <mat-option
-                                  *ngFor="let serviceType of filteredServiceTypes | async"
-                                  [value]="serviceType"
-                              >
-                                {{ serviceType.name }}
-                              </mat-option>
-                            </mat-autocomplete>
-                          </mat-form-field>
-                        </span>
-                            </div>
-                        </div>
-                    </div>
-                </fuse-card>
-                <fuse-card
-                    class="mt-4 flex w-full max-w-140 flex-col p-8 mt-8  ng-tns-c2638821912-677 ng-star-inserted">
-                    <div class="text-2xl font-semibold leading-tight ng-tns-c2638821912-677 ng-star-inserted">
-                        Detale Kampanii
-                    </div>
-                    <div class="mt-8 flex flex-col items-start sm:flex-row">
-                        <mat-form-field
-                            class="w-full justify-between"
-                            [subscriptSizing]="'dynamic'"
-                        >
-                      <textarea
-                          matInput
-                          [formControlName]="'details'"
-                          [placeholder]="'Opisz detale nowej kampanii'"
-                          [rows]="3"
-                          cdkTextareaAutosize
-                      ></textarea>
-                        </mat-form-field>
-                    </div>
-                    <!-- <div class="mt-4 ng-tns-c2638821912-677 ng-star-inserted">
-                      <textarea
-                        class="bg-transparent custom-textarea overflow-hidden w-100 h-20"
-                        [spellcheck]="'false'"
-                        [value]="list.title"
-                        (focusout)="updateListTitle($event)"
-                        (keydown.enter)="listTitleInput.blur()"
-                        (input)="autoResize($event)"
-                        matInput [formControlName]="'details'"
-                        #listTitleInput
-                    ></textarea>
-                    </div> -->
-                </fuse-card>
-                <fuse-card
-                    class="mt-4 flex w-full max-w-140 flex-col p-8 mt-8  ng-tns-c2638821912-677 ng-star-inserted">
-                    <div class="text-2xl font-semibold leading-tight ng-tns-c2638821912-677 ng-star-inserted">
-                        Zdjęcia
-                    </div>
-                    <div class="mt-8 flex flex-col items-start sm:flex-row">
-                        <mat-form-field
-                            class="w-full justify-between"
-                            [subscriptSizing]="'dynamic'"
-                        >
+            <p>Gotówka</p>
+            <div class="mt-4 ng-tns-c2638821912-677 ng-star-inserted">
+              <div class="mt-8 flex flex-col items-start sm:flex-row">
+                <mat-form-field
+                    class="w-full justify-between"
+                    [subscriptSizing]="'dynamic'"
+                >
                     <textarea
                         matInput
-                        [formControlName]="'details'"
-                        [placeholder]="'Tutaj będzie większy wybór zdjęć'"
+                        [formControlName]="'compensationType'"
+                        [placeholder]="
+                        'user.collaborations.details.compensation_placeholder'
+                            | transloco"
                         [rows]="3"
                         cdkTextareaAutosize
                     ></textarea>
+                </mat-form-field>
+              </div>  
+            </div>
+           </form>
+        </fuse-card>
+    </div>
+        <div class="flex flex-col items-start">
+          <fuse-card class="flex w-full max-w-140 flex-col p-6 pb-6 sm:p-8">
+            <form [formGroup]="editNewCollaborationFormGroup">
+            <p *ngIf="warning" [ngStyle]="{ color: 'red' }">
+              Przed wysłaniem, proszę uzupełnić wszystkie dane
+            </p>
+            
+            <div class="text-xl font-semibold">Title</div>
+            <div class="mt-8 mb-8 flex flex-col items-start sm:flex-row">
+                <mat-form-field
+                    class="w-full justify-between"
+                    [subscriptSizing]="'dynamic'"
+                  >
+                    <textarea
+                        matInput
+                        formControlName="title"
+                        [placeholder]="'Napisz title zlecenia'"
+                        [rows]="3"
+                        cdkTextareaAutosize
+                    ></textarea>
+                </mat-form-field>
+            </div>
+            <div class="text-xl font-semibold">
+                {{
+                    "user.collaborations.details.title"
+                        | transloco
+                }}
+            </div>
+            <div class="mt-8 flex flex-col items-start sm:flex-row">
+                <mat-form-field
+                    class="w-full justify-between"
+                    [subscriptSizing]="'dynamic'"
+                  >
+                    <textarea
+                        matInput
+                        formControlName="name"
+                        [placeholder]="
+                        'user.collaborations.details.title_placeholder'
+                            | transloco
+                    "
+                        [rows]="3"
+                        cdkTextareaAutosize
+                    ></textarea>
+                </mat-form-field>
+            </div>
+            <div class="-mx-3 mt-6 flex sm:mt-8">
+                <div class="flex flex-col ng-tns-c2638821912-677 ng-star-inserted">
+                    <div class="flex items-center  justify-between">
+                        <button class="mr-1 px-3" mat-button>
+                          <mat-icon
+                              class="icon-size-5"
+                              [svgIcon]="'heroicons_solid:photo'"
+                          ></mat-icon>
+                        <span class="ml-2">
+                            {{
+                                "user.collaborations.details.city"
+                                    | transloco
+                            }}
+                        </span>
+                        </button>
+                        <span class="leading-none">
+                          <mat-form-field 
+                            [ngClass]="formFieldHelpers" 
+                            class="gt-xs:pr-3 flex-auto w-80 mr-3"
+                          >
+                            <mat-select [(value)]="selectedCity"
+                            formControlName="city"
+                            (selectionChange)="onCityChange($event)">
+                                <mat-option *ngFor="let city of cityOptions" [value]="city">
+                                    {{city}}
+                                </mat-option>
+                            </mat-select>
                         </mat-form-field>
+                        </span>
                     </div>
+                   
+                    <div class="flex items-center justify-between">
+                      <button class="mr-1 px-3" mat-button>
+                        <mat-icon
+                          class="icon-size-5"
+                          [svgIcon]="'heroicons_solid:user-circle'"
+                        ></mat-icon>
+                        <span class="ml-2">  {{
+                            "user.collaborations.details.company"
+                                | transloco
+                        }}
+                        </span>
+                      </button>
+                      <span class="leading-none">
+                        <mat-form-field class="gt-xs:pr-3 flex-auto w-80 mr-3">
+                          <input
+                            type="text"
+                            [placeholder]="
+                            'user.collaborations.details.value'
+                                | transloco
+                        "  
+                            matInput
+                            formControlName="company"
+                            [matAutocomplete]="companyAuto"
+                          />
+                          <mat-autocomplete
 
-                </fuse-card>
-                <fuse-card [formGroup]="editNewCollaborationFormGroup"
-                           class="lg:hidden mt-4 flex w-full max-w-140 flex-col p-8 mt-8  ng-tns-c2638821912-677 ng-star-inserted">
-                    <div class="text-2xl font-semibold leading-tight ng-tns-c2638821912-677 ng-star-inserted">
-                        Wymagania
+                            #companyAuto="matAutocomplete"
+                            (optionSelected)="onCompanyChange($event.option.value)"
+                          >
+                            <mat-option
+                              *ngFor="let company of filteredCompanies | async"
+                              [value]="company"
+                            >
+                              {{ company.company?.name }}
+                            </mat-option>
+                          </mat-autocomplete>
+                        </mat-form-field>
+                      </span>
                     </div>
-                    <div class="mt-8 flex flex-col items-start sm:flex-row">
-                        <mat-form-field
-                            class="w-full justify-between"
-                            [subscriptSizing]="'dynamic'"
-                        >
+                    
+                    <div class="flex items-center justify-between">
+                      <button class="mr-1 px-3" mat-button>
+                        <mat-icon
+                          class="icon-size-5"
+                          [svgIcon]="'heroicons_solid:wrench-screwdriver'"
+                        ></mat-icon>
+                        <span class="ml-2">
+                            {{
+                                "user.collaborations.details.service_type"
+                                    | transloco
+                            }}
+                        </span>
+                      </button>
+                      <span class="leading-none">
+                        <mat-form-field class="gt-xs:pr-3 flex-auto w-80  mr-3">
+                          <input
+                            type="text"
+                            [placeholder]="
+                            'user.collaborations.details.value'
+                                | transloco
+                        "  
+                            matInput
+                            formControlName="serviceType"
+                            [matAutocomplete]="serviceTypeAuto"
+                          />
+                          <mat-autocomplete
+                            #serviceTypeAuto="matAutocomplete"
+                            (optionSelected)="onServiceTypeChange($event.option.value)"
+                          >
+                            <mat-option
+                              *ngFor="let serviceType of filteredServiceTypes | async"
+                              [value]="serviceType"
+                            >
+                              {{ serviceType.name }}
+                            </mat-option>
+                          </mat-autocomplete>
+                        </mat-form-field>
+                      </span>
+                    </div>
+              </div>
+          </div>
+          </form>
+        </fuse-card>
+        <fuse-card class="mt-4 flex w-full max-w-140 flex-col p-8 mt-8  ng-tns-c2638821912-677 ng-star-inserted">
+          <form [formGroup]="editNewCollaborationFormGroup">
+  
+            <div class="text-2xl font-semibold leading-tight ng-tns-c2638821912-677 ng-star-inserted">
+                {{
+                    "user.collaborations.details.campaign_details"
+                        | transloco
+                }}
+            
+            </div>
+              <div class="mt-8 flex flex-col items-start sm:flex-row">
+                  <mat-form-field
+                      class="w-full justify-between"
+                      [subscriptSizing]="'dynamic'"
+                  >
                       <textarea
+                          matInput
+                          formControlName="details"
+                          [placeholder]="
+                            'user.collaborations.details.campaign_details_placeholder'
+                                | transloco
+                        "  
+                          [rows]="3"
+                          cdkTextareaAutosize
+                      ></textarea>
+                  </mat-form-field>
+              </div>
+          </form>
+        </fuse-card>
+        <fuse-card class="lg:hidden flex w-full w-120 flex-col p-8 mt-8 ng-tns-c2638821912-677 ng-star-inserted hidden-on-small">
+          <div class="ng-tns-c2638821912-677 ng-star-inserted">
+                <div class="text-2xl font-semibold leading-tight ng-tns-c2638821912-677 ng-star-inserted">
+                    {{
+                        "user.collaborations.details.requirements"
+                            | transloco
+                    }}
+                </div>
+              <form [formGroup]="editNewCollaborationFormGroup">
+                <div class="mt-8 flex flex-col items-start sm:flex-row">
+                  <mat-form-field 
+                      class="w-full justify-between"
+                      [subscriptSizing]="'dynamic'"
+                  >
+                
+                      <textarea class="overflow-hidden"
                           matInput
                           [formControlName]="'requirements'"
-                          [placeholder]="'Tutaj jest opis ktory wpisuje sobie firma ktora chce sie reklamowac u nas'"
+                          [placeholder]="
+                          'user.collaborations.details.requirements_placeholder'
+                              | transloco"
                           [rows]="3"
                           cdkTextareaAutosize
                       ></textarea>
-                        </mat-form-field>
-                    </div>
-                    <hr class="my-6 w-full border-t ng-tns-c2638821912-677 ng-star-inserted">
-                    <div class="flex flex-col ng-tns-c2638821912-677 ng-star-inserted">
-                        <div class="flex items-center">
-                            <mat-icon role="img"
-                                      class="mat-icon notranslate mr-3 icon-size-5 mat-icon-no-color" aria-hidden="true"
-                                      data-mat-icon-type="svg" data-mat-icon-name="map-pin"
-                                      data-mat-icon-namespace="heroicons_solid">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                     viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" fit="" height="100%"
-                                     width="100%" preserveAspectRatio="xMidYMid meet" focusable="false">
-                                    <path fill-rule="evenodd"
-                                          d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z"
-                                          clip-rule="evenodd"></path>
-                                </svg>
-                            </mat-icon>
-                            <span class="leading-none">
-                      <mat-form-field [ngClass]="formFieldHelpers" class="gt-xs:pr-3 flex-auto w-100">
-                        <input matInput [formControlName]="'requirements'"/>
-                        <mat-icon class="icon-size-5" matSuffix [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
-                      </mat-form-field>
-
-                      </span></div>
-                        <div class="flex items-center">
-                            <mat-icon role="img"
-                                      class="mat-icon notranslate mr-3 icon-size-5 mat-icon-no-color" aria-hidden="true"
-                                      data-mat-icon-type="svg" data-mat-icon-name="briefcase"
-                                      data-mat-icon-namespace="heroicons_solid">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                     viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" fit="" height="100%"
-                                     width="100%" preserveAspectRatio="xMidYMid meet" focusable="false">
-                                    <path fill-rule="evenodd"
-                                          d="M7.5 5.25a3 3 0 013-3h3a3 3 0 013 3v.205c.933.085 1.857.197 2.774.334 1.454.218 2.476 1.483 2.476 2.917v3.033c0 1.211-.734 2.352-1.936 2.752A24.726 24.726 0 0112 15.75c-2.73 0-5.357-.442-7.814-1.259-1.202-.4-1.936-1.541-1.936-2.752V8.706c0-1.434 1.022-2.7 2.476-2.917A48.814 48.814 0 017.5 5.455V5.25zm7.5 0v.09a49.488 49.488 0 00-6 0v-.09a1.5 1.5 0 011.5-1.5h3a1.5 1.5 0 011.5 1.5zm-3 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z"
-                                          clip-rule="evenodd"></path>
-                                    <path
-                                        d="M3 18.4v-2.796a4.3 4.3 0 00.713.31A26.226 26.226 0 0012 17.25c2.892 0 5.68-.468 8.287-1.335.252-.084.49-.189.713-.311V18.4c0 1.452-1.047 2.728-2.523 2.923-2.12.282-4.282.427-6.477.427a49.19 49.19 0 01-6.477-.427C4.047 21.128 3 19.852 3 18.4z">
-                                    </path>
-                                </svg>
-                            </mat-icon>
-                            <span class="leading-none">
-                      <mat-form-field [ngClass]="formFieldHelpers" class="gt-xs:pr-3 flex-auto w-100">
-                        <input matInput type="text"/>
-                        <mat-icon class="icon-size-5" matSuffix [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
                   </mat-form-field>
-                     </span>
-                        </div>
-                        <div class=" flex items-center">
-                            <mat-icon role="img"
-                                      class="mat-icon notranslate mr-3 icon-size-5 mat-icon-no-color" aria-hidden="true"
-                                      data-mat-icon-type="svg" data-mat-icon-name="cake"
-                                      data-mat-icon-namespace="heroicons_solid">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                     viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" fit="" height="100%"
-                                     width="100%" preserveAspectRatio="xMidYMid meet" focusable="false">
-                                    <path
-                                        d="M15 1.784l-.796.796a1.125 1.125 0 101.591 0L15 1.784zM12 1.784l-.796.796a1.125 1.125 0 101.591 0L12 1.784zM9 1.784l-.796.796a1.125 1.125 0 101.591 0L9 1.784zM9.75 7.547c.498-.02.998-.035 1.5-.042V6.75a.75.75 0 011.5 0v.755c.502.007 1.002.021 1.5.042V6.75a.75.75 0 011.5 0v.88l.307.022c1.55.117 2.693 1.427 2.693 2.946v1.018a62.182 62.182 0 00-13.5 0v-1.018c0-1.519 1.143-2.829 2.693-2.946l.307-.022v-.88a.75.75 0 011.5 0v.797zM12 12.75c-2.472 0-4.9.184-7.274.54-1.454.217-2.476 1.482-2.476 2.916v.384a4.104 4.104 0 012.585.364 2.605 2.605 0 002.33 0 4.104 4.104 0 013.67 0 2.605 2.605 0 002.33 0 4.104 4.104 0 013.67 0 2.605 2.605 0 002.33 0 4.104 4.104 0 012.585-.364v-.384c0-1.434-1.022-2.7-2.476-2.917A49.138 49.138 0 0012 12.75zM21.75 18.131a2.604 2.604 0 00-1.915.165 4.104 4.104 0 01-3.67 0 2.604 2.604 0 00-2.33 0 4.104 4.104 0 01-3.67 0 2.604 2.604 0 00-2.33 0 4.104 4.104 0 01-3.67 0 2.604 2.604 0 00-1.915-.165v2.494c0 1.036.84 1.875 1.875 1.875h15.75c1.035 0 1.875-.84 1.875-1.875v-2.494z">
-                                    </path>
-                                </svg>
-                            </mat-icon>
-                            <span class="leading-none">
-                      <mat-form-field [ngClass]="formFieldHelpers" class="gt-xs:pr-3 flex-auto w-100">
-                        <input matInput type="text"/>
-                        <mat-icon class="icon-size-5" matSuffix [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
-                  </mat-form-field>
-                    </span>
-                        </div>
+                </div>
+                <hr class="my-6 w-full border-t ng-tns-c2638821912-677 ng-star-inserted">
+                <div class="flex justify-between mt-5 mr-2.5 mb-5 ml-0">
+                   <label id="example-name-label" class="font-semibold">
+                        {{
+                            "user.collaborations.details.followers_amount"
+                                | transloco
+                        }}
+                    </label>
+                    <label class="example-value-label">
+                        <span *ngIf="result(compensationAmountMin) === result(compensationAmountMax)">
+                            {{ result(compensationAmountMin) | number:'1.0-0' }} 
+                            <span *ngIf="result(compensationAmountMin) === '10000'">+</span>
+                          </span>
+                          <span *ngIf="result(compensationAmountMin) !== result(compensationAmountMax)">
+                            {{ result(compensationAmountMin) | number:'1.0-0' }} - 
+                            {{ result(compensationAmountMax) | number:'1.0-0' }}
+                            <span *ngIf="result(compensationAmountMax) === '10000'">+</span>
+                        </span>
+                    </label>
+                </div>
+                  <div class="relative w-[390px]">
+                    <mat-slider [min]="min" [max]="max" class="w-full">
+                      <input 
+                        matSliderStartThumb 
+                        formControlName="compensationAmountMin"
+                        [value]="compensationAmountMin" 
+                        (change)="onStartSliderChange($event)">
+                      <input matSliderEndThumb 
+                        formControlName="compensationAmountMax"
+                        [value]="compensationAmountMax" 
+                        (change)="onEndSliderChange($event)">
+                    </mat-slider>
+                    <div class="absolute top-1/2 left-2 w-full flex justify-between">
+                      <div *ngFor="let value of amountFollowers" class="mat-slider-dots"></div>
                     </div>
-                </fuse-card>
-                <fuse-card [formGroup]="editNewCollaborationFormGroup"
-                           class="lg:hidden mt-4 flex w-full max-w-140 flex-col p-8 mt-8  ng-tns-c2638821912-677 ng-star-inserted">
-                    <div class="text-2xl font-semibold leading-tight ng-tns-c2638821912-677 ng-star-inserted">
-                        Wynagrodzenie
+                </div>
+                <div class="flex w-[430px] justify-between mt-2.5 text-gray-500">
+                    <div *ngFor="let value of amountFollowers">
+                      {{value}}
                     </div>
-                    <div class="mt-8 flex flex-col items-start sm:flex-row">
-                        <mat-form-field
-                            class="w-full justify-between"
-                            [subscriptSizing]="'dynamic'"
-                        >
-                      <textarea
-                          matInput
-                          [formControlName]="'compensation'"
-                          [placeholder]="'Tutaj jest opis ktory wpisuje sobie firma ktora chce sie reklamowac u nas'"
-                          [rows]="3"
-                          cdkTextareaAutosize
-                      ></textarea>
-                        </mat-form-field>
-                    </div>
-                    <hr class="my-6 w-full border-t ng-tns-c2638821912-677 ng-star-inserted">
-                    <div class="flex flex-col ng-tns-c2638821912-677 ng-star-inserted">
-                        <div class="flex items-center">
-                            <mat-icon role="img"
-                                      class="mat-icon notranslate mr-3 icon-size-5 mat-icon-no-color" aria-hidden="true"
-                                      data-mat-icon-type="svg" data-mat-icon-name="map-pin"
-                                      data-mat-icon-namespace="heroicons_solid">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                     viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" fit="" height="100%"
-                                     width="100%" preserveAspectRatio="xMidYMid meet" focusable="false">
-                                    <path fill-rule="evenodd"
-                                          d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z"
-                                          clip-rule="evenodd"></path>
-                                </svg>
-                            </mat-icon>
-                            <span class="leading-none">
-                      <mat-form-field [ngClass]="formFieldHelpers" class="gt-xs:pr-3 flex-auto w-100">
-                        <input matInput [formControlName]="'requirements'"/>
-                        <mat-icon class="icon-size-5" matSuffix [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
-                      </mat-form-field>
-
-                      </span></div>
-                        <div class="flex items-center">
-                            <mat-icon role="img"
-                                      class="mat-icon notranslate mr-3 icon-size-5 mat-icon-no-color" aria-hidden="true"
-                                      data-mat-icon-type="svg" data-mat-icon-name="briefcase"
-                                      data-mat-icon-namespace="heroicons_solid">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                     viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" fit="" height="100%"
-                                     width="100%" preserveAspectRatio="xMidYMid meet" focusable="false">
-                                    <path fill-rule="evenodd"
-                                          d="M7.5 5.25a3 3 0 013-3h3a3 3 0 013 3v.205c.933.085 1.857.197 2.774.334 1.454.218 2.476 1.483 2.476 2.917v3.033c0 1.211-.734 2.352-1.936 2.752A24.726 24.726 0 0112 15.75c-2.73 0-5.357-.442-7.814-1.259-1.202-.4-1.936-1.541-1.936-2.752V8.706c0-1.434 1.022-2.7 2.476-2.917A48.814 48.814 0 017.5 5.455V5.25zm7.5 0v.09a49.488 49.488 0 00-6 0v-.09a1.5 1.5 0 011.5-1.5h3a1.5 1.5 0 011.5 1.5zm-3 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z"
-                                          clip-rule="evenodd"></path>
-                                    <path
-                                        d="M3 18.4v-2.796a4.3 4.3 0 00.713.31A26.226 26.226 0 0012 17.25c2.892 0 5.68-.468 8.287-1.335.252-.084.49-.189.713-.311V18.4c0 1.452-1.047 2.728-2.523 2.923-2.12.282-4.282.427-6.477.427a49.19 49.19 0 01-6.477-.427C4.047 21.128 3 19.852 3 18.4z">
-                                    </path>
-                                </svg>
-                            </mat-icon>
-                            <span class="leading-none">
-                      <mat-form-field [ngClass]="formFieldHelpers" class="gt-xs:pr-3 flex-auto w-100">
-                        <input matInput type="text"/>
-                        <mat-icon class="icon-size-5" matSuffix [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
-                  </mat-form-field>
-                     </span>
-
-                        </div>
-                        <div class=" flex items-center">
-                            <mat-icon role="img"
-                                      class="mat-icon notranslate mr-3 icon-size-5 mat-icon-no-color" aria-hidden="true"
-                                      data-mat-icon-type="svg" data-mat-icon-name="cake"
-                                      data-mat-icon-namespace="heroicons_solid">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                     viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" fit="" height="100%"
-                                     width="100%" preserveAspectRatio="xMidYMid meet" focusable="false">
-                                    <path
-                                        d="M15 1.784l-.796.796a1.125 1.125 0 101.591 0L15 1.784zM12 1.784l-.796.796a1.125 1.125 0 101.591 0L12 1.784zM9 1.784l-.796.796a1.125 1.125 0 101.591 0L9 1.784zM9.75 7.547c.498-.02.998-.035 1.5-.042V6.75a.75.75 0 011.5 0v.755c.502.007 1.002.021 1.5.042V6.75a.75.75 0 011.5 0v.88l.307.022c1.55.117 2.693 1.427 2.693 2.946v1.018a62.182 62.182 0 00-13.5 0v-1.018c0-1.519 1.143-2.829 2.693-2.946l.307-.022v-.88a.75.75 0 011.5 0v.797zM12 12.75c-2.472 0-4.9.184-7.274.54-1.454.217-2.476 1.482-2.476 2.916v.384a4.104 4.104 0 012.585.364 2.605 2.605 0 002.33 0 4.104 4.104 0 013.67 0 2.605 2.605 0 002.33 0 4.104 4.104 0 013.67 0 2.605 2.605 0 002.33 0 4.104 4.104 0 012.585-.364v-.384c0-1.434-1.022-2.7-2.476-2.917A49.138 49.138 0 0012 12.75zM21.75 18.131a2.604 2.604 0 00-1.915.165 4.104 4.104 0 01-3.67 0 2.604 2.604 0 00-2.33 0 4.104 4.104 0 01-3.67 0 2.604 2.604 0 00-2.33 0 4.104 4.104 0 01-3.67 0 2.604 2.604 0 00-1.915-.165v2.494c0 1.036.84 1.875 1.875 1.875h15.75c1.035 0 1.875-.84 1.875-1.875v-2.494z">
-                                    </path>
-                                </svg>
-                            </mat-icon>
-                            <span class="leading-none">
-                      <mat-form-field [ngClass]="formFieldHelpers" class="gt-xs:pr-3 flex-auto w-100">
-                        <input matInput type="text"/>
-                        <mat-icon class="icon-size-5" matSuffix [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
-                  </mat-form-field>
-                    </span>
-                        </div>
-                    </div>
-                </fuse-card>
+                </div>
+              </form>
+                <hr class="my-6 w-full border-t ng-tns-c2638821912-677 ng-star-inserted">
+                <form [formGroup]="editNewCollaborationFormGroup">
+                <div class="mt-4">
+                  <label class="font-semibold">
+                    {{
+                        "user.collaborations.details.content_type"
+                            | transloco
+                    }}
+                  </label>
+                  
+                  <div class="flex flex-row gap-2 mt-5">
+                    <button 
+                        *ngFor="let content of contentItems" 
+                        matTooltipClass="tooltip-html"
+                        class="content"
+                        [ngClass]="{ 'active-chip': content.active}" 
+                        (click)="toggleChip('contentTypes', content)"
+                        [attr.type]="'button'"
+                      >
+                        {{content.name}}
+                    </button>
+                  </div>
+                </div>
+                </form>
+                <hr class="my-6 w-full border-t ng-tns-c2638821912-677 ng-star-inserted">
+                <label class="font-semibold">Platforma</label>
+                <div class="flex flex-row gap-2 mt-5">
+                  <button 
+                      *ngFor="let platform of platformList" 
+                      [matTooltip]="getTooltipText(platform)"
+                      matTooltipClass="tooltip-html"
+                      class="mat-chip"
+                      [ngClass]="{ 'active-chip': platform.active}"
+                      (click)="toggleChip('platforms', platform)"
+                      [attr.type]="'button'"
+                      >
+                      <img [src]="platform.logoUrl"  width="40" height="40" alt="{{ platform.name }}" />
+                  </button>
+                </div>
+          </div>
+      </fuse-card>
+        <fuse-card
+        class="lg:hidden flex w-full w-120 flex-col p-8 mt-8 ng-tns-c2638821912-677 ng-star-inserted"><!---->
+        <form [formGroup]="editNewCollaborationFormGroup">
+            <div class="text-2xl font-semibold leading-tight ng-tns-c2638821912-677 ng-star-inserted">
+                {{
+                    "user.collaborations.details.compensationType"
+                        | transloco
+                }}
             </div>
-        </form>
+            <p>Gotówka</p>
+            <div class="mt-4 ng-tns-c2638821912-677 ng-star-inserted">
+              <div class="mt-8 flex flex-col items-start sm:flex-row">
+                <mat-form-field
+                    class="w-full justify-between"
+                    [subscriptSizing]="'dynamic'"
+                >
+                    <textarea
+                        matInput
+                        [formControlName]="'compensationType'"
+                        [placeholder]="
+                        'user.collaborations.details.compensation_placeholder'
+                            | transloco
+                    "
+                        [rows]="3"
+                        cdkTextareaAutosize
+                    ></textarea>
+                </mat-form-field>
+              </div>  
+            </div>
+         </form>
+      </fuse-card>
+      </div>
     </div>
-</div>
+  </div>

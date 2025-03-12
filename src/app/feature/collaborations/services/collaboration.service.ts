@@ -1,64 +1,78 @@
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 // import { Influencer } from './Influencer';
-import {Collaboration, CollaborationResponse} from './collaboration.types';
-import {AuthService} from 'app/core/services/authentication/auth.service';
-import {environment} from 'environments/environment';
+import {
+  Collaboration,
+  CollaborationResponse,
+  ContentTypeResponse,
+  User
+} from './collaboration.types';
+import { AuthService } from 'app/core/services/authentication/auth.service';
+import { environment } from 'environments/environment';
 
 @Injectable({
-    providedIn: 'root',
+  providedIn: 'root'
 })
 export class CollaborationService {
-    private apiUrl: string = environment.apiUrl + '/partnership-opportunity';
+  private apiUrl: string = environment.apiUrl + '/partnership-opportunity';
 
-    httpOptions = {
-        headers: new HttpHeaders({'Content-Type': 'application/json'}),
-    };
+  private mainApiUrl: string = environment.apiUrl;
 
-    dataToken: any;
+  httpOptions = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  };
 
-    constructor(private http: HttpClient, private authService: AuthService) {
-    }
+  dataToken: any;
 
-    getCollaborationList(): Observable<Collaboration[]> {
-        return this.http.get<Collaboration[]>(this.apiUrl + '/list');
-    }
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
-    getCollaborationPaged(
-        pageIndex: number,
-        pageSize: number,
-        sortBy: string,
-        direction: string,
-        name: string,
-        city: string,
-        details: string,
-        title: string
-    ): Observable<CollaborationResponse> {
-        const url = `${this.apiUrl}/paged?page=${pageIndex}&size=${pageSize}&sort=${sortBy},${direction}&name=${name}&city=${city}&details=${details}&title=${title}`;
+  getCollaborationList(): Observable<Collaboration[]> {
+    return this.http.get<Collaboration[]>(this.apiUrl + '/list');
+  }
 
-        return this.http.get<CollaborationResponse>(url);
-    }
+  getCollaborationId(id: number): Observable<Collaboration> {
+    return this.http.get<Collaboration>(this.apiUrl + `/${id}`);
+  }
 
-    createCollaboration(collaboration: any) {
-        console.log('server:', collaboration);
+  getCollaborationContentType(): Observable<ContentTypeResponse> {
+    return this.http.get<ContentTypeResponse>(this.mainApiUrl + '/content-type/paged');
+  }
 
-        return this.http.post<any>(
-            this.apiUrl,
-            collaboration,
-            this.httpOptions
-        );
-    }
+  getCollaborationPlatform(): Observable<ContentTypeResponse> {
+    return this.http.get<ContentTypeResponse>(this.mainApiUrl + '/platform/paged');
+  }
 
-    deleteCollaboration(id: number) {
-        return this.http.delete<Collaboration>(this.apiUrl + `/${id}`);
-    }
+  getCollaborationPaged(
+    pageIndex: number,
+    pageSize: number,
+    sortBy: string,
+    direction: string,
+    name: string,
+    city: string,
+    details: string,
+    title: string
+  ): Observable<CollaborationResponse> {
+    const url = `${this.apiUrl}/paged?page=${pageIndex}&size=${pageSize}&sort=${sortBy},${direction}&name=${name}&city=${city}&details=${details}&title=${title}`;
 
-    updateCollaboration(collaboration: Collaboration, id: number) {
-        return this.http.put<Collaboration>(
-            this.apiUrl + `/${id}`,
-            collaboration,
-            this.httpOptions
-        );
-    }
+    return this.http.get<CollaborationResponse>(url);
+  }
+
+  createCollaboration(collaboration: any) {
+    console.log('server:', collaboration);
+
+    return this.http.post<any>(this.apiUrl, collaboration, this.httpOptions);
+  }
+
+  deleteCollaboration(id: number) {
+    return this.http.delete<Collaboration>(this.apiUrl + `/${id}`);
+  }
+
+  updateCollaboration(collaboration: Collaboration, id: number) {
+    return this.http.put<Collaboration>(this.apiUrl + `/${id}`, collaboration, this.httpOptions);
+  }
+
+  getUser(): Observable<User> {
+    return this.http.get<User>(this.mainApiUrl + '/user/paged');
+  }
 }

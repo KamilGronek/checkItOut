@@ -153,13 +153,19 @@
                 "collaboration_card": {
                     "details_button": "Collaboration Details"
                 },
+                "add_new_collaboration": "Add new",
                 "pagination": {
                     "select_page": "Select page",
                     "page_number": "Page number: {{ pageIndex }}"
                 }
             },
+            "pop_up_notice":{
+                "title": "Collaboration edit",
+                "message": "Collaboration has been successfully edited"
+            },
             "details": {
                 "title": "Collaboration Details",
+                 "title_placeholder": "Enter the name of the order",
                 "start_date": "Start Date",
                 "end_date": "End Date",
                 "date_not_set": "Not set",
@@ -170,14 +176,19 @@
                 "edit_button": "Edit",
                 "requirements": "Requirements",
                 "requirements_placeholder": "Enter collaboration requirements here...",
-                "compensation": "Compensation",
+                "compensationType": "Compensation",
                 "compensation_placeholder": "Enter compensation details here...",
                 "campaign_details": "Campaign Details",
                 "campaign_details_placeholder": "Describe the new campaign details...",
                 "company_details": "Company Details",
                 "slider_configuration": "Slider Configuration",
                 "result": "Result",
+                "city": "City",
+                "company": "Company",
+                "service_type": "Service Type",
                 "value": "Value",
+                "followers_amount": "Followers Amount",
+                "content_type": "Content Type",
                 "min_value": "Min Value",
                 "max_value": "Max Value",
                 "step_size": "Step Size",
