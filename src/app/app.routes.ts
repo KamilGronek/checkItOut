@@ -5,6 +5,7 @@ import {RoleGuard} from './core/guards/role.guard';
 import {LayoutComponent} from 'app/shared/components/layout/layout.component';
 import {AuthResolver} from 'app/core/resolvers/auth.resolver';
 import {ComponentSamplesComponent} from "./shared/components/ui/component-samples.component";
+import {AuthSignOutComponent} from "./feature/authentication/components/sign-out/sign-out.component";
 
 // @formatter:off
 /* eslint-disable max-len */
@@ -30,33 +31,20 @@ export const appRoutes: Route[] = [
         ],
     },
 
-    // Redirect signed-in user to the '/example'
-    //
-    // After the user signs in, the sign-in page will redirect the user to the 'signed-in-redirect'
-    // path. Below is another redirection for that path to redirect the user to the desired
-    // location. This is a small convenience to keep all main routes together here on this file.
-
-    // Auth routes for guests
+    // Auth routes for all users
     {
-        path: '',
-        canActivate: [NoAuthGuard],
-        canActivateChild: [NoAuthGuard],
+        path: 'auth',
         component: LayoutComponent,
         data: {
             layout: 'with-banner',
         },
-        children: [
-            {
-                path: 'auth',
-                loadChildren: () =>
-                    import(
-                        'app/feature/authentication/components/authentication.routes'
-                        ),
-            }
-        ],
+        loadChildren: () =>
+            import(
+                'app/feature/authentication/components/authentication.routes'
+                ),
     },
 
-    // Auth routes for authenticated users
+    // Routes for all
     {
         path: 'home',
         canActivate: [RoleGuard],
@@ -67,7 +55,7 @@ export const appRoutes: Route[] = [
         },
     },
 
-    // Admin routes
+    // Auth routes for authenticated users
     {
         path: '',
         canActivate: [AuthGuard],
