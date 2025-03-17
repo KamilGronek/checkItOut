@@ -118,6 +118,40 @@
                     acceptedFileTypes="image/jpeg,image/png,image/gif"
                     (imageUploaded)="onImageUpload()"
                 >Profile picture</app-input>
+            </div><div class="flex flex-col w-64">
+                <span>Rounded Image input</span>
+                <app-input
+                    type="image"
+                    [control]="imageControl"
+                    [rounded]="true"
+                    storagePath="sample-images"
+                    acceptedFileTypes="image/jpeg,image/png,image/gif"
+                    (imageUploaded)="onImageUpload()"
+                >Profile picture</app-input>
+            </div>
+            <div class="flex flex-col w-64">
+                <span>Date range input</span>
+                <app-input
+                    type="daterange"
+                    [startControl]="startDateControl"
+                    [endControl]="endDateControl"
+                    [minDate]="minDate"
+                    [maxDate]="maxDate"
+                    placeholder="date">
+                    Select Date Range
+                </app-input>
+            </div>
+            <div class="flex flex-col w-64">
+                <span>Single date input</span>
+                <app-input
+                    type="datepicker"
+                    [control]="dateControl"
+                    [minDate]="minDate"
+                    [maxDate]="maxDate"
+                    [hint]="'Select a date between ' + (minDate | date) + ' and ' + (maxDate | date)"
+                    placeholder="Select a date">
+                    Event Date
+                </app-input>
             </div>
             <div class="flex flex-col w-64">
                 <span>Textarea input</span>

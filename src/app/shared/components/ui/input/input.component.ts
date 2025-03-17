@@ -24,8 +24,37 @@ import {
 } from 'app/shared/components/ui/input/input.types';
 import { ImageService } from 'app/core/services/image/image.service'; // Update with correct path
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import {MatTooltip} from "@angular/material/tooltip";
+import { MatTooltip } from "@angular/material/tooltip";
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
+/**
+ * A versatile input component that supports multiple input types including:
+ * - Standard text-based inputs (text, email, password, etc.)
+ * - Textareas for multi-line input
+ * - Checkboxes for boolean selection
+ * - Image upload with preview and storage capabilities
+ * - Single date picker with validation
+ * - Date range picker with start/end validation
+ *
+ * This component wraps Angular Material form components and adds additional functionality.
+ *
+ * @example
+ * <!-- Basic text input -->
+ * <app-input type="text" [control]="myFormControl">Label Text</app-input>
+ *
+ * @example
+ * <!-- Password input with hint -->
+ * <app-input type="password" [control]="passwordControl" hint="Must be at least 8 characters">Password</app-input>
+ *
+ * @example
+ * <!-- Date range picker -->
+ * <app-input type="daterange" [startControl]="startDateControl" [endControl]="endDateControl">Date Range</app-input>
+ *
+ * @example
+ * <!-- Image upload -->
+ * <app-input type="image" [control]="imageControl" storagePath="profile-images" [rounded]="true">Profile Image</app-input>
+ */
 @Component({
     selector: 'app-input',
     standalone: true,
@@ -44,42 +73,233 @@ import {MatTooltip} from "@angular/material/tooltip";
         MatProgressSpinnerModule,
         MatTooltip,
         NgTemplateOutlet,
+        MatDatepickerModule,
+        MatNativeDateModule,
     ],
     templateUrl: './input.component.html',
 })
 export class InputComponent implements AfterContentInit {
+    /**
+     * Additional CSS classes to apply to the input component.
+     * @default ''
+     */
     @Input() customClass: string = '';
+
+    /**
+     * The label text for the input.
+     * Can also be provided via content projection as the component's content.
+     */
     @Input() label!: string;
+
+    /**
+     * The input type which determines the component's rendering and behavior.
+     * Supports all standard HTML input types plus additional custom types.
+     * @see MatInputType and OtherInputType for allowed values
+     * @default 'text'
+     */
     @Input() type: MatInputType | OtherInputType = 'text';
+
+    /**
+     * The Angular FormControl that manages this input's value and validation state.
+     * Required for the component to function.
+     */
     @Input() control!: FormControl;
+
+    /**
+     * Placeholder text displayed when the input has no value.
+     * @default ''
+     */
     @Input() placeholder: string = '';
+
+    /**
+     * Help text to provide additional context about the input.
+     * Displayed as a tooltip when hovering over the help icon.
+     * @optional
+     */
     @Input() hint?: string;
+
+    /**
+     * Icon to display at the start of the input field.
+     * Should be a valid icon name from your icon registry.
+     * @optional
+     */
     @Input() prefixIcon?: string;
+
+    /**
+     * The HTML id attribute value for the input element.
+     * Automatically generated if not provided.
+     * @default A randomly generated id
+     */
     @Input() id: string = `input-${Math.random()
         .toString(36)
         .substring(2, 15)}`;
 
-    // Textarea specific inputs
+    /**
+     * Number of visible rows for textarea inputs.
+     * Only applies when type is 'textarea'.
+     * @default 3
+     */
     @Input() rows: number = 3;
+
+    /**
+     * Maximum character length for text inputs.
+     * Used for both validation and UI character count.
+     * @optional
+     */
     @Input() maxLength?: number;
+
+    /**
+     * Whether the textarea should automatically adjust its height based on content.
+     * Only applies when type is 'textarea'.
+     * @default false
+     */
     @Input() autosize: boolean = false;
 
-    // Image specific inputs
-    @Input() storagePath: string = 'default'; // Default path for storing images
-    @Input() acceptedFileTypes: string = 'image/*'; // Default to all image types
+    /**
+     * The storage path to use when uploading images.
+     * Only applies when type is 'image'.
+     * @default 'default'
+     */
+    @Input() storagePath: string = 'default';
 
+    /**
+     * File types that can be selected for image upload.
+     * Only applies when type is 'image'.
+     * @default 'image/*'
+     */
+    @Input() acceptedFileTypes: string = 'image/*';
+
+    /**
+     * Whether the image preview should have rounded corners (false) or be circular (true).
+     * Only applies when type is 'image'.
+     * @default false
+     */
+    @Input() rounded: boolean = false;
+
+    /**
+     * The minimum allowable date for date pickers.
+     * Only applies when type is 'datepicker' or 'daterange'.
+     * @optional
+     */
+    @Input() minDate?: Date;
+
+    /**
+     * The maximum allowable date for date pickers.
+     * Only applies when type is 'datepicker' or 'daterange'.
+     * @optional
+     */
+    @Input() maxDate?: Date;
+
+    /**
+     * The format to use when displaying dates.
+     * Only applies when type is 'datepicker' or 'daterange'.
+     * @default 'MM/dd/yyyy'
+     */
+    @Input() dateFormat: string = 'MM/dd/yyyy';
+
+    /**
+     * The form control name for the start date in a parent form group.
+     * Only applies when type is 'daterange'.
+     * @default 'start'
+     */
+    @Input() startKey: string = 'start';
+
+    /**
+     * The form control name for the end date in a parent form group.
+     * Only applies when type is 'daterange'.
+     * @default 'end'
+     */
+    @Input() endKey: string = 'end';
+
+    /**
+     * The Angular FormControl for the start date.
+     * Required when type is 'daterange'.
+     * @optional
+     */
+    @Input() startControl?: FormControl;
+
+    /**
+     * The Angular FormControl for the end date.
+     * Required when type is 'daterange'.
+     * @optional
+     */
+    @Input() endControl?: FormControl;
+
+    /**
+     * Event emitted when the input value changes.
+     * Emitted for all input types when their value is modified.
+     */
     @Output() change = new EventEmitter<any>();
-    @Output() keyup = new EventEmitter<any>();
-    @Output() imageUploaded = new EventEmitter<string>(); // New event for image upload
-    @Output() uploadError = new EventEmitter<string>(); // New event for upload errors
 
-    inputType: string = null; // Track input type dynamically
+    /**
+     * Event emitted on keyup events for text-based inputs.
+     * Only applies to text-based input types.
+     */
+    @Output() keyup = new EventEmitter<any>();
+
+    /**
+     * Event emitted when an image is successfully uploaded.
+     * The event payload is the URL of the uploaded image.
+     * Only applies when type is 'image'.
+     */
+    @Output() imageUploaded = new EventEmitter<string>();
+
+    /**
+     * Event emitted when an image upload fails.
+     * The event payload is the error message.
+     * Only applies when type is 'image'.
+     */
+    @Output() uploadError = new EventEmitter<string>();
+
+    /**
+     * Event emitted when a date is selected or changed.
+     * The event payload is the selected Date object or null.
+     * Only applies when type is 'datepicker'.
+     */
+    @Output() dateChange = new EventEmitter<Date | null>();
+
+    /**
+     * Event emitted when a date range is selected or changed.
+     * The event payload has start and end properties, each containing a Date object or null.
+     * Only applies when type is 'daterange'.
+     */
+    @Output() dateRangeChange = new EventEmitter<{start: Date | null, end: Date | null}>();
+
+    /**
+     * The current input type being used, which may differ from the initial type.
+     * For example, a password field may toggle between 'password' and 'text'.
+     */
+    inputType: string = null;
+
+    /**
+     * The currently selected file when using image upload.
+     * Null when no file is selected or after an upload is complete.
+     */
     selectedFile: File | null = null;
+
+    /**
+     * Whether an image is currently being uploaded.
+     * Used to display a loading spinner and disable controls during upload.
+     */
     isUploading: boolean = false;
+
+    /**
+     * URL for the image preview when a file is selected but not yet uploaded.
+     * Created using URL.createObjectURL and cleaned up when no longer needed.
+     */
     previewUrl: string | null = null;
 
+    /**
+     * Creates a new InputComponent with required dependencies.
+     *
+     * @param imageService Service for handling image uploads
+     */
     constructor(private imageService: ImageService) {}
 
+    /**
+     * Initializes the component after content is initialized.
+     * Sets the initial input type and configures image preview if an image URL is already present.
+     */
     ngAfterContentInit(): void {
         this.inputType = this.type;
 
@@ -92,30 +312,84 @@ export class InputComponent implements AfterContentInit {
         }
     }
 
+    /**
+     * Determines if the input is required based on its validator.
+     * Used to display required indicators (*) next to the label.
+     *
+     * @returns True if the input is required, false otherwise
+     */
     isRequired(): boolean {
-        if (this.control.validator) {
+        if (this.control?.validator) {
             const validatorFn = this.control.validator({} as any);
             return validatorFn && validatorFn['required'];
         }
         return false;
     }
 
+    /**
+     * Handles input events for text-based inputs.
+     * Emits the change event if the control is not disabled.
+     *
+     * @param event The input event
+     */
     handleInput(event: Event): void {
         if (!this.control.disabled) {
             this.change.emit();
         }
     }
 
+    /**
+     * Handles keyup events for text-based inputs.
+     * Emits the keyup event if the control is not disabled.
+     *
+     * @param event The keyup event
+     */
     handleKeyup(event: Event): void {
         if (!this.control.disabled) {
             this.keyup.emit(event);
         }
     }
 
+    /**
+     * Handles date selection events from the datepicker.
+     * Emits both dateChange and change events if the control is not disabled.
+     *
+     * @param event The MatDatepickerInputEvent
+     */
+    handleDateChange(event: any): void {
+        if (!this.control.disabled) {
+            this.dateChange.emit(event.value);
+            this.change.emit();
+        }
+    }
+
+    /**
+     * Handles date selection events from date range pickers.
+     * Emits both dateRangeChange and change events if both start and end controls exist.
+     */
+    handleDateRangeChange(): void {
+        if (this.startControl && this.endControl) {
+            const startDate = this.startControl.value;
+            const endDate = this.endControl.value;
+            this.dateRangeChange.emit({ start: startDate, end: endDate });
+            this.change.emit();
+        }
+    }
+
+    /**
+     * Toggles the visibility of password text.
+     * Switches between 'password' and 'text' input types.
+     */
     togglePasswordVisibility(): void {
         this.inputType = this.inputType === 'password' ? 'text' : 'password';
     }
 
+    /**
+     * Generates appropriate error messages based on the control's validation errors.
+     * Handles common validation errors like required, email, minlength, etc.
+     *
+     * @returns A user-friendly error message
+     */
     getErrorMessage(): string {
         if (this.control?.hasError('required')) {
             return 'This field is required';
@@ -133,11 +407,81 @@ export class InputComponent implements AfterContentInit {
             return 'Invalid file type. Please select an image.';
         }
         if (this.control?.hasError('fileTooLarge')) {
-           return 'File is too large. Maximum size is 5MB.';
+            return 'File is too large. Maximum size is 5MB.';
+        }
+        if (this.control?.hasError('matDatepickerMin')) {
+            return `Date cannot be before ${this.minDate?.toLocaleDateString()}`;
+        }
+        if (this.control?.hasError('matDatepickerMax')) {
+            return `Date cannot be after ${this.maxDate?.toLocaleDateString()}`;
+        }
+        if (this.control?.hasError('matDatepickerParse')) {
+            return 'Invalid date format';
         }
         return 'Invalid input';
     }
 
+    /**
+     * Generates error messages for the start date control in a date range.
+     * Handles date-specific validation errors.
+     *
+     * @returns A user-friendly error message for start date errors
+     */
+    getStartDateErrorMessage(): string {
+        if (!this.startControl) {
+            return '';
+        }
+
+        if (this.startControl.hasError('required')) {
+            return 'Start date is required';
+        }
+        if (this.startControl.hasError('matDatepickerMin')) {
+            return `Date cannot be before ${this.minDate?.toLocaleDateString()}`;
+        }
+        if (this.startControl.hasError('matDatepickerMax')) {
+            return `Date cannot be after ${this.maxDate?.toLocaleDateString()}`;
+        }
+        if (this.startControl.hasError('matDatepickerParse')) {
+            return 'Invalid date format';
+        }
+        return 'Invalid start date';
+    }
+
+    /**
+     * Generates error messages for the end date control in a date range.
+     * Handles date-specific validation errors including start/end date relationship.
+     *
+     * @returns A user-friendly error message for end date errors
+     */
+    getEndDateErrorMessage(): string {
+        if (!this.endControl) {
+            return '';
+        }
+
+        if (this.endControl.hasError('required')) {
+            return 'End date is required';
+        }
+        if (this.endControl.hasError('matDatepickerMin')) {
+            return `Date cannot be before ${this.minDate?.toLocaleDateString()}`;
+        }
+        if (this.endControl.hasError('matDatepickerMax')) {
+            return `Date cannot be after ${this.maxDate?.toLocaleDateString()}`;
+        }
+        if (this.endControl.hasError('matStartEnd')) {
+            return 'End date must be after start date';
+        }
+        if (this.endControl.hasError('matDatepickerParse')) {
+            return 'Invalid date format';
+        }
+        return 'Invalid end date';
+    }
+
+    /**
+     * Handles file selection for image uploads.
+     * Validates the file type and size, creates a preview, and updates the form control.
+     *
+     * @param event The file input change event
+     */
     onFileSelected(event: Event): void {
         const input = event.target as HTMLInputElement;
 
@@ -152,7 +496,7 @@ export class InputComponent implements AfterContentInit {
             }
 
             const maxSizeInBytes = 5 * 1024 * 1024; // 5MB
-             if (this.selectedFile.size > maxSizeInBytes) {
+            if (this.selectedFile.size > maxSizeInBytes) {
                 this.control.setErrors({ fileTooLarge: true });
                 this.selectedFile = null;
                 return;
@@ -167,6 +511,10 @@ export class InputComponent implements AfterContentInit {
         }
     }
 
+    /**
+     * Creates a preview URL for the selected image file.
+     * Uses URL.createObjectURL to generate a temporary local URL.
+     */
     createImagePreview(): void {
         if (!this.selectedFile) {
             return;
@@ -180,6 +528,11 @@ export class InputComponent implements AfterContentInit {
         this.previewUrl = URL.createObjectURL(this.selectedFile);
     }
 
+    /**
+     * Uploads the selected image to the storage service.
+     * Updates the form control with the resulting download URL on success.
+     * Emits events to indicate upload status.
+     */
     async uploadImage(): Promise<void> {
         if (!this.selectedFile || this.isUploading) {
             return;
@@ -211,6 +564,10 @@ export class InputComponent implements AfterContentInit {
         }
     }
 
+    /**
+     * Removes the selected or uploaded image.
+     * Cleans up resources and resets the form control.
+     */
     removeImage(): void {
         // First, reset the selected file
         this.selectedFile = null;
@@ -227,4 +584,6 @@ export class InputComponent implements AfterContentInit {
         this.control.markAsUntouched();
         this.change.emit();
     }
+
+    protected readonly FormControl = FormControl;
 }

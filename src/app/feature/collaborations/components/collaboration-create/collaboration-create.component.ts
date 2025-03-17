@@ -50,7 +50,6 @@ import localePl from '@angular/common/locales/pl';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { TranslocoModule } from '@ngneat/transloco';
 import { response } from 'express';
-import { formatISO } from 'date-fns';
 
 import { User, UserContent } from 'app/feature/collaborations/services/collaboration.types';
 

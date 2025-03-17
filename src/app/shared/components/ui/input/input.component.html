@@ -9,7 +9,7 @@
         </mat-checkbox>
 
         <!-- Image Input -->
-        <div *ngSwitchCase="'image'" [ngClass]="'w-full ' + customClass">
+        <div *ngSwitchCase="'image'" [ngClass]="'w-full h-full ' + customClass">
             <div class="mb-2 font-medium">
                 <ng-container *ngTemplateOutlet="inputLabel"></ng-container>
             </div>
@@ -20,17 +20,22 @@
                 [id]="id"
                 [accept]="acceptedFileTypes"
                 (change)="onFileSelected($event)"
-                style="display: none"
+                class="hidden"
                 #fileInput
                 aria-label="Select an image file"
             />
 
             <!-- Image container with preview or placeholder -->
-            <div class="relative w-fit">
+            <div
+                class="relative w-fit">
                 <!-- Placeholder when no image is selected -->
                 <div
                     *ngIf="!previewUrl && (!control.value || control.value.length === 0)"
-                    class="h-32 w-32 border-2 border-dashed border-gray-300 rounded-md flex items-center justify-center cursor-pointer bg-gray-50"
+                    class="h-32 w-32 border-2 border-dashed border-gray-300 flex items-center justify-center cursor-pointer bg-gray-50"
+                    [ngClass]="{
+                        'rounded-full':  rounded,
+                        'rounded-md': !rounded
+                        }"
                     (click)="fileInput.click()"
                 >
                     <div class="text-center p-4">
@@ -42,7 +47,11 @@
                 <!-- Preview image if available -->
                 <div *ngIf="previewUrl || (control.value && control.value.length > 0)" class="relative">
                     <div
-                        class="h-32 w-32 border rounded-md overflow-hidden cursor-pointer"
+                        class="h-32 w-32 border overflow-hidden cursor-pointer"
+                        [ngClass]="{
+                        'rounded-full':  rounded,
+                        'rounded-md': !rounded
+                        }"
                         (click)="fileInput.click()"
                     >
                         <img
@@ -93,6 +102,82 @@
                 {{ getErrorMessage() }}
             </div>
         </div>
+
+        <!-- Single Date Picker -->
+        <mat-form-field appearance="fill" [floatLabel]="'always'" *ngSwitchCase="'datepicker'" [ngClass]="'w-full ' + customClass">
+            <mat-label>
+                <ng-container *ngTemplateOutlet="inputLabel"></ng-container>
+            </mat-label>
+
+            <input
+                matInput
+                [id]="id"
+                [formControl]="control"
+                [matDatepicker]="picker"
+                [placeholder]="placeholder"
+                [min]="minDate"
+                [max]="maxDate"
+                (dateChange)="handleDateChange($event)"
+                [attr.aria-describedby]="hint ? id + '-hint' : null"
+                [attr.aria-invalid]="control?.invalid"
+            >
+
+            <!-- Prefix Icon -->
+            <mat-icon *ngIf="prefixIcon" matPrefix class="icon-size-5" [svgIcon]="prefixIcon"></mat-icon>
+
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+
+            <!-- Error Handling -->
+            <mat-error *ngIf="control?.invalid && control?.touched">
+                {{ getErrorMessage() }}
+            </mat-error>
+        </mat-form-field>
+
+        <!-- Date Range Picker -->
+        <mat-form-field appearance="fill" [floatLabel]="'always'" *ngSwitchCase="'daterange'" [ngClass]="'w-full ' + customClass">
+            <mat-label>
+                <ng-container *ngTemplateOutlet="inputLabel"></ng-container>
+            </mat-label>
+
+            <mat-date-range-input
+                [rangePicker]="rangePicker"
+                [min]="minDate"
+                [max]="maxDate"
+                [attr.aria-describedby]="hint ? id + '-hint' : null"
+            >
+                <input
+                    matStartDate
+                    [id]="id + '-start'"
+                    [placeholder]="'Start ' + placeholder"
+                    [formControl]="startControl"
+                    (dateChange)="handleDateRangeChange()"
+                >
+                <input
+                    matEndDate
+                    [id]="id + '-end'"
+                    [placeholder]="'End ' + placeholder"
+                    [formControl]="endControl"
+                    (dateChange)="handleDateRangeChange()"
+                >
+            </mat-date-range-input>
+
+            <!-- Prefix Icon -->
+            <mat-icon *ngIf="prefixIcon" matPrefix class="icon-size-5" [svgIcon]="prefixIcon"></mat-icon>
+
+            <mat-datepicker-toggle matIconSuffix [for]="rangePicker"></mat-datepicker-toggle>
+            <mat-date-range-picker #rangePicker></mat-date-range-picker>
+
+            <!-- Error Handling for Start Date -->
+            <mat-error *ngIf="startControl?.invalid && startControl?.touched">
+                {{ getStartDateErrorMessage() }}
+            </mat-error>
+
+            <!-- Error Handling for End Date - only show if start date is valid -->
+            <mat-error *ngIf="endControl?.invalid && endControl?.touched && !startControl?.invalid">
+                {{ getEndDateErrorMessage() }}
+            </mat-error>
+        </mat-form-field>
 
         <!--  Textarea  -->
         <mat-form-field appearance="fill" [floatLabel]="'always'" *ngSwitchCase="'textarea'" [ngClass]="'w-full ' + customClass">

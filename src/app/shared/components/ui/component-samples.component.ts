@@ -8,6 +8,7 @@ import {SelectComponent} from "./select/select.component";
 import {MatTableDataSource} from "@angular/material/table";
 import {TableComponent} from "./table/table.component";
 import {MatFormFieldModule} from '@angular/material/form-field';
+import {DatePipe} from "@angular/common";
 
 @Component({
   selector: 'app-component-samples',
@@ -20,12 +21,20 @@ import {MatFormFieldModule} from '@angular/material/form-field';
         SelectComponent,
         TableComponent,
         MatFormFieldModule,
+        DatePipe,
     ],
   templateUrl: './component-samples.component.html',
 })
 export class ComponentSamplesComponent {
     // Form controls for input examples
     imageControl = new FormControl('', [Validators.required]);
+    // Dates
+    minDate = new Date(2023, 0, 1);
+    maxDate = new Date(2025, 11, 31);
+    dateControl = new FormControl(null, [Validators.required]);
+    startDateControl = new FormControl(null, Validators.required);
+    endDateControl = new FormControl(null, Validators.required);
+
     textAreaControl = new FormControl('', [Validators.required]);
     textControl = new FormControl('', [Validators.required]);
     passwordControl = new FormControl('', [Validators.required, Validators.minLength(8)]);
