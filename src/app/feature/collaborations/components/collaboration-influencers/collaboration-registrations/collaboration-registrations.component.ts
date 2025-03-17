@@ -4,11 +4,11 @@ import { FuseCardComponent } from '@fuse/components/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
-import { InfluencerService } from 'app/feature/influencers/services/influencer.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { CarouselComponent } from '../carousel/carousel.component';
+import { CollaborationService } from 'app/feature/collaborations/services/collaboration.service';
 
 @Component({
     selector: 'app-collaboration-registrations',
@@ -28,7 +28,7 @@ import { CarouselComponent } from '../carousel/carousel.component';
     styleUrls: ['./collaboration-registrations.component.scss']
 })
 export class CollaborationRegistrationsComponent implements OnInit {
-    influencers: any[] = [];
+    collaborations: any[] = [];
     pagination: any = {};
     showFilters = false;
     acceptShow = null;
@@ -38,7 +38,7 @@ export class CollaborationRegistrationsComponent implements OnInit {
     followersMin: number = null;
     followersMax: number = null;
 
-    constructor(private _influencerService: InfluencerService) {
+    constructor(private _collaborationService: CollaborationService) {
     }
 
     toggleFilters(): void {
@@ -51,7 +51,7 @@ export class CollaborationRegistrationsComponent implements OnInit {
 
     filterInfluencers(): void {
         this.showCarousel = false;
-        this._influencerService
+        this._collaborationService
             .getIfluencersToAccept(
                 this.followersMin,
                 this.followersMax,
@@ -59,7 +59,7 @@ export class CollaborationRegistrationsComponent implements OnInit {
             )
             .subscribe({
                 next: (response: any) => {
-                    this.influencers = [...response.content];
+                    this.collaborations = [...response];
                     setTimeout(() => {
                         this.showCarousel = true;
                     }, 0);
@@ -72,7 +72,7 @@ export class CollaborationRegistrationsComponent implements OnInit {
 
     changeOpportunityStatus(id: number) {
         const updates = { opportunityStatus: this.acceptShow ? 'ACCEPTED' : 'REJECTED' };
-        this._influencerService.updateAppliedOpportunityStatus(id, updates).subscribe({
+        this._collaborationService.updateAppliedOpportunityStatus(id, updates).subscribe({
             next: () => {
                 this.filterInfluencers();
             },

@@ -1,0 +1,196 @@
+<div
+    class="bg-card flex min-w-0 flex-auto flex-col dark:bg-transparent sm:inset-0 sm:overflow-hidden"
+>
+    <div
+        class="flex flex-0 flex-col border-b px-6 py-4 sm:flex-row sm:items-center md:px-8"
+    >
+        <div class="text-4xl font-extrabold tracking-tight">
+            Aktywne współprace
+        </div>
+    </div>
+
+    <div class="border-b px-6 py-4 sm:flex-row sm:items-center md:px-8">
+        <div class="legend">
+            <div class="flex gap-6">
+                <div class="legend-item">
+                    <div class="circle glow-accepted"></div>
+                    <span
+                    >Nowa współpraca zaakceptowana przez firmę.</span
+                    >
+                </div>
+                <div class="legend-item">
+                    <div class="circle glow-pending"></div>
+                    <span>W trakcie realizacji współpracy przez obie strony.</span>
+                </div>
+            </div>
+            <div class="flex gap-6"> 
+
+                <div class="legend-item">
+                    <div class="circle glow-rejected"></div>
+                    <span>Odrzucone współprace.</span>
+                </div>
+                <div class="legend-item">
+                    <div class="circle glow-done"></div>
+                    <span>Zakończone współprace.</span>
+                </div>
+            </div>
+        </div>
+        <div class="flex w-full justify-between items-center">
+            <div
+                class="mr-12"
+                *ngIf="collaborations.length > 0; else noCollabFilter"
+            >
+                <button
+                    class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300"
+                    (click)="toggleFilters()"
+                >
+                    {{ showFilters ? 'Schowaj filtry' : 'Rozwiń filtry' }}
+                </button>
+            </div>
+            <ng-template #noCollabFilter></ng-template>
+        </div>
+        <!-- Sekcja filtrów (pokazuje się po kliknięciu) -->
+        <div
+            *ngIf="showFilters"
+            class="mt-4 bg-gray-100 p-4 rounded-lg shadow-md mb-8"
+        >
+            <div class="flex justify-evenly">
+                <!--  Filtry TODO:  -->
+            </div>
+            <div class="flex justify-center mt-12">
+                <button
+                    class="mt-3 w-1/4 bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300"
+                    (click)="filterCompanies()"
+                >
+                    Filtruj
+                </button>
+            </div>
+        </div>
+
+        <div *ngIf="collaborations.length > 0; else noCollaborations">
+            <app-carousel
+                *ngIf="showCarousel"
+                #companiesCarousel
+                [items]="collaborations"
+                [showCarousel]="true"
+            >
+                <ng-template #itemTemplate let-collab>
+                    <fuse-card
+                        class="filter-info flex"
+                        [flippable]="true"
+                        #fuseCard
+                    >
+                        <!-- FRONT -->
+                        <ng-container fuseCardFront>
+                            <div
+                                class="flex w-full max-w-80 flex-col items-center p-8 pb-6 min-w-60"
+                            >
+                                <div
+                                    [ngClass]="{
+                                    'glow-accepted':
+                                    collab.appliedOpportunityStatus === 'ACCEPTED_BY_COMPANY',
+                                    'glow-rejected':
+                                    collab.appliedOpportunityStatus === 'REJECTED_BY_COMPANY' || collab.appliedOpportunityStatus === 'REJECTED_BY_INFLUENCER' || collab.appliedOpportunityStatus === 'CONTENT_REJECTED',
+                                    'glow-done':
+                                    collab.appliedOpportunityStatus === 'DONE',
+                                    'glow-pending':
+                                    collab.appliedOpportunityStatus !== 'ACCEPTED_BY_COMPANY' && collab.appliedOpportunityStatus !== 'DONE'
+                                }"
+                                    class="glow-wrapper"
+                                >
+                                    <img
+                                        [src]="collab.companyAvatarUrl"
+                                        alt="Card cover image"
+                                        class="h-32 w-32 rounded-full"
+                                    />
+                                </div>
+
+                                <div
+                                    class="mt-8 text-center text-2xl font-semibold"
+                                >
+                                    {{ collab.companyName }}
+                                </div>
+                                <div
+                                    class="text-secondary mt-1 text-center leading-tight text-lg"
+                                >
+                                    {{ collab.partnershipOpportunityTitle }}
+                                </div>
+                                <hr class="mb-0 mt-2 w-full border-t" />
+                                <div
+                                class="text-secondary mt-4 text-center leading-tight text-lg"
+                            >
+                                {{ collab.appliedOpportunityStatus }}
+                            </div>
+
+                                <div
+                                    class="flex justify-end pointer-events-auto"
+                                >
+                                    <button
+                                        (click)="fuseCard.face = 'back'"
+                                        class="bg-blue-500 hover:bg-blue-600 text-white text-md font-semibold py-2 px-4 rounded-lg transition duration-300"
+                                    >
+                                        Czytaj więcej
+                                    </button>
+                                </div>
+
+                                <div
+                                    class="flex justify-evenly items-center w-full pointer-events-auto mt-6"
+                                >
+                                    <button
+                                        class="bg-green-400 rounded-lg text-white px-4 py-2"
+                                        (click)="
+                                            fuseCard.face = 'back';
+                                            scrollToBottom();
+                                            acceptShow = true
+                                        "
+                                    >
+                                        Akceptuj
+                                    </button>
+                                    <button
+                                        class="bg-red-400 rounded-lg text-white px-4 py-2"
+                                        (click)="
+                                            fuseCard.face = 'back';
+                                            scrollToBottom();
+                                            acceptShow = false
+                                        "
+                                    >
+                                        Odrzuć
+                                    </button>
+                                </div>
+                            </div>
+                        </ng-container>
+
+                        <!-- BACK -->
+                        <ng-container fuseCardBack>
+                            <div class="flex flex-col flex-auto px-8 pt-3">
+                                <div class="mb-2 -mx-3">
+                                    <button
+                                        mat-icon-button
+                                        [color]="'primary'"
+                                        (click)="
+                                            fuseCard.face = 'front';
+                                            acceptShow = null
+                                        "
+                                    >
+                                        <mat-icon
+                                            class="icon-size-5"
+                                            [svgIcon]="
+                                                'heroicons_outline:arrow-left'
+                                            "
+                                        ></mat-icon>
+                                    </button>
+                                    
+                                </div>
+                                <app-collaboration-companies-stepper [currentStatus]="collab.appliedOpportunityStatus"></app-collaboration-companies-stepper>
+                            </div>
+                        </ng-container>
+                    </fuse-card>
+                </ng-template>
+            </app-carousel>
+        </div>
+
+        <ng-template #noCollaborations>
+            <p>Nie znaleziono żadnych współprac.</p>
+        </ng-template>
+    </div>
+</div>

@@ -51,13 +51,6 @@ export const defaultNavigation: FuseNavigationItem[] = [
         icon: 'heroicons_outline:paper-airplane',
         link: '/collaborations/:id',
     },
-    {
-        id: 'collaborations-influencers',
-        title: 'Active Collaborations',
-        type: 'basic',
-        icon: 'heroicons_outline:arrows-right-left',
-        link: '/collaborations/influencers',
-    },
 ];
 
 //====================================================
@@ -88,6 +81,13 @@ export const influenserNavigation: FuseNavigationItem[] = [
         link: '/collaborations/list',
     },
     {
+        id: 'collaborations-companies',
+        title: 'Active Collaborations',
+        type: 'basic',
+        icon: 'heroicons_outline:arrows-right-left',
+        link: '/collaborations/companies',
+    },
+    {
         id: 'user-profile',
         title: 'User profile',
         type: 'basic',
@@ -110,6 +110,13 @@ export const adminNavigation: FuseNavigationItem[] = [
         type: 'basic',
         icon: 'heroicons_outline:arrows-right-left',
         link: '/collaborations/influencers',
+    },
+    {
+        id: 'collaborations-companies-admin',
+        title: 'Active Collaborations (Influencer view)',
+        type: 'basic',
+        icon: 'heroicons_outline:arrows-right-left',
+        link: '/collaborations/companies',
     },
     {
         id: 'collaborations-list',

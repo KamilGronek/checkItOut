@@ -1,0 +1,72 @@
+[
+    {
+        "code": "APPLIED",
+        "statusNumber": 1,
+        "title": "Applied",
+        "description": "Your application has been submitted.",
+        "statusType": "info"
+    },
+    {
+        "code": "ACCEPTED_BY_COMPANY",
+        "statusNumber": 2,
+        "title": "Accepted by Company",
+        "description": "Your application has been accepted by the company.",
+        "statusType": "info"
+    },
+    {
+        "code": "REJECTED_BY_COMPANY",
+        "statusNumber": 2,
+        "title": "Rejected by Company",
+        "description": "Your application has been rejected by the company.",
+        "statusType": "error"
+    },
+    {
+        "code": "ACCEPTED_BY_INFLUENCER",
+        "statusNumber": 3,
+        "title": "Accepted by Influencer",
+        "description": "Your application has been accepted by the influencer.",
+        "statusType": "info"
+    },
+    {
+        "code": "REJECTED_BY_INFLUENCER",
+        "statusNumber": 3,
+        "title": "Rejected by Influencer",
+        "description": "Your application has been rejected by the influencer.",
+        "statusType": "error"
+    },
+    {
+        "code": "CONTENT_APPROVED",
+        "statusNumber": 4,
+        "title": "Content Approved",
+        "description": "The content has been approved.",
+        "statusType": "info"
+    },
+    {
+        "code": "CONTENT_REJECTED",
+        "statusNumber": 4,
+        "title": "Content Rejected",
+        "description": "The content has been rejected.",
+        "statusType": "error"
+    },
+    {
+        "code": "CONTENT_POSTED",
+        "statusNumber": 5,
+        "title": "Content Posted",
+        "description": "The content has been posted.",
+        "statusType": "info"
+    },
+    {
+        "code": "TO_BE_PAID",
+        "statusNumber": 6,
+        "title": "To Be Paid",
+        "description": "Payment is pending.",
+        "statusType": "info"
+    },
+    {
+        "code": "DONE",
+        "statusNumber": 7,
+        "title": "Done",
+        "description": "Process is completed.",
+        "statusType": "info"
+    }
+]
