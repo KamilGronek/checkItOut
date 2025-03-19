@@ -130,18 +130,8 @@ export class AuthSignInComponent implements OnInit {
                     .subscribe((userData) => {
                         const status = userData.accountStatus;
                         localStorage.setItem('userStatus', status);
-                        if (status === 'ACTIVE') {
-                            this._router.navigateByUrl('collaborations');
-
-                            const redirectURL =
-                                this._activatedRoute.snapshot.queryParamMap.get(
-                                    'redirectURL'
-                                ) || '/signed-in-redirect';
-                        } else {
-                            this._router.navigateByUrl('home');
-                        }
+                        this._router.navigateByUrl('/collaborations/list');
                     });
-                this._router.navigateByUrl('home');
             })
             .catch((error) => {
                 this.signInForm.enable();
@@ -150,31 +140,6 @@ export class AuthSignInComponent implements OnInit {
                 this.alert = {
                     type: 'error',
                     message: 'Wrong email or password',
-                };
-
-                this.showAlert = true;
-            });
-    }
-
-    signInWithFacebook(): void {
-        // Disable the form
-        this.signInForm.disable();
-
-        // Hide the alert
-        this.showAlert = false;
-
-        this._authService
-            .signInWithFacebook()
-            .then(() => {
-                this._router.navigateByUrl('home');
-            })
-            .catch((error) => {
-                this.signInForm.enable();
-                this.signInNgForm.resetForm();
-
-                this.alert = {
-                    type: 'error',
-                    message: 'Something go wrong',
                 };
 
                 this.showAlert = true;
@@ -184,88 +149,5 @@ export class AuthSignInComponent implements OnInit {
     signInWithInstagram(): void {
         var authUrl = `https://api.instagram.com/oauth/authorize?client_id=${environment.instagram.clientId}&redirect_uri=${environment.instagram.redirectUri}&scope=instagram_business_basic&response_type=code`;
         window.location.href = authUrl;
-    }
-
-    signInWithGoogle(): void {
-        // Disable the form
-        this.signInForm.disable();
-
-        // Hide the alert
-        this.showAlert = false;
-
-        this._authService
-            .signInWithGoogle()
-            .then(() => {
-                this._influencerService
-                    .getInfluencerUser()
-                    .subscribe((userData) => {
-                        const status = userData.accountStatus;
-                        localStorage.setItem('userStatus', status);
-
-                        if (status === 'ACTIVE') {
-                            this._router.navigateByUrl('collaborations');
-                        } else {
-                            this._router.navigateByUrl('home');
-                        }
-                    });
-                this._router.navigateByUrl('home');
-            })
-            .catch((error) => {
-                this.signInForm.enable();
-                this.signInNgForm.resetForm();
-
-                this.alert = {
-                    type: 'error',
-                    message: 'Something go wrong',
-                };
-
-                this.showAlert = true;
-            });
-    }
-
-    signIn(): void {
-        // Return if the form is invalid
-        if (this.signInForm.invalid) {
-            return;
-        }
-
-        // Disable the form
-        this.signInForm.disable();
-
-        // Hide the alert
-        this.showAlert = false;
-
-        // Sign in
-        this._authService.signIn(this.signInForm.getRawValue()).subscribe(
-            () => {
-                // Set the redirect url.
-                // The '/signed-in-redirect' is a dummy url to catch the request and redirect the user
-                // to the correct page after a successful sign in. This way, that url can be set via
-                // routing file and we don't have to touch here.
-                const redirectURL =
-                    this._activatedRoute.snapshot.queryParamMap.get(
-                        'redirectURL'
-                    ) || '/signed-in-redirect';
-
-                // Navigate to the redirect url
-                this._router.navigateByUrl(redirectURL);
-            },
-            (response) => {
-                // Re-enable the form
-                this.signInForm.enable();
-
-                // Reset the form
-                this.signInNgForm.resetForm();
-
-                // Set the alert
-                this.alert = {
-                    type: 'error',
-                    message: 'Wrong email or password',
-                };
-
-                // Show the alert
-                this.showAlert = true;
-            }
-        );
     }
 }

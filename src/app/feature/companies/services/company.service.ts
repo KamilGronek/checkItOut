@@ -1,5 +1,5 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 // import { Influencer } from './Influencer';
 import {Company, CompanyResponse} from './company.types';
@@ -12,13 +12,58 @@ import {environment} from 'environments/environment';
 export class CompanyService {
     private apiUrl: string = environment.apiUrl + '/company';
 
+    private http: HttpClient = inject(HttpClient);
+    private authService: AuthService = inject(AuthService);
+
+
     httpOptions = {
         headers: new HttpHeaders({'Content-Type': 'application/json'}),
     };
 
-    dataToken: any;
+    create(company: any){
+        let companyData = company.business;
+        let representative = company.representative;
+        let credentials = company.credentials;
 
-    constructor(private http: HttpClient, private authService: AuthService) {
+        // Example payload
+        // {
+        //     "email": "emailJaa1kubaaa1@em.ai",
+        //     "userType": "FIRMA",
+        //     "firstName": "Jak1ub",
+        //     "lastName": "te1st",
+        //     "accountStatus": "Nieaktywny",
+        //     "company":
+        //     {
+        //         "name": "Green Earth Initiative",
+        //         "phoneNumber": "917-654-321",
+        //         "city": "Kraków",
+        //         "address": "456 Eco Avenue",
+        //         "imageUrl": "https://example.com/image2.jpg",
+        //         "note": "Sustainability and eco-friendly products.",
+        //         "serviceType": 1
+        //     }
+        // }
+        let address = `${companyData.address.street} ${companyData.address.state} ${companyData.address.zip}`;
+        let payload = {
+            email: credentials.email,
+            userType: "FIRMA",
+            firstName: representative.firstName,
+            lastName: representative.lastName,
+            accountStatus: "Nieaktywny",
+            company: {
+                name: companyData.name,
+                phoneNumber: companyData.address.phone,
+                // city: companyData.address.city,
+                city: "Kraków",
+                address: address,
+                // imageUrl: companyData.logo,
+                note: companyData.description,
+                serviceType: 1
+                // serviceType: companyData.category
+            }
+        }
+        // Create user on backend
+        return this.http.post(environment.apiUrl + '/user', payload, this.httpOptions);
     }
 
     getCompanyList(): Observable<Company[]> {

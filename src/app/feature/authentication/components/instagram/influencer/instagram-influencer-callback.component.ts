@@ -14,6 +14,8 @@ import {ButtonComponent} from "app/shared/components/ui/button/button.component"
 import {InputComponent} from "app/shared/components/ui/input/input.component";
 import {LinkComponent} from "app/shared/components/ui/link/link.component";
 import {AccountCredentialsForm} from "../../sign-up/business/business-sign-up.types";
+import {InfluencerService} from "app/feature/influencers/services/influencer.service";
+import {AuthService} from "app/core/services/authentication/auth.service";
 
 @Component({
     selector: 'app-instagram-influencer-callback',
@@ -44,7 +46,9 @@ export class InstagramInfluencerCallbackComponent implements OnInit {
         private _route: ActivatedRoute,
         private _router: Router,
         private _instagramAuth: InstagramAuthService,
-        private _snackbarService: SnackbarService
+        private _influencerService: InfluencerService,
+        private _snackbarService: SnackbarService,
+        private _authService: AuthService,
     ) {
     }
 
@@ -53,7 +57,6 @@ export class InstagramInfluencerCallbackComponent implements OnInit {
         password: this._formBuilder.control('', [
             Validators.required,
             Validators.minLength(8),
-            Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/)
         ]),
         confirmPassword: this._formBuilder.control('', [Validators.required]),
         termsOfService: this._formBuilder.control(false, [Validators.requiredTrue])
@@ -101,7 +104,9 @@ export class InstagramInfluencerCallbackComponent implements OnInit {
                         next: ({firebaseToken}) => {
                             if (firebaseToken) {
                                 console.log('User exists.');
-                                this._instagramAuth.signIn(firebaseToken);
+                                this._instagramAuth.signIn(firebaseToken).then(() => {
+                                    this._router.navigateByUrl('/collaborations/list');
+                                });
                             } else {
                                 console.log('User does not exist.');
                                 this.emailRequired.set(true);
@@ -124,6 +129,7 @@ export class InstagramInfluencerCallbackComponent implements OnInit {
         });
     }
 
+    // Required only for influencers based on business logic
     handleEmailAndPasswordSubmission() {
         this.credentialsForm.disable();
 
@@ -137,7 +143,25 @@ export class InstagramInfluencerCallbackComponent implements OnInit {
         const {user_id, username, access_token} = this.user();
         if (user_id && username && access_token && email !== '') {
             this.user.update((user) => ({...user, email: email}));
+            // Register user in firebase
             this._instagramAuth.createUser(this.user());
+
+            // Payload for creating influ on backend
+            let user = this.user();
+            let payload = {
+                email: user.email,
+                userType: "INFLUENCER",
+                firstName: user.user.name,
+                lastName: user.user.name,
+                accountStatus: "Nieaktywny",
+                influencer:
+                    {
+                        instagramId: user.username,
+                        city: "Kraków",
+                        apiKey: "superKlaucze1mja1",
+                        instagramAccountType: "Publiczne"
+                    }
+            };
 
             // Connect email and password with firebase instagram account
             const auth = getAuth();
@@ -148,6 +172,9 @@ export class InstagramInfluencerCallbackComponent implements OnInit {
                     linkWithCredential(user, credential)
                         .then((userCredential) => {
                             console.log("Email/Password account linked successfully:", userCredential.user);
+
+                            // Create user on backend after successfully creating in firebase
+                            this.registerOnBackend(payload);
                         })
                         .catch((error) => {
                             console.error("Error linking email/password:", error);
@@ -157,19 +184,32 @@ export class InstagramInfluencerCallbackComponent implements OnInit {
                     console.log("No user is signed in.");
                 }
             });
-
-            // if (user) {
-            //     const credential = EmailAuthProvider.credential(email, password);
-            //     linkWithCredential(user, credential)
-            //         .then((usercred) => {
-            //             console.log("Email/Password account linked successfully:", usercred.user);
-            //         })
-            //         .catch((error) => {
-            //             console.error("Error linking email/password:", error);
-            //         });
-            // } else {
-            //     console.log("No user is signed in.");
-            // }
         }
+    }
+
+    registerOnBackend(payload){
+        this._influencerService.create(payload).subscribe({
+            next: () => {
+                this._snackbarService.showSuccess('Influencer account created successfully.');
+                this._router.navigateByUrl('/collaborations/list');
+                console.log("Successfully created user on BE")
+            },
+            error: async () => {
+                this._snackbarService.showFailure('Failed to create influencer account.');
+
+                // Delete Firebase user if backend creation fails
+                const user = this._authService.getCurrentUser();
+                if (user) {
+                    try {
+                        await user.delete();
+                        this._authService.signOut();
+                        this._router.navigate(['/auth/sign-in']);
+                    } catch (deleteError) {
+                        console.error("Error deleting Firebase user:", deleteError);
+                    }
+                }
+                console.log("Error")
+            }
+        });
     }
 }

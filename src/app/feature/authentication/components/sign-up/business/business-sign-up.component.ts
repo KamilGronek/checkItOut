@@ -1,6 +1,6 @@
 import {Component, inject, ViewChild} from '@angular/core';
 import {NgIf} from "@angular/common";
-import {RouterLink} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MatStep, MatStepLabel, MatStepper} from "@angular/material/stepper";
 import {InputComponent} from "app/shared/components/ui/input/input.component";
@@ -14,6 +14,8 @@ import {SelectComponent} from "app/shared/components/ui/select/select.component"
 import {ButtonComponent} from "app/shared/components/ui/button/button.component";
 import {SnackbarService} from "app/core/services/custom-snackbar/custom-snackbar.service";
 import {LinkComponent} from "app/shared/components/ui/link/link.component";
+import {CompanyService} from "app/feature/companies/services/company.service";
+import {AuthService} from "app/core/services/authentication/auth.service";
 
 @Component({
   selector: 'app-business',
@@ -37,6 +39,9 @@ export class BusinessSignUpComponent {
 
     private _formBuilder = inject(FormBuilder);
     private _snackbarService = inject(SnackbarService)
+    private _companyService = inject(CompanyService);
+    private _authService = inject(AuthService);
+    private _router = inject(Router);
 
     // Form completion indicators
     businessFormCompleted = false;
@@ -51,7 +56,7 @@ export class BusinessSignUpComponent {
 
     // Business Form
     businessForm: FormGroup<BusinessFormGroup> = this._formBuilder.group({
-        logo: this._formBuilder.control(''),
+        logo: this._formBuilder.control(null),
         name: this._formBuilder.control('', [Validators.required]),
         description: this._formBuilder.control(''),
         category: this._formBuilder.control(businessCategoryDefault.value, [Validators.required]),
@@ -80,7 +85,6 @@ export class BusinessSignUpComponent {
         password: this._formBuilder.control('', [
             Validators.required,
             Validators.minLength(8),
-            Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/)
         ]),
         confirmPassword: this._formBuilder.control('', [Validators.required]),
         termsOfService: this._formBuilder.control(false, [Validators.requiredTrue])
@@ -138,14 +142,41 @@ export class BusinessSignUpComponent {
                 }
             };
 
-            // Here you would typically make an API call
-            console.log('Submitting data:', submissionData);
+            this._authService.signUpWithPassword({
+                name: submissionData.representative.firstName,
+                email: submissionData.credentials.email,
+                password: submissionData.credentials.password,
+            })
+                .then(() => {
+                    // Create user on backend after user is created in firebase
+                    this._companyService.create(submissionData).subscribe({
+                        next: (result) => {
+                            this.isSubmitting = false;
+                            this._snackbarService.showSuccess("Business account created successfully.");
+                            this._router.navigateByUrl('/collaborations/list');
+                        },
+                        error: async (err) => {
+                            this.isSubmitting = false;
+                            this._snackbarService.showFailure(`Error creating account: ${err.message}`);
 
-            // Simulate API call
-            setTimeout(() => {
-                this.isSubmitting = false;
-                // Handle success or navigate to next page
-            }, 1500);
+                            // Delete Firebase user if backend creation fails
+                            const user = this._authService.getCurrentUser();
+                            if (user) {
+                                try {
+                                    await user.delete();
+                                    this._authService.signOut();
+                                } catch (deleteError) {
+                                    console.error("Error deleting Firebase user:", deleteError);
+                                }
+                            }
+                        }
+                    })
+                })
+                .catch((err) => {
+                    this.isSubmitting = false;
+                    console.log(err);
+                    this._snackbarService.showFailure(`Account with this email already exists.`);
+                })
         }
     }
 }
