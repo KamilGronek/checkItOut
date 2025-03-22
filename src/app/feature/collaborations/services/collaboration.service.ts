@@ -1,78 +1,114 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-// import { Influencer } from './Influencer';
-import {
-  Collaboration,
-  CollaborationResponse,
-  ContentTypeResponse,
-  User
-} from './collaboration.types';
+import { Collaboration, CollaborationResponse } from './collaboration.types';
 import { AuthService } from 'app/core/services/authentication/auth.service';
 import { environment } from 'environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root',
 })
 export class CollaborationService {
-  private apiUrl: string = environment.apiUrl + '/partnership-opportunity';
+    private baseUrl: string = environment.apiUrl;
+    private collabUrl: string = environment.apiUrl + '/partnership-opportunity';
 
-  private mainApiUrl: string = environment.apiUrl;
+    httpOptions = {
+        headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    };
 
-  httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-  };
+    dataToken: any;
 
-  dataToken: any;
+    constructor(private http: HttpClient, private authService: AuthService) {
+    }
 
-  constructor(private http: HttpClient, private authService: AuthService) {}
+    getCollaborationList(): Observable<Collaboration[]> {
+        return this.http.get<Collaboration[]>(this.collabUrl + '/list');
+    }
 
-  getCollaborationList(): Observable<Collaboration[]> {
-    return this.http.get<Collaboration[]>(this.apiUrl + '/list');
-  }
+    getCollaborationPaged(
+        pageIndex: number,
+        pageSize: number,
+        sortBy: string,
+        direction: string,
+        name: string,
+        city: string,
+        details: string,
+        title: string
+    ): Observable<CollaborationResponse> {
+        const url = `${this.collabUrl}/paged?page=${pageIndex}&size=${pageSize}&sort=${sortBy},${direction}&name=${name}&city=${city}&details=${details}&title=${title}`;
 
-  getCollaborationId(id: number): Observable<Collaboration> {
-    return this.http.get<Collaboration>(this.apiUrl + `/${id}`);
-  }
+        return this.http.get<CollaborationResponse>(url);
+    }
 
-  getCollaborationContentType(): Observable<ContentTypeResponse> {
-    return this.http.get<ContentTypeResponse>(this.mainApiUrl + '/content-type/paged');
-  }
 
-  getCollaborationPlatform(): Observable<ContentTypeResponse> {
-    return this.http.get<ContentTypeResponse>(this.mainApiUrl + '/platform/paged');
-  }
+    getInfluencersToRate(filterRateStatus?: string, page: number = 0, size: number = 12) {
+        let params = new HttpParams();
+        if (filterRateStatus) {
+            params = params.set('filterRateStatus', filterRateStatus);
+        }
+        params = params.set('page', page.toString());
+        params = params.set('size', size.toString());
+        return this.http.get(this.baseUrl + '/activecoop/rate', { params });
+    }
 
-  getCollaborationPaged(
-    pageIndex: number,
-    pageSize: number,
-    sortBy: string,
-    direction: string,
-    name: string,
-    city: string,
-    details: string,
-    title: string
-  ): Observable<CollaborationResponse> {
-    const url = `${this.apiUrl}/paged?page=${pageIndex}&size=${pageSize}&sort=${sortBy},${direction}&name=${name}&city=${city}&details=${details}&title=${title}`;
+    getIfluencersToAccept(minFollowers: number, maxFollowers: number, minPositiveRates: number) {
+        let params = new HttpParams()
 
-    return this.http.get<CollaborationResponse>(url);
-  }
+        if (minFollowers != null) {
+            params = params.set('minFollowers', minFollowers.toString());
+        }
+        if (maxFollowers != null) {
+            params = params.set('maxFollowers', maxFollowers.toString());
+        }
 
-  createCollaboration(collaboration: any) {
-    console.log('server:', collaboration);
+        if (minPositiveRates != null) {
+            params = params.set('minPositiveRates', minPositiveRates.toString());
+        }
+        return this.http.get(this.baseUrl + '/activecoop/accept', { params });
+    }
 
-    return this.http.post<any>(this.apiUrl, collaboration, this.httpOptions);
-  }
+    getCollaborationsInProgress(filter?: any) {
+        let params = new HttpParams();
 
-  deleteCollaboration(id: number) {
-    return this.http.delete<Collaboration>(this.apiUrl + `/${id}`);
-  }
+        if (filter && filter.opportunityStatusFilter.length > 0) {
+            params = params.set('statuses', filter.opportunityStatusFilter.join(','));
+        }
+        return this.http.get(this.baseUrl + '/activecoop/inprogress', { params });
+    }
 
-  updateCollaboration(collaboration: Collaboration, id: number) {
-    return this.http.put<Collaboration>(this.apiUrl + `/${id}`, collaboration, this.httpOptions);
-  }
+    createCollaboration(collaboration: any) {
+        console.log('server:', collaboration);
 
-  getUser(): Observable<User> {
-    return this.http.get<User>(this.mainApiUrl + '/user/paged');
-  }
+        return this.http.post<any>(
+            this.collabUrl,
+            collaboration,
+            this.httpOptions
+        );
+    }
+
+    deleteCollaboration(id: number) {
+        return this.http.delete<Collaboration>(this.collabUrl + `/${id}`);
+    }
+
+    updateAppliedOpportunityRate(id: number, updates: { opportunityStatus?: string; rateStatus?: string }) {
+        return this.http.patch(
+            `${this.baseUrl}/applied-opportunity/rate/update/${id}`,
+            updates,
+            { ...this.httpOptions, responseType: 'text' as 'json' }
+        );
+    }
+
+    updateAppliedOpportunityStatus(id: number, accept: boolean) {
+        let params = new HttpParams();
+        params = params.set('accept', accept.toString());
+        return this.http.patch(this.baseUrl + `/applied-opportunity/status/update/${id}`, null, { params });
+    }
+
+    updateCollaboration(collaboration: Collaboration, id: number) {
+        return this.http.put<Collaboration>(
+            this.collabUrl + `/${id}`,
+            collaboration,
+            this.httpOptions
+        );
+    }
 }

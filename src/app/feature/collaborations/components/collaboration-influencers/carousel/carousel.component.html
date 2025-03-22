@@ -1,0 +1,16 @@
+<p-carousel
+    *ngIf="showCarousel"
+    #carousel
+    [value]="items"
+    [numVisible]="numVisible"
+    [numScroll]="numScroll"
+    (onPage)="onPageChange($event)"
+    [circular]="circular"
+    [responsiveOptions]="responsiveOptions"
+>
+    <ng-template pTemplate="item" let-item>
+        <ng-container
+            *ngTemplateOutlet="itemTemplate; context: { $implicit: item }"
+        ></ng-container>
+    </ng-template>
+</p-carousel>

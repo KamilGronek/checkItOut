@@ -5,7 +5,7 @@
         </div>
         <div
             class="mr-12"
-            *ngIf="influencers.length > 0; else noInfluencersFilter"
+            *ngIf="collaborations.length > 0; else noCollabFilter"
         >
             <button
                 class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300"
@@ -14,7 +14,7 @@
                 {{ showFilters ? 'Schowaj filtry' : 'Rozwiń filtry' }}
             </button>
         </div>
-        <ng-template #noInfluencersFilter></ng-template>
+        <ng-template #noCollabFilter></ng-template>
     </div>
     <!-- Sekcja filtrów (pokazuje się po kliknięciu) -->
     <div
@@ -47,7 +47,9 @@
             </mat-form-field>
 
             <mat-form-field appearance="fill" class="w-1/4 max-h-12">
-                <mat-label>Minimalna ilość zakończonych współprac</mat-label>
+                <mat-label
+                    >Minimalna ilość polubień zakończonych współprac</mat-label
+                >
                 <input
                     matInput
                     type="number"
@@ -69,18 +71,14 @@
     </div>
 
     <!-- Jeśli są influencerzy -->
-    <div *ngIf="influencers.length > 0; else noInfluencers">
-        <p-carousel
+    <div *ngIf="collaborations.length > 0; else noCollaborations">
+        <app-carousel
             *ngIf="showCarousel"
-            #rateCarousel
-            [value]="influencers"
-            [numVisible]="4"
-            [numScroll]="1"
-            (onPageChange)="onPageChange($event)"
-            [circular]="false"
-            [responsiveOptions]="responsiveOptions"
+            #registercarousel
+            [items]="collaborations"
+            [showCarousel]="showCarousel"
         >
-            <ng-template pTemplate="item" let-influencer>
+            <ng-template #itemTemplate let-collab>
                 <fuse-card
                     class="filter-info flex"
                     [flippable]="true"
@@ -91,20 +89,9 @@
                         <div
                             class="flex w-full max-w-80 flex-col items-center p-8 pb-6 min-w-60"
                         >
-                            <div
-                                [ngClass]="{
-                                    'glow-like':
-                                        influencer.rateStatus === 'POSITIVE',
-                                    'glow-neutral':
-                                        influencer.rateStatus === null ||
-                                        influencer.rateStatus === 'DEFAULT',
-                                    'glow-dislike':
-                                        influencer.rateStatus === 'NEGATIVE'
-                                }"
-                                class="glow-wrapper"
-                            >
+                            <div>
                                 <img
-                                    [src]="influencer.avatarUrl"
+                                    [src]="collab.influencerAvatarUrl"
                                     alt="Card cover image"
                                     class="h-32 w-32 rounded-full"
                                 />
@@ -113,70 +100,50 @@
                             <div
                                 class="mt-8 text-center text-2xl font-semibold"
                             >
-                                {{ influencer.firstName }}
-                                {{ influencer.lastName }}
+                                {{ collab.influencerFirstName }}
+                                {{ collab.influencerLastName }}
                             </div>
                             <div
                                 class="text-secondary mt-1 text-center leading-tight text-lg"
                             >
-                                {{ influencer.partnershipOpportunityTitle }}
+                                {{ collab.partnershipOpportunityTitle }}
                             </div>
-                            <hr class="mb-0 mt-2 w-full border-t"/>
+                            <hr class="mb-0 mt-2 w-full border-t" />
 
                             <div
-                                class="my-4 flex w-full items-center justify-center px-2"
+                                class="my-4 flex w-full items-center justify-around px-2 text-lg"
                             >
-                                <div class="flex flex-col text-gray-700">
-                                    <div class="text-center">
-                                        <p class="text-lg font-semibold">
-                                            👍 Likes
-                                        </p>
-                                        <p
-                                            class="text-blue-600 font-bold text-xl"
-                                        >
-                                            {{ influencer.positiveRatesAmount }}
-                                        </p>
-                                    </div>
-                                    <div class="text-center">
-                                        <p class="text-lg font-semibold">
-                                            👎 Dislikes
-                                        </p>
-                                        <p
-                                            class="text-red-600 font-bold text-xl"
-                                        >
-                                            {{ influencer.negativeRatesAmount }}
-                                        </p>
-                                    </div>
+                                <div class="text-center">
+                                    <p class="text-blue-600 font-bold">
+                                        {{ collab.positiveRatesAmount }}
+                                    </p>
+                                    <p class="font-semibold">
+                                        👍 Likes
+                                    </p>
                                 </div>
-                                <div class="flex flex-col">
-                                    <div class="flex flex-col items-center">
-                                        <span class="font-bold">{{
-                                                influencer.followersAmount
-                                            }}</span>
-                                        <span
-                                            class="text-secondary text-sm font-medium"
+
+                                <div class="flex flex-col items-center">
+                                    <span class="font-bold">{{
+                                        collab.followersAmount
+                                    }}</span>
+                                    <span
+                                        class="font-medium"
                                         >FOLLOWERS</span
-                                        >
-                                    </div>
-                                    <div class="flex flex-col items-center">
-                                        <span class="font-bold">{{
-                                                influencer.instagramId
-                                            }}</span>
-                                        <span
-                                            class="text-secondary text-sm font-medium"
-                                        >
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 50 50"
-                                                width="30px"
-                                                height="30px"
-                                            >
-                                                <path
-                                                    d="M 16 3 C 8.8324839 3 3 8.8324839 3 16 L 3 34 C 3 41.167516 8.8324839 47 16 47 L 34 47 C 41.167516 47 47 41.167516 47 34 L 47 16 C 47 8.8324839 41.167516 3 34 3 L 16 3 z M 16 5 L 34 5 C 40.086484 5 45 9.9135161 45 16 L 45 34 C 45 40.086484 40.086484 45 34 45 L 16 45 C 9.9135161 45 5 40.086484 5 34 L 5 16 C 5 9.9135161 9.9135161 5 16 5 z M 37 11 A 2 2 0 0 0 35 13 A 2 2 0 0 0 37 15 A 2 2 0 0 0 39 13 A 2 2 0 0 0 37 11 z M 25 14 C 18.936712 14 14 18.936712 14 25 C 14 31.063288 18.936712 36 25 36 C 31.063288 36 36 31.063288 36 25 C 36 18.936712 31.063288 14 25 14 z M 25 16 C 29.982407 16 34 20.017593 34 25 C 34 29.982407 29.982407 34 25 34 C 20.017593 34 16 29.982407 16 25 C 16 20.017593 20.017593 16 25 16 z"
-                                                />
-                                            </svg>
-                                        </span>
-                                    </div>
+                                    >
+                                </div>
+                                <div class="flex flex-col items-center">
+                                    <span class="font-bold">{{
+                                        collab.instagramId
+                                    }}</span>
+                                    <span
+                                        class="text-secondary font-medium"
+                                    >
+                                        <img
+                                            style="width: 30px; height: 30px"
+                                            src="assets/icons/instagram_black.svg"
+                                            alt="Instagram"
+                                        />
+                                    </span>
                                 </div>
                             </div>
 
@@ -238,36 +205,27 @@
                                     <span
                                         class="text-secondary text-sm font-medium"
                                     >
-                                        <svg
-                                            width="30px"
-                                            height="30px"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                            <path
-                                                fill-rule="evenodd"
-                                                clip-rule="evenodd"
-                                                d="M3.75 5.25L3 6V18L3.75 18.75H20.25L21 18V6L20.25 5.25H3.75ZM4.5 7.6955V17.25H19.5V7.69525L11.9999 14.5136L4.5 7.6955ZM18.3099 6.75H5.68986L11.9999 12.4864L18.3099 6.75Z"
-                                                fill="#080341"
-                                            />
-                                        </svg>
+                                        <img
+                                            style="width: 30px; height: 30px"
+                                            src="assets/icons/mail.svg"
+                                            alt="Mail"
+                                        />
                                     </span>
                                     <span class="font-bold"
-                                    >: {{ influencer.email }}</span
+                                        >: {{ collab.email }}</span
                                     >
                                 </div>
 
                                 <div class="mt-4">
                                     <label
                                         class="block text-sm font-medium text-gray-700"
-                                    >Notka zamieszczona przez
+                                        >Notka zamieszczona przez
                                         influencera:</label
                                     >
                                     <p
                                         class="text-gray-900 bg-gray-100 p-3 rounded-lg mt-1"
                                     >
-                                        {{ influencer.appliedOpportunityNote }}
+                                        {{ collab.appliedOpportunityNote }}
                                     </p>
                                 </div>
                             </div>
@@ -289,7 +247,7 @@
                                         class="bg-green-400 rounded-lg text-white px-4 py-2"
                                         (click)="
                                             changeOpportunityStatus(
-                                                influencer.id
+                                                collab.id
                                             )
                                         "
                                     >
@@ -307,11 +265,13 @@
                     </ng-container>
                 </fuse-card>
             </ng-template>
-        </p-carousel>
+        </app-carousel>
     </div>
 
-    <!-- Jeśli brak influencerów -->
-    <ng-template #noInfluencers>
-        <p>Nie znaleziono żadnych influencerów oczekujących na akceptacje o podanych filtrach.</p>
+    <ng-template #noCollaborations>
+        <p>
+            Nie znaleziono żadnych influencerów oczekujących na akceptacje o
+            podanych filtrach.
+        </p>
     </ng-template>
 </div>

@@ -1,0 +1,73 @@
+[
+    {
+        "code": "APPLIED",
+        "statusNumber": 1,
+        "title": "Applied",
+        "description": "Your application has been submitted.",
+        "statusType": "info"
+    },
+    {
+        "code": "ACCEPTED_BY_COMPANY",
+        "statusNumber": 2,
+        "title": "Accepted by Company",
+        "description": "Your application has been accepted by the company.",
+        "statusType": "info",
+        "question": "Do you accept the conditions of the collaboration?",
+        "questionType": "INFLUENCER"
+    },
+    {
+        "code": "REJECTED_BY_COMPANY",
+        "statusNumber": 2,
+        "title": "Rejected by Company",
+        "description": "Your application has been rejected by the company.",
+        "statusType": "error"
+    },
+    {
+        "code": "ACCEPTED_BY_INFLUENCER",
+        "statusNumber": 3,
+        "title": "Accepted by Influencer",
+        "description": "Your application has been accepted by the influencer.",
+        "statusType": "info",
+        "question": "Now it's time to prepare content by influencer. Do you accept the sended content?",
+        "questionType": "COMPANY"
+    },
+    {
+        "code": "REJECTED_BY_INFLUENCER",
+        "statusNumber": 3,
+        "title": "Rejected by Influencer",
+        "description": "Your application has been rejected by the influencer.",
+        "statusType": "error"
+    },
+    {
+        "code": "CONTENT_APPROVED",
+        "statusNumber": 4,
+        "title": "Content Approved",
+        "description": "The content has been approved.",
+        "statusType": "info",
+        "question": "Your content has been approved. Now it's time to post the content.",
+        "questionType": "INFLUENCER"
+    },
+    {
+        "code": "CONTENT_REJECTED",
+        "statusNumber": 4,
+        "title": "Content Rejected",
+        "description": "The content has been rejected.",
+        "statusType": "error",
+        "question": "You have rejected the content. Do you want to rate a new content?",
+        "questionType": "COMPANY"
+    },
+    {
+        "code": "CONTENT_POSTED",
+        "statusNumber": 5,
+        "title": "Content Posted",
+        "description": "Payment is pending. Do you get paid",
+        "statusType": "info"
+    },
+    {
+        "code": "DONE",
+        "statusNumber": 6,
+        "title": "Done",
+        "description": "Process is completed.",
+        "statusType": "info"
+    }
+]
