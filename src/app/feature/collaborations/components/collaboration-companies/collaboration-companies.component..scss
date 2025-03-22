@@ -11,9 +11,14 @@
     gap: 0.5rem;
 }
 
+.legend-item div {
+    max-width: 15px;
+    max-height: 15px;
+}
+
 .circle {
-    width: 20px;
-    height: 20px;
+    width: 15px;
+    height: 15px;
     border-radius: 50%;
 }
 
@@ -24,35 +29,28 @@
     border-radius: 50%;
 }
 
-/* Kolor dla zaakceptowanych */
 .glow-accepted {
     box-shadow: 0 0 20px 10px rgba(0, 128, 0, 0.75);
     background-color: rgba(0, 128, 0, 0.75);
-    /* lub inny odcień zieleni */
 }
 
-/* Dodatkowe statusy – przykładowe style */
 .glow-pending {
     box-shadow: 0 0 20px 10px rgba(255, 165, 0, 0.75);
-    /* pomarańczowy */
     background-color: rgba(255, 165, 0, 0.75);
 }
 
 .glow-rejected {
     box-shadow: 0 0 20px 10px rgba(255, 0, 0, 0.75);
-    /* czerwony */
     background-color: rgba(255, 0, 0, 0.75);
 }
 
 .glow-done {
     box-shadow: 0 0 20px 10px rgba(0, 0, 255, 0.75);
-    /* niebieski */
     background-color: rgba(0, 0, 255, 0.75);
 }
 
 img {
     width: 128px;
-    /* Rozmiar obrazu */
     height: 128px;
     border-radius: 50%;
 }

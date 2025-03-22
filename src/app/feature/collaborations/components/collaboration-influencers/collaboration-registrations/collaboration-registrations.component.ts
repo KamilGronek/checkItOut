@@ -71,8 +71,7 @@ export class CollaborationRegistrationsComponent implements OnInit {
     }
 
     changeOpportunityStatus(id: number) {
-        const updates = { opportunityStatus: this.acceptShow ? 'ACCEPTED' : 'REJECTED' };
-        this._collaborationService.updateAppliedOpportunityStatus(id, updates).subscribe({
+        this._collaborationService.updateAppliedOpportunityStatus(id, this.acceptShow).subscribe({
             next: () => {
                 this.filterInfluencers();
             },

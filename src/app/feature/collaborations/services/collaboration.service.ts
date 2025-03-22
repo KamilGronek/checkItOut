@@ -68,8 +68,13 @@ export class CollaborationService {
         return this.http.get(this.baseUrl + '/activecoop/accept', { params });
     }
 
-    getCollaborationsInProgress() {
-        return this.http.get(this.baseUrl + '/activecoop/inprogress');
+    getCollaborationsInProgress(filter?: any) {
+        let params = new HttpParams();
+
+        if (filter && filter.opportunityStatusFilter.length > 0) {
+            params = params.set('statuses', filter.opportunityStatusFilter.join(','));
+        }
+        return this.http.get(this.baseUrl + '/activecoop/inprogress', { params });
     }
 
     createCollaboration(collaboration: any) {
@@ -86,12 +91,19 @@ export class CollaborationService {
         return this.http.delete<Collaboration>(this.collabUrl + `/${id}`);
     }
 
-    updateAppliedOpportunityStatus(id: number, updates: { opportunityStatus?: string; rateStatus?: string }) {
+    updateAppliedOpportunityRate(id: number, updates: { opportunityStatus?: string; rateStatus?: string }) {
         return this.http.patch(
             `${this.baseUrl}/applied-opportunity/rate/update/${id}`,
             updates,
             { ...this.httpOptions, responseType: 'text' as 'json' }
         );
+    }
+
+    updateAppliedOpportunityStatus(id: number, accept: boolean) {
+        let params = new HttpParams();
+        params = params.set('accept', accept.toString());
+        console.log(typeof accept);
+        return this.http.patch(this.baseUrl + `/applied-opportunity/status/update/${id}`, null, { params });
     }
 
     updateCollaboration(collaboration: Collaboration, id: number) {

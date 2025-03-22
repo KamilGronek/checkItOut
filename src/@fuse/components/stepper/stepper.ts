@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, Input, OnChanges, SimpleChanges, ElementRef } from '@angular/core';
+import { AfterViewInit, Component, Input, SimpleChanges } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 
 export interface Step {
@@ -8,6 +8,13 @@ export interface Step {
     title: string;
     description: string;
     statusType: string;
+    question?: string;
+    questionType?: ViewType;
+}
+
+export enum ViewType {
+    COMPANY = "COMPANY",
+   INFLUENCER = "INFLUENCER"
 }
 
 @Component({
@@ -57,8 +64,6 @@ export class StepperComponent implements AfterViewInit {
                 }
             }
         }
-        // Sortujemy według statusNumber
         this.displaySteps.sort((a, b) => a.statusNumber - b.statusNumber);
-        console.log(this.displaySteps);
     }
 }

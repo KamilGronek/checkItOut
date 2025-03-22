@@ -88,7 +88,7 @@ export class CollaborationRatingsComponent implements OnInit {
     confirmRateStatus(): void {
         const updates = { rateStatus: this.selectedRate.rateStatus };
         if (this.selectedRate) {
-            this._collaborationService.updateAppliedOpportunityStatus(this.selectedRate.appliedOpportunityId, updates).subscribe({
+            this._collaborationService.updateAppliedOpportunityRate(this.selectedRate.appliedOpportunityId, updates).subscribe({
                 next: () => {
                     console.log('Status zaktualizowany!');
                     //zmiana statusu influencera

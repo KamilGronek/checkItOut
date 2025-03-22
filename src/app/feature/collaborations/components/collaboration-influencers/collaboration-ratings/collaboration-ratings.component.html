@@ -3,8 +3,8 @@
         <div class="text-2xl font-extrabold tracking-tight p-8">
             Oceny podjętych współprac
         </div>
-        </div>
-    
+    </div>
+
     <!-- Jeśli są influencerzy -->
     <div *ngIf="collaborations.length > 0; else noCollaborations">
         <app-carousel
@@ -24,8 +24,7 @@
                         <div
                             class="flex w-full max-w-40 flex-col items-center p-8 pb-6 min-w-30"
                         >
-                            <div
-                            >
+                            <div>
                                 <img
                                     [src]="collab.influencerAvatarUrl"
                                     alt="Card cover image"
@@ -44,20 +43,19 @@
                                 {{ collab.partnershipOpportunityTitle }}
                             </div>
 
-                            <hr class="mt-4 w-full border-t mb-4"/>
+                            <hr class="mt-4 w-full border-t mb-4" />
                             <div
                                 class="flex justify-between items-center text-3xl w-full pointer-events-auto"
                             >
                                 <button
                                     [disabled]="
-                                    collab.rateStatus === 'POSITIVE'
+                                        collab.rateStatus === 'POSITIVE'
                                     "
                                     [ngClass]="{
                                         'transform transition-transform duration-300 hover:scale-125':
-                                            collab.rateStatus !==
-                                            'POSITIVE',
+                                            collab.rateStatus !== 'POSITIVE',
                                         'cursor-not-allowed opacity-50':
-                                        collab.rateStatus === 'POSITIVE'
+                                            collab.rateStatus === 'POSITIVE'
                                     }"
                                     (click)="
                                         fuseCard.face = 'back';
@@ -72,14 +70,13 @@
 
                                 <button
                                     [disabled]="
-                                    collab.rateStatus === 'NEGATIVE'
+                                        collab.rateStatus === 'NEGATIVE'
                                     "
                                     [ngClass]="{
                                         'transform transition-transform duration-300 hover:scale-125':
-                                        collab.rateStatus !==
-                                            'NEGATIVE',
+                                            collab.rateStatus !== 'NEGATIVE',
                                         'cursor-not-allowed opacity-50':
-                                        collab.rateStatus === 'NEGATIVE'
+                                            collab.rateStatus === 'NEGATIVE'
                                     }"
                                     (click)="
                                         fuseCard.face = 'back';
@@ -112,28 +109,27 @@
                                     ></mat-icon>
                                 </button>
                             </div>
-
-                            <div class="mt-auto text-center">
-                                <p class="text-xl mb-4">
-                                    Czy na pewno chcesz dodać opinię?
-                                </p>
-                                <div class="flex justify-around items-center">
-                                    <button
-                                        class="bg-green-400 rounded-lg text-white px-4 py-2"
-                                        (click)="confirmRateStatus()"
-                                    >
-                                        TAK
-                                    </button>
-                                    <button
-                                        class="bg-red-400 rounded-lg text-white px-4 py-2"
-                                        (click)="
-                                            fuseCard.face = 'front';
-                                            resetRateStatus(fuseCard)
-                                        "
-                                    >
-                                        NIE
-                                    </button>
-                                </div>
+                        </div>
+                        <div class="mt-auto text-center">
+                            <p class="text-xl mb-4">
+                                Czy na pewno chcesz dodać opinię?
+                            </p>
+                            <div class="flex justify-around items-center mb-4">
+                                <button
+                                    class="bg-green-400 rounded-lg text-white px-4 py-2"
+                                    (click)="confirmRateStatus()"
+                                >
+                                    TAK
+                                </button>
+                                <button
+                                    class="bg-red-400 rounded-lg text-white px-4 py-2"
+                                    (click)="
+                                        fuseCard.face = 'front';
+                                        resetRateStatus(fuseCard)
+                                    "
+                                >
+                                    NIE
+                                </button>
                             </div>
                         </div>
                     </ng-container>

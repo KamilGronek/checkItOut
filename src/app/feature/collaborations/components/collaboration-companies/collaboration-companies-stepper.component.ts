@@ -10,7 +10,7 @@ import jsonData from './statuses.json';
 })
 export class CollaborationCompaniesStepperComponent {
     @Input() currentStatus: string;
-    public stepsData: Step[] = jsonData;
+    public stepsData: any[] = jsonData;
 
     get currentStep(): Step {
         return this.stepsData.find(step => step.code === this.currentStatus);
