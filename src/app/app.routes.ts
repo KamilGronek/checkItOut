@@ -3,8 +3,9 @@ import {AuthGuard} from 'app/core/guards/auth.guard';
 import {NoAuthGuard} from 'app/core/guards/no-auth.guard';
 import {RoleGuard} from './core/guards/role.guard';
 import {LayoutComponent} from 'app/shared/components/layout/layout.component';
-import {AuthSignOutComponent} from 'app/feature/authentication/components/sign-out/sign-out.component';
 import {AuthResolver} from 'app/core/resolvers/auth.resolver';
+import {ComponentSamplesComponent} from "./shared/components/ui/component-samples.component";
+import {AuthSignOutComponent} from "./feature/authentication/components/sign-out/sign-out.component";
 
 // @formatter:off
 /* eslint-disable max-len */
@@ -15,38 +16,35 @@ export const appRoutes: Route[] = [
 
     { path: '', pathMatch: 'full', redirectTo: 'home' },
 
-    // Redirect signed-in user to the '/example'
-    //
-    // After the user signs in, the sign-in page will redirect the user to the 'signed-in-redirect'
-    // path. Below is another redirection for that path to redirect the user to the desired
-    // location. This is a small convenience to keep all main routes together here on this file.
-
-    // Auth routes for guests
+    // Routes available for everyone from everywhere
     {
         path: '',
-        canActivate: [NoAuthGuard],
-        canActivateChild: [NoAuthGuard],
         component: LayoutComponent,
         data: {
             layout: 'empty',
         },
         children: [
             {
-                path: 'auth',
-                loadChildren: () =>
-                    import(
-                        'app/feature/authentication/components/authentication.routes'
-                        ),
-            }
+                path: 'ui-component-samples',
+                component: ComponentSamplesComponent,
+            },
         ],
     },
 
+    // Auth routes for all users
     {
-        path: 'auth/sign-out',
-        component: AuthSignOutComponent,
+        path: 'auth',
+        component: LayoutComponent,
+        data: {
+            layout: 'with-banner',
+        },
+        loadChildren: () =>
+            import(
+                'app/feature/authentication/components/authentication.routes'
+                ),
     },
 
-    // Auth routes for authenticated users
+    // Routes for all
     {
         path: 'home',
         canActivate: [RoleGuard],
@@ -57,25 +55,7 @@ export const appRoutes: Route[] = [
         },
     },
 
-    // Landing routes
-    {
-        path: '',
-        component: LayoutComponent,
-        data: {
-            layout: 'classy',
-        },
-        children: [
-            {
-                path: 'unlock-session',
-                loadChildren: () =>
-                    import(
-                        'app/feature/authentication/components/unlock-session/unlock-session.routes'
-                    ),
-            },
-        ],
-    },
-
-    // Admin routes
+    // Auth routes for authenticated users
     {
         path: '',
         canActivate: [AuthGuard],

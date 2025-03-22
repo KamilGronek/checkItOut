@@ -1,0 +1,46 @@
+<fuse-card
+    [ngClass]="flippable || click.observers.length > 0 ? 'h-full grow cursor-pointer ' + customClass : 'h-full grow ' + customClass"
+    [flippable]="true"
+    (click)="handleCardClick($event)"
+    (keydown.enter)="handleCardClick($event)"
+    (keydown.space)="handleCardClick($event)"
+    tabindex="0"
+    [attr.aria-label]="'Flippable card' + (imgAlt ? ' with ' + imgAlt : '')"
+    [matTooltip]="tooltip"
+    [matTooltipDisabled]="tooltip == null"
+    [matTooltipShowDelay]="tooltipShowDelay"
+    [matTooltipHideDelay]="tooltipHideDelay">
+    <!-- Front Side -->
+    <ng-container fuseCardFront>
+        <img
+            *ngIf="imgSrc"
+            [src]="imgSrc"
+            class="max-h-40 object-cover"
+            [alt]="imgAlt"
+        />
+        <div
+            class="py-5 px-6 w-full h-full flex flex-col">
+            <!-- Header -->
+            <div class="font-bold">
+                <ng-content select="[card-header]"></ng-content>
+            </div>
+
+            <!-- Main Content -->
+            <div class="text-xl">
+                <ng-content></ng-content>
+            </div>
+
+            <!-- Footer -->
+            <div class="mt-auto text-gray-600">
+                <ng-content select="[card-footer]"></ng-content>
+            </div>
+        </div>
+    </ng-container>
+
+    <!-- Back Side - Conditionally Render (Hidden by Default) -->
+    <ng-container fuseCardBack>
+        <div class="py-5 px-6 w-full h-full">
+            <ng-content select="[card-back]"></ng-content>
+        </div>
+    </ng-container>
+</fuse-card>

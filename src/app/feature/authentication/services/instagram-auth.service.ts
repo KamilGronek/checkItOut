@@ -49,21 +49,6 @@ export class InstagramAuthService {
     }
 
     signIn(firebaseToken: string) {
-        this._authService.signInWithInstagram(firebaseToken).then(() => {
-            this._influencerService
-                .getInfluencerUser()
-                .subscribe((userData) => {
-                    const status = userData.accountStatus;
-                    localStorage.setItem('userStatus', status);
-
-                    console.log('status:', status);
-                    if (status === 'ACTIVE') {
-                        this._router.navigateByUrl('collaborations');
-                    } else {
-                        this._router.navigateByUrl('home');
-                    }
-                });
-            this._router.navigateByUrl('home');
-        });
+        return this._authService.signInWithInstagram(firebaseToken);
     }
 }

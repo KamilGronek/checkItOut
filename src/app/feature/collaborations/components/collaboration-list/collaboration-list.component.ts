@@ -1,4 +1,4 @@
-import {CommonModule} from '@angular/common';
+import { CommonModule } from '@angular/common';
 import {
     AfterViewInit,
     ChangeDetectionStrategy,
@@ -38,6 +38,8 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatPaginator, MatPaginatorModule, PageEvent,} from '@angular/material/paginator';
 import {TranslocoModule} from '@ngneat/transloco';
 import {FuseCardComponent} from "../../../../../@fuse/components/card";
+import {LinkComponent} from "../../../../shared/components/ui/link/link.component";
+import {CardComponent} from "../../../../shared/components/ui/card/card.component";
 
 @Component({
     selector: 'collaboration-list',
@@ -65,11 +67,14 @@ import {FuseCardComponent} from "../../../../../@fuse/components/card";
         MatPaginatorModule,
         TranslocoModule,
         FuseCardComponent,
+        LinkComponent,
+        CardComponent,
     ],
     styleUrl: 'collaboration-list.styles.css',
 })
 export class CollaborationsListComponent
-    implements OnInit, AfterViewInit, OnDestroy {
+    implements OnInit, AfterViewInit, OnDestroy
+{
     @ViewChild(MatPaginator) paginator!: MatPaginator;
     @ViewChild('textItem') textInput: ElementRef;
 
@@ -138,8 +143,7 @@ export class CollaborationsListComponent
         private router: Router,
         private _collaborationService: CollaborationService,
         private _cdRef: ChangeDetectorRef
-    ) {
-    }
+    ) {}
 
     ngAfterViewInit(): void {
         if (this.dataSource) this.dataSource.paginator = this.paginator;
@@ -263,7 +267,7 @@ export class CollaborationsListComponent
     }
 
     addCollaboration(): void {
-        this.router.navigate(['/newCollaboration']);
+        this.router.navigate(['/collaborations/create']);
     }
 
     goToDetails(id: number): void {

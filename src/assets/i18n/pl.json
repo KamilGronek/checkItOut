@@ -33,6 +33,7 @@
                 "last_name": "Nazwisko",
                 "email": "E-mail",
                 "city": "Miasto",
+                "address": "Adres",
                 "instagram": "Instagram",
                 "followers": "Ilość followersów",
                 "account_type": "Rodzaj konta",
@@ -71,6 +72,7 @@
                 "last_name": "Nazwisko",
                 "email": "E-mail",
                 "city": "Miasto",
+                "address": "Adres",
                 "instagram": "Instagram",
                 "followers": "Ilość followersów",
                 "phone_number": "Numer telefonu",
@@ -153,13 +155,19 @@
                 "collaboration_card": {
                     "details_button": "Szczegóły współpracy"
                 },
+                "add_new_collaboration": "Dodaj nową",
                 "pagination": {
                     "select_page": "Wybierz stronę",
                     "page_number": "Strona nr: {{ pageIndex }}"
                 }
             },
+            "pop_up_notice":{
+                "title": "Edycja współpracy",
+                "message": "Współpraca została pomyślnie edytowana"
+            },
             "details": {
                 "title": "Szczegóły Współpracy",
+                "title_placeholder": "Podaj nazwę zlecenia",
                 "start_date": "Data rozpoczęcia",
                 "end_date": "Data zakończenia",
                 "date_not_set": "Nie ustawiono",
@@ -170,14 +178,19 @@
                 "edit_button": "Edytuj",
                 "requirements": "Wymagania",
                 "requirements_placeholder": "Wpisz wymagania dotyczące współpracy...",
-                "compensation": "Wynagrodzenie",
+                "compensationType": "Wynagrodzenie",
                 "compensation_placeholder": "Wpisz szczegóły wynagrodzenia...",
                 "campaign_details": "Detale Kampanii",
                 "campaign_details_placeholder": "Opisz detale nowej kampanii...",
                 "company_details": "Detale Firmy",
                 "slider_configuration": "Konfiguracja Suwaka",
                 "result": "Wynik",
+                "city": "Miasto",
+                "company": "Firma",
+                "service_type": "Typ Serwisu",
                 "value": "Wartość",
+                "followers_amount": "Liczba followersów",
+                "content_type": "Rodzaj kontentu",
                 "min_value": "Minimalna Wartość",
                 "max_value": "Maksymalna Wartość",
                 "step_size": "Rozmiar Kroku",

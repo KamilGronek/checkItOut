@@ -1,0 +1,228 @@
+<!-- Logo -->
+<div class="w-12">
+    <img src="assets/images/logo/logo.svg">
+</div>
+
+<!-- Title -->
+<div class="mt-8 text-4xl font-extrabold tracking-tight leading-tight">Sign up</div>
+<div class="flex items-baseline mt-0.5 font-medium">
+    <div>Already have an account?</div>
+    <a
+        class="ml-1 text-primary-500 hover:underline"
+        [routerLink]="['/auth/sign-in']">Sign in
+    </a>
+</div>
+
+<!-- Business signup wizard -->
+<mat-stepper class="bg-gray-100" [linear]="true" #stepper orientation="vertical">
+    <!-- Step 1: Business Information -->
+    <mat-step [completed]="businessFormCompleted">
+        <ng-template matStepLabel>Business Information</ng-template>
+        <div class="py-8">
+            <h2 class="text-2xl font-medium mb-1">Tell us about your business</h2>
+            <p class="text-gray-600 mb-8">This information will be used to set up your business profile</p>
+
+            <div class="flex flex-col space-y-6 mb-8" [formGroup]="businessForm">
+                <app-input
+                    type="image"
+                    [control]="businessForm.controls.logo"
+                    storagePath="companies/logos"
+                    acceptedFileTypes="image/jpeg,image/png,image/gif"
+                    (imageUploaded)="onProfilePictureUploaded()"
+                >Business logo</app-input>
+
+                <app-input
+                    [control]="businessForm.controls.name"
+                    placeholder="Enter your business name"
+                >Business Name</app-input>
+
+                <app-select
+                    [options]="categories"
+                    [control]="businessForm.controls.category"
+                >Business Category</app-select>
+
+                <app-input
+                    type="textarea"
+                    [control]="businessForm.controls.description"
+                    placeholder="Briefly describe your business (max 500 characters)"
+                    [rows]="3"
+                    [maxLength]="500"
+                >Business Description</app-input>
+
+                <app-input
+                    type="email"
+                    [control]="businessForm.controls.email"
+                    placeholder="business@example.com"
+                >Email Address</app-input>
+
+                <app-input
+                    [control]="businessForm.controls.phone"
+                    placeholder="+1 (123) 456-7890"
+                >Phone Number</app-input>
+
+                <app-input
+                    [control]="businessForm.controls.country"
+                    placeholder="Enter your country"
+                >Country</app-input>
+
+                <!-- Address group -->
+                <div class="bg-gray-200 border border-gray-200 rounded-lg p-6 mt-4" formGroupName="address">
+                    <h3 class="text-lg font-medium mt-0 mb-6">Business Address</h3>
+
+                    <app-input
+                        [control]="businessForm.controls.address.controls.street"
+                        placeholder="123 Main St"
+                    >Street Address</app-input>
+
+                    <div class="flex flex-wrap gap-4 mt-6">
+                        <app-input
+                            class="grow"
+                            [control]="businessForm.controls.address.controls.city"
+                            placeholder="City"
+                        >City</app-input>
+
+                        <app-input
+                            class="grow"
+                            [control]="businessForm.controls.address.controls.state"
+                            placeholder="State"
+                        >State/Province</app-input>
+                    </div>
+
+                    <div class="mt-6">
+                        <app-input
+                            [control]="businessForm.controls.address.controls.zip"
+                            placeholder="12345"
+                        >Postal/ZIP Code</app-input>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-end space-x-4 mt-8">
+                <app-button
+                    variant="stroked"
+                    color="primary"
+                    [disabled]="businessForm.invalid"
+                    (click)="completeBusinessForm()"
+                >
+                    Continue
+                </app-button>
+            </div>
+        </div>
+    </mat-step>
+
+    <!-- Step 2: Representative Information -->
+    <mat-step [completed]="representativeFormCompleted">
+        <ng-template matStepLabel>Representative Information</ng-template>
+        <div class="py-8">
+            <h2 class="text-2xl font-medium mb-1">Representative Details</h2>
+            <p class="text-gray-600 mb-8">Provide information about the primary contact person</p>
+
+            <div class="flex flex-col space-y-6 mb-8" [formGroup]="representativeForm">
+                <div class="grid grid-cols-2 gap-4">
+                    <app-input
+                        [control]="representativeForm.controls.firstName"
+                        placeholder="First name"
+                    >First Name</app-input>
+
+                    <app-input
+                        [control]="representativeForm.controls.lastName"
+                        placeholder="Last name"
+                    >Last Name</app-input>
+                </div>
+
+                <app-input
+                    type="email"
+                    [control]="representativeForm.controls.email"
+                    placeholder="representative@example.com"
+                >Email Address</app-input>
+
+                <app-input
+                    [control]="representativeForm.controls.phone"
+                    placeholder="+1 (123) 456-7890"
+                >Phone Number</app-input>
+            </div>
+
+            <div class="flex justify-end space-x-4 mt-8">
+                <app-button
+                    variant="text"
+                    color="primary"
+                    (click)="stepper.previous()"
+                >
+                    Back
+                </app-button>
+
+                <app-button
+                    variant="stroked"
+                    color="primary"
+                    [disabled]="representativeForm.invalid"
+                    (click)="completeRepresentativeForm()"
+                >
+                    Continue
+                </app-button>
+            </div>
+        </div>
+    </mat-step>
+
+    <!-- Step 3: Account Credentials -->
+    <mat-step>
+        <ng-template matStepLabel>Create Account</ng-template>
+        <div class="py-8">
+            <h2 class="text-2xl font-medium mb-1">Set Up Account Credentials</h2>
+            <p class="text-gray-600 mb-8">Create login credentials for your business account</p>
+
+            <div class="flex flex-col gap-3 mb-8" [formGroup]="credentialsForm">
+                <app-input
+                    type="email"
+                    [control]="credentialsForm.controls.email"
+                    placeholder="your@email.com"
+                >Email Address</app-input>
+
+                <app-input
+                    type="password"
+                    [control]="credentialsForm.controls.password"
+                    placeholder="Create a strong password"
+                    hint="Use at least 8 characters with uppercase, lowercase, numbers and symbols"
+                >Password</app-input>
+
+                <div>
+                    <app-input
+                        type="password"
+                        [control]="credentialsForm.controls.confirmPassword"
+                        placeholder="Confirm your password"
+                    >Confirm Password</app-input>
+
+                    <div *ngIf="credentialsForm.hasError('passwordMismatch')" class="text-red-500 text-sm -mt-4">
+                        Passwords do not match
+                    </div>
+                </div>
+
+                <app-input type="checkbox" [control]="credentialsForm.controls.termsOfService">
+                    <span class="flex gap-1">
+                        Agree to the <app-link routerLink="/tos">Terms and Conditions</app-link>
+                    </span>
+                </app-input>
+
+            </div>
+
+            <div class="flex justify-end space-x-4 mt-8">
+                <app-button
+                    variant="text"
+                    color="primary"
+                    (click)="stepper.previous()"
+                >
+                    Back
+                </app-button>
+
+                <app-button
+                    variant="stroked"
+                    color="primary"
+                    [disabled]="credentialsForm.invalid"
+                    [loading]="isSubmitting"
+                    (click)="submitForms()"
+                >
+                    Create Account
+                </app-button>
+            </div>
+        </div>
+    </mat-step>
+</mat-stepper>

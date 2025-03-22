@@ -6,13 +6,10 @@ import { catchError, Observable, of, switchMap, throwError } from 'rxjs';
 import {
     Auth,
     createUserWithEmailAndPassword,
-    FacebookAuthProvider,
-    GoogleAuthProvider,
     sendEmailVerification,
     sendPasswordResetEmail,
     signInWithCustomToken,
     signInWithEmailAndPassword,
-    signInWithPopup,
     UserCredential,
 } from '@angular/fire/auth';
 import { jwtDecode } from 'jwt-decode';
@@ -55,6 +52,7 @@ export class AuthService {
         }
     }
 
+
     /**
      * Setter & getter for access token
      */
@@ -72,6 +70,10 @@ export class AuthService {
 
     decodeToken(token: string): any {
         return jwtDecode(token);
+    }
+
+    getCurrentUser(){
+        return this.auth.currentUser;
     }
 
     async refreshToken(): Promise<void> {
@@ -219,52 +221,6 @@ export class AuthService {
             });
     }
 
-    signInWithFacebook(): Promise<any> {
-        if (this._authenticated) {
-            throwError(() => 'User is already logged in.');
-        }
-
-        const provider = new FacebookAuthProvider();
-
-        return signInWithPopup(this.auth, provider)
-            .then((userCredential) => {
-                return new Promise<string>((resolve, reject) => {
-                    resolve(userCredential.user.getIdToken());
-                });
-            })
-            .then((token) => {
-                return new Promise((resolve, reject) => {
-                    this.accessToken = token;
-                    this._authenticated = true;
-                    this._userService.user = this.getUserFromToken();
-                    resolve(true);
-                });
-            });
-    }
-
-    signInWithGoogle(): Promise<any> {
-        if (this._authenticated) {
-            throwError(() => 'User is already logged in.');
-        }
-
-        const provider = new GoogleAuthProvider();
-
-        return signInWithPopup(this.auth, provider)
-            .then((userCredential) => {
-                return new Promise<string>((resolve, reject) => {
-                    resolve(userCredential.user.getIdToken());
-                });
-            })
-            .then((token) => {
-                return new Promise((resolve, reject) => {
-                    this.accessToken = token;
-                    this._authenticated = true;
-                    this._userService.user = this.getUserFromToken();
-                    resolve(true);
-                });
-            });
-    }
-
     /**
      * Sign in with instagram
      */
@@ -349,7 +305,6 @@ export class AuthService {
         name: string;
         email: string;
         password: string;
-        company: string;
     }): Promise<any> {
         return createUserWithEmailAndPassword(
             this.auth,

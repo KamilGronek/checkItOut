@@ -42,6 +42,8 @@ import {MatPaginator, MatPaginatorModule, PageEvent} from '@angular/material/pag
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {SnackbarService} from 'app/core/services/custom-snackbar/custom-snackbar.service';
 import {TranslocoModule} from '@ngneat/transloco';
+import {Column} from "../../../../shared/components/ui/table/table.types";
+import {TableComponent} from "../../../../shared/components/ui/table/table.component";
 
 @Component({
     selector: 'new-influencers-list',
@@ -78,6 +80,7 @@ import {TranslocoModule} from '@ngneat/transloco';
         MatSelectModule,
         MatPaginatorModule,
         TranslocoModule,
+        TableComponent,
     ],
 })
 export class newInfluencersListComponent
@@ -107,6 +110,16 @@ export class newInfluencersListComponent
         ...this.influencersTableColumns,
         'expand',
     ];
+
+    tableColumns: Column[]   = [
+        { key: 'id', label: 'admin.new_influencers.table_headers.id' },
+        { key: 'firstName', label: 'admin.new_influencers.table_headers.first_name' },
+        { key: 'lastName', label: 'admin.new_influencers.table_headers.last_name' },
+        { key: 'city', label: 'admin.new_influencers.table_headers.city' },
+        { key: 'address', label: 'admin.new_influencers.table_headers.address' },
+        { key: 'email', label: 'admin.new_influencers.table_headers.email' },
+    ];
+
     expandedUser: InfluencerUser | null;
 
     formLaunched: boolean = false;

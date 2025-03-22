@@ -1,7 +1,6 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-// import { Influencer } from './Influencer';
 import { Collaboration, CollaborationResponse } from './collaboration.types';
 import { AuthService } from 'app/core/services/authentication/auth.service';
 import { environment } from 'environments/environment';

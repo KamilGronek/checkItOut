@@ -23,7 +23,7 @@ export const RoleGuard: CanActivateFn | CanActivateChildFn = (route, state) => {
                 if (role === 'ADMIN') {
                     router.navigateByUrl('/influencers/new');
                 } else {
-                    router.navigateByUrl('/user/profile');
+                    router.navigateByUrl('/collaborations/list');
                 }
             }
         })

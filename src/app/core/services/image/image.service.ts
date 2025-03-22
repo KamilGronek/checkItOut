@@ -8,7 +8,9 @@ export class ImageService {
 
     async uploadImage(file: File, path: string): Promise<string> {
         try {
-            const imagePath = `/images/${path}/${file.name}`;
+            const uniqueFileName = this.generateUniqueFileName(file.name);
+
+            const imagePath = `/images/${path}/${uniqueFileName}`;
             const storageRef = ref(this.storage, imagePath);
 
             const snapshot = await uploadBytes(storageRef, file);
@@ -18,6 +20,11 @@ export class ImageService {
             throw new Error('Failed to upload image. Please try again.');
         }
     }
+
+    private generateUniqueFileName(fileName: string): string {
+        return `${Date.now()}_${Math.random().toString(36).substring(2, 15)}_${fileName}`;
+    }
+
 
     async deleteImage(path: string): Promise<void> {
         try {

@@ -22,6 +22,24 @@ export class InfluencerService {
     constructor(private http: HttpClient, private authService: AuthService) {
     }
 
+    create(influencer: any){
+        // {
+        //     "email": "emailJaa1kubaaa1@em.ai",
+        //     "userType": "INFLUENCER",
+        //     "firstName": "Jak1ub",
+        //     "lastName": "te1st",
+        //     "accountStatus": "Nieaktywny",
+        //     "influencer":
+        //     {
+        //         "instagramId": "Jaaku11aabsa",
+        //         "city": "Warszawa",
+        //         "apiKey": "superKlaucze1mja1",
+        //         "instagramAccountType": "Publiczne"
+        //     }
+        // }
+        return this.http.post(this.apiUrl + '/user', influencer, this.httpOptions);
+    }
+
     getInfluencerList(): Observable<Influencer[]> {
         return this.http.get<Influencer[]>(this.apiUrl + '/user' + '/list');
     }

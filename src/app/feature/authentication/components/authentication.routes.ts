@@ -6,32 +6,49 @@ import {AuthForgotPasswordComponent} from "./forgot-password/forgot-password.com
 import {AuthResetPasswordComponent} from "./reset-password/reset-password.component";
 import {AuthSignInComponent} from "./sign-in/sign-in.component";
 import {AuthSignUpComponent} from "./sign-up/sign-up.component";
-import {InstagramCallbackComponent} from "./instagram/instagram-callback.component";
+import {InstagramInfluencerCallbackComponent} from "./instagram/influencer/instagram-influencer-callback.component";
+import {AuthSignOutComponent} from "./sign-out/sign-out.component";
+import {BusinessSignUpComponent} from "./sign-up/business/business-sign-up.component";
+import {NoAuthGuard} from "app/core/guards/no-auth.guard";
 
 export default [
     {
         path: 'confirmation-required',
+        canActivate: [NoAuthGuard],
         component: AuthConfirmationRequiredComponent,
     },
     {
         path: 'forgot-password',
+        canActivate: [NoAuthGuard],
         component: AuthForgotPasswordComponent,
     },
     {
         path: 'reset-password',
+        canActivate: [NoAuthGuard],
         component: AuthResetPasswordComponent,
     },
     {
         path: 'sign-in',
+        canActivate: [NoAuthGuard],
         component: AuthSignInComponent,
     },
     {
         path: 'sign-up',
+        canActivate: [NoAuthGuard],
         component: AuthSignUpComponent,
     },
     {
-        path: 'instagram/callback',
-        component: InstagramCallbackComponent,
+        path: 'sign-up/business',
+        canActivate: [NoAuthGuard],
+        component: BusinessSignUpComponent,
+    },
+    {
+        path: 'sign-out',
+        component: AuthSignOutComponent,
+    },
+    {
+        path: 'instagram/influencer/callback',
+        component: InstagramInfluencerCallbackComponent,
     },
 
 ] as Routes;

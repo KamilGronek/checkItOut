@@ -1,0 +1,28 @@
+<ng-container [ngSwitch]="type">
+    <a *ngSwitchCase="'routing'"
+       [routerLink]="routerLink"
+       [class]="baseClass + ' ' + customClass">
+        <ng-container *ngTemplateOutlet="linkContent"></ng-container>
+    </a>
+    <a *ngSwitchCase="'external'"
+       [href]="href"
+       rel="noopener noreferrer"
+       [target]="target"
+       [class]="baseClass + ' ' + customClass">
+        <ng-container *ngTemplateOutlet="linkContent"></ng-container>
+    </a>
+</ng-container>
+
+<ng-template #linkContent>
+    <ng-container [ngSwitch]="variant">
+        <ng-container *ngSwitchCase="'icon'">
+            <mat-icon class="icon-size-5" [svgIcon]="icon || 'link'" [attr.aria-label]="type + ' link'"></mat-icon>
+        </ng-container>
+        <ng-container *ngSwitchDefault>
+            <div class="flex gap-1 items-center" >
+                <mat-icon *ngIf="icon" class="icon-size-5 mr-1" [svgIcon]="icon"></mat-icon>
+                <ng-content></ng-content>
+            </div>
+        </ng-container>
+    </ng-container>
+</ng-template>
