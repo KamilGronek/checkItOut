@@ -102,7 +102,6 @@ export class CollaborationService {
     updateAppliedOpportunityStatus(id: number, accept: boolean) {
         let params = new HttpParams();
         params = params.set('accept', accept.toString());
-        console.log(typeof accept);
         return this.http.patch(this.baseUrl + `/applied-opportunity/status/update/${id}`, null, { params });
     }
 
