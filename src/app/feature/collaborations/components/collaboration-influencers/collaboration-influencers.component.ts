@@ -1,20 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { CollaborationRegistrationsComponent } from './collaboration-registrations/collaboration-registrations.component';
-import { CollaborationRatingsComponent } from "./collaboration-ratings/collaboration-ratings.component";
-import { CollaborationCompaniesComponent } from '../collaboration-companies/collaboration-companies.component';
-import { ViewType } from '@fuse/components/stepper/stepper';
+import {Component} from '@angular/core';
+import {CollaborationRegistrationsComponent} from './collaboration-registrations/collaboration-registrations.component';
+import {CollaborationRatingsComponent} from "./collaboration-ratings/collaboration-ratings.component";
 
 @Component({
     selector: 'app-collaboration-influencers',
     standalone: true,
-    imports: [CollaborationRegistrationsComponent, CollaborationRatingsComponent, CollaborationCompaniesComponent],
+    imports: [CollaborationRegistrationsComponent, CollaborationRatingsComponent],
     templateUrl: './collaboration-influencers.component.html',
 })
-export class CollaborationInfluencersComponent implements OnInit {
-    public ViewType = ViewType;
-
-    constructor() { }
-
-    ngOnInit(): void {
-    }
+export class CollaborationInfluencersComponent {
 }
