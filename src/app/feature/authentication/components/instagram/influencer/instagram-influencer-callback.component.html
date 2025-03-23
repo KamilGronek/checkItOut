@@ -2,17 +2,17 @@
     <div class="max-w-80">
         <!-- Logo -->
         <div class="w-12">
-            <img src="../../../../../../assets/images/logo/logo.svg"/>
+            <img src="assets/images/logo/logo.svg"/>
         </div>
 
         <!-- Title -->
         <div
             class="mt-8 text-4xl font-extrabold tracking-tight leading-tight"
         >
-            Finish your registration
+            {{ 'auth.sign_up.influencer.finish_registration' | transloco }}
         </div>
         <div class="mt-0.5 font-medium">
-            Fill the form with your credentials. Additionally to <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#f9ba34] via-[#ee2a7b] to-[#6228d7]">Instagram</span> log in method, you'll be able to log in with <span class="font-bold">email</span> and <span class="font-bold">password</span>.
+            {{ 'auth.sign_up.influencer.fill_credentials_description' | transloco }}
         </div>
 
         <form
@@ -23,32 +23,32 @@
             <app-input
                 type="email"
                 id="email"
-                placeholder="Enter your email"
+                placeholder="{{ 'auth.sign_up.influencer.email_placeholder' | transloco }}"
                 [control]="credentialsForm.controls.email"
 
-            >Email</app-input>
+            >{{ 'auth.sign_up.influencer.email' | transloco }}</app-input>
 
             <app-input
                 type="password"
                 [control]="credentialsForm.controls.password"
-                placeholder="Create a strong password"
-                hint="Use at least 8 characters with uppercase, lowercase, numbers and symbols"
-            >Password</app-input>
+                placeholder="{{ 'auth.sign_up.business.step3.password_placeholder' | transloco }}"
+                hint="{{ 'auth.sign_up.business.step3.password_hint' | transloco }}"
+            >{{ 'auth.sign_up.business.step3.password' | transloco }}</app-input>
             <div>
                 <app-input
                     type="password"
                     [control]="credentialsForm.controls.confirmPassword"
-                    placeholder="Confirm your password"
-                >Confirm Password</app-input>
+                    placeholder="{{ 'auth.sign_up.business.step3.confirm_password_placeholder' | transloco }}"
+                >{{ 'auth.sign_up.business.step3.confirm_password' | transloco }}</app-input>
 
                 <div *ngIf="credentialsForm.hasError('passwordMismatch')" class="text-red-500 text-sm">
-                    Passwords do not match
+                    {{ 'auth.sign_up.business.step3.password_mismatch' | transloco }}
                 </div>
             </div>
 
             <app-input type="checkbox" [control]="credentialsForm.controls.termsOfService">
-                <span class="flex gap-1">
-                    Agree to the <app-link routerLink="/tos">Terms and Conditions</app-link>
+                <span class="flex flex-wrap gap-1">
+                    {{ 'auth.sign_up.business.step3.agree_to' | transloco }} <app-link routerLink="/tos">{{ 'auth.sign_up.business.step3.terms_and_conditions' | transloco }}</app-link>
                 </span>
             </app-input>
 
@@ -60,15 +60,15 @@
                 (click)="handleEmailAndPasswordSubmission()"
                 [disabled]="credentialsForm.disabled || credentialsForm.invalid"
                 [loading]="credentialsForm.disabled">
-                Register
+                {{ 'auth.sign_up.influencer.register' | transloco }}
             </app-button>
 
             <!-- Form footer -->
             <div class="mt-8 text-md font-medium text-secondary flex gap-1">
-                <span>Return to </span>
+                <span>{{ 'auth.sign_up.influencer.return_to' | transloco }} </span>
                 <app-link
                     [routerLink]="['/auth/sign-in']"
-                >Sign in
+                >{{ 'auth.sign_in.title' | transloco }}
                 </app-link>
             </div>
         </form>

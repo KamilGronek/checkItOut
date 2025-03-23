@@ -7,27 +7,27 @@
             </div>
 
             <!-- Title -->
-            <div class="mt-8 text-4xl font-extrabold tracking-tight leading-tight text-center">You have signed
-                out!
+            <div class="mt-8 text-4xl font-extrabold tracking-tight leading-tight text-center">
+                {{ 'auth.sign_out.title' | transloco }}
             </div>
             <div class="flex justify-center mt-0.5 font-medium">
                 <!-- Redirect countdown -->
                 <ng-container *ngIf="countdown > 0">
-                    Redirecting in {{ countdown | i18nPlural: countdownMapping }}
+                    {{ 'auth.sign_out.redirecting' | transloco: { count: countdown } }}
                 </ng-container>
 
                 <!-- Redirect message -->
                 <ng-container *ngIf="countdown === 0">
-                    You are now being redirected!
+                    {{ 'auth.sign_out.being_redirected' | transloco }}
                 </ng-container>
             </div>
 
             <!-- Form footer -->
             <div class="mt-8 text-md font-medium text-secondary text-center">
-                <span>Go to</span>
+                <span>{{ 'auth.sign_out.go_to' | transloco }}</span>
                 <a
                     class="ml-1 text-primary-500 hover:underline"
-                    [routerLink]="['/auth/sign-in']">Sign in
+                    [routerLink]="['/auth/sign-in']">{{ 'auth.sign_out.sign_in_link' | transloco }}
                 </a>
             </div>
         </div>

@@ -8,10 +8,10 @@
         <!-- Title -->
         <div
             class="mt-8 text-4xl font-extrabold tracking-tight leading-tight"
-        >Sign in</div>
+        >{{ 'auth.sign_in.title' | transloco }}</div>
         <div class="flex gap-1 items-baseline mt-0.5 font-medium">
-            <span>Don't have an account? </span>
-            <app-link [routerLink]="['/auth/sign-up']">Sign up</app-link>
+            <span>{{ 'auth.sign_in.no_account' | transloco }} </span>
+            <app-link [routerLink]="['/auth/sign-up']">{{ 'auth.sign_in.sign_up_link' | transloco }}</app-link>
         </div>
 
         <!-- Alert -->
@@ -31,17 +31,17 @@
             <app-input
                 type="email"
                 id="email"
-                placeholder="Email address"
+                [placeholder]="'auth.sign_in.email_placeholder' | transloco"
                 [control]="signInForm.controls['email']"
-            >Email</app-input>
+            >{{ 'auth.sign_in.email' | transloco }}</app-input>
 
             <div class="mt-3">
                 <app-input
                     type="password"
                     id="password"
-                    placeholder="Password"
+                    [placeholder]="'auth.sign_in.password_placeholder' | transloco"
                     [control]="signInForm.controls['password']"
-                >Password</app-input>
+                >{{ 'auth.sign_in.password' | transloco }}</app-input>
             </div>
 
             <!-- Actions -->
@@ -50,11 +50,11 @@
                     type="checkbox"
                     id="checkbox"
                     [control]="signInForm.controls['rememberMe']"
-                >Remember me</app-input>
+                >{{ 'auth.sign_in.remember_me' | transloco }}</app-input>
                 <app-link
                     customClass="text-md"
                     [routerLink]="['/auth/forgot-password']"
-                >Forgot password?
+                >{{ 'auth.sign_in.forgot_password' | transloco }}
                 </app-link>
             </div>
 
@@ -64,13 +64,13 @@
                 [loading]="signInForm.disabled"
                 (click)="signInWithEmailAndPassword()"
                 [icon]="'feather:log-in'">
-                Sign in
+                {{ 'auth.sign_in.submit' | transloco }}
             </app-button>
         </form>
         <!-- Separator -->
         <div class="flex items-center my-6">
             <div class="flex-auto mt-px border-t"></div>
-            <div class="mx-2 text-secondary">Or continue with</div>
+            <div class="mx-2 text-secondary">{{ 'auth.sign_in.or_continue_with' | transloco }}</div>
             <div class="flex-auto mt-px border-t"></div>
         </div>
 
@@ -80,7 +80,7 @@
             color="accent"
             (click)="signInWithInstagram()"
             [icon]="'feather:instagram'">
-            <span class="">Instagram</span>
+            <span class="">{{ 'auth.sign_in.instagram' | transloco }}</span>
         </app-button>
     </div>
 </div>

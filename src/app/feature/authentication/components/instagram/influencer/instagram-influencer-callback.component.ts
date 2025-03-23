@@ -16,6 +16,7 @@ import {LinkComponent} from "app/shared/components/ui/link/link.component";
 import {AccountCredentialsForm} from "../../sign-up/business/business-sign-up.types";
 import {InfluencerService} from "app/feature/influencers/services/influencer.service";
 import {AuthService} from "app/core/services/authentication/auth.service";
+import {TranslocoPipe} from "@ngneat/transloco";
 
 @Component({
     selector: 'app-instagram-influencer-callback',
@@ -34,6 +35,7 @@ import {AuthService} from "app/core/services/authentication/auth.service";
         ButtonComponent,
         InputComponent,
         LinkComponent,
+        TranslocoPipe,
     ],
 })
 export class InstagramInfluencerCallbackComponent implements OnInit {

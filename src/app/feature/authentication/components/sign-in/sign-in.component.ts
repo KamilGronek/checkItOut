@@ -25,6 +25,7 @@ import {environment} from 'environments/environment';
 import {ButtonComponent} from "app/shared/components/ui/button/button.component";
 import {InputComponent} from "app/shared/components/ui/input/input.component";
 import {LinkComponent} from "app/shared/components/ui/link/link.component";
+import {TranslocoPipe} from "@ngneat/transloco";
 interface SignInForm {
     email: FormControl<string | null>;
     password: FormControl<string | null>;
@@ -52,6 +53,7 @@ interface SignInForm {
         ButtonComponent,
         InputComponent,
         LinkComponent,
+        TranslocoPipe,
     ],
 })
 export class AuthSignInComponent implements OnInit {

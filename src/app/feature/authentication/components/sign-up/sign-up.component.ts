@@ -16,6 +16,8 @@ import {fuseAnimations} from '@fuse/animations';
 import {FuseAlertComponent, FuseAlertType} from '@fuse/components/alert';
 import {CardComponent} from "../../../../shared/components/ui/card/card.component";
 import {environment} from "../../../../../environments/environment";
+import {LinkComponent} from "../../../../shared/components/ui/link/link.component";
+import {TranslocoPipe} from "@ngneat/transloco";
 
 @Component({
     selector: 'auth-sign-up',
@@ -36,6 +38,8 @@ import {environment} from "../../../../../environments/environment";
         MatCheckboxModule,
         MatProgressSpinnerModule,
         CardComponent,
+        LinkComponent,
+        TranslocoPipe,
     ],
 })
 export class AuthSignUpComponent {

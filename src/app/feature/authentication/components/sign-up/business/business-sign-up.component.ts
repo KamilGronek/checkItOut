@@ -16,6 +16,7 @@ import {SnackbarService} from "app/core/services/custom-snackbar/custom-snackbar
 import {LinkComponent} from "app/shared/components/ui/link/link.component";
 import {CompanyService} from "app/feature/companies/services/company.service";
 import {AuthService} from "app/core/services/authentication/auth.service";
+import {TranslocoPipe} from "@ngneat/transloco";
 
 @Component({
   selector: 'app-business',
@@ -30,7 +31,8 @@ import {AuthService} from "app/core/services/authentication/auth.service";
         MatStepper,
         SelectComponent,
         ButtonComponent,
-        LinkComponent
+        LinkComponent,
+        TranslocoPipe
     ],
   templateUrl: './business-sign-up.component.html'
 })

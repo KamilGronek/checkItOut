@@ -3,6 +3,7 @@ import {NgClass, NgForOf, NgIf, NgStyle} from "@angular/common";
 import {FuseLoadingBarComponent} from "../../../../../../@fuse/components/loading-bar";
 import {RouterOutlet} from "@angular/router";
 import {Subject} from "rxjs";
+import {LanguagesComponent} from "../../languages/languages.component";
 
 @Component({
   selector: 'app-layout-with-banner',
@@ -13,7 +14,8 @@ import {Subject} from "rxjs";
         NgStyle,
         FuseLoadingBarComponent,
         NgIf,
-        RouterOutlet
+        RouterOutlet,
+        LanguagesComponent
     ],
   templateUrl: './layout-with-banner.component.html',
 })

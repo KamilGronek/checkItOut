@@ -19,6 +19,7 @@ import {FuseAlertComponent, FuseAlertType} from '@fuse/components/alert';
 import {FuseValidators} from '@fuse/validators';
 import {AuthService} from 'app/core/services/authentication/auth.service';
 import {finalize} from 'rxjs';
+import {TranslocoPipe} from "@ngneat/transloco";
 
 @Component({
     selector: 'auth-reset-password',
@@ -37,6 +38,7 @@ import {finalize} from 'rxjs';
         MatIconModule,
         MatProgressSpinnerModule,
         RouterLink,
+        TranslocoPipe,
     ],
 })
 export class AuthResetPasswordComponent implements OnInit {

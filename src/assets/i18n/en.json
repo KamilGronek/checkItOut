@@ -17,6 +17,128 @@
         "en": "English",
         "pl": "Polish"
     },
+    "auth": {
+        "sign_in": {
+            "title": "Sign in",
+            "no_account": "Don't have an account?",
+            "sign_up_link": "Sign up",
+            "email": "Email",
+            "email_placeholder": "Email address",
+            "password": "Password",
+            "password_placeholder": "Password",
+            "remember_me": "Remember me",
+            "forgot_password": "Forgot password?",
+            "submit": "Sign in",
+            "or_continue_with": "Or continue with",
+            "instagram": "Instagram"
+        },
+        "sign_up": {
+            "title": "Sign up",
+            "already_have_account": "Already have an account?",
+            "sign_up_influencer": "Influencer",
+            "sign_up_business": "Business",
+            "sign_up_using": "Sign up using",
+            "sign_up_using_form": "Sign up using Form",
+            "or_sign_up_as": "or Sign up as",
+            "connect_instagram_after": "You'll be able to connect your Instagram account after registration.",
+            "business": {
+                "step1": {
+                    "label": "Business Information",
+                    "title": "Tell us about your business",
+                    "description": "This information will be used to set up your business profile",
+                    "business_logo": "Business logo",
+                    "business_name": "Business Name",
+                    "business_name_placeholder": "Enter your business name",
+                    "business_category": "Business Category",
+                    "business_description": "Business Description",
+                    "business_description_placeholder": "Briefly describe your business (max 500 characters)",
+                    "email": "Email Address",
+                    "phone": "Phone Number",
+                    "country": "Country",
+                    "country_placeholder": "Enter your country",
+                    "business_address": "Business Address",
+                    "street_address": "Street Address",
+                    "city": "City",
+                    "city_placeholder": "City",
+                    "state": "State/Province",
+                    "state_placeholder": "State",
+                    "postal_code": "Postal/ZIP Code"
+                },
+                "step2": {
+                    "label": "Representative Information",
+                    "title": "Representative Details",
+                    "description": "Provide information about the primary contact person",
+                    "first_name": "First Name",
+                    "first_name_placeholder": "First name",
+                    "last_name": "Last Name",
+                    "last_name_placeholder": "Last name",
+                    "email": "Email Address",
+                    "phone": "Phone Number"
+                },
+                "step3": {
+                    "label": "Create Account",
+                    "title": "Set Up Account Credentials",
+                    "description": "Create login credentials for your business account",
+                    "email": "Email Address",
+                    "password": "Password",
+                    "password_placeholder": "Create a strong password",
+                    "password_hint": "Use at least 8 characters with uppercase, lowercase, numbers and symbols",
+                    "confirm_password": "Confirm Password",
+                    "confirm_password_placeholder": "Confirm your password",
+                    "password_mismatch": "Passwords do not match",
+                    "agree_to": "Agree to the",
+                    "terms_and_conditions": "Terms and Conditions"
+                },
+                "continue": "Continue",
+                "back": "Back",
+                "create_account": "Create Account"
+            },
+            "influencer": {
+                "finish_registration": "Finish your registration",
+                "fill_credentials_description": "Fill the form with your credentials. Additionally to Instagram log in method, you'll be able to log in with email and password.",
+                "email": "Email",
+                "email_placeholder": "Enter your email",
+                "register": "Register",
+                "return_to": "Return to"
+            }
+        },
+        "sign_out": {
+            "title": "You have signed out!",
+            "redirecting": "Redirecting in {{count}} second",
+            "redirecting_plural": "Redirecting in {{count}} seconds",
+            "being_redirected": "You are now being redirected!",
+            "go_to": "Go to",
+            "sign_in_link": "Sign in"
+        },
+        "reset_password": {
+            "title": "Reset your password",
+            "subtitle": "Create a new password for your account",
+            "password": "Password",
+            "password_confirm": "Password (Confirm)",
+            "password_required": "Password is required",
+            "password_confirm_required": "Password confirmation is required",
+            "passwords_must_match": "Passwords must match",
+            "submit": "Reset your password",
+            "return_to": "Return to",
+            "sign_in_link": "Sign in"
+        },
+        "forgot_password": {
+            "title": "Forgot password?",
+            "subtitle": "Fill the form to reset your password",
+            "email": "Email address",
+            "email_required": "Email address is required",
+            "email_invalid": "Please enter a valid email address",
+            "submit": "Send reset link",
+            "return_to": "Return to",
+            "sign_in_link": "Sign in"
+        },
+        "confirmation_required": {
+            "title": "Confirmation required",
+            "message": "A confirmation mail with instructions has been sent to your email address. Follow those instructions to confirm your email address and activate your account.",
+            "return_to": "Return to",
+            "sign_in_link": "Sign in"
+        }
+    },
     "admin": {
         "new_influencers": {
             "title": "Influencer List",

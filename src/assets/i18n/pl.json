@@ -17,6 +17,128 @@
         "en": "Angielski",
         "pl": "Polski"
     },
+    "auth": {
+        "sign_in": {
+            "title": "Zaloguj się",
+            "no_account": "Nie masz konta?",
+            "sign_up_link": "Zarejestruj się",
+            "email": "Email",
+            "email_placeholder": "Adres email",
+            "password": "Hasło",
+            "password_placeholder": "Hasło",
+            "remember_me": "Zapamiętaj mnie",
+            "forgot_password": "Zapomniałeś hasła?",
+            "submit": "Zaloguj się",
+            "or_continue_with": "Lub kontynuuj przez",
+            "instagram": "Instagram"
+        },
+        "sign_up": {
+            "title": "Zarejestruj się",
+            "already_have_account": "Masz już konto?",
+            "sign_up_influencer": "Influencer",
+            "sign_up_business": "Firma",
+            "sign_up_using": "Zarejestruj się przez",
+            "sign_up_using_form": "Zarejestruj się używając formularza",
+            "or_sign_up_as": "lub zarejestruj się jako",
+            "connect_instagram_after": "Będziesz mógł połączyć swoje konto Instagram po rejestracji.",
+            "business": {
+                "step1": {
+                    "label": "Informacje o firmie",
+                    "title": "Powiedz nam o swojej firmie",
+                    "description": "Te informacje będą użyte do skonfigurowania profilu firmy",
+                    "business_logo": "Logo firmy",
+                    "business_name": "Nazwa firmy",
+                    "business_name_placeholder": "Wprowadź nazwę firmy",
+                    "business_category": "Kategoria firmy",
+                    "business_description": "Opis firmy",
+                    "business_description_placeholder": "Krótko opisz swoją firmę (maksymalnie 500 znaków)",
+                    "email": "Adres email",
+                    "phone": "Numer telefonu",
+                    "country": "Kraj",
+                    "country_placeholder": "Wprowadź swój kraj",
+                    "business_address": "Adres firmy",
+                    "street_address": "Adres ulicy",
+                    "city": "Miasto",
+                    "city_placeholder": "Miasto",
+                    "state": "Stan/Województwo",
+                    "state_placeholder": "Stan",
+                    "postal_code": "Kod pocztowy"
+                },
+                "step2": {
+                    "label": "Informacje o przedstawicielu",
+                    "title": "Dane przedstawiciela",
+                    "description": "Podaj informacje o głównej osobie kontaktowej",
+                    "first_name": "Imię",
+                    "first_name_placeholder": "Imię",
+                    "last_name": "Nazwisko",
+                    "last_name_placeholder": "Nazwisko",
+                    "email": "Adres email",
+                    "phone": "Numer telefonu"
+                },
+                "step3": {
+                    "label": "Utwórz konto",
+                    "title": "Ustaw dane logowania",
+                    "description": "Utwórz dane logowania dla swojego konta firmowego",
+                    "email": "Adres email",
+                    "password": "Hasło",
+                    "password_placeholder": "Utwórz silne hasło",
+                    "password_hint": "Użyj co najmniej 8 znaków z dużymi literami, małymi literami, liczbami i symbolami",
+                    "confirm_password": "Potwierdź hasło",
+                    "confirm_password_placeholder": "Potwierdź swoje hasło",
+                    "password_mismatch": "Hasła nie pasują do siebie",
+                    "agree_to": "Zgadzam się z",
+                    "terms_and_conditions": "Warunkami korzystania z usługi"
+                },
+                "continue": "Kontynuuj",
+                "back": "Wstecz",
+                "create_account": "Utwórz konto"
+            },
+            "influencer": {
+                "finish_registration": "Dokończ rejestrację",
+                "fill_credentials_description": "Wypełnij formularz swoimi danymi. Dodatkowo oprócz logowania przez Instagram, będziesz mógł logować się za pomocą adresu email i hasła.",
+                "email": "Email",
+                "email_placeholder": "Wprowadź swój email",
+                "register": "Zarejestruj się",
+                "return_to": "Wróć do"
+            }
+        },
+        "sign_out": {
+            "title": "Zostałeś wylogowany!",
+            "redirecting": "Przekierowanie za {{count}} sekundę",
+            "redirecting_plural": "Przekierowanie za {{count}} sekund",
+            "being_redirected": "Trwa przekierowanie!",
+            "go_to": "Przejdź do",
+            "sign_in_link": "Logowania"
+        },
+        "reset_password": {
+            "title": "Zresetuj hasło",
+            "subtitle": "Utwórz nowe hasło dla swojego konta",
+            "password": "Hasło",
+            "password_confirm": "Hasło (Potwierdź)",
+            "password_required": "Hasło jest wymagane",
+            "password_confirm_required": "Potwierdzenie hasła jest wymagane",
+            "passwords_must_match": "Hasła muszą być takie same",
+            "submit": "Zresetuj hasło",
+            "return_to": "Wróć do",
+            "sign_in_link": "Logowania"
+        },
+        "forgot_password": {
+            "title": "Zapomniałeś hasła?",
+            "subtitle": "Wypełnij formularz, aby zresetować hasło",
+            "email": "Adres email",
+            "email_required": "Adres email jest wymagany",
+            "email_invalid": "Wprowadź poprawny adres email",
+            "submit": "Wyślij link resetujący",
+            "return_to": "Wróć do",
+            "sign_in_link": "Logowania"
+        },
+        "confirmation_required": {
+            "title": "Wymagane potwierdzenie",
+            "message": "Email z instrukcjami potwierdzenia został wysłany na Twój adres email. Postępuj zgodnie z instrukcjami, aby potwierdzić adres email i aktywować konto.",
+            "return_to": "Wróć do",
+            "sign_in_link": "Logowania"
+        }
+    },
     "admin": {
         "new_influencers": {
             "title": "Lista influencerów",

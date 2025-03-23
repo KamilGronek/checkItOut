@@ -16,6 +16,8 @@ import {RouterLink} from '@angular/router';
 import {fuseAnimations} from '@fuse/animations';
 import {FuseAlertComponent, FuseAlertType} from '@fuse/components/alert';
 import {AuthService} from 'app/core/services/authentication/auth.service';
+import {TranslocoPipe} from "@ngneat/transloco";
+import {InputComponent} from "../../../../shared/components/ui/input/input.component";
 
 @Component({
     selector: 'auth-forgot-password',
@@ -33,6 +35,8 @@ import {AuthService} from 'app/core/services/authentication/auth.service';
         MatButtonModule,
         MatProgressSpinnerModule,
         RouterLink,
+        TranslocoPipe,
+        InputComponent,
     ],
 })
 export class AuthForgotPasswordComponent implements OnInit {
