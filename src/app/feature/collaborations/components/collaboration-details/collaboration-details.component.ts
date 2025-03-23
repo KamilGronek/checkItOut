@@ -36,7 +36,6 @@ import { CollaborationService } from '../../services/collaboration.service';
 
 import { InfluencerService } from 'app/feature/influencers/services/influencer.service';
 
-import { ViewChild, ElementRef } from '@angular/core';
 import { MatSelectModule } from '@angular/material/select';
 import { City, Influencer } from 'app/feature/influencers/services/influencer.types';
 
@@ -46,28 +45,12 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
 import { OnInit } from '@angular/core';
 import { TranslocoModule } from '@ngneat/transloco';
-import { TranslocoService } from '@ngneat/transloco';
-import { CollaborationConfirmPopUpService } from './collaboration-details-pop-up.service';
-import { MatDialogRef } from '@angular/material/dialog';
-import { CollaborationFormService } from 'app/feature/collaborations/components/collaboration-create/collaboration-create-form/collaboration-form.service';
-import { InputComponent } from 'app/shared/components/ui/input/input.component';
-// import { LookingUpEditDataService } from 'app/feature/collaborations/components/collaboration-create/collaboration-create-form/collaboration-form-lookup-data.service'
-import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 
 @Component({
   selector: 'collaborationsId',
   standalone: true,
   templateUrl: './collaboration-details.component.html',
-  // providers: [provideNativeDateAdapter()],
-
-  providers: [
-    {
-      provide: MAT_DATE_LOCALE,
-      useFactory: (transloco: TranslocoService) => transloco.getActiveLang(),
-      deps: [TranslocoService]
-    },
-    provideNativeDateAdapter()
-  ],
+  providers: [provideNativeDateAdapter()],
   changeDetection: ChangeDetectionStrategy.OnPush,
 
   imports: [
@@ -99,8 +82,7 @@ import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
     MatCheckboxModule,
     MatChipsModule,
     MatTooltipModule,
-    TranslocoModule,
-    InputComponent
+    TranslocoModule
   ],
   styleUrl: 'collaboration-details.styles.css'
 })
@@ -138,6 +120,7 @@ export class CollaborationsDetailComponent implements OnInit {
 
   selectedCity: string = '';
   cityList: City[];
+  cityOptions: string[] = [];
 
   disabled = true;
   max = 6;
@@ -164,13 +147,6 @@ export class CollaborationsDetailComponent implements OnInit {
   contentItems: string[] = [];
   isSliderDisabled = false;
   collaborationId!: number;
-  compensationList: {};
-
-  minDate = new Date();
-  maxDate = new Date(2025, 11, 31);
-  dateControl = new FormControl(null, [Validators.required]);
-  startDateControl = new FormControl(null, Validators.required);
-  endDateControl = new FormControl(null, Validators.required);
 
   constructor(
     private router: Router,
@@ -179,20 +155,23 @@ export class CollaborationsDetailComponent implements OnInit {
     private _collaborationService: CollaborationService,
     private _cdRef: ChangeDetectorRef,
     private _fuseConfirmationService: FuseConfirmationService,
-    private _influencerService: InfluencerService,
-    private translocoService: TranslocoService,
-    private _confirmPopUpService: CollaborationConfirmPopUpService,
-    public _collaborationFormService: CollaborationFormService,
-    // public _lookingUpEditDataService: LookingUpEditDataService
-    private dateAdapter: DateAdapter<any>
+    private _influencerService: InfluencerService
   ) {
-    this.editCollaborationFormGroup = this._collaborationFormService.createForm();
-    this.setDateLocale();
-  }
-
-  setDateLocale(): void {
-    this.translocoService.langChanges$.subscribe(lang => {
-      this.dateAdapter.setLocale(lang);
+    this.editCollaborationFormGroup = this.fb.group({
+      name: ['', [Validators.required]],
+      city: ['', [Validators.required]],
+      details: ['', [Validators.required]],
+      title: ['', [Validators.required]],
+      requirements: ['', [Validators.required]],
+      compensationType: ['', [Validators.required]],
+      compensationAmountMin: ['', [Validators.required]],
+      compensationAmountMax: ['', [Validators.required]],
+      company: [, [Validators.required]],
+      platforms: ['', [Validators.required]],
+      contentTypes: ['', [Validators.required]],
+      serviceType: [, [Validators.required]],
+      startDate: ['', [Validators.required]],
+      endDate: ['', [Validators.required]]
     });
   }
 
@@ -210,14 +189,52 @@ export class CollaborationsDetailComponent implements OnInit {
   });
 
   ngOnInit(): void {
+    this.configForm = this.fb.group({
+      title: 'Usuń pozycję',
+      message: 'Czy jesteś pewien że chcesz usunąć pozycje? <span class="font-medium"></span>',
+      icon: this.fb.group({
+        show: true,
+        name: 'heroicons_outline:exclamation-triangle',
+        color: 'warn'
+      }),
+      actions: this.fb.group({
+        confirm: this.fb.group({
+          show: true,
+          label: 'Usuń',
+          color: 'warn'
+        }),
+        cancel: this.fb.group({
+          show: true,
+          label: 'Anuluj'
+        })
+      }),
+      dismissible: true
+    });
+
+    this.configFormUpdate = this.fb.group({
+      title: 'Edycja współpracy',
+      message: 'Współpraca została pomyślnie edytowana<span class="font-medium"></span>',
+      icon: this.fb.group({
+        show: true,
+        name: 'heroicons_outline:bell-alert',
+        color: 'success'
+      }),
+      actions: this.fb.group({
+        confirm: this.fb.group({
+          show: true,
+          label: 'Ok',
+          color: 'primary'
+        }),
+        cancel: this.fb.group({
+          show: true,
+          label: 'Powrót'
+        })
+      }),
+      dismissible: true
+    });
+
     this.getCollaborationList();
     this.getCityList();
-    this.getCompensationType();
-
-    this._confirmPopUpService.configForm$.subscribe(form => {
-      this.configForm = form;
-      this.configFormUpdate = form;
-    });
 
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
@@ -230,35 +247,15 @@ export class CollaborationsDetailComponent implements OnInit {
     });
   }
 
-  toggleSelection(item: string): void {
-    if (this.selectedItems.has(item)) {
-      this.selectedItems.delete(item);
-    } else {
-      this.selectedItems.add(item);
-    }
-  }
-
-  isSelected(item: string): boolean {
-    return this.selectedItems.has(item);
-  }
-
   getTooltipText(platform: any): string {
     return platform.disabled ? `${platform.name} - ${platform.title}` : `${platform.name}`;
   }
 
   onStartSliderChange(event: any) {
-    if (this.compensationAmountMin > this.compensationAmountMax) {
-      this.compensationAmountMax = this.compensationAmountMin;
-    }
-
     this.compensationAmountMin = event.target.value;
   }
 
   onEndSliderChange(event: any) {
-    if (this.compensationAmountMin > this.compensationAmountMax) {
-      this.compensationAmountMax = this.compensationAmountMin;
-    }
-
     this.compensationAmountMax = event.target.value;
   }
 
@@ -269,6 +266,8 @@ export class CollaborationsDetailComponent implements OnInit {
   }
 
   getCollaborationId(id: number) {
+    console.log('Collaboration Id:', id);
+
     this._collaborationService.getCollaborationId(id).subscribe({
       next: (response: Collaboration) => {
         this.collaboration = response;
@@ -286,6 +285,7 @@ export class CollaborationsDetailComponent implements OnInit {
         this.platformsList = Array.isArray(response.platforms)
           ? response.platforms
           : [response.platforms];
+
         this._cdRef.detectChanges();
 
         this.card = {
@@ -303,12 +303,6 @@ export class CollaborationsDetailComponent implements OnInit {
   getCollaborationList() {
     this._collaborationService.getCollaborationList().subscribe({
       next: (response: Collaboration[]) => {
-        if (!response || response.length === 0) {
-          console.warn('Collaboration list is empty.');
-          this.collaborationList = [];
-          return;
-        }
-
         this.collaborationList = response;
       },
       error: err => {
@@ -325,7 +319,8 @@ export class CollaborationsDetailComponent implements OnInit {
   private async getCityList(): Promise<void> {
     this._influencerService.getInfluencerCityList().subscribe({
       next: response => {
-        this.cityList = response.content;
+        this.cityList = response;
+        this.cityOptions = this.cityList.map(city => city.name);
       },
       error: error => {
         console.error('Error fetching influencer list', error);
@@ -333,29 +328,14 @@ export class CollaborationsDetailComponent implements OnInit {
     });
   }
 
-  private async getCompensationType() {
-    this._collaborationService.getCompensationType().subscribe({
-      next: response => {
-        this.compensationList = response;
-
-        console.log('compensationType:', response);
-      },
-      error: error => {
-        console.error('Error fetching compensation', error);
-      }
-    });
+  onCityChange(event): void {
+    this.selectedCity = event.value;
   }
 
   toggleChip(type: 'contentTypes' | 'platforms', item: any) {
     console.log('item:', item);
 
     item.active = !item.active;
-
-    if (type === 'platforms') {
-      this.platformSend = !this.platformSend;
-    } else {
-      this.contentTypeSend = !this.contentTypeSend;
-    }
 
     let currentValues = this.editCollaborationFormGroup.get(type)?.value || [];
 
@@ -384,9 +364,13 @@ export class CollaborationsDetailComponent implements OnInit {
     this.updatedCollaboration(collaborationId, resultMin, resultMax);
   }
 
+  cancelEdit(): void {
+    this.isEditing = false;
+    this.disabled = true;
+  }
+
   updatedCollaboration(collaborationId: number, resultMin: any, resultMax: any) {
     const formValues = this.getUpdatedFormValues(resultMin, resultMax);
-
     const collaborationToUpdate = this.findCollaborationById(collaborationId);
 
     const collaborationUpdated = this.getUpdatedCollaborationObject(
@@ -396,19 +380,8 @@ export class CollaborationsDetailComponent implements OnInit {
 
     console.log('Zaktualizowany obiekt:', collaborationUpdated);
 
-    this.handleUpdateConfirmation(() => {
-      this.sendUpdateRequest(collaborationUpdated, collaborationId);
-    });
-  }
-
-  private handleUpdateConfirmation(onConfirm: () => void): void {
-    this.openConfirmationUpdateDialog()
-      .afterClosed()
-      .subscribe(confirmed => {
-        if (confirmed) {
-          onConfirm();
-        }
-      });
+    this.openConfirmationUpdateDialog();
+    this.sendUpdateRequest(collaborationUpdated, collaborationId);
   }
 
   private getUpdatedFormValues(resultMin: any, resultMax: any) {
@@ -432,41 +405,22 @@ export class CollaborationsDetailComponent implements OnInit {
     return this.collaborationList.find(collaboration => collaboration.id === collaborationId);
   }
 
-  private formatDate(date: Date): string {
-    if (!date) return null;
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}T00:00:00`;
-  }
-
   private getUpdatedCollaborationObject(formValues: any, collaborationToUpdate: any) {
     const companyId = (collaborationToUpdate.company as CompanyCollaboration).id;
+    const serviceTypeId = (collaborationToUpdate.serviceType as ServiceTypeCollaboration).id;
 
-    const serviceTypeId = collaborationToUpdate.serviceType as ServiceTypeCollaboration;
-
-    let updatedObject = {
+    return {
       ...collaborationToUpdate,
       ...Object.keys(formValues).reduce((result, key) => {
         result[key] = formValues[key] !== '' ? formValues[key] : collaborationToUpdate[key];
         return result;
       }, {}),
       company: companyId,
-      serviceType: serviceTypeId,
-      startDate: formValues.startDate
-        ? this.formatDate(new Date(formValues.startDate))
-        : this.card.startDate,
-      endDate: formValues.endDate
-        ? this.formatDate(new Date(formValues.endDate))
-        : this.card.endDate
+      serviceType: serviceTypeId
     };
-
-    return updatedObject;
   }
 
   private sendUpdateRequest(collaborationUpdated: any, collaborationId: number) {
-    console.log('collaborationUpdated:', collaborationUpdated);
-
     this._collaborationService
       .updateCollaboration(collaborationUpdated, collaborationId)
       .subscribe({
@@ -487,21 +441,17 @@ export class CollaborationsDetailComponent implements OnInit {
       });
   }
 
-  openConfirmationDeleteDialog(companyId: number): void {
-    this._confirmPopUpService.popUpRemoval();
-
+  openConfirmationDeleteDialog(collaborationId: number): void {
     const dialogRef = this._fuseConfirmationService.open(this.configForm.value);
 
     dialogRef.afterClosed().subscribe(result => {
       if (result === 'confirmed') {
-        this.deleteItem(companyId);
+        this.delete(collaborationId);
       }
     });
   }
 
-  openConfirmationUpdateDialog(): MatDialogRef<any> {
-    this._confirmPopUpService.popUpEdition();
-
+  openConfirmationUpdateDialog(): void {
     const dialogRef = this._fuseConfirmationService.open(this.configFormUpdate.value);
 
     setTimeout(() => {
@@ -512,23 +462,12 @@ export class CollaborationsDetailComponent implements OnInit {
       if (result === 'confirmed') {
       }
     });
-    return dialogRef;
   }
 
-  getMinEndDate(): string | null {
-    const startDate = this.editCollaborationFormGroup.get('startDate')?.value;
-    if (!startDate) return null;
-
-    const minEndDate = new Date(startDate);
-    minEndDate.setDate(minEndDate.getDate() + 2);
-
-    return minEndDate.toISOString().split('T')[0];
-  }
-
-  deleteItem(companyId: number): void {
-    this._collaborationService.deleteCollaboration(companyId).subscribe({
+  delete(collaborationId: number): void {
+    this._collaborationService.deleteCollaboration(collaborationId).subscribe({
       next: () => {
-        this.router.navigate(['/collaborations/list']);
+        this.router.navigate(['/collaborations']);
       },
       error: err => {
         console.error('Error deleting company:', err);
@@ -579,17 +518,7 @@ export class CollaborationsDetailComponent implements OnInit {
   startDateSelected(): void {
     const selectedStartDate = this.editCollaborationFormGroup.get('startDate')?.value;
 
-    if (!selectedStartDate) return;
-
     this.card.startDate = selectedStartDate;
-
-    const selectedEndDate = this.editCollaborationFormGroup.get('endDate')?.value;
-    if (selectedEndDate && new Date(selectedEndDate) <= new Date(selectedStartDate)) {
-      const newEndDate = new Date(selectedStartDate);
-      newEndDate.setDate(newEndDate.getDate() + 1);
-      this.editCollaborationFormGroup.get('endDate')?.setValue(newEndDate);
-      this.card.endDate = newEndDate;
-    }
   }
 
   endDateSelected(): void {

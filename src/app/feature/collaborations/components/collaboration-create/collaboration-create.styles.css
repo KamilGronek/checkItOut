@@ -112,22 +112,7 @@
   transform: translateY(-50%); 
 }
 
-::ng-deep app-input .mat-mdc-button-touch-target {
-  display: none !important;
-}
 
-::ng-deep .relative.w-fit {
-  pointer-events: none !important;
-}
-
-::ng-deep app-input p.text-sm.text-gray-500 {
-  display: none !important;
-}
-
-:host ::ng-deep mat-chip-option.mat-mdc-chip-selected .mdc-evolution-chip__checkmark {
+ ::ng-deep mat-chip-option.mat-mdc-chip-selected .mdc-evolution-chip__checkmark {
   display: none;
 } 
-
-.custom-dialog-container .mat-mdc-dialog-container {
- padding: 10px;
-}

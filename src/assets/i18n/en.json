@@ -31,6 +31,7 @@
                 "last_name": "Last Name",
                 "email": "E-mail",
                 "city": "City",
+                "address": "Address",
                 "instagram": "Instagram",
                 "followers": "Followers Count",
                 "account_type": "Account Type",
@@ -69,6 +70,7 @@
                 "last_name": "Last Name",
                 "email": "E-mail",
                 "city": "City",
+                "address": "Address",
                 "instagram": "Instagram",
                 "followers": "Followers Count",
                 "phone_number": "Phone Number",
@@ -151,86 +153,30 @@
                 "collaboration_card": {
                     "details_button": "Collaboration Details"
                 },
-                "add_new_collaboration": "Add",
+                "add_new_collaboration": "Add new",
                 "pagination": {
                     "select_page": "Select page",
                     "page_number": "Page number: {{ pageIndex }}"
                 }
             },
             "pop_up_notice":{
-                "edit" : {
-                    "title": "Collaboration edit",
-                    "message": "Collaboration has been successfully edited"
-                },
-                "confirm" : {
-                    "title": "You have added a new collaboration",
-                    "message": "The new collaboration is visible on the main page"
-                },
-                "remove" : {
-                    "title": "Delete item",
-                    "message": "Are you sure you want to delete the items?"
-                }
+                "title": "Collaboration edit",
+                "message": "Collaboration has been successfully edited"
             },
-            "cities": {
-                "Warszawa": "Warsaw",
-                "Kraków": "Cracow",
-                "Wrocław": "Wroclaw",
-                "Gdańsk": "Gdansk"
-              },
-              "compensationType":{
-                "cash": "Cash",
-                "barter": "Barter (Gift)"
-              },
-              "service-types": {
-                "Restauracja": "Restaurant",
-                "Kawiarnia": "Coffeehouse",
-                "Sklep odzieżowy": "Clothing store",
-                "Studio urody": "Beauty studio",
-                "Salon fryzjerski": "Hairdresser",
-                "Siłownia i fitness": "Gym and fitness",
-                "Park rozrywki": "Amusement park",
-                "Hotel i spa": "Hotel and spa",
-                "Usługi cateringowe": "Catering services",
-                "Sklep z kosmetykami": "Cosmetics store",
-                "Studio fotograficzne": "Photographic studio",
-                "Agencja marketingowa": "Marketing agency",
-                "Studio tatuażu": "Tattoo studio",
-                "Klub muzyczny":  "Music club",
-                "Sklep z biżuterią": "Jewelry store"
-              },
-              "months": {
-                "january": "Styczeń",
-                "february": "Luty",
-                "march": "Marzec",
-                "april": "Kwiecień",
-                "may": "Maj",
-                "june": "Czerwiec",
-                "july": "Lipiec",
-                "august": "Sierpień",
-                "september": "Wrzesień",
-                "october": "Październik",
-                "november": "Listopad",
-                "december": "Grudzień"
-              },
             "details": {
-                "description": "Description",
-                "description_placeholder": "Add description of collaboration...",
-                "name": "Collaboration Details",
-                "title_placeholder": "Enter the name of the collaboration...",
+                "title": "Collaboration Details",
+                 "title_placeholder": "Enter the name of the order",
                 "start_date": "Start Date",
                 "end_date": "End Date",
                 "date_not_set": "Not set",
                 "clear_button": "Clear",
                 "pick_button": "Pick",
-                "return_button": "Return",
                 "delete_button": "Delete",
-                "cancel_button":"Cancel",
                 "save_button": "Save",
                 "edit_button": "Edit",
                 "requirements": "Requirements",
                 "requirements_placeholder": "Enter collaboration requirements here...",
                 "compensationType": "Compensation",
-                "compensationType_choose": "Choose compensation",
                 "compensation_placeholder": "Enter compensation details here...",
                 "campaign_details": "Campaign Details",
                 "campaign_details_placeholder": "Describe the new campaign details...",
@@ -238,23 +184,17 @@
                 "slider_configuration": "Slider Configuration",
                 "result": "Result",
                 "city": "City",
-                "choose_city": "Choose city",
                 "company": "Company",
                 "service_type": "Service Type",
                 "value": "Value",
-                "followers_count": "Followers Amount",
+                "followers_amount": "Followers Amount",
                 "content_type": "Content Type",
-                "platform": "Platform",
                 "min_value": "Min Value",
                 "max_value": "Max Value",
                 "step_size": "Step Size",
                 "show_ticks": "Show Ticks",
                 "show_thumb_label": "Show Thumb Label",
-                "disabled": "Disabled",
-                "tooltip" : "Unavailable",
-                "anddWarning": "Before sending, please fill in all details",
-                "select_date_range": "Select Date Range"
-                
+                "disabled": "Disabled"
             }
         }
     }

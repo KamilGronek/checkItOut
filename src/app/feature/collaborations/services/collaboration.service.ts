@@ -6,8 +6,7 @@ import {
   Collaboration,
   CollaborationResponse,
   ContentTypeResponse,
-  User,
-  ServiceTypeCollaboration
+  User
 } from './collaboration.types';
 import { AuthService } from 'app/core/services/authentication/auth.service';
 import { environment } from 'environments/environment';
@@ -16,8 +15,9 @@ import { environment } from 'environments/environment';
   providedIn: 'root'
 })
 export class CollaborationService {
-  private readonly mainApiUrl: string = environment.apiUrl;
-  private readonly apiUrl: string = this.mainApiUrl + '/partnership-opportunity';
+  private apiUrl: string = environment.apiUrl + '/partnership-opportunity';
+
+  private mainApiUrl: string = environment.apiUrl;
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -72,19 +72,7 @@ export class CollaborationService {
     return this.http.put<Collaboration>(this.apiUrl + `/${id}`, collaboration, this.httpOptions);
   }
 
-  getCompensationType(): Observable<string[]> {
-    return this.http.get<string[]>(`${this.apiUrl}/compensation/type`);
-  }
-
   getUser(): Observable<User> {
     return this.http.get<User>(this.mainApiUrl + '/user/paged');
-  }
-
-  getCompany(): Observable<User> {
-    return this.http.get<User>(this.mainApiUrl + '/company/paged');
-  }
-
-  getServiceTypeList(): Observable<ServiceTypeCollaboration> {
-    return this.http.get<ServiceTypeCollaboration>(this.mainApiUrl + '/service-type/paged');
   }
 }

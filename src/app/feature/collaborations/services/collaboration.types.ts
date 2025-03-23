@@ -29,13 +29,13 @@ export interface Collaboration {
   compensationAmountMin: number;
   compensationAmountMax: number;
   compensationDescription: null;
-  platforms: Platforms[];
-  contentTypes: ContentTypes[];
+  platforms: Platforms;
+  contentTypes: ContentTypes;
   company: CompanyCollaboration | number;
   serviceType: ServiceTypeCollaboration | number;
   startDate: string;
   endDate: string;
-  photos: PhotoList[];
+  photos: PhotoList;
   createdTime: string;
   lastUpdateTime: string;
   updater: string;
@@ -61,7 +61,7 @@ export interface ContentTypeResponse {
 }
 
 export interface PhotoList {
-  id: number;
+  id: number | undefined;
   url: string;
   orderNumber: number;
   isCover: boolean;
@@ -100,18 +100,6 @@ export interface PageInfo {
   number: number;
   totalElements: number;
   totalPages: number;
-}
-
-export interface ServiceTypeCollaboration {
-  content: ServiceType[];
-  paged: PageInfo;
-}
-
-export interface ServiceType {
-  id: number;
-  name: string;
-  description: string;
-  category: string;
 }
 
 export interface UserContent {
@@ -157,4 +145,18 @@ export interface Company {
   lastUpdateTime: string;
   createdTime: string;
   updater: string;
+}
+
+export interface ServiceType {
+  id: number;
+  name: string;
+  description: string;
+  category: string;
+}
+
+export interface ServiceTypeCollaboration {
+  id: number | undefined;
+  name: string;
+  description: string;
+  category: string;
 }
