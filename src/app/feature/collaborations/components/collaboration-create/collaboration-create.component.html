@@ -1,297 +1,139 @@
-<div class="flex min-w-0 flex-auto flex-col">
-    <div class="bg-card flex flex-col shadow">
-        <div>
-          <img [src]="'assets/detale_kampanii_v4_files/cover.jpg'" alt="Cover image"
-          class="h-40 object-cover lg:h-80"/>
-        </div>
-      <div class="bg-card mx-auto flex w-full max-w-5xl flex-0 flex-col items-center px-8 lg:h-18 lg:flex-row">
-
-      <div class="-mt-26 rounded-full lg:-mt-22">
-        <div class="ring-bg-card h-40 w-40 rounded-full ring-4">
-          <button *ngIf="isUploadButtonVisible" mat-flat-button 
-              class="mt-15 ml-2 buttonVisible absolute" 
-              (click)="fileInput.click()" 
-              [color]="'primary'">
-              <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
-              <span class="ml-2 mr-1 text-xs">Upload photo</span>
-          </button>
-       
-          <input #fileInput type="file" accept="image/*" class="hidden" (change)="onFileSelected($event)" />
-
-          <img *ngIf="imageUrl; else noImageProfile" [src]="imageUrl" alt="User avatar"
-              class="addPicture h-full w-full object-cover rounded-full ring-4" />
-      
-          <ng-template #noImageProfile>
-              <div class="flex items-center justify-center h-full w-full text-lg font-semibold rounded-full bg-gray-300 text-white cursor-pointer">
-                  <button mat-flat-button class="w-32" [color]="'primary'" (click)="fileInput.click()">
-                      <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
-                      <span class="ml-2 mr-1 text-xs">Upload photo</span>
-                  </button>
-              </div>
-          </ng-template>
-        </div>
+<div  class="flex min-w-0 flex-auto flex-col">
+  <div class="bg-card flex flex-col shadow">
+      <div>
+        <img [src]="'assets/detale_kampanii_v4_files/cover.jpg'" alt="Cover image"
+        class="h-40 object-cover lg:h-80"/>
       </div>
+    <div class="bg-card mx-auto flex w-full max-w-5xl flex-0 flex-col items-center px-8 lg:h-18 lg:flex-row">
+      <form [formGroup]="editNewCollaborationFormGroup">
+        <div class="flex flex-col  mb-10">
+          <app-input
+              type="image"
+              [control]="imageControl"
+              [rounded]="true"
+              storagePath="sample-images"
+              acceptedFileTypes="image/jpeg,image/png,image/gif"
+              >
+          </app-input>
+        </div>
+      </form>
       <div class="mt-4 flex flex-col items-center lg:ml-8 lg:mt-0 lg:items-start">
         <div #name class="text-lg font-bold leading-none">
         </div> 
       </div>
-        <div class="my-3  items-center sm:flex border-y-0">
-            <div class="rounded-l-xl border border-r-0 border-transparent p-2 leading-none">
-                  <form [formGroup]="editNewCollaborationFormGroup">
-                      <div class="text-secondary text-sm font-medium">
-                        {{
-                            "user.collaborations.details.start_date"
-                                | transloco
-                        }}
-                      </div>
-                      <div
-                          class="relative mt-1.5 flex cursor-pointer items-center rounded-full px-4 leading-9"
-                          [ngClass]="{
-                              'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-300':
-                                  !card.startDate,
-                              'bg-green-200 text-green-800 dark:bg-green-500 dark:text-green-100':
-                                  card.startDate && !isOverdue(card.startDate),
-                              'bg-red-200 text-red-800 dark:bg-red-500 dark:text-red-100':
-                                  card.startDate && isOverdue(card.startDate),
-                          }"
-                          (click)="startDatePicker.open()"
-                      >
-                          <mat-icon
-                              class="text-current icon-size-5"
-                              [svgIcon]="'heroicons_solid:calendar'"
-                          ></mat-icon>
-                         
-                            @if (card.startDate) {
-                            <span class="ml-2 text-md font-medium w-30">
-                              {{ card.startDate| date: 'longDate' }}
-                            </span>
-                              }
-                              @if (!card.startDate) {
-                                {{
-                                    "user.collaborations.details.date_not_set"
-                                        | transloco
-                                }}
-                              }
-                          <mat-form-field
-                              class="fuse-mat-dense pointer-events-none invisible absolute inset-0 -mt-2.5 opacity-0"
-                              [subscriptSizing]="'dynamic'"
-                          >
-                              <input
-                                  matInput
-                                  [formControlName]="'startDate'" 
-                                  [matDatepicker]="startDatePicker"
-                              />
-                              
-                              <mat-datepicker #startDatePicker>
-                                  <mat-datepicker-actions>
-                                      <button
-                                          mat-button
-                                          (click)="clearStartDate()"
-                                          matDatepickerCancel
-                                      >
-                                        {{
-                                            "user.collaborations.details.clear_button"
-                                                | transloco
-                                        }}
-                                      </button>
-                                      <button
-                                          mat-flat-button
-                                          [color]="'primary'"
-                                          matDatepickerApply
-                                          (click)="startDateSelected()"
-                                      >
-                                        {{
-                                            "user.collaborations.details.pick_button"
-                                                | transloco
-                                        }}
-                                      </button>
-                                  </mat-datepicker-actions>
-                              </mat-datepicker>
-                          </mat-form-field>
-                      </div>
-              </form>
-            </div>
-            <div class="mx-2 hidden  h-8 border-l-2 lg:flex mt-5"></div>
-            <div class="rounded-r-xl border p-2 border-transparent leading-none">
-              <form [formGroup]="editNewCollaborationFormGroup">
-                  <div class="text-secondary text-sm font-medium"> {{
-                    "user.collaborations.details.end_date"
-                        | transloco
-                }}</div>
-                  <div
-                      class="relative mt-1.5 flex cursor-pointer items-center rounded-full px-4 leading-9"
-                      [ngClass]="{
-                          'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-300':
-                              !card.endDate,
-                          'bg-green-200 text-green-800 dark:bg-green-500 dark:text-green-100':
-                              card.endDate && !isOverdue(card.endDate),
-                          'bg-red-200 text-red-800 dark:bg-red-500 dark:text-red-100':
-                              card.endDate && isOverdue(card.endDate),
-                      }"
-                      (click)="endDatePicker.open()"
-                    >
-                      <mat-icon
-                          class="text-current icon-size-5"
-                          [svgIcon]="'heroicons_solid:calendar'"
-                      ></mat-icon>
-                     
-                        @if (card.endDate) {
-                        <span class="ml-2 text-md font-medium w-30">
-                          {{ card.endDate| date: 'longDate' }}
-                        </span>
-                          }
-                          @if (!card.endDate) {
-                            {{
-                                "user.collaborations.details.date_not_set"
-                                    | transloco
-                            }}
-                          }
-  
-                      <mat-form-field
-                          class="fuse-mat-dense pointer-events-none invisible absolute inset-0 -mt-2.5 opacity-0"
-                          [subscriptSizing]="'dynamic'"
-                      >
-                          <input
-                              matInput
-                               [formControlName]="'endDate'" 
-                              [matDatepicker]="endDatePicker"
-                          />
-                          <mat-datepicker #endDatePicker>
-                              <mat-datepicker-actions>
-                                  <button
-                                      mat-button
-                                      (click)="clearEndDate()"
-                                      matDatepickerCancel
-                                  >
-                                  {{
-                                    "user.collaborations.details.clear_button"
-                                        | transloco
-                                }}
-                                  </button>
-                                  <button
-                                      mat-flat-button
-                                      [color]="'primary'"
-                                      matDatepickerApply
-                                      (click)="endDateSelected()"
-                                  >
-                                  {{
-                                    "user.collaborations.details.pick_button"
-                                        | transloco
-                                }}
-                                  </button>
-                              </mat-datepicker-actions>
-                          </mat-datepicker>
-                      </mat-form-field>
-                  </div>
-              </form>
-            </div>
-          </div>
-  
-            <button mat-flat-button 
-            class="mb-4 mt-8 flex items-center lg:m-0 lg:ml-auto" 
-              #send
-              type="submit" 
-              [color]="'primary'"
-              (click)="createCollaboration(result(compensationAmountMin),result(compensationAmountMax))"
-              [disabled]="isDisabled"
-              >
-              {{ "user.collaborations.all.add_new_collaboration" | transloco }}
-            </button>
-        </div>
-    </div>
-  
-    
-  
-  
-    <div class="mx-auto flex w-full max-w-5xl flex-auto justify-center p-6 sm:p-8">
-      <div class="mr-8 hidden flex-col items-start lg:flex">
-        <fuse-card class="flex w-full w-120 flex-col p-8 ng-tns-c2638821912-677 ng-star-inserted hidden-on-small">
-            <div class="ng-tns-c2638821912-677 ng-star-inserted">
-                  <div class="text-2xl font-semibold leading-tight ng-tns-c2638821912-677 ng-star-inserted">
-                    {{
-                        "user.collaborations.details.requirements"
-                            | transloco
-                    }}
-                  </div>
+      <div class="my-3  items-center sm:flex border-y-0">
+          <div class="rounded-l-xl border border-r-0 border-transparent p-2 leading-none">
                 <form [formGroup]="editNewCollaborationFormGroup">
-                  <div class="mt-8 flex flex-col items-start sm:flex-row">
-                    <mat-form-field 
-                        class="w-full justify-between"
-                        [subscriptSizing]="'dynamic'"
-                    >
-                  
-                        <textarea class="overflow-hidden"
-                            matInput
-                            [formControlName]="'requirements'"
+                  <div class="flex flex-col w-64">
+                    <app-input
+                        type="daterange"
+                        [startControl]="startDateControl"
+                        [endControl]="endDateControl"
+                        [minDate]="minDate"
+                        [maxDate]="maxDate"
+                        placeholder="date"
+                        >
+                    </app-input>
+                  </div>
+            </form>
+          </div>
+        </div>
+        <app-button
+          class="mb-4 mt-8 flex items-center lg:m-0 lg:ml-auto" 
+          tooltip="Flat button" 
+          variant="flat" 
+          #send
+          type="submit" 
+          color="primary"
+          (click)="createCollaboration(result(compensationAmountMin),result(compensationAmountMax))"
+          [disabled]="isDisabled"
+          >
+          {{ "user.collaborations.all.add_new_collaboration" | transloco }}
+        </app-button >
+      </div>
+  </div>
+  <div class="mx-auto flex w-full justify-center p-6 sm:p-8">
+    <div class="mr-8 hidden flex-col items-start lg:flex">
+      <fuse-card class="flex w-full w-120 flex-col p-8 ng-tns-c2638821912-677 ng-star-inserted">
+          <div class="ng-tns-c2638821912-677 ng-star-inserted">
+              <form [formGroup]="editNewCollaborationFormGroup">
+                    <app-input
+                            type="textarea"
+                            hint="This a textarea component"
                             [placeholder]="
                             'user.collaborations.details.requirements_placeholder'
-                                | transloco
-                        "   [rows]="3"
-                            cdkTextareaAutosize
-                        ></textarea>
-                    </mat-form-field>
+                              | transloco"  
+                            rows="5"
+                            maxLength="600"
+                            [control]="textAreaControlRequirements"
+                        >{{
+                          "user.collaborations.details.requirements"
+                              | transloco
+                      }}
+                    </app-input>
+                <hr class="my-6 w-full border-t ng-tns-c2638821912-677 ng-star-inserted">
+                <div class="flex justify-between mt-5 mr-2.5 mb-5 ml-0">
+                  <label id="example-name-label" class="font-semibold">
+                      {{
+                          "user.collaborations.details.followers_count"
+                              | transloco
+                      }}
+                  </label>
+                  <label class="example-value-label">
+                      <span *ngIf="result(compensationAmountMin) === result(compensationAmountMax)">
+                          {{ result(compensationAmountMin) | number:'1.0-0' }} 
+                          <span *ngIf="result(compensationAmountMin) === '10000'">+</span>
+                      </span>
+                      <span *ngIf="result(compensationAmountMin) !== result(compensationAmountMax)">
+                          {{ result(compensationAmountMin) | number:'1.0-0' }} - 
+                          {{ result(compensationAmountMax) | number:'1.0-0' }}
+                          <span *ngIf="result(compensationAmountMax) === '10000'">+</span>
+                      </span>
+                  </label>
+                </div>
+                  <div class="relative w-[390px]">
+                      <mat-slider 
+                          [min]="min" 
+                          [max]="max" 
+                          class="w-full">
+                        <input 
+                          matSliderStartThumb
+                          formControlName="compensationAmountMin"
+                          [value]="compensationAmountMin"
+                          (change)="compensationAmountMin = $event.target.value">
+                          
+                        <input matSliderEndThumb 
+                          formControlName="compensationAmountMax"
+                          [value]="compensationAmountMax" 
+                          (change)="compensationAmountMax = $event.target.value">
+                      </mat-slider>
+                      <div class="absolute top-1/2 left-2 w-full flex justify-between">
+                        <div *ngFor="let value of amountFollowers" class="mat-slider-dots"></div>
+                      </div>
                   </div>
-                  <hr class="my-6 w-full border-t ng-tns-c2638821912-677 ng-star-inserted">
-                  <div class="flex justify-between mt-5 mr-2.5 mb-5 ml-0">
-                    <label id="example-name-label" class="font-semibold">
-                        {{
-                            "user.collaborations.details.followers_amount"
-                                | transloco
-                        }}
-                    </label>
-                    <label class="example-value-label">
-                        <span *ngIf="result(compensationAmountMin) === result(compensationAmountMax)">
-                            {{ result(compensationAmountMin) | number:'1.0-0' }} 
-                            <span *ngIf="result(compensationAmountMin) === '10000'">+</span>
-                        </span>
-                        <span *ngIf="result(compensationAmountMin) !== result(compensationAmountMax)">
-                            {{ result(compensationAmountMin) | number:'1.0-0' }} - 
-                            {{ result(compensationAmountMax) | number:'1.0-0' }}
-                        <span *ngIf="result(compensationAmountMax) === '10000'">+</span>
-                        </span>
-                    </label>
+                  <div class="flex w-[430px] justify-between mt-2.5 text-gray-500">
+                      <div *ngFor="let value of amountFollowers">
+                        {{value}}
+                      </div>
                   </div>
-                    <div class="relative w-[390px]">
-                        <mat-slider 
-                            [min]="min" 
-                            [max]="max" 
-                            class="w-full">
-                          <input 
-                            matSliderStartThumb 
-                            formControlName="compensationAmountMin"
-                            [value]="compensationAmountMin" 
-                            (change)="onStartSliderChange($event)">
-                          <input matSliderEndThumb 
-                            formControlName="compensationAmountMax"
-                            [value]="compensationAmountMax" 
-                            (change)="onEndSliderChange($event)">
-                        </mat-slider>
-                        <div class="absolute top-1/2 left-2 w-full flex justify-between">
-                          <div *ngFor="let value of amountFollowers" class="mat-slider-dots"></div>
-                        </div>
-                    </div>
-                    <div class="flex w-[430px] justify-between mt-2.5 text-gray-500">
-                        <div *ngFor="let value of amountFollowers">
-                          {{value}}
-                        </div>
-                    </div>
-                </form>
-  
-                  <hr class="my-6 w-full border-t ng-tns-c2638821912-677 ng-star-inserted">
-                  <form [formGroup]="editNewCollaborationFormGroup">
-  
-                  <div class="mt-4">
-                    <label class="font-semibold">
-                        {{
-                            "user.collaborations.details.content_type"
-                                | transloco
-                        }}
-                    </label>
+              </form>
+
+                <hr class="my-6 w-full border-t ng-tns-c2638821912-677 ng-star-inserted">
+                <form [formGroup]="editNewCollaborationFormGroup">
+
+                <div class="mt-4">
+                  <label class="font-semibold">
+                      {{
+                          "user.collaborations.details.content_type"
+                              | transloco
+                      }}
+                  </label>
                     <div class="flex flex-row gap-2 mt-5">
                       <button 
-                          *ngFor="let content of contentItems" 
+                          *ngFor="let content of contentTypes$ | async" 
                           matTooltipClass="tooltip-html"
                           class="content"
+                          formControlName="contentTypes"
                           [ngClass]="{ 'active-chip': content.active}" 
                           (click)="toggleChip('contentTypes', content)"
                           [attr.type]="'button'"
@@ -299,390 +141,243 @@
                           {{content.name}}
                       </button>
                     </div>
-                  </div>
+                </div>
                   </form>
-                  
-                  <hr class="my-6 w-full border-t ng-tns-c2638821912-677 ng-star-inserted">
-                  <label class="font-semibold">Platforma</label>
-                  <div class="flex flex-row gap-2 mt-5">
-                    <button 
-                        *ngFor="let platform of platformList" 
-                        [matTooltip]="getTooltipText(platform)"
-                        matTooltipClass="tooltip-html"
-                        class="mat-chip"
-                        [ngClass]="{ 'active-chip': platform.active}"
-                        (click)="toggleChip('platforms', platform)"
-                        [attr.type]="'button'"
-                        >
-                        <img [src]="platform.logoUrl"  width="40" height="40" alt="{{ platform.name }}" />
-                    </button>
-                  </div>
-            </div>
-  
-        </fuse-card>
-        <fuse-card
-          class="flex w-full w-120 flex-col p-8 mt-8 ng-tns-c2638821912-677 ng-star-inserted"><!---->
-          <form [formGroup]="editNewCollaborationFormGroup">
-  
-          <div class="text-2xl font-semibold leading-tight ng-tns-c2638821912-677 ng-star-inserted">
-            
-            {{
-                "user.collaborations.details.compensationType"
-                    | transloco
-            }}
-        
-        
-        </div>
-            <p>Gotówka</p>
-            <div class="mt-4 ng-tns-c2638821912-677 ng-star-inserted">
-              <div class="mt-8 flex flex-col items-start sm:flex-row">
-                <mat-form-field
-                    class="w-full justify-between"
-                    [subscriptSizing]="'dynamic'"
-                >
-                    <textarea
-                        matInput
-                        [formControlName]="'compensationType'"
-                        [placeholder]="
-                        'user.collaborations.details.compensation_placeholder'
-                            | transloco"
-                        [rows]="3"
-                        cdkTextareaAutosize
-                    ></textarea>
-                </mat-form-field>
-              </div>  
-            </div>
-           </form>
-        </fuse-card>
-    </div>
-        <div class="flex flex-col items-start">
-          <fuse-card class="flex w-full max-w-140 flex-col p-6 pb-6 sm:p-8">
-            <form [formGroup]="editNewCollaborationFormGroup">
-            <p *ngIf="warning" [ngStyle]="{ color: 'red' }">
-              Przed wysłaniem, proszę uzupełnić wszystkie dane
-            </p>
-            
-            <div class="text-xl font-semibold">Title</div>
-            <div class="mt-8 mb-8 flex flex-col items-start sm:flex-row">
-                <mat-form-field
-                    class="w-full justify-between"
-                    [subscriptSizing]="'dynamic'"
-                  >
-                    <textarea
-                        matInput
-                        formControlName="title"
-                        [placeholder]="'Napisz title zlecenia'"
-                        [rows]="3"
-                        cdkTextareaAutosize
-                    ></textarea>
-                </mat-form-field>
-            </div>
-            <div class="text-xl font-semibold">
-                {{
-                    "user.collaborations.details.title"
-                        | transloco
-                }}
-            </div>
-            <div class="mt-8 flex flex-col items-start sm:flex-row">
-                <mat-form-field
-                    class="w-full justify-between"
-                    [subscriptSizing]="'dynamic'"
-                  >
-                    <textarea
-                        matInput
-                        formControlName="name"
-                        [placeholder]="
-                        'user.collaborations.details.title_placeholder'
-                            | transloco
-                    "
-                        [rows]="3"
-                        cdkTextareaAutosize
-                    ></textarea>
-                </mat-form-field>
-            </div>
-            <div class="-mx-3 mt-6 flex sm:mt-8">
-                <div class="flex flex-col ng-tns-c2638821912-677 ng-star-inserted">
-                    <div class="flex items-center  justify-between">
-                        <button class="mr-1 px-3" mat-button>
-                          <mat-icon
-                              class="icon-size-5"
-                              [svgIcon]="'heroicons_solid:photo'"
-                          ></mat-icon>
-                        <span class="ml-2">
-                            {{
-                                "user.collaborations.details.city"
-                                    | transloco
-                            }}
-                        </span>
-                        </button>
-                        <span class="leading-none">
-                          <mat-form-field 
-                            [ngClass]="formFieldHelpers" 
-                            class="gt-xs:pr-3 flex-auto w-80 mr-3"
-                          >
-                            <mat-select [(value)]="selectedCity"
-                            formControlName="city"
-                            (selectionChange)="onCityChange($event)">
-                                <mat-option *ngFor="let city of cityOptions" [value]="city">
-                                    {{city}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                        </span>
-                    </div>
-                   
-                    <div class="flex items-center justify-between">
-                      <button class="mr-1 px-3" mat-button>
-                        <mat-icon
-                          class="icon-size-5"
-                          [svgIcon]="'heroicons_solid:user-circle'"
-                        ></mat-icon>
-                        <span class="ml-2">  {{
-                            "user.collaborations.details.company"
-                                | transloco
-                        }}
-                        </span>
-                      </button>
-                      <span class="leading-none">
-                        <mat-form-field class="gt-xs:pr-3 flex-auto w-80 mr-3">
-                          <input
-                            type="text"
-                            [placeholder]="
-                            'user.collaborations.details.value'
-                                | transloco
-                        "  
-                            matInput
-                            formControlName="company"
-                            [matAutocomplete]="companyAuto"
-                          />
-                          <mat-autocomplete
-
-                            #companyAuto="matAutocomplete"
-                            (optionSelected)="onCompanyChange($event.option.value)"
-                          >
-                            <mat-option
-                              *ngFor="let company of filteredCompanies | async"
-                              [value]="company"
-                            >
-                              {{ company.company?.name }}
-                            </mat-option>
-                          </mat-autocomplete>
-                        </mat-form-field>
-                      </span>
-                    </div>
-                    
-                    <div class="flex items-center justify-between">
-                      <button class="mr-1 px-3" mat-button>
-                        <mat-icon
-                          class="icon-size-5"
-                          [svgIcon]="'heroicons_solid:wrench-screwdriver'"
-                        ></mat-icon>
-                        <span class="ml-2">
-                            {{
-                                "user.collaborations.details.service_type"
-                                    | transloco
-                            }}
-                        </span>
-                      </button>
-                      <span class="leading-none">
-                        <mat-form-field class="gt-xs:pr-3 flex-auto w-80  mr-3">
-                          <input
-                            type="text"
-                            [placeholder]="
-                            'user.collaborations.details.value'
-                                | transloco
-                        "  
-                            matInput
-                            formControlName="serviceType"
-                            [matAutocomplete]="serviceTypeAuto"
-                          />
-                          <mat-autocomplete
-                            #serviceTypeAuto="matAutocomplete"
-                            (optionSelected)="onServiceTypeChange($event.option.value)"
-                          >
-                            <mat-option
-                              *ngFor="let serviceType of filteredServiceTypes | async"
-                              [value]="serviceType"
-                            >
-                              {{ serviceType.name }}
-                            </mat-option>
-                          </mat-autocomplete>
-                        </mat-form-field>
-                      </span>
-                    </div>
-              </div>
-          </div>
-          </form>
-        </fuse-card>
-        <fuse-card class="mt-4 flex w-full max-w-140 flex-col p-8 mt-8  ng-tns-c2638821912-677 ng-star-inserted">
-          <form [formGroup]="editNewCollaborationFormGroup">
-  
-            <div class="text-2xl font-semibold leading-tight ng-tns-c2638821912-677 ng-star-inserted">
-                {{
-                    "user.collaborations.details.campaign_details"
-                        | transloco
-                }}
-            
-            </div>
-              <div class="mt-8 flex flex-col items-start sm:flex-row">
-                  <mat-form-field
-                      class="w-full justify-between"
-                      [subscriptSizing]="'dynamic'"
-                  >
-                      <textarea
-                          matInput
-                          formControlName="details"
-                          [placeholder]="
-                            'user.collaborations.details.campaign_details_placeholder'
-                                | transloco
-                        "  
-                          [rows]="3"
-                          cdkTextareaAutosize
-                      ></textarea>
-                  </mat-form-field>
-              </div>
-          </form>
-        </fuse-card>
-        <fuse-card class="lg:hidden flex w-full w-120 flex-col p-8 mt-8 ng-tns-c2638821912-677 ng-star-inserted hidden-on-small">
-          <div class="ng-tns-c2638821912-677 ng-star-inserted">
-                <div class="text-2xl font-semibold leading-tight ng-tns-c2638821912-677 ng-star-inserted">
-                    {{
-                        "user.collaborations.details.requirements"
-                            | transloco
-                    }}
-                </div>
-              <form [formGroup]="editNewCollaborationFormGroup">
-                <div class="mt-8 flex flex-col items-start sm:flex-row">
-                  <mat-form-field 
-                      class="w-full justify-between"
-                      [subscriptSizing]="'dynamic'"
-                  >
-                
-                      <textarea class="overflow-hidden"
-                          matInput
-                          [formControlName]="'requirements'"
-                          [placeholder]="
-                          'user.collaborations.details.requirements_placeholder'
-                              | transloco"
-                          [rows]="3"
-                          cdkTextareaAutosize
-                      ></textarea>
-                  </mat-form-field>
-                </div>
                 <hr class="my-6 w-full border-t ng-tns-c2638821912-677 ng-star-inserted">
-                <div class="flex justify-between mt-5 mr-2.5 mb-5 ml-0">
-                   <label id="example-name-label" class="font-semibold">
-                        {{
-                            "user.collaborations.details.followers_amount"
-                                | transloco
-                        }}
-                    </label>
-                    <label class="example-value-label">
-                        <span *ngIf="result(compensationAmountMin) === result(compensationAmountMax)">
-                            {{ result(compensationAmountMin) | number:'1.0-0' }} 
-                            <span *ngIf="result(compensationAmountMin) === '10000'">+</span>
-                          </span>
-                          <span *ngIf="result(compensationAmountMin) !== result(compensationAmountMax)">
-                            {{ result(compensationAmountMin) | number:'1.0-0' }} - 
-                            {{ result(compensationAmountMax) | number:'1.0-0' }}
-                            <span *ngIf="result(compensationAmountMax) === '10000'">+</span>
-                        </span>
-                    </label>
-                </div>
-                  <div class="relative w-[390px]">
-                    <mat-slider [min]="min" [max]="max" class="w-full">
-                      <input 
-                        matSliderStartThumb 
-                        formControlName="compensationAmountMin"
-                        [value]="compensationAmountMin" 
-                        (change)="onStartSliderChange($event)">
-                      <input matSliderEndThumb 
-                        formControlName="compensationAmountMax"
-                        [value]="compensationAmountMax" 
-                        (change)="onEndSliderChange($event)">
-                    </mat-slider>
-                    <div class="absolute top-1/2 left-2 w-full flex justify-between">
-                      <div *ngFor="let value of amountFollowers" class="mat-slider-dots"></div>
-                    </div>
-                </div>
-                <div class="flex w-[430px] justify-between mt-2.5 text-gray-500">
-                    <div *ngFor="let value of amountFollowers">
-                      {{value}}
-                    </div>
-                </div>
-              </form>
-                <hr class="my-6 w-full border-t ng-tns-c2638821912-677 ng-star-inserted">
-                <form [formGroup]="editNewCollaborationFormGroup">
-                <div class="mt-4">
-                  <label class="font-semibold">
-                    {{
-                        "user.collaborations.details.content_type"
-                            | transloco
-                    }}
-                  </label>
-                  
-                  <div class="flex flex-row gap-2 mt-5">
-                    <button 
-                        *ngFor="let content of contentItems" 
-                        matTooltipClass="tooltip-html"
-                        class="content"
-                        [ngClass]="{ 'active-chip': content.active}" 
-                        (click)="toggleChip('contentTypes', content)"
-                        [attr.type]="'button'"
-                      >
-                        {{content.name}}
-                    </button>
-                  </div>
-                </div>
-                </form>
-                <hr class="my-6 w-full border-t ng-tns-c2638821912-677 ng-star-inserted">
-                <label class="font-semibold">Platforma</label>
+                <label class="font-semibold">{{
+                  "user.collaborations.details.platform"
+                      | transloco
+              }}</label>
                 <div class="flex flex-row gap-2 mt-5">
                   <button 
-                      *ngFor="let platform of platformList" 
+                      *ngFor="let platform of platformList$ | async" 
                       [matTooltip]="getTooltipText(platform)"
                       matTooltipClass="tooltip-html"
                       class="mat-chip"
-                      [ngClass]="{ 'active-chip': platform.active}"
+                      [ngClass]="{ 'active-chip': platform.isDisplay, 'disabled-chip': !platform.active }"
                       (click)="toggleChip('platforms', platform)"
-                      [attr.type]="'button'"
-                      >
+                      [disabled]= "!platform.active"
+                  >
                       <img [src]="platform.logoUrl"  width="40" height="40" alt="{{ platform.name }}" />
                   </button>
                 </div>
           </div>
       </fuse-card>
-        <fuse-card
-        class="lg:hidden flex w-full w-120 flex-col p-8 mt-8 ng-tns-c2638821912-677 ng-star-inserted"><!---->
+
+      <fuse-card
+        class="flex w-full w-120 flex-col p-8 mt-8 ng-tns-c2638821912-677 ng-star-inserted">
         <form [formGroup]="editNewCollaborationFormGroup">
-            <div class="text-2xl font-semibold leading-tight ng-tns-c2638821912-677 ng-star-inserted">
-                {{
-                    "user.collaborations.details.compensationType"
-                        | transloco
-                }}
-            </div>
-            <p>Gotówka</p>
-            <div class="mt-4 ng-tns-c2638821912-677 ng-star-inserted">
+            <app-select
+              [label]="'user.collaborations.details.compensationType' | transloco"
+              [control]="selectControlcompensationType"
+              [options]="compensationList$ |async">
+            </app-select>
+         </form>
+      </fuse-card>
+  </div>
+      <div class="flex flex-col items-start">
+        <fuse-card class="flex w-full max-w-140 flex-col p-6 pb-6 sm:p-8">
+          <form [formGroup]="editNewCollaborationFormGroup">
+            <p *ngIf="warning" [ngStyle]="{ color: 'red' }">
+              {{
+                "user.collaborations.details.anddWarning"
+                    | transloco
+              }}
+            </p>
+          <app-input
+              type="textarea"
+              hint="This a textarea component"
+              [placeholder]="
+              'user.collaborations.details.description_placeholder'
+                | transloco"  
+              rows="5"
+              maxLength="600"
+              [control]="textAreaControlDetails"
+              >{{
+                "user.collaborations.details.description"
+                    | transloco
+              }}
+          </app-input>
+          <app-input
+              type="textarea"
+              hint="This a textarea component"
+              [placeholder]="
+              'user.collaborations.details.title_placeholder'
+                  | transloco"
+              rows="5"
+              maxLength="600"
+              [control]="textAreaControlName"
+              >  {{
+                  "user.collaborations.details.name"
+                      | transloco
+              }}
+          </app-input>
+
+          <app-select
+            [label]="'user.collaborations.details.city' | transloco"
+            [control]="cityControl"
+            [options]="cityList$ | async"
+           >
+          </app-select>
+      
+          <app-select
+            [label]="'user.collaborations.details.company' | transloco"
+            [control]="companyControl"
+            [options]="userList$ | async">
+          </app-select>
+
+          <app-select
+            [label]="'user.collaborations.details.service_type' | transloco"
+            [control]="serviceTypeControl"
+            [options]="serviceType$ | async">
+          </app-select>
+        </form>
+      </fuse-card>
+      <fuse-card class="mt-4 flex w-full max-w-140 flex-col p-8 mt-8  ng-tns-c2638821912-677 ng-star-inserted">
+        <form [formGroup]="editNewCollaborationFormGroup">
+          <app-input
+            type="textarea"
+            hint="This a textarea component"
+            [placeholder]="
+            'user.collaborations.details.campaign_details_placeholder'
+                | transloco"  
+            rows="5"
+            maxLength="600"
+            [control]="textAreaControlTitle"
+            >  {{
+              "user.collaborations.details.campaign_details"
+                  | transloco
+               }}
+            </app-input>
+        </form>
+      </fuse-card>
+      <fuse-card class="lg:hidden flex w-full w-120 flex-col p-8 mt-8 ng-tns-c2638821912-677 ng-star-inserted hidden-on-small">
+        <div class="ng-tns-c2638821912-677 ng-star-inserted">
+              <div class="text-2xl font-semibold leading-tight ng-tns-c2638821912-677 ng-star-inserted">
+                  {{
+                      "user.collaborations.details.requirements"
+                          | transloco
+                  }}
+              </div>
+            <form [formGroup]="editNewCollaborationFormGroup">
               <div class="mt-8 flex flex-col items-start sm:flex-row">
-                <mat-form-field
+                <mat-form-field 
                     class="w-full justify-between"
                     [subscriptSizing]="'dynamic'"
                 >
-                    <textarea
+              
+                    <textarea class="overflow-hidden"
                         matInput
-                        [formControlName]="'compensationType'"
+                        [formControlName]="'requirements'"
                         [placeholder]="
-                        'user.collaborations.details.compensation_placeholder'
-                            | transloco
-                    "
+                        'user.collaborations.details.requirements_placeholder'
+                            | transloco"
                         [rows]="3"
                         cdkTextareaAutosize
                     ></textarea>
                 </mat-form-field>
-              </div>  
+              </div>
+              <hr class="my-6 w-full border-t ng-tns-c2638821912-677 ng-star-inserted">
+              <div class="flex justify-between mt-5 mr-2.5 mb-5 ml-0">
+                 <label id="example-name-label" class="font-semibold">
+                      {{
+                          "user.collaborations.details.followers_count"
+                              | transloco
+                      }}
+                  </label>
+                  <label class="example-value-label">
+                      <span *ngIf="result(compensationAmountMin) === result(compensationAmountMax)">
+                          {{ result(compensationAmountMin) | number:'1.0-0' }} 
+                          <span *ngIf="result(compensationAmountMin) === '10000'">+</span>
+                        </span>
+                        <span *ngIf="result(compensationAmountMin) !== result(compensationAmountMax)">
+                          {{ result(compensationAmountMin) | number:'1.0-0' }} - 
+                          {{ result(compensationAmountMax) | number:'1.0-0' }}
+                          <span *ngIf="result(compensationAmountMax) === '10000'">+</span>
+                      </span>
+                  </label>
+              </div>
+              <div class="relative w-[390px]">
+                <mat-slider 
+                    [min]="min" 
+                    [max]="max" 
+                    class="w-full">
+                  <input 
+                    matSliderStartThumb
+                    formControlName="compensationAmountMin"
+                    [value]="compensationAmountMin"
+                    (change)="compensationAmountMin = $event.target.value">
+                    
+                  <input matSliderEndThumb 
+                    formControlName="compensationAmountMax"
+                    [value]="compensationAmountMax" 
+                    (change)="compensationAmountMax = $event.target.value">
+                </mat-slider>
+                <div class="absolute top-1/2 left-2 w-full flex justify-between">
+                  <div *ngFor="let value of amountFollowers" class="mat-slider-dots"></div>
+                </div>
             </div>
-         </form>
-      </fuse-card>
-      </div>
+              <div class="flex w-[430px] justify-between mt-2.5 text-gray-500">
+                  <div *ngFor="let value of amountFollowers">
+                    {{value}}
+                  </div>
+              </div>
+            </form>
+              <hr class="my-6 w-full border-t ng-tns-c2638821912-677 ng-star-inserted">
+              <form [formGroup]="editNewCollaborationFormGroup">
+              <div class="mt-4">
+                <label class="font-semibold">
+                  {{
+                      "user.collaborations.details.content_type"
+                          | transloco
+                  }}
+                </label>
+                
+                <div class="flex flex-row gap-2 mt-5">
+                  <button 
+                      *ngFor="let content of contentTypes$ | async" 
+                      matTooltipClass="tooltip-html"
+                      class="content"
+                      formControlName="contentTypes"
+                      [ngClass]="{ 'active-chip': content.active}" 
+                      (click)="toggleChip('contentTypes', content)"
+                      [attr.type]="'button'"
+                    >
+                  {{content.name}}
+                  </button>
+                </div>
+              </div>
+              </form>
+              <hr class="my-6 w-full border-t ng-tns-c2638821912-677 ng-star-inserted">
+              <label class="font-semibold">{{
+                "user.collaborations.details.platform"
+                    | transloco
+            }}</label>
+              <div class="flex flex-row gap-2 mt-5">
+                <button 
+                      *ngFor="let platform of platformList$ | async" 
+                      [matTooltip]="getTooltipText(platform)"
+                      matTooltipClass="tooltip-html"
+                      class="mat-chip"
+                      [ngClass]="{ 'active-chip': platform.isDisplay, 'disabled-chip': !platform.active }"
+                      (click)="toggleChip('platforms', platform)"
+                      [disabled]= "!platform.active"
+                >
+                <img [src]="platform.logoUrl"  width="40" height="40" alt="{{ platform.name }}" />
+              </button>
+              </div>
+        </div>
+    </fuse-card>
+      <fuse-card
+      class="lg:hidden flex w-full w-120 flex-col p-8 mt-8 ng-tns-c2638821912-677 ng-star-inserted">
+      <form [formGroup]="editNewCollaborationFormGroup">
+          <app-select
+              [label]="'user.collaborations.details.compensationType' | transloco"
+              [control]="selectControlcompensationType"
+              [options]="compensationList$ |async">
+            </app-select>
+       </form>
+    </fuse-card>
     </div>
   </div>
+</div>
