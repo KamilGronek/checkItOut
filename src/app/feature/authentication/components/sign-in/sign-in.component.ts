@@ -26,6 +26,7 @@ import {ButtonComponent} from "app/shared/components/ui/button/button.component"
 import {InputComponent} from "app/shared/components/ui/input/input.component";
 import {LinkComponent} from "app/shared/components/ui/link/link.component";
 import {TranslocoPipe} from "@ngneat/transloco";
+import {SnackbarService} from "app/core/services/custom-snackbar/custom-snackbar.service";
 interface SignInForm {
     email: FormControl<string | null>;
     password: FormControl<string | null>;
@@ -74,6 +75,7 @@ export class AuthSignInComponent implements OnInit {
     constructor(
         private _activatedRoute: ActivatedRoute,
         private _authService: AuthService,
+        private _snackbarService: SnackbarService,
         private _formBuilder: UntypedFormBuilder,
         private _router: Router,
         private _influencerService: InfluencerService
@@ -129,10 +131,19 @@ export class AuthSignInComponent implements OnInit {
             .then(() => {
                 this._influencerService
                     .getInfluencerUser()
-                    .subscribe((userData) => {
-                        const status = userData.accountStatus;
-                        localStorage.setItem('userStatus', status);
-                        this._router.navigateByUrl('/collaborations/list');
+                    .subscribe({
+                        next: (userData) => {
+                            const status = userData.accountStatus;
+                            localStorage.setItem('userStatus', status);
+                            this._router.navigateByUrl('/collaborations/list');
+                        },
+                        error: (err) => {
+                            this._snackbarService.showFailure("User not found in database");
+                            console.log(err);
+                            this._authService.signOut();
+                            this.signInForm.reset();
+                            this.signInForm.enable();
+                        }
                     });
             })
             .catch((error) => {
