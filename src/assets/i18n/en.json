@@ -8,6 +8,8 @@
                 "user-profile": "Your profile",
                 "collaborations-list": "Collaborations to take",
                 "companies-list": "Companies",
+                "collaborations-companies": "Active collaborations",
+                "collaborations-companies-admin": "Active collaborations (Influencer view)",
                 "collaborations-influencers": "Active collaborations",
                 "influencers-new": "New Influencers applications"
             }
