@@ -1,0 +1,102 @@
+<div class="px-8">
+    <ol>
+        <li
+            *ngFor="let step of displaySteps; let i = index; let last = last"
+            class="group relative py-4"
+        >
+            <!-- Linia łącząca kroki – nie wyświetlamy jej dla ostatniego kroku -->
+            <div
+                *ngIf="!last"
+                class="absolute left-4 top-6 -ml-px h-full w-0.5"
+                [ngClass]="{
+                    'bg-primary': step.statusNumber < currentStep?.statusNumber,
+                    'bg-gray-300':
+                        step.statusNumber >= currentStep?.statusNumber
+                }"
+            ></div>
+            <div
+                class="relative flex cursor-pointer items-start"
+                id="step-container"
+            >
+                <!-- Ikona lub numer kroku -->
+                <div
+                    class="bg-card flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full ring-2 ring-inset"
+                    [ngClass]="{
+                        'ring-primary bg-primary text-white':
+                            step.statusNumber < currentStep?.statusNumber,
+                        'ring-primary bg-white text-white font-semibold':
+                            step.statusNumber === currentStep?.statusNumber &&
+                            currentStep?.statusType !== 'error',
+                        'bg-red-500 text-white font-semibold ring-red-500':
+                            step.statusNumber === currentStep?.statusNumber &&
+                            currentStep?.statusType === 'error',
+                        'ring-gray-300 bg-card text-gray-500':
+                            step.statusNumber > currentStep?.statusNumber
+                    }"
+                >
+                    <ng-container
+                        *ngIf="
+                            step.statusNumber < currentStep?.statusNumber;
+                            else currentOrFuture
+                        "
+                    >
+                        <!-- Ikona check dla ukończonych statusów -->
+                        <mat-icon
+                            aria-hidden="true"
+                            data-mat-icon-type="svg"
+                            data-mat-icon-name="check"
+                            data-mat-icon-namespace="heroicons_solid"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                fill="currentColor"
+                                height="100%"
+                                width="100%"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M19.916 4.626a.75.75 0 01.208 1.04l-9 13.5a.75.75 0 01-1.154.114l-6-6a.75.75 0 011.06-1.06l5.353 5.353 8.493-12.739a.75.75 0 011.04-.208z"
+                                    clip-rule="evenodd"
+                                />
+                            </svg>
+                        </mat-icon>
+                    </ng-container>
+                    <ng-template #currentOrFuture>
+                        <ng-container
+                            *ngIf="
+                                step.statusNumber ===
+                                    currentStep?.statusNumber &&
+                                    currentStep?.statusType === 'error';
+                                else displayNumber
+                            "
+                        >
+                            <!-- Dla aktualnego statusu z błędem: wyświetlamy "X" -->
+                            <div class="text-md font-semibold">X</div>
+                        </ng-container>
+                        <ng-template #displayNumber>
+                            <!-- Wyświetlamy numer statusu -->
+                            <div
+                                class="text-md"
+                                [ngClass]="{
+                                    'font-semibold':
+                                        step.statusNumber ===
+                                        currentStep?.statusNumber
+                                }"
+                            >
+                                {{ step.statusNumber }}
+                            </div>
+                        </ng-template>
+                    </ng-template>
+                </div>
+                <!-- Opis statusu -->
+                <div class="ml-4">
+                    <div class="font-medium leading-4">{{ step.title }}</div>
+                    <div class="text-secondary mt-1.5 text-md leading-4">
+                        {{ step.description }}
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ol>
+</div>

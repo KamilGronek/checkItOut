@@ -3,102 +3,17 @@
         <div class="text-2xl font-extrabold tracking-tight p-8">
             Oceny podjętych współprac
         </div>
-        <div
-            class="mr-12"
-            *ngIf="influencers.length > 0; else noInfluencersFilter"
-        >
-            <button
-                class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300"
-                (click)="toggleFilters()"
-            >
-                {{ showFilters ? 'Schowaj filtry' : 'Rozwiń filtry' }}
-            </button>
-        </div>
-        <ng-template #noInfluencersFilter></ng-template>
-    </div>
-    <!-- Sekcja filtrów (pokazuje się po kliknięciu) -->
-    <div
-        *ngIf="showFilters"
-        class="mt-4 bg-gray-100 p-4 rounded-lg shadow-md mb-8"
-    >
-        <div class="flex justify-evenly">
-            <mat-form-field appearance="fill" class="w-1/4 max-h-12">
-                <mat-label>Na podstawie dodania oceny</mat-label>
-                <mat-select [(value)]="selectedOption">
-                    <mat-option
-                        *ngFor="let option of options"
-                        [value]="option.value"
-                    >
-                        {{ option.viewValue }}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-            <div class="flex flex-col w-1/4">
-                <mat-form-field>
-                    <mat-label>Podaj zakres dat:</mat-label>
-                    <mat-date-range-input
-                        [formGroup]="dateRange"
-                        [rangePicker]="picker"
-                    >
-                        <input
-                            matStartDate
-                            formControlName="start"
-                            placeholder="Data początkowa"
-                        />
-                        <input
-                            matEndDate
-                            formControlName="end"
-                            placeholder="Data końcowa"
-                        />
-                    </mat-date-range-input>
-                    <mat-datepicker-toggle
-                        matIconSuffix
-                        [for]="picker"
-                    ></mat-datepicker-toggle>
-                    <mat-date-range-picker #picker></mat-date-range-picker>
-                    <mat-error
-                        *ngIf="
-                            dateRange.controls.start.hasError(
-                                'matStartDateInvalid'
-                            )
-                        "
-                    >
-                        Invalid start date
-                    </mat-error>
-                    <mat-error
-                        *ngIf="
-                            dateRange.controls.end.hasError('matEndDateInvalid')
-                        "
-                    >
-                        Invalid end date
-                    </mat-error>
-                </mat-form-field>
-                <p class="-mt-4">MM/DD/YYYY – MM/DD/YYYY</p>
-            </div>
-        </div>
-        <div class="flex justify-center">
-            <button
-                class="mt-3 w-1/4 bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300"
-                (click)="filterInfluencers()"
-            >
-                Filtruj
-            </button>
-        </div>
     </div>
 
     <!-- Jeśli są influencerzy -->
-    <div *ngIf="influencers.length > 0; else noInfluencers">
-        <p-carousel *ngIf="showCarousel"
-                    #rateCarousel
-                    [value]="influencers"
-                    [first]="first"
-                    [numVisible]="4"
-                    [numScroll]="1"
-                    (onPage)="onPageChange($event)"
-                    [circular]="false"
-                    [responsiveOptions]="responsiveOptions"
+    <div *ngIf="collaborations.length > 0; else noCollaborations">
+        <app-carousel
+            #rateCarousel
+            [items]="collaborations"
+            [showCarousel]="showCarousel"
+            [responsiveOptions]="responsiveOptions"
         >
-            <ng-template pTemplate="item" let-influencer>
+            <ng-template #itemTemplate let-collab>
                 <fuse-card
                     class="filter-info flex"
                     [flippable]="true"
@@ -107,96 +22,46 @@
                     <!-- FRONT -->
                     <ng-container fuseCardFront>
                         <div
-                            class="flex w-full max-w-80 flex-col items-center p-8 pb-6 min-w-60"
+                            class="flex w-full max-w-40 flex-col items-center p-8 pb-6 min-w-30"
                         >
-                            <div
-                                [ngClass]="{
-                                    'glow-like':
-                                        influencer.rateStatus === 'POSITIVE',
-                                    'glow-neutral':
-                                        influencer.rateStatus === null ||
-                                        influencer.rateStatus === 'DEFAULT',
-                                    'glow-dislike':
-                                        influencer.rateStatus === 'NEGATIVE'
-                                }"
-                                class="glow-wrapper"
-                            >
+                            <div>
                                 <img
-                                    [src]="influencer.avatarUrl"
+                                    [src]="collab.influencerAvatarUrl"
                                     alt="Card cover image"
-                                    class="h-32 w-32 rounded-full"
+                                    class="h-20 w-20 rounded-full"
                                 />
                             </div>
-
                             <div
-                                class="mt-8 text-center text-2xl font-semibold"
+                                class="mt-4 text-center text-2xl font-semibold"
                             >
-                                {{ influencer.firstName }}
-                                {{ influencer.lastName }}
+                                {{ collab.influencerFirstName }}
+                                {{ collab.influencerLastName }}
                             </div>
                             <div
                                 class="text-secondary mt-1 text-center leading-tight"
                             >
-                                {{ influencer.partnershipOpportunityTitle }}
+                                {{ collab.partnershipOpportunityTitle }}
                             </div>
 
-                            <hr class="mb-0 mt-8 w-full border-t"/>
-
+                            <hr class="mt-4 w-full border-t mb-4" />
                             <div
-                                class="my-4 flex w-full items-center justify-between px-2"
-                            >
-                                <div class="flex flex-col items-center">
-                                    <span class="font-bold">{{
-                                            influencer.followersAmount
-                                        }}</span>
-                                    <span
-                                        class="text-secondary text-sm font-medium"
-                                    >FOLLOWERS</span
-                                    >
-                                </div>
-                                <div class="flex flex-col items-center">
-                                    <span class="font-bold">{{
-                                            influencer.email
-                                        }}</span>
-                                    <span
-                                        class="text-secondary text-sm font-medium"
-                                    >
-                                        <svg
-                                            width="30px"
-                                            height="30px"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                            <path
-                                                fill-rule="evenodd"
-                                                clip-rule="evenodd"
-                                                d="M3.75 5.25L3 6V18L3.75 18.75H20.25L21 18V6L20.25 5.25H3.75ZM4.5 7.6955V17.25H19.5V7.69525L11.9999 14.5136L4.5 7.6955ZM18.3099 6.75H5.68986L11.9999 12.4864L18.3099 6.75Z"
-                                                fill="#080341"
-                                            />
-                                        </svg>
-                                    </span>
-                                </div>
-                            </div>
-                            <div
-                                class="flex justify-evenly items-center text-5xl w-full pointer-events-auto"
+                                class="flex justify-between items-center text-3xl w-full pointer-events-auto"
                             >
                                 <button
                                     [disabled]="
-                                        influencer.rateStatus === 'POSITIVE'
+                                        collab.rateStatus === 'POSITIVE'
                                     "
                                     [ngClass]="{
                                         'transform transition-transform duration-300 hover:scale-125':
-                                            influencer.rateStatus !==
-                                            'POSITIVE',
+                                            collab.rateStatus !== 'POSITIVE',
                                         'cursor-not-allowed opacity-50':
-                                            influencer.rateStatus === 'POSITIVE'
+                                            collab.rateStatus === 'POSITIVE'
                                     }"
                                     (click)="
                                         fuseCard.face = 'back';
                                         setRateStatus(
                                             'POSITIVE',
-                                            influencer.appliedOpportunityId
+                                            collab.appliedOpportunityId
                                         )
                                     "
                                 >
@@ -205,20 +70,19 @@
 
                                 <button
                                     [disabled]="
-                                        influencer.rateStatus === 'NEGATIVE'
+                                        collab.rateStatus === 'NEGATIVE'
                                     "
                                     [ngClass]="{
                                         'transform transition-transform duration-300 hover:scale-125':
-                                            influencer.rateStatus !==
-                                            'NEGATIVE',
+                                            collab.rateStatus !== 'NEGATIVE',
                                         'cursor-not-allowed opacity-50':
-                                            influencer.rateStatus === 'NEGATIVE'
+                                            collab.rateStatus === 'NEGATIVE'
                                     }"
                                     (click)="
                                         fuseCard.face = 'back';
                                         setRateStatus(
                                             'NEGATIVE',
-                                            influencer.appliedOpportunityId
+                                            collab.appliedOpportunityId
                                         )
                                     "
                                 >
@@ -245,38 +109,37 @@
                                     ></mat-icon>
                                 </button>
                             </div>
-
-                            <div class="mt-auto text-center">
-                                <p class="text-2xl mb-4">
-                                    Czy na pewno chcesz dodać opinię?
-                                </p>
-                                <div class="flex justify-around items-center">
-                                    <button
-                                        class="bg-green-400 rounded-lg text-white px-4 py-2"
-                                        (click)="confirmRateStatus()"
-                                    >
-                                        TAK
-                                    </button>
-                                    <button
-                                        class="bg-red-400 rounded-lg text-white px-4 py-2"
-                                        (click)="
-                                            fuseCard.face = 'front';
-                                            resetRateStatus(fuseCard)
-                                        "
-                                    >
-                                        NIE
-                                    </button>
-                                </div>
+                        </div>
+                        <div class="mt-auto text-center">
+                            <p class="text-xl mb-4">
+                                Czy na pewno chcesz dodać opinię?
+                            </p>
+                            <div class="flex justify-around items-center mb-4">
+                                <button
+                                    class="bg-green-400 rounded-lg text-white px-4 py-2"
+                                    (click)="confirmRateStatus()"
+                                >
+                                    TAK
+                                </button>
+                                <button
+                                    class="bg-red-400 rounded-lg text-white px-4 py-2"
+                                    (click)="
+                                        fuseCard.face = 'front';
+                                        resetRateStatus()
+                                    "
+                                >
+                                    NIE
+                                </button>
                             </div>
                         </div>
                     </ng-container>
                 </fuse-card>
             </ng-template>
-        </p-carousel>
+        </app-carousel>
     </div>
 
     <!-- Jeśli brak influencerów -->
-    <ng-template #noInfluencers>
+    <ng-template #noCollaborations>
         <p>Nie znaleziono żadnych współprac oczekujących na ocenę.</p>
     </ng-template>
 </div>

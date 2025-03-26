@@ -1,14 +1,14 @@
-import {Component, OnInit} from '@angular/core';
-import {MatInputModule} from '@angular/material/input';
-import {FuseCardComponent} from '@fuse/components/card';
-import {MatIconModule} from '@angular/material/icon';
-import {MatButtonModule} from '@angular/material/button';
-import {CommonModule} from '@angular/common';
-import {InfluencerService} from 'app/feature/influencers/services/influencer.service';
-import {CarouselModule} from 'primeng/carousel';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {FormsModule} from '@angular/forms';
-import {provideNativeDateAdapter} from '@angular/material/core';
+import { Component, OnInit } from '@angular/core';
+import { MatInputModule } from '@angular/material/input';
+import { FuseCardComponent } from '@fuse/components/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { CommonModule } from '@angular/common';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
+import { provideNativeDateAdapter } from '@angular/material/core';
+import { CarouselComponent } from '../carousel/carousel.component';
+import { CollaborationService } from 'app/feature/collaborations/services/collaboration.service';
 
 @Component({
     selector: 'app-collaboration-registrations',
@@ -16,19 +16,19 @@ import {provideNativeDateAdapter} from '@angular/material/core';
     imports: [
         FuseCardComponent,
         CommonModule,
-        CarouselModule,
         MatFormFieldModule,
         MatInputModule,
         MatIconModule,
         MatButtonModule,
-        FormsModule
+        FormsModule,
+        CarouselComponent
     ],
     providers: [provideNativeDateAdapter()],
     templateUrl: './collaboration-registrations.component.html',
     styleUrls: ['./collaboration-registrations.component.scss']
 })
 export class CollaborationRegistrationsComponent implements OnInit {
-    influencers: any[] = [];
+    collaborations: any[] = [];
     pagination: any = {};
     showFilters = false;
     acceptShow = null;
@@ -38,18 +38,12 @@ export class CollaborationRegistrationsComponent implements OnInit {
     followersMin: number = null;
     followersMax: number = null;
 
-    constructor(private _influencerService: InfluencerService) {
+    constructor(private _collaborationService: CollaborationService) {
     }
 
     toggleFilters(): void {
         this.showFilters = !this.showFilters;
     }
-
-    responsiveOptions = [
-        {breakpoint: '1600px', numVisible: 3, numScroll: 1},
-        {breakpoint: '1024px', numVisible: 2, numScroll: 1},
-        {breakpoint: '680px', numVisible: 1, numScroll: 1}
-    ];
 
     ngOnInit(): void {
         this.filterInfluencers();
@@ -57,7 +51,7 @@ export class CollaborationRegistrationsComponent implements OnInit {
 
     filterInfluencers(): void {
         this.showCarousel = false;
-        this._influencerService
+        this._collaborationService
             .getIfluencersToAccept(
                 this.followersMin,
                 this.followersMax,
@@ -65,7 +59,7 @@ export class CollaborationRegistrationsComponent implements OnInit {
             )
             .subscribe({
                 next: (response: any) => {
-                    this.influencers = [...response.content];
+                    this.collaborations = [...response];
                     setTimeout(() => {
                         this.showCarousel = true;
                     }, 0);
@@ -76,14 +70,8 @@ export class CollaborationRegistrationsComponent implements OnInit {
             });
     }
 
-    // Obsługa zdarzenia zmiany strony (przewinięcia carouselu)
-    onPageChange(event: any): void {
-        console.log('Page event:', event);
-    }
-
     changeOpportunityStatus(id: number) {
-        const updates = {opportunityStatus: this.acceptShow ? 'ACCEPTED' : 'REJECTED'};
-        this._influencerService.updateAppliedOpportunityStatus(id, updates).subscribe({
+        this._collaborationService.updateAppliedOpportunityStatus(id, this.acceptShow).subscribe({
             next: () => {
                 this.filterInfluencers();
             },
