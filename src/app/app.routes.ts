@@ -67,6 +67,11 @@ export const appRoutes: Route[] = [
         },
         children: [
             {
+                path: 'admin',
+                loadChildren: () =>
+                    import('app/feature/admin/components/admin.routes'),
+            },
+            {
                 path: 'influencers',
                 loadChildren: () =>
                     import('app/feature/influencers/components/influencers.routes'),
