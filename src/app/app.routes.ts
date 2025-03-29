@@ -77,11 +77,6 @@ export const appRoutes: Route[] = [
                     import('app/feature/influencers/components/influencers.routes'),
             },
             {
-                path: 'user',
-                loadChildren: () =>
-                    import('app/feature/users/components/users.routes'),
-            },
-            {
                 path: 'companies',
                 loadChildren: () =>
                     import('app/feature/companies/components/companies.routes'),

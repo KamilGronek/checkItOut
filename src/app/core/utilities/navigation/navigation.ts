@@ -57,13 +57,6 @@ export const defaultNavigation: FuseNavigationItem[] = [
 
 export const unauthorizedUserNavigation: FuseNavigationItem[] = [
     {
-        id: 'user-profile',
-        title: 'User profile',
-        type: 'basic',
-        icon: 'heroicons_outline:user-circle',
-        link: '/user/profile',
-    },
-    {
         id: 'collaborations-list',
         title: 'Collaborations List',
         type: 'basic',
@@ -86,14 +79,7 @@ export const influenserNavigation: FuseNavigationItem[] = [
         type: 'basic',
         icon: 'heroicons_outline:arrows-right-left',
         link: '/collaborations/companies',
-    },
-    {
-        id: 'user-profile',
-        title: 'User profile',
-        type: 'basic',
-        icon: 'heroicons_outline:user-circle',
-        link: '/user/profile',
-    },
+    }
 ];
 
 export const adminNavigation: FuseNavigationItem[] = [
