@@ -1,0 +1,77 @@
+<!-- Sekcja hero/wstęp -->
+<div class="w-full bg-slate-100 py-12 px-6 text-center">
+    <h1 class="text-4xl font-bold mb-4 text-gray-800">
+        Witaj w naszej platformie dla Influencerów
+    </h1>
+    <p class="text-lg mb-6 text-gray-600 max-w-3xl mx-auto">
+        łączymy najlepszych twórców z markami, które chcą się wyróżnić.
+        Zarejestruj się, rozwiń swoją markę osobistą i zarabiaj, promując firmy,
+        które pasują do Twojego stylu.
+    </p>
+    <button
+        (click)="onRegisterClick()"
+        class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-8 rounded-full transition duration-300"
+    >
+        Dołącz jako Influencer
+    </button>
+</div>
+
+<!-- Sekcja krok po kroku (steps) -->
+<div class="max-w-6xl mx-auto py-12 px-4">
+    <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">
+        Jak to działa?
+    </h2>
+    <div class="grid md:grid-cols-3 gap-8">
+        <div
+            *ngFor="let step of steps"
+            class="bg-white rounded-lg shadow-lg p-6 text-center flex flex-col items-center"
+        >
+            <div class="text-2xl font-bold mb-2 text-gray-700">{{ step.title }}</div>
+            <p class="text-gray-600 mb-4">{{ step.description }}</p>
+            <div class="mt-auto">
+                <!-- Możesz tu dodać np. ikonkę lub inny element graficzny -->
+                <svg class="w-10 h-10 text-blue-500 mx-auto" fill="none" stroke="currentColor" stroke-width="2"
+                     viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M13 16h-1v-4h-1m2 4v-4m1-10h-4m10 10c0-3.866-3.582-7-8-7S3 8.134 3 12s3.582 7 8 7 8-3.134 8-7z"/>
+                </svg>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Sekcja wartości/dlaczego warto? -->
+<div class="bg-white py-12 px-4">
+    <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-8">
+        <div class="flex flex-col items-center text-center">
+            <div class="text-4xl font-extrabold text-blue-500 mb-2">+1000</div>
+            <p class="text-gray-700">Współprac z różnymi markami miesięcznie</p>
+        </div>
+        <div class="flex flex-col items-center text-center">
+            <div class="text-4xl font-extrabold text-blue-500 mb-2">95%</div>
+            <p class="text-gray-700">Pozytywnych opinii od influencerów</p>
+        </div>
+        <div class="flex flex-col items-center text-center">
+            <div class="text-4xl font-extrabold text-blue-500 mb-2">24/7</div>
+            <p class="text-gray-700">Wsparcie zespołu i szybkich płatności</p>
+        </div>
+    </div>
+</div>
+
+<!-- Sekcja CTA (np. przycisk rejestracji na dole strony) -->
+<div class="bg-slate-100 py-12 px-4 text-center">
+    <h2 class="text-2xl font-semibold mb-4 text-gray-800">
+        Gotowy, by zacząć zarabiać na współpracach?
+    </h2>
+    <p class="text-gray-600 mb-6">
+        Dołącz do społeczności influencerów i rozwijaj swój biznes razem z nami!
+    </p>
+    <button
+        (click)="onRegisterClick()"
+        class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-8 rounded-full transition duration-300"
+    >
+        Załóż konto już teraz
+    </button>
+</div>
+<app-collaborations [collaborations]="collaborations" [viewType]="viewType"></app-collaborations>
+<app-footer/>

@@ -1,0 +1,51 @@
+.landing-container {
+    font-family: 'Roboto', sans-serif;
+    color: #4F46E5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.component-spacer {
+    margin: 2rem 0;
+    height: 2rem;
+}
+
+.faq-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    font-family: 'Roboto', sans-serif;
+}
+
+.faq-title {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 2.2rem;
+    font-weight: 600;
+}
+
+mat-accordion {
+    .mat-expansion-panel {
+        margin-bottom: 1rem;
+        border-radius: 4px;
+        overflow: hidden;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+
+        .mat-expansion-panel-header {
+            background-color: #f9f9f9;
+            font-weight: 500;
+            font-size: 1.3rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        .faq-answer {
+            padding: 1rem;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+    }
+}
