@@ -15,7 +15,7 @@
             *ngFor="let item of collaborationList"
             [flippable]="false"
             customClass="h-full"
-            [imgSrc]="item.company.imageUrl"
+            [imgSrc]="item?.photos[0]?.url" 
             imgAlt="Collaboration card image">
             <!-- Header -->
             <div card-header>
@@ -40,7 +40,9 @@
             <!-- Footer -->
             <div card-footer>
                 <app-link
-                    [routerLink]="'/collaborations/' + item.id">
+                    [routerLink]="'/collaborations/' + item.id"
+                    [queryParams]="{ imageUrl: item.photos[0]?.url }"
+                    >
                     {{
                         "user.collaborations.all.collaboration_card.details_button"
                             | transloco
@@ -48,6 +50,7 @@
                 </app-link>
             </div>
         </app-card>
+        
     </div>
     <div class="flex mb-10 items-center text-sm">
         <mat-paginator

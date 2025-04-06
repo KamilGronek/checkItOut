@@ -1,6 +1,7 @@
 <ng-container [ngSwitch]="type">
     <a *ngSwitchCase="'routing'"
        [routerLink]="routerLink"
+       [queryParams]="queryParams"
        [class]="baseClass + ' ' + customClass">
         <ng-container *ngTemplateOutlet="linkContent"></ng-container>
     </a>

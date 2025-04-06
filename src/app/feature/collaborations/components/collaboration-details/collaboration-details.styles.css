@@ -1,104 +1,103 @@
 .custom-textarea {
-    border: 2px solid transparent;
-    padding: 8px;
-    border-radius: 4px;
-    outline: none;
-    transition: border 0.3s ease;
-  }
-  
-  .custom-textarea:focus {
-    border: 2px solid #4a90e2;
-    box-shadow: 0 0 4px rgba(74, 144, 226, 0.5);
-  }
-  
-  mat-form-field.small {
-    --mat-form-field-container-height: 10px;
-    --mat-form-field-container-width: 40px;
-    --mat-form-field-container-vertical-padding: 0px;
-  }
-  
-    
-  .mat-mdc-slider {
-    max-width: 480px;
-    /* max-width: 300px; */
-    width: 100%;
-  }
-  
-  .mat-mdc-card + .mat-mdc-card {
-    margin-top: 8px;
-  }
-    
-  .example-result-card h2 {
-    margin: 0 8px;
-  }
-  
-  .example-result-card .example-value-label {
-    font-weight: 600;
-  }
-  
-  .mat-mdc-chip-set {
-    margin-top: 20px;
-  }
-  
-  .content{
-    width: 70px;
-    height: 35px;
-    font-size: 15px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 30px;
-    cursor: pointer;
-    background-color: #e0e0e0 ;
-    transform: scale(0.95); 
-  }
-  
-  .mat-chip {
-    width: 80px;
-    height: 80px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 10px;
-    cursor: pointer;
-    background-color: #e0e0e0 ;
-    transform: scale(0.95); 
-  }
-  
-  .tooltip-html {
-    white-space: normal;
-    text-align: left;
-  }
-  
-  
-  .active-chip {
-    color: white;
-    background-color: #4F46E5;
-    transform: scale(0.95);
-    transition: all 0.2s ease-in-out;
-  }
-  
-  .disabled-chip {
-    opacity: 0.5;
-    cursor: pointer;
-  }
-  
-  .mat-chip img{
-    width: 70%;
-    height: 70%;
-  }
-  
-  
-  .mat-slider-dots {
-    height: 10px;
-    width: 10px;
-    border-radius: 50%;
-    background-color: #4F46E5;
-    transform: translateY(-50%); 
-  }
-  
+  border: 2px solid transparent;
+  padding: 8px;
+  border-radius: 4px;
+  outline: none;
+  transition: border 0.3s ease;
+}
 
-   ::ng-deep mat-chip-option.mat-mdc-chip-selected .mdc-evolution-chip__checkmark {
-    display: none;
-  } 
+.custom-textarea:focus {
+  border: 2px solid #4a90e2;
+  box-shadow: 0 0 4px rgba(74, 144, 226, 0.5);
+}
+
+mat-form-field.small {
+  --mat-form-field-container-height: 10px;
+  --mat-form-field-container-width: 40px;
+  --mat-form-field-container-vertical-padding: 0px;
+}
+
   
+.mat-mdc-slider {
+  max-width: 480px;
+  /* max-width: 300px; */
+  width: 100%;
+}
+
+.mat-mdc-card + .mat-mdc-card {
+  margin-top: 8px;
+}
+  
+.example-result-card h2 {
+  margin: 0 8px;
+}
+
+.example-result-card .example-value-label {
+  font-weight: 600;
+}
+
+.mat-mdc-chip-set {
+  margin-top: 20px;
+}
+
+.content{
+  width: 70px;
+  height: 35px;
+  font-size: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 30px;
+  cursor: pointer;
+  background-color: #e0e0e0 ;
+  transform: scale(0.95); 
+}
+
+.mat-chip {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  cursor: pointer;
+  background-color: #e0e0e0 ;
+  transform: scale(0.95); 
+}
+
+.tooltip-html {
+  white-space: normal;
+  text-align: left;
+}
+
+
+.active-chip {
+  color: white;
+  background-color: #4F46E5;
+  transform: scale(0.95);
+  transition: all 0.2s ease-in-out;
+}
+
+.disabled-chip {
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+.mat-chip img{
+  width: 70%;
+  height: 70%;
+}
+
+
+.mat-slider-dots {
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+  background-color: #4F46E5;
+  transform: translateY(-50%); 
+}
+
+
+ ::ng-deep mat-chip-option.mat-mdc-chip-selected .mdc-evolution-chip__checkmark {
+  display: none;
+} 

@@ -3,58 +3,48 @@
     <div class="flex min-w-0 flex-auto flex-col">
       <div class="bg-card flex flex-col shadow">
           <div>
-            <img [src]="'assets/detale_kampanii_v4_files/cover.jpg'" alt="Cover image"
-                class="h-40 object-cover lg:h-80"/>
+            <img 
+                  [src]="imageUrl || 'assets/detale_kampanii_v4_files/cover.jpg'"
+                  alt="Cover image"
+                  class="h-40 object-cover lg:h-80"/>
           </div>
-
         <div class=" bg-card mx-auto flex w-full max-w-5xl flex-0 flex-col items-center px-8  lg:flex-row">
           
           <div  class="mt-4 flex flex-col items-center lg:ml-8 lg:mt-0 lg:items-start">   
             <form  [formGroup]="editCollaborationFormGroup">
-                <div class="text-lg font-bold leading-none">
-                  <mat-form-field class="small w-40 mt-5" appearance="outline" [ngClass]="{ hidden: !isEditing }">
-                    <input matInput type="text"
-                      [value]="collaboration.name"
-                      [formControlName]="'name'">
-                  </mat-form-field>
+                  <div [ngClass]="{ hidden: !isEditing }" class="lg:mt-4">
+                    <app-input
+                      type="text"
+                      hint="Enter your username"
+                      [placeholder]="'user.collaborations.details.title_placeholder' | transloco"
+                      [control]="nameControl"
+                      >
+                        {{"user.collaborations.details.name" | transloco}}
+                    </app-input>
+                  </div>
+                  <div class="text-lg font-bold leading-none"
+                      [ngClass]="{ hidden: isEditing }">
+                      {{ collaboration.name }}
+                  </div>
+               
+                <div class="flex flex-col w-64" [ngClass]="{ hidden: !isEditing }">
+                    <app-select
+                      [label]="'user.collaborations.details.city' | transloco"
+                      [control]="cityControl"
+                      [options]="cityList$ | async"
+                     >
+                  </app-select>
                 </div>
 
-                <div class="text-lg font-bold leading-none"
-                    [ngClass]="{ hidden: isEditing }">
-                    {{ collaboration.name }}
-                </div>
-
-                <div class="text-secondary">
-                  <mat-form-field class=" gt-xs:pr-3 flex-auto w-40 mr-3"
-                    [ngClass]="{ hidden: !isEditing }">
-                    <mat-select 
-                            [(value)]="selectedCity" 
-                            [formControlName]="'city'" 
-                            (selectionChange)="onCityChange($event)">
-                        <mat-option *ngFor="let city of cityOptions" [value]="city">
-                            {{city}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-              </div>
-              <div class="text-secondary lg:ml-5"
+              <div class="text-secondary"
                 [ngClass]="{ hidden: isEditing }">
-                    {{ collaboration.city }}
+                {{ 'user.collaborations.cities.' + collaboration.city | transloco }}
               </div>
           </form>
-          
           </div>
           <div  class="mt-4 flex flex-col items-center lg:ml-8 lg:mt-0 lg:items-start">
             <form  [formGroup]="editCollaborationFormGroup">
-              <div [ngClass]="{ hidden: isEditing }">
-                <div  class="text-lg font-bold leading-none lg:ml-5">
-                  {{collaboration.serviceType?.name}}
-                </div>
-                <div class="text-secondary lg:ml-5">
-                  {{collaboration.serviceType?.category}}
-                </div>
-              </div>
-              <div class="mb-10" [ngClass]="{ hidden: !isEditing }">
+              <div>
                 <div  class="text-lg font-bold leading-none lg:ml-5">
                   {{collaboration.serviceType?.name}}
                 </div>
@@ -68,76 +58,25 @@
           <div class="mb-4 mt-8 flex items-center space-x-6 lg:m-0 lg:mr-8 lg:ml-10">
             <div class="my-3 hidden items-center sm:flex border-y-0">
               <div class="rounded-l-xl border border-r-0 border-transparent p-2 leading-none cursor-pointer">
+                
                 <form  [formGroup]="editCollaborationFormGroup">
-                <div class="text-secondary text-sm font-medium">  {{
+                <div class="text-secondary text-sm font-medium" [ngClass]="{ hidden: isEditing }">  {{
                     "user.collaborations.details.start_date"
                         | transloco
                 }}</div>
-                <div 
-                class="relative mt-1.5 flex cursor-pointer items-center rounded-full px-4 leading-9 mb-10"
-                [ngClass]="{
-                    'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-300':
-                        !card?.startDate,
-                    'bg-green-200 text-green-800 dark:bg-green-500 dark:text-green-100':
-                        card?.startDate && !isOverdue(card?.startDate),
-                    'bg-red-200 text-red-800 dark:bg-red-500 dark:text-red-100':
-                        card?.startDate && isOverdue(card?.startDate),
-                        hidden: !isEditing 
-                }"
-                (click)="startDatePicker.open()"
-              >
-                <mat-icon
-                    class="text-current icon-size-5"
-                    [svgIcon]="'heroicons_solid:calendar'"
-                ></mat-icon>
-               
-                  @if (card?.startDate) {
-                  <span class="ml-2 text-md font-medium w-30">
-                    {{ card?.startDate| date: 'longDate' }}
-                  </span>
-                    }
-                    @if (!card?.startDate) {
-                        {{
-                            "user.collaborations.details.date_not_set"
-                                | transloco
-                        }}
-                    }
-                <mat-form-field
-                    class="fuse-mat-dense pointer-events-none invisible absolute inset-0 -mt-2.5 opacity-0"
-                    [subscriptSizing]="'dynamic'"
-                >
-                    <input
-                        matInput
-                        [formControlName]="'startDate'"
-                        [matDatepicker]="startDatePicker"
-                    />
-                    <mat-datepicker #startDatePicker>
-                        <mat-datepicker-actions>
-                            <button
-                                mat-button
-                                (click)="clearStartDate()"
-                                matDatepickerCancel
-                            >
-                            {{
-                                "user.collaborations.details.clear_button"
-                                    | transloco
-                            }}
-                            </button>
-                            <button
-                                mat-flat-button
-                                [color]="'primary'"
-                                matDatepickerApply
-                                (click)="startDateSelected()"
-                            >
-                            {{
-                                "user.collaborations.details.pick_button"
-                                    | transloco
-                            }}
-                            </button>
-                        </mat-datepicker-actions>
-                    </mat-datepicker>
-                </mat-form-field>
+
+                <div class="flex flex-col w-64" [ngClass]="{ hidden: !isEditing }">
+                  <app-input
+                      type="daterange"
+                      [startControl]="startDateControl"
+                      [endControl]="endDateControl"
+                      [minDate]="minDate"
+                      [maxDate]="maxDate"
+                      placeholder="date"
+                      >{{"user.collaborations.details.select_date_range" | transloco}}
+                  </app-input>
                 </div>
+
                 <div class="mt-1 font-mono text-base"
                   [ngClass]="{ hidden: isEditing }">
                     {{collaboration?.startDate | date: 'dd-MM-yyyy' }}
@@ -151,77 +90,15 @@
                 <div class="mx-2 hidden h-8 border-l-2 lg:flex mb-5"></div>
               </div>
               <div class="rounded-r-xl border p-2 border-transparent leading-none">
-              <form  [formGroup]="editCollaborationFormGroup">
 
-                <div class="text-secondary text-sm font-medium">
+              <form  [formGroup]="editCollaborationFormGroup">
+                <div class="text-secondary text-sm font-medium" [ngClass]="{ hidden: isEditing }">
                     {{
                         "user.collaborations.details.end_date"
                             | transloco
                     }}
                 </div>
-                <div
-                class="relative mt-1.5 flex cursor-pointer items-center rounded-full px-4 leading-9 mb-10"
-                [ngClass]="{
-                    'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-300':
-                        !card?.endDate,
-                    'bg-green-200 text-green-800 dark:bg-green-500 dark:text-green-100':
-                        card?.endDate && !isOverdue(card?.endDate),
-                    'bg-red-200 text-red-800 dark:bg-red-500 dark:text-red-100':
-                        card?.endDate && isOverdue(card?.endDate),
-                         hidden: !isEditing 
-                }"
-                (click)="endDatePicker.open()"
-                >
-                <mat-icon
-                    class="text-current icon-size-5"
-                    [svgIcon]="'heroicons_solid:calendar'"
-                ></mat-icon>
                
-                  @if (card?.endDate) {
-                  <span class="ml-2 text-md font-medium w-30">
-                    {{ card.endDate| date: 'longDate' }}
-                  </span>
-                    }
-                    @if (!card?.endDate) {
-                    Not set
-                    }
-
-                <mat-form-field
-                    class="fuse-mat-dense pointer-events-none invisible absolute inset-0 -mt-2.5 opacity-0"
-                    [subscriptSizing]="'dynamic'"
-                >
-                    <input
-                        matInput
-                        [formControlName]="'endDate'"
-                        [matDatepicker]="endDatePicker"
-                    />
-                    <mat-datepicker #endDatePicker>
-                        <mat-datepicker-actions>
-                            <button
-                                mat-button
-                                (click)="clearEndDate()"
-                                matDatepickerCancel
-                            >
-                            {{
-                                "user.collaborations.details.clear_button"
-                                    | transloco
-                            }}
-                            </button>
-                            <button
-                                mat-flat-button
-                                [color]="'primary'"
-                                matDatepickerApply
-                                (click)="endDateSelected()"
-                            >
-                            {{
-                                "user.collaborations.details.pick_button"
-                                    | transloco
-                            }}
-                            </button>
-                        </mat-datepicker-actions>
-                    </mat-datepicker>
-                </mat-form-field>
-            </div>
             </form>
                 <div class="mt-1 font-mono text-base"
                     [ngClass]="{ hidden: isEditing }">
@@ -230,61 +107,67 @@
             </div>
               <div *ngIf="isEditing; else editButton" class="flex flex-row mb-10">
                 <button 
-                    mat-button 
-                    color="warn" 
-                    (click)="openConfirmationDeleteDialog(collaboration.id)">
-                    {{ "user.collaborations.details.delete_button" | transloco }}
+                  mat-button 
+                  color="warn" 
+                  (click)="openConfirmationDeleteDialog(collaboration.id)">
+                  {{
+                    "user.collaborations.details.delete_button"
+                        | transloco
+                }}
                 </button>
-
-                <button 
-                    mat-flat-button 
-                    type="button" 
-                    color="primary"
-                    (click)="saveCollaboration(collaboration.id, compensationAmount(compensationAmountMin), compensationAmount(compensationAmountMax))">
-                    {{ "user.collaborations.details.save_button" | transloco }}
+                <button mat-flat-button 
+                  type="button" 
+                  [color]="'primary'"
+                  (click)="saveCollaboration(collaboration.id, compensationAmount(compensationAmountMin), compensationAmount(compensationAmountMax))">
+                {{
+                    "user.collaborations.details.save_button"
+                        | transloco
+                }}
                 </button> 
               </div>
         </div>
+
         <ng-template #editButton class="absolute flex flex-row ml-10">
-          <button  
+            <button  
               mat-stroked-button 
               (click)="editCollaboration()">
               <mat-icon 
-                  class="icon-size-5" 
-                  [svgIcon]="'heroicons_solid:pencil-square'">
+                class="icon-size-5" 
+                [svgIcon]="'heroicons_solid:pencil-square'">
               </mat-icon>
-              <span class="ml-2">
-                  {{ "user.collaborations.details.edit_button" | transloco }}
-              </span>
-          </button>
+              <span class="ml-2"> {{
+                "user.collaborations.details.edit_button"
+                    | transloco
+            }}</span>
+            </button>
         </ng-template>
       </div>
       <div class="mx-auto flex w-full max-w-5xl flex-auto justify-center p-6 sm:p-8">
         <div class="mr-8 hidden flex-col items-start lg:flex">
         <fuse-card class="flex w-full w-120 flex-col p-8 ng-tns-c2638821912-677 ng-star-inserted hidden-on-small">
           <div  class="ng-tns-c2638821912-677 ng-star-inserted">
-            <div class="text-2xl font-semibold leading-tight ng-tns-c2638821912-677 ng-star-inserted">
+            <div class="font-semibold leading-tight ng-tns-c2638821912-677 ng-star-inserted"  [ngClass]="{ hidden: isEditing }">
                 {{
                     "user.collaborations.details.requirements"
                         | transloco
                 }}
             </div>
             <form [formGroup]="editCollaborationFormGroup">
-              <div class="mt-8 flex flex-col items-start sm:flex-row" [ngClass]="{ hidden: !isEditing }">
-                <mat-form-field 
-                    class="w-full justify-between"
-                    [subscriptSizing]="'dynamic'"
-                >
-                    <textarea class="overflow-hidden"
-                        matInput
-                        [formControlName]="'requirements'"
-                        [placeholder]="
-                        'user.collaborations.details.requirements_placeholder'
-                            | transloco"
-                        [rows]="3"
-                        cdkTextareaAutosize
-                    ></textarea>
-                </mat-form-field>
+              <div  [ngClass]="{ hidden: !isEditing }">
+                <app-input
+                  type="textarea"
+                  hint="This a textarea component"
+                  [placeholder]="
+                  'user.collaborations.details.requirements_placeholder'
+                    | transloco"  
+                  rows="5"
+                  maxLength="600"
+                  [control]="requirementsControl"
+                    >{{
+                      "user.collaborations.details.requirements"
+                          | transloco
+                  }}
+                </app-input>
               </div>
 
                 <div class="mt-4 w-80 max-w-[100%]"
@@ -294,23 +177,30 @@
                 </div>
             
                 <hr class="my-6 w-full border-t ng-tns-c2638821912-677 ng-star-inserted">
-                <div class="flex justify-between mt-5 mr-2.5 mb-5 ml-0 max-w-[284px]">
+                <div class="flex justify-between mt-5 mr-2.5 mb-5 ml-0">
                   <label id="example-name-label" class="font-semibold">
-                    {{"user.collaborations.details.followers_amount"
-                        | transloco}}
+                    {{
+                      "user.collaborations.details.followers_count"
+                        | transloco
+                    }}
                 </label>
                   <label class="example-value-label">
                     <ng-container *ngIf="isEditing; else compensationValues">
-                        
-                      {{ compensationAmount(compensationAmountMin) || prevAmountMin }} - 
-                      {{ compensationAmount(compensationAmountMax) || prevAmountMax }}
+                      <ng-container *ngIf="compensationAmount(compensationAmountMin) !== compensationAmount(compensationAmountMax); else singleValue">
+                        {{ (compensationAmount(compensationAmountMin) || prevAmountMin) | number:'1.0-0' }} - 
+                        {{ (compensationAmount(compensationAmountMax) || prevAmountMax) | number:'1.0-0' }}
+                      </ng-container>
                       
+                      <ng-template #singleValue>
+                        {{ (compensationAmount(compensationAmountMin) || prevAmountMin) | number:'1.0-0' }}
+                      </ng-template>
                     </ng-container>
+                    
                     <ng-template #compensationValues>
-                      {{ prevAmountMin }} - {{ prevAmountMax }}
+                      {{ prevAmountMin | number:'1.0-0' }} - {{ prevAmountMax | number:'1.0-0' }}
                     </ng-template>
+                    <span *ngIf="compensationAmount(compensationAmountMax) === '10000'">+</span>
                   </label>
-                  
                 </div>
                   <div class="relative w-[390px]" 
                     [ngClass]="{'disabled-chip':disabled}">
@@ -320,15 +210,17 @@
                         class="w-full"
                         [disabled]="disabled"
                     >
-                      <input 
-                        matSliderStartThumb 
-                        formControlName="compensationAmountMin"
-                        [value]="compensationAmountMin" 
-                        (change)="onStartSliderChange($event)">
-                      <input matSliderEndThumb 
-                        formControlName="compensationAmountMax"
-                        [value]="compensationAmountMax" 
-                        (change)="onEndSliderChange($event)">
+                        <input 
+                          matSliderStartThumb 
+                          formControlName="compensationAmountMin"
+                          [value]="compensationAmountMin" 
+                          (change)="compensationAmountMin = $event.target.value"
+                        >
+                        <input matSliderEndThumb 
+                          formControlName="compensationAmountMax"
+                          [value]="compensationAmountMax" 
+                          (change)="compensationAmountMax = $event.target.value"
+                        >
                     </mat-slider>
                     <div class="absolute top-1/2 left-2 w-full flex justify-between">
                         <div *ngFor="let value of amountFollowers" class="mat-slider-dots"></div>
@@ -366,7 +258,10 @@
                 </div>
               </form>
                 <hr class="my-6 w-full border-t ng-tns-c2638821912-677 ng-star-inserted">
-                <label class="font-semibold">Platforma</label>
+                <label class="font-semibold">{{
+                  "user.collaborations.details.platform"
+                      | transloco
+              }}</label>
                 <div class="flex flex-row gap-2 mt-5"  [ngClass]="{'disabled-chip':disabled}">
                   <button 
                       *ngFor="let platform of collaboration.platforms" 
@@ -382,24 +277,25 @@
                 </div>
           </div>
         </fuse-card>
-        <fuse-card
-            class="flex w-full w-120 flex-col p-8 mt-8 ng-tns-c2638821912-677 ng-star-inserted">
+        <fuse-card class="flex w-full w-120 flex-col p-8 mt-8 ng-tns-c2638821912-677 ng-star-inserted">
             <form  [formGroup]="editCollaborationFormGroup">
-
-            <div class="text-2xl font-semibold leading-tight ng-tns-c2638821912-677 ng-star-inserted">
-              
-                {{
-                    "user.collaborations.details.compensationType"
-                        | transloco
-                }}
-            </div>
-              <div class="mt-8 flex flex-col items-start sm:flex-row" [ngClass]="{ hidden: !isEditing }">
-                  {{collaboration.compensationType}}  
+              <div class="font-semibold leading-tight ng-tns-c2638821912-677 ng-star-inserted"  [ngClass]="{ hidden: isEditing }">
+                  {{
+                      "user.collaborations.details.compensationType"
+                          | transloco
+                  }}
+              </div>
+              <div class="mt-4 ng-tns-c2638821912-677 ng-star-inserted" [ngClass]="{ hidden: !isEditing }">
+                <app-select
+                  [label]="'user.collaborations.details.compensationType' | transloco"
+                  [control]="compensationTypeControl"
+                  [options]="compensationList$ |async">
+              </app-select>
               </div>
             <div class="mt-4 ng-tns-c2638821912-677 ng-star-inserted"
                 [ngClass]="{ hidden: isEditing }"
             >
-              {{collaboration.compensationType}}
+              {{ 'user.collaborations.compensationType.' + (collaboration.compensationType === 'Gotówka' ? 'cash' : 'barter') | transloco }}
             </div>
             </form>
           </fuse-card>
@@ -407,112 +303,109 @@
         <div class="flex flex-col items-start">
           <fuse-card
             class=" flex w-full max-w-140 flex-col p-8  ng-tns-c2638821912-677 ng-star-inserted">
-            <form  [formGroup]="editCollaborationFormGroup">
-                <div class="text-2xl font-semibold leading-tight ng-tns-c2638821912-677 ng-star-inserted">
+                <div class="font-semibold leading-tight ng-tns-c2638821912-677 ng-star-inserted" [ngClass]="{ hidden: isEditing }">
                     {{
                         "user.collaborations.details.campaign_details"
                             | transloco
                     }}
                 </div>
-                <div class="mt-8 ng-tns-c2638821912-677 ng-star-inserted w-100 h-20"
-                [ngClass]="{ hidden: !isEditing }"
-                >
-                  <mat-form-field 
-                      class="w-full justify-between mb-4"
-                      [subscriptSizing]="'dynamic'"
+                <form  [formGroup]="editCollaborationFormGroup">
+                  <div class="ng-tns-c2638821912-677 ng-star-inserted w-100"
+                    [ngClass]="{ hidden: !isEditing }"
                   >
-                      <textarea
-                          matInput
-                          [formControlName]="'details'"
-                         
-                          [placeholder]="
-                          'user.collaborations.details.campaign_details_placeholder'
+                    <app-input
+                        type="textarea"
+                        hint="This a textarea component"
+                        [placeholder]="
+                        'user.collaborations.details.campaign_details_placeholder'
+                            | transloco"  
+                        rows="5"
+                        maxLength="600"
+                        [control]="campaignDetailsControl"
+                        >  {{
+                          "user.collaborations.details.campaign_details"
                               | transloco
-                      "
-
-                          [rows]="3"
-                          cdkTextareaAutosize
-                      ></textarea>
-                  </mat-form-field>
-              </div>
-              <div 
-                [ngClass]="{ hidden: isEditing }"
-                class="w-100 mt-4">
-                {{collaboration.details}}
-              </div>
+                          }}
+                    </app-input>
+                  </div>
+                <div 
+                  [ngClass]="{ hidden: isEditing }"
+                  class="w-100 mt-4">
+                  {{collaboration.details}}
+                </div>
             </form>
           </fuse-card>
           <fuse-card
             class="flex w-full max-w-140 flex-row p-8 mt-8 ng-tns-c2638821912-677 ng-star-inserted">
               <div class="ng-tns-c2638821912-677 ng-star-inserted">
-                <div class="text-2xl font-semibold leading-tight ng-tns-c2638821912-677 ng-star-inserted">
+                <div class="font-semibold leading-tight ng-tns-c2638821912-677 ng-star-inserted">
                     {{
                         "user.collaborations.details.company_details"
                             | transloco
                     }}
                 </div>
-
-              
-
                 <table class="mt-4 mr-2">
                   <tr>
-                    <td>{{collaboration.company?.name}}</td>
+                    <td>{{collaboration?.company?.name}}</td>
                   </tr>
                   <tr>
-                    <td>{{collaboration.company?.firstName}}</td>
+                    <td>{{collaboration?.company?.firstName}}</td>
                   </tr>
                   <tr>
-                    <td>{{collaboration.company?.lastName}}</td>
+                    <td>{{collaboration?.company?.lastName}}</td>
                   </tr>
                   <tr>
-                    <td>{{collaboration.company?.email}}</td>
+                    <td>{{collaboration?.company?.email}}</td>
                   </tr>
                   <tr>
-                    <td>{{collaboration.company?.phoneNumber}}</td>
+                    <td>{{collaboration?.company?.phoneNumber}}</td>
                   </tr>
                   <tr>
-                    <td>{{collaboration.company?.city}}</td>
+                    <td>{{collaboration?.company?.city}}</td>
                   </tr>
                   <tr>
-                    <td>{{collaboration.company?.address}}</td>
+                    <td>{{collaboration?.company?.address}}</td>
                   </tr>
                   <tr>
-                    <td>{{collaboration.company?.note}}</td>
+                    <td>{{collaboration?.company?.note}}</td>
                   </tr>
                 </table>
               </div>
          </fuse-card>
-         <fuse-card class="lg:hidden flex w-full w-120 flex-col p-8 ng-tns-c2638821912-677 ng-star-inserted hidden-on-small">
+         <fuse-card class="lg:hidden mt-8 flex w-full w-120 flex-col p-8 ng-tns-c2638821912-677 ng-star-inserted hidden-on-small">
           <div  class="ng-tns-c2638821912-677 ng-star-inserted">
-            <div class="text-2xl font-semibold leading-tight ng-tns-c2638821912-677 ng-star-inserted">
-              Wymagania
+            <div class="font-semibold leading-tight ng-tns-c2638821912-677 ng-star-inserted" [ngClass]="{ hidden: isEditing }">
+              {{
+                "user.collaborations.details.requirements"
+                    | transloco
+              }}
             </div>
             <form [formGroup]="editCollaborationFormGroup">
-              <div class="mt-8 flex flex-col items-start sm:flex-row" [ngClass]="{ hidden: !isEditing }">
-                <mat-form-field 
-                    class="w-full justify-between"
-                    [subscriptSizing]="'dynamic'"
-                >
-                    <textarea class="overflow-hidden"
-                        matInput
-                        [formControlName]="'requirements'"
-                        [placeholder]="'Tutaj jest opis ktory wpisuje sobie firma ktora chce sie reklamowac u nas'"
-                        [rows]="3"
-                        cdkTextareaAutosize
-                    ></textarea>
-                </mat-form-field>
+              <div   [ngClass]="{ hidden: !isEditing }">
+                <app-input
+                  type="textarea"
+                  hint="This a textarea component"
+                  [placeholder]="
+                  'user.collaborations.details.requirements_placeholder'
+                    | transloco"  
+                  rows="5"
+                  maxLength="600"
+                  [control]="requirementsControl"
+                    >{{
+                      "user.collaborations.details.requirements"
+                          | transloco
+                  }}
+                </app-input>
               </div>
-
-                <div class="mt-4 w-80 max-w-[100%]"
-                  [ngClass]="{ hidden: isEditing }"
-                >
-                  {{collaboration.requirements}}
-                </div>
-            
+              <div class="mt-4 w-80 max-w-[100%]"
+                [ngClass]="{ hidden: isEditing }"
+              >
+                {{collaboration.requirements}}
+              </div>
                 <hr class="my-6 w-full border-t ng-tns-c2638821912-677 ng-star-inserted">
-                <div class="flex justify-between mt-5 mr-2.5 mb-5 ml-0 max-w-[284px]">
+                <div class="flex justify-between mt-5 mr-2.5 mb-5 ml-0">
                   <label id="example-name-label" class="font-semibold">
-                    {{"user.collaborations.details.followers_amount"
+                    {{"user.collaborations.details.followers_count"
                         | transloco}}
                 </label>
                   <label class="example-value-label">
@@ -583,7 +476,10 @@
               </form>
                 
                 <hr class="my-6 w-full border-t ng-tns-c2638821912-677 ng-star-inserted">
-                <label class="font-semibold">Platforma</label>
+                <label class="font-semibold">{{
+                  "user.collaborations.details.platform"
+                      | transloco
+              }}</label>
                 <div class="flex flex-row gap-2 mt-5"  [ngClass]="{'disabled-chip':disabled}">
                   <button 
                       *ngFor="let platform of collaboration.platforms" 
@@ -601,18 +497,23 @@
         </fuse-card>
         <fuse-card class="lg:hidden flex w-full w-120 flex-col p-8 mt-8 ng-tns-c2638821912-677 ng-star-inserted">
           <form  [formGroup]="editCollaborationFormGroup">
-            <div class="text-2xl font-semibold leading-tight ng-tns-c2638821912-677 ng-star-inserted">
+            <div class="font-semibold leading-tight ng-tns-c2638821912-677 ng-star-inserted"  >
                 {{
                     "user.collaborations.details.compensationType"
                         | transloco
                 }}
             </div>
-          <div class="mt-8 flex flex-col items-start sm:flex-row" [ngClass]="{ hidden: !isEditing }">
-              {{collaboration.compensationType}}
-          </div>
+          <div class="mt-4 ng-tns-c2638821912-677 ng-star-inserted" [ngClass]="{ hidden: !isEditing }">
+              <app-select
+              [label]="'user.collaborations.details.compensationType' | transloco"
+              [control]="compensationTypeControl"
+              [options]="compensationList$ |async">
+              </app-select>
+          </div>  
           <div class="mt-4 ng-tns-c2638821912-677 ng-star-inserted"
-              [ngClass]="{ hidden: isEditing }">
-            {{collaboration.compensationType}}
+              [ngClass]="{ hidden: isEditing }"
+              >
+              {{ 'user.collaborations.compensationType.' + (collaboration.compensationType === 'Gotówka' ? 'cash' : 'barter') | transloco }}
           </div>
         </form>
       </fuse-card>
