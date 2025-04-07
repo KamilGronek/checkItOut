@@ -1,0 +1,60 @@
+<div class="w-full">
+    <!-- Form -->
+    <form [formGroup]="accountForm">
+        <!-- Section -->
+        <div class="w-full">
+            <div class="text-xl">Profile</div>
+            <div class="text-secondary">
+                Following information is publicly displayed, be careful!
+            </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="my-10 border-t"></div>
+
+        <!-- Section -->
+        <div class="w-full">
+            <div class="text-xl">Personal Information</div>
+            <div class="text-secondary">
+                Communication details in case we want to connect with you. These
+                will be kept private.
+            </div>
+        </div>
+        <div class="mt-8 flex flex-col gap-4 w-full">
+            <div class="flex gap-4 grow">
+               <app-input
+                   class="grow"
+                   [control]="accountForm.controls.firstName">
+                   First name
+               </app-input>
+
+                <app-input
+                    class="grow"
+                    [control]="accountForm.controls.lastName">
+                   Last name
+               </app-input>
+            </div>
+
+            <app-input
+                [control]="accountForm.controls.email">
+               Email
+           </app-input>
+        </div>
+
+        <!-- Divider -->
+        <div class="mb-10 mt-11 border-t"></div>
+
+        <!-- Actions -->
+        <div class="flex items-center justify-end">
+            <button mat-stroked-button type="button">Cancel</button>
+            <button
+                class="ml-4"
+                mat-flat-button
+                type="button"
+                [color]="'primary'"
+            >
+                Save
+            </button>
+        </div>
+    </form>
+</div>

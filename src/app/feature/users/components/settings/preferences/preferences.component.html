@@ -1,0 +1,230 @@
+<div class="w-full max-w-3xl mx-auto p-6">
+  <h1 class="text-3xl font-bold mb-6">{{ 'user.preferences.title' | transloco }}</h1>
+  <p class="text-secondary mb-6">{{ 'user.preferences.subtitle' | transloco }}</p>
+
+  <!-- Loading spinner -->
+  <div *ngIf="loading" class="flex justify-center my-12">
+    <mat-spinner [diameter]="40"></mat-spinner>
+  </div>
+
+  <!-- Form -->
+  <form [formGroup]="preferencesForm" *ngIf="!loading">
+    <!-- Notifications Section -->
+    <div class="w-full text-xl font-semibold">
+      {{ 'user.preferences.notifications.title' | transloco }}
+    </div>
+    <div class="mt-4 grid w-full grid-cols-1 gap-6 bg-card shadow rounded-lg p-6">
+      <!-- Email Notifications -->
+      <div class="flex items-center justify-between">
+        <div class="flex-auto cursor-pointer" (click)="emailToggle.toggle()">
+          <div class="font-medium leading-6">
+            {{ 'user.preferences.notifications.email.title' | transloco }}
+          </div>
+          <div class="text-secondary text-sm">
+            {{ 'user.preferences.notifications.email.description' | transloco }}
+          </div>
+        </div>
+        <mat-slide-toggle
+          class="ml-2"
+          [color]="'primary'"
+          formControlName="notificationEmailEnabled"
+          #emailToggle
+        >
+        </mat-slide-toggle>
+      </div>
+
+      <!-- Push Notifications -->
+      <div class="flex items-center justify-between">
+        <div class="flex-auto cursor-pointer" (click)="pushToggle.toggle()">
+          <div class="font-medium leading-6">
+            {{ 'user.preferences.notifications.push.title' | transloco }}
+          </div>
+          <div class="text-secondary text-sm">
+            {{ 'user.preferences.notifications.push.description' | transloco }}
+          </div>
+        </div>
+        <mat-slide-toggle
+          class="ml-2"
+          [color]="'primary'"
+          formControlName="notificationPushEnabled"
+          #pushToggle
+        >
+        </mat-slide-toggle>
+      </div>
+
+      <!-- SMS Notifications -->
+      <div class="flex items-center justify-between">
+        <div class="flex-auto cursor-pointer" (click)="smsToggle.toggle()">
+          <div class="font-medium leading-6">
+            {{ 'user.preferences.notifications.sms.title' | transloco }}
+          </div>
+          <div class="text-secondary text-sm">
+            {{ 'user.preferences.notifications.sms.description' | transloco }}
+          </div>
+        </div>
+        <mat-slide-toggle
+          class="ml-2"
+          [color]="'primary'"
+          formControlName="notificationSmsEnabled"
+          #smsToggle
+        >
+        </mat-slide-toggle>
+      </div>
+    </div>
+
+    <!-- Display Settings -->
+    <div class="w-full text-xl font-semibold mt-8">
+      {{ 'user.preferences.display.title' | transloco }}
+    </div>
+    <div class="mt-4 grid w-full grid-cols-1 gap-6 bg-card shadow rounded-lg p-6">
+      <!-- Dark Mode -->
+      <div class="flex items-center justify-between">
+        <div class="flex-auto cursor-pointer" (click)="darkModeToggle.toggle()">
+          <div class="font-medium leading-6">
+            {{ 'user.preferences.display.darkMode.title' | transloco }}
+          </div>
+          <div class="text-secondary text-sm">
+            {{ 'user.preferences.display.darkMode.description' | transloco }}
+          </div>
+        </div>
+        <mat-slide-toggle
+          class="ml-2"
+          [color]="'primary'"
+          formControlName="darkModeEnabled"
+          #darkModeToggle
+        >
+        </mat-slide-toggle>
+      </div>
+
+      <!-- Language -->
+      <div class="flex items-center justify-between">
+        <div class="flex-auto">
+          <div class="font-medium leading-6">
+            {{ 'user.preferences.display.language.title' | transloco }}
+          </div>
+          <div class="text-secondary text-sm">
+            {{ 'user.preferences.display.language.description' | transloco }}
+          </div>
+        </div>
+        <div class="flex-shrink-0 w-48">
+          <app-select
+            [control]="preferencesForm.controls.language"
+            [options]="[
+              {
+                value: 'pl',
+                label: 'languages.pl' | transloco
+              },
+              {
+                value: 'en',
+                label: 'languages.en' | transloco
+              }
+            ]"
+          >
+          </app-select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Communication Settings -->
+    <div class="w-full text-xl font-semibold mt-8">
+      {{ 'user.preferences.communication.title' | transloco }}
+    </div>
+    <div class="mt-4 grid w-full grid-cols-1 gap-6 bg-card shadow rounded-lg p-6">
+      <!-- Communication Frequency -->
+      <div class="flex items-center justify-between">
+        <div class="flex-auto">
+          <div class="font-medium leading-6">
+            {{ 'user.preferences.communication.frequency.title' | transloco }}
+          </div>
+          <div class="text-secondary text-sm">
+            {{ 'user.preferences.communication.frequency.description' | transloco }}
+          </div>
+        </div>
+        <div class="flex-shrink-0 w-48">
+          <app-select
+            [control]="preferencesForm.controls.communicationFrequency"
+            [options]="[
+              {
+                value: 'DAILY',
+                label: 'user.preferences.communication.frequency.daily' | transloco
+              },
+              {
+                value: 'WEEKLY',
+                label: 'user.preferences.communication.frequency.weekly' | transloco
+              },
+              {
+                value: 'MONTHLY',
+                label: 'user.preferences.communication.frequency.monthly' | transloco
+              }
+            ]"
+          >
+          </app-select>
+        </div>
+      </div>
+
+      <!-- Marketing Consent -->
+      <div class="flex items-center justify-between">
+        <div class="flex-auto cursor-pointer" (click)="marketingToggle.toggle()">
+          <div class="font-medium leading-6">
+            {{ 'user.preferences.communication.marketing.title' | transloco }}
+          </div>
+          <div class="text-secondary text-sm">
+            {{ 'user.preferences.communication.marketing.description' | transloco }}
+          </div>
+        </div>
+        <mat-slide-toggle
+          class="ml-2"
+          [color]="'primary'"
+          formControlName="gdprMarketingConsent"
+          #marketingToggle
+        >
+        </mat-slide-toggle>
+      </div>
+    </div>
+
+    <!-- Security Settings -->
+    <div class="w-full text-xl font-semibold mt-8">
+      {{ 'user.preferences.security.title' | transloco }}
+    </div>
+    <div class="mt-4 grid w-full grid-cols-1 gap-6 bg-card shadow rounded-lg p-6">
+      <!-- 2FA -->
+      <div class="flex items-center justify-between">
+        <div class="flex-auto cursor-pointer" (click)="twoFactorToggle.toggle()">
+          <div class="font-medium leading-6">
+            {{ 'user.preferences.security.twoFactor.title' | transloco }}
+          </div>
+          <div class="text-secondary text-sm">
+            {{ 'user.preferences.security.twoFactor.description' | transloco }}
+          </div>
+        </div>
+        <mat-slide-toggle
+          class="ml-2"
+          [color]="'primary'"
+          formControlName="twoFactorAuthenticationEnabled"
+          #twoFactorToggle
+        >
+        </mat-slide-toggle>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="flex items-center justify-end gap-4 mt-8">
+      <app-button
+        variant="stroked"
+        (click)="cancelChanges()"
+        [disabled]="loading || saving || !formDirty"
+      >
+        {{ 'user.preferences.actions.cancel' | transloco }}
+      </app-button>
+      <app-button
+        [color]="'primary'"
+        (click)="savePreferences()"
+        [loading]="saving"
+        [disabled]="!formDirty || preferencesForm.invalid"
+        [variant]="'flat'"
+      >
+        {{ 'user.preferences.actions.save' | transloco }}
+      </app-button>
+    </div>
+  </form>
+</div>

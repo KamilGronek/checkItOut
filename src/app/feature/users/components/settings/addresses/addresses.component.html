@@ -1,0 +1,101 @@
+<div class="w-full max-w-3xl">
+    <!-- Header -->
+    <div class="w-full mb-8">
+        <div class="text-xl">{{ 'address.title' | transloco }}</div>
+        <div class="text-secondary">
+            {{ 'address.description' | transloco }}
+        </div>
+    </div>
+
+    <!-- Loading spinner -->
+    <div *ngIf="isLoading$ | async" class="flex justify-center items-center h-64">
+        <mat-spinner [diameter]="40"></mat-spinner>
+    </div>
+
+    <!-- Content with the async pipe used once -->
+    <ng-container *ngIf="addresses$ | async as addresses">
+        <!-- No addresses message -->
+        <div *ngIf="addresses.length === 0 && !(isLoading$ | async)"
+             class="flex flex-col items-center justify-center p-8 text-center">
+            <mat-icon class="icon-size-10 text-secondary mb-4">location_on</mat-icon>
+            <div class="text-lg font-semibold mb-2">{{ 'address.noAddresses' | transloco }}</div>
+            <div class="text-secondary mb-6">{{ 'address.noAddressesDescription' | transloco }}</div>
+            <app-button [variant]="'flat'" [color]="'primary'" (click)="openCreateAddressForm()">
+                {{ 'address.actions.addAddress' | transloco }}
+            </app-button>
+        </div>
+
+        <!-- Address List -->
+        <div *ngIf="addresses.length > 0 && !(isLoading$ | async)">
+            <div class="flex items-center justify-between mb-6">
+                <div class="text-lg font-semibold">{{ 'address.yourAddresses' | transloco }}</div>
+                <app-button [variant]="'flat'" [color]="'primary'" (click)="openCreateAddressForm()" [icon]="'add'">
+                    {{ 'address.actions.addAddress' | transloco }}
+                </app-button>
+            </div>
+
+            <div class="grid grid-cols-1 gap-6">
+                <app-card
+                    *ngFor="let address of addresses; trackBy: trackByFn">
+                    <div card-header class="flex items-center justify-between">
+                        <!-- Address type badge -->
+                        <div
+                            class="bg-gray-100 dark:bg-gray-800 text-secondary text-xs font-semibold px-2 py-1 rounded-full">
+                            {{ 'address.types.' + address.addressType | transloco }}
+                        </div>
+                        <!-- Primary badge -->
+                        <div *ngIf="address.primary"
+                             class="bg-primary text-white text-xs font-semibold px-2 py-1 rounded-full">
+                            {{ 'address.primaryBadge' | transloco }}
+                        </div>
+                    </div>
+
+                    <!-- Address details -->
+                    <div class="my-4">
+                        <div class="text-lg font-semibold">{{ address.street }}</div>
+                        <div class="text-secondary">
+                            {{ address.city }}, {{ address.state }} {{ address.postalCode }}
+                        </div>
+                        <div class="text-secondary">{{ address.country }}</div>
+                        <div *ngIf="address.additionalInfo" class="text-secondary text-md mt-2">
+                            <span class="font-semibold">{{ 'address.additionalInfo' | transloco }}:</span>
+                            {{ address.additionalInfo }}
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div card-footer class="flex items-center justify-end gap-2">
+                        <app-button
+                            *ngIf="!address.primary"
+                            [variant]="'text'"
+                            [color]="'primary'"
+                            [icon]="'star_outline'"
+                            (click)="setPrimaryAddress(address)"
+                            [tooltip]="'address.actions.setPrimary' | transloco"
+                        >
+                            {{ 'address.actions.setPrimary' | transloco }}
+                        </app-button>
+                        <app-button
+                            [variant]="'text'"
+                            [color]="'primary'"
+                            [icon]="'edit'"
+                            (click)="openEditAddressForm(address)"
+                            [tooltip]="'address.actions.edit' | transloco"
+                        >
+                            {{ 'address.actions.edit' | transloco }}
+                        </app-button>
+                        <app-button
+                            [variant]="'text'"
+                            [color]="'warn'"
+                            [icon]="'delete'"
+                            (click)="deleteAddress(address)"
+                            [tooltip]="'address.actions.delete' | transloco"
+                        >
+                            {{ 'address.actions.delete' | transloco }}
+                        </app-button>
+                    </div>
+                </app-card>
+            </div>
+        </div>
+    </ng-container>
+</div>

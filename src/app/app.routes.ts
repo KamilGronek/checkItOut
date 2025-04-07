@@ -102,6 +102,11 @@ export const appRoutes: Route[] = [
                 loadChildren: () =>
                     import('app/feature/collaborations/components/collaborations.routes'),
             },
+            {
+                path: 'user',
+                loadChildren: () =>
+                    import('app/feature/users/components/users.routes'),
+            },
         ],
     },
 ];

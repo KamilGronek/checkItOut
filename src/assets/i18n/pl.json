@@ -266,6 +266,80 @@
                 "hide_forever": "Nie pokazuj więcej"
             }
         },
+        "preferences": {
+            "title": "Preferencje Użytkownika",
+            "subtitle": "Dostosuj swoje doświadczenie, zarządzając preferencjami",
+            "notifications": {
+                "title": "Powiadomienia",
+                "email": {
+                    "title": "Powiadomienia E-mail",
+                    "description": "Otrzymuj aktualizacje i ważne informacje przez e-mail"
+                },
+                "push": {
+                    "title": "Powiadomienia Push",
+                    "description": "Otrzymuj powiadomienia w czasie rzeczywistym bezpośrednio w przeglądarce lub na urządzeniu mobilnym"
+                },
+                "sms": {
+                    "title": "Powiadomienia SMS",
+                    "description": "Otrzymuj alerty SMS dla krytycznych aktualizacji"
+                }
+            },
+            "display": {
+                "title": "Ustawienia Wyświetlania",
+                "darkMode": {
+                    "title": "Tryb Ciemny",
+                    "description": "Przełącz na ciemniejszy motyw, aby zmniejszyć zmęczenie oczu w warunkach słabego oświetlenia"
+                },
+                "language": {
+                    "title": "Język",
+                    "description": "Wybierz preferowany język interfejsu aplikacji"
+                }
+            },
+            "communication": {
+                "title": "Preferencje Komunikacyjne",
+                "frequency": {
+                    "title": "Częstotliwość Komunikacji",
+                    "description": "Jak często chcesz otrzymywać od nas aktualizacje?",
+                    "daily": "Codziennie",
+                    "weekly": "Co tydzień",
+                    "monthly": "Co miesiąc"
+                },
+                "marketing": {
+                    "title": "Komunikacja Marketingowa",
+                    "description": "Otrzymuj oferty, promocje i aktualizacje o nowych funkcjach"
+                }
+            },
+            "security": {
+                "title": "Ustawienia Bezpieczeństwa",
+                "twoFactor": {
+                    "title": "Uwierzytelnianie Dwuskładnikowe",
+                    "description": "Dodaj dodatkową warstwę zabezpieczeń do swojego konta, wymagając kodu weryfikacyjnego"
+                }
+            },
+            "actions": {
+                "save": "Zapisz Zmiany",
+                "cancel": "Anuluj Zmiany"
+            }
+        },
+        "security": {
+            "changePassword": "Zmień hasło",
+            "passwordChangeLimit": "Możesz zmienić hasło raz na 24 godziny.",
+            "currentPassword": "Obecne hasło",
+            "newPassword": "Nowe hasło",
+            "newPasswordConfirm": "Potwierdź hasło",
+            "passwordRequirements": "Hasło musi mieć co najmniej 8 znaków i zawierać wielkie litery, małe litery, cyfry i znaki specjalne.",
+            "password_mismatch": "Hasła nie pasują do siebie",
+            "securityPreferences": "Preferencje bezpieczeństwa",
+            "preferencesDescription": "Zarządzaj swoimi preferencjami i ustawieniami bezpieczeństwa",
+            "enable2FA": "Włącz uwierzytelnianie dwuskładnikowe",
+            "2FADescription": "Dodaj dodatkową warstwę bezpieczeństwa do swojego konta dzięki uwierzytelnianiu dwuskładnikowemu",
+            "askPasswordChangeSixMonths": "Proś o zmianę hasła co 6 miesięcy",
+            "passwordChangeDescription": "Będziemy przypominać o okresowej aktualizacji hasła dla lepszego bezpieczeństwa",
+            "actions": {
+                "save": "Zapisz",
+                "cancel": "Anuluj"
+            }
+        },
         "collaborations": {
             "all": {
                 "title": "Współprace do podjęcia",
@@ -296,14 +370,14 @@
                     "title": "Usuń pozycję",
                     "message": "Czy jesteś pewien że chcesz usunąć pozycje?"
                 }
-            }, 
+            },
             "cities": {
                 "Warszawa": "Warszawa",
                 "Kraków": "Kraków",
                 "Wrocław": "Wrocław",
                 "Gdańsk": "Gdańsk"
             },
-                "compensationType":{
+            "compensationType":{
                 "cash": "Gotówka",
                 "barter": "Barter (Prezent)"
             },
@@ -323,8 +397,8 @@
                 "Studio tatuażu": "Studio tatuażu",
                 "Klub muzyczny":  "Klub muzyczny",
                 "Sklep z biżuterią": "Sklep z biżuterią"
-            }, 
-                "months": {
+            },
+            "months": {
                 "january": "January",
                 "february": "February",
                 "march": "March",
@@ -380,6 +454,93 @@
                 "select_date_range": "Wybierz zakres daty",
                 "background_picture": "Wgraj zdjęcie"
             }
+        }
+    },
+    "address": {
+        "title": "Zarządzaj Adresami",
+        "description": "Dodawaj i zarządzaj swoimi adresami, aby usprawnić swoje doświadczenie",
+        "noAddresses": "Brak adresów",
+        "noAddressesDescription": "Nie dodałeś jeszcze żadnych adresów. Dodaj swój pierwszy adres, aby rozpocząć.",
+        "yourAddresses": "Twoje Adresy",
+        "primaryBadge": "Główny",
+        "additionalInfo": "Dodatkowe Informacje",
+        "types": {
+            "MAIN": "Główny",
+            "SECONDARY": "Dodatkowy",
+            "BILLING": "Rozliczeniowy",
+            "SHIPPING": "Wysyłkowy",
+            "TEMPORARY": "Tymczasowy"
+        },
+        "form": {
+            "street": "Ulica i numer",
+            "streetPlaceholder": "ul. Przykładowa 123",
+            "city": "Miasto",
+            "cityPlaceholder": "Miasto",
+            "state": "Województwo",
+            "statePlaceholder": "Województwo",
+            "postalCode": "Kod Pocztowy",
+            "postalCodePlaceholder": "00-000",
+            "country": "Kraj",
+            "countryPlaceholder": "Kraj",
+            "additionalInfo": "Dodatkowe Informacje",
+            "additionalInfoPlaceholder": "Numer mieszkania, instrukcje dostawy, itp.",
+            "addressType": "Typ Adresu",
+            "primaryAddress": "Ustaw jako Adres Główny",
+            "primaryAddressDescription": "Ten adres będzie używany jako domyślny"
+        },
+        "actions": {
+            "addAddress": "Dodaj Adres",
+            "editAddress": "Edytuj Adres",
+            "cancel": "Anuluj",
+            "create": "Utwórz",
+            "update": "Aktualizuj",
+            "delete": "Usuń",
+            "edit": "Edytuj",
+            "setPrimary": "Ustaw jako Główny"
+        },
+        "messages": {
+            "loadError": "Nie udało się załadować adresów",
+            "createSuccess": "Adres został pomyślnie utworzony",
+            "createError": "Nie udało się utworzyć adresu",
+            "updateSuccess": "Adres został pomyślnie zaktualizowany",
+            "updateError": "Nie udało się zaktualizować adresu",
+            "deleteSuccess": "Adres został pomyślnie usunięty",
+            "deleteError": "Nie udało się usunąć adresu",
+            "primarySuccess": "Główny adres został zaktualizowany",
+            "primaryError": "Nie udało się ustawić głównego adresu"
+        },
+        "confirm": {
+            "deleteTitle": "Usuń adres",
+            "deleteMessage": "Czy na pewno chcesz usunąć ten adres? Ta akcja nie może być cofnięta."
+        }
+    },
+    "settings": {
+        "title": "Ustawienia",
+        "description": "Zarządzaj ustawieniami i preferencjami konta",
+        "panels": {
+            "account": {
+                "title": "Konto",
+                "description": "Zarządzaj swoim profilem publicznym i prywatnymi informacjami"
+            },
+            "security": {
+                "title": "Bezpieczeństwo",
+                "description": "Zarządzaj hasłem i preferencjami weryfikacji dwuetapowej"
+            },
+            "addresses": {
+                "title": "Adresy",
+                "description": "Zarządzaj adresami do wysyłki, rozliczeń i innymi"
+            },
+            "plan-billing": {
+                "title": "Plan i Płatności",
+                "description": "Zarządzaj planem subskrypcji, metodami płatności i informacjami rozliczeniowymi"
+            },
+            "preferences": {
+                "title": "Preferencje",
+                "description": "Zarządzaj preferencjami komunikacji i powiadomień"
+            }
+        },
+        "placeholders": {
+            "coming_soon": "Ta funkcja będzie dostępna wkrótce"
         }
     }
 }

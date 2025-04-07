@@ -2,10 +2,15 @@ import {HttpClient} from '@angular/common/http';
 import {inject, Injectable} from '@angular/core';
 import {User} from 'app/feature/users/services/user.types';
 import {map, Observable, ReplaySubject, tap} from 'rxjs';
+import {AuthService} from "app/core/services/authentication/auth.service";
+import {environment} from "environments/environment";
 
 @Injectable({providedIn: 'root'})
 export class UserService {
+    private apiUrl: string = environment.apiUrl;
+
     private _httpClient = inject(HttpClient);
+    // private _authService = inject(AuthService);
     private _user: ReplaySubject<User> = new ReplaySubject<User>(1);
 
     // -----------------------------------------------------------------------------------------------------
@@ -53,4 +58,11 @@ export class UserService {
             })
         );
     }
+
+    // getCurrentUser() {
+    //     let user = this._authService.getDecodedToken();
+    //     return this._httpClient.get(
+    //         this.apiUrl + `/user/user/${user.sub}`
+    //     );
+    // }
 }

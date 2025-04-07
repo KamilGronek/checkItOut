@@ -1,0 +1,22 @@
+// Address card hover effect
+:host ::ng-deep app-card {
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+}
+
+// Primary badge styling
+.primary-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: var(--fuse-primary);
+  color: white;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+  font-weight: 500;
+}

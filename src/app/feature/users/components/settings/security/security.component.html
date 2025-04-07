@@ -1,0 +1,106 @@
+<div class="w-full max-w-3xl">
+  <!-- Form -->
+  <form [formGroup]="securityForm">
+    <!-- Section -->
+    <div class="w-full">
+      <div class="text-xl">{{ 'user.security.changePassword' | transloco }}</div>
+      <div class="text-secondary">
+        {{ 'user.security.passwordChangeLimit' | transloco }}
+      </div>
+    </div>
+    <div class="mt-8 flex flex-col w-full gap-6 sm:grid-cols-4">
+      <!-- Current password -->
+      <app-input
+        type="password"
+        [control]="securityForm.controls.currentPassword"
+        placeholder="{{ 'user.security.currentPassword' | transloco }}"
+        >{{ 'user.security.currentPassword' | transloco }}
+      </app-input>
+
+      <app-input
+        type="password"
+        [control]="securityForm.controls.newPassword"
+        placeholder="{{ 'user.security.newPassword' | transloco }}"
+        hint="{{ 'user.security.passwordRequirements' | transloco }}"
+        >{{ 'user.security.newPassword' | transloco }}
+      </app-input>
+
+      <div>
+        <app-input
+          type="password"
+          [control]="securityForm.controls.confirmNewPassword"
+          placeholder="{{ 'user.security.newPasswordConfirm' | transloco }}"
+          >{{ 'user.security.newPasswordConfirm' | transloco }}
+        </app-input>
+
+        <div *ngIf="securityForm.hasError('passwordMismatch')" class="text-red-500 text-sm -mt-4">
+          {{ 'user.security.password_mismatch' | transloco }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Divider -->
+    <div class="my-10 border-t"></div>
+
+    <!-- Section -->
+    <div class="w-full">
+      <div class="text-xl">{{ 'user.security.securityPreferences' | transloco }}</div>
+      <div class="text-secondary">
+        {{ 'user.security.preferencesDescription' | transloco }}
+      </div>
+    </div>
+    <div class="mt-8 grid w-full gap-6 sm:grid-cols-4">
+      <!-- 2-step auth -->
+      <div class="flex items-center justify-between sm:col-span-4">
+        <div class="flex-auto cursor-pointer" (click)="twoStepToggle.toggle()">
+          <div class="font-medium leading-6">
+            {{ 'user.security.enable2FA' | transloco }}
+          </div>
+          <div class="text-secondary text-md">
+            {{ 'user.security.2FADescription' | transloco }}
+          </div>
+        </div>
+        <mat-slide-toggle
+          class="ml-4"
+          [color]="'primary'"
+          [formControlName]="'twoStep'"
+          #twoStepToggle
+        >
+        </mat-slide-toggle>
+      </div>
+      <!-- Ask to change password -->
+      <div class="flex items-center justify-between sm:col-span-4">
+        <div class="flex-auto cursor-pointer" (click)="askPasswordChangeToggle.toggle()">
+          <div class="font-medium leading-6">
+            {{ 'user.security.askPasswordChangeSixMonths' | transloco }}
+          </div>
+          <div class="text-secondary text-md">
+            {{ 'user.security.passwordChangeDescription' | transloco }}
+          </div>
+        </div>
+        <mat-slide-toggle
+          class="ml-4"
+          [color]="'primary'"
+          [formControlName]="'askPasswordChange'"
+          #askPasswordChangeToggle
+        >
+        </mat-slide-toggle>
+      </div>
+    </div>
+
+    <!-- Divider -->
+    <div class="my-10 border-t"></div>
+
+    <!-- Actions -->
+    <div class="flex items-center justify-end gap-4">
+      <app-button
+        [color]="'primary'"
+        (click)="saveSettings()"
+        [loading]="formSubmitting"
+        [variant]="'flat'"
+      >
+        {{ 'user.security.actions.save' | transloco }}
+      </app-button>
+    </div>
+  </form>
+</div>

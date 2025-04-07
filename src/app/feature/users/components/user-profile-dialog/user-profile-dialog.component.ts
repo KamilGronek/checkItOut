@@ -13,7 +13,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatIconModule} from '@angular/material/icon';
 import {MatMenuModule} from '@angular/material/menu';
-import {Router} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import {UserService} from 'app/feature/users/services/user.service';
 import {User} from 'app/feature/users/services/user.types';
 import {Subject, takeUntil} from 'rxjs';
@@ -33,6 +33,7 @@ import {AdvertisementPopUpService} from 'app/core/services/advertisement-pop-up/
         MatIconModule,
         NgClass,
         MatDividerModule,
+        RouterLink,
     ],
 })
 export class UserProfileDialogComponent implements OnInit, OnDestroy {

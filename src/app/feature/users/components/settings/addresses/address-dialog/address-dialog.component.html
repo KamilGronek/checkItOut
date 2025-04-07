@@ -1,0 +1,98 @@
+<h2 class="mb-4 text-xl">
+    {{ (formOperation === 'create' ? 'address.actions.addAddress' : 'address.actions.editAddress') | transloco }}
+</h2>
+<mat-dialog-content class="mat-typography">
+    <form [formGroup]="addressForm" class="flex flex-col gap-6">
+        <!-- Street -->
+        <app-input
+            type="text"
+            [control]="addressForm.controls.street"
+            [placeholder]="'address.form.streetPlaceholder' | transloco"
+        >{{ 'address.form.street' | transloco }}
+        </app-input>
+
+        <!-- City, State, Postal Code Row -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            <app-input
+                type="text"
+                [control]="addressForm.controls.city"
+                [placeholder]="'address.form.cityPlaceholder' | transloco"
+            >{{ 'address.form.city' | transloco }}
+            </app-input>
+
+            <app-input
+                type="text"
+                [control]="addressForm.controls.state"
+                [placeholder]="'address.form.statePlaceholder' | transloco"
+            >{{ 'address.form.state' | transloco }}
+            </app-input>
+
+            <app-input
+                type="text"
+                [control]="addressForm.controls.postalCode"
+                [placeholder]="'address.form.postalCodePlaceholder' | transloco"
+            >{{ 'address.form.postalCode' | transloco }}
+            </app-input>
+        </div>
+
+        <!-- Country -->
+        <app-input
+            type="text"
+            [control]="addressForm.controls.country"
+            [placeholder]="'address.form.countryPlaceholder' | transloco"
+        >{{ 'address.form.country' | transloco }}
+        </app-input>
+
+        <!-- Additional Info -->
+        <app-input
+            type="textarea"
+            [control]="addressForm.controls.additionalInfo"
+            [placeholder]="'address.form.additionalInfoPlaceholder' | transloco"
+            [rows]="3"
+        >{{ 'address.form.additionalInfo' | transloco }}
+        </app-input>
+
+        <!-- Address Type -->
+        <app-select
+            [label]="'address.form.addressType' | transloco"
+            [options]="[
+                { label: 'address.types.MAIN' | transloco, value: 'MAIN' },
+                { label: 'address.types.SECONDARY' | transloco, value: 'SECONDARY' },
+                { label: 'address.types.BILLING' | transloco, value: 'BILLING' },
+                { label: 'address.types.SHIPPING' | transloco, value: 'SHIPPING' },
+                { label: 'address.types.TEMPORARY' | transloco, value: 'TEMPORARY' },
+            ]"
+            [control]="addressForm.controls.addressType"
+        ></app-select>
+
+        <!-- Primary Address Toggle -->
+        <div class="flex items-center justify-between">
+            <div class="flex flex-col">
+                <div class="font-medium leading-6">{{ 'address.form.primaryAddress' | transloco }}</div>
+                <div class="text-secondary text-sm">{{ 'address.form.primaryAddressDescription' | transloco }}</div>
+            </div>
+            <mat-slide-toggle
+                [color]="'primary'"
+                [formControlName]="'primary'"
+            ></mat-slide-toggle>
+        </div>
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="flex items-center gap-2">
+    <app-button
+        [variant]="'text'"
+        (click)="cancel()"
+    >
+        {{ 'address.actions.cancel' | transloco }}
+    </app-button>
+    <app-button
+        [variant]="'flat'"
+        [color]="'primary'"
+        [loading]="isLoading"
+        [disabled]="addressForm.invalid"
+        (click)="submitForm()"
+    >
+        {{ (formOperation === 'create' ? 'address.actions.create' : 'address.actions.update') | transloco }}
+    </app-button>
+</mat-dialog-actions>

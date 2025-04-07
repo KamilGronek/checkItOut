@@ -266,6 +266,80 @@
                 "hide_forever": "Do not show again"
             }
         },
+        "preferences": {
+            "title": "User Preferences",
+            "subtitle": "Customize your app experience by managing your preferences",
+            "notifications": {
+                "title": "Notifications",
+                "email": {
+                    "title": "Email Notifications",
+                    "description": "Receive updates and important information via email"
+                },
+                "push": {
+                    "title": "Push Notifications",
+                    "description": "Get real-time alerts directly to your browser or mobile device"
+                },
+                "sms": {
+                    "title": "SMS Notifications",
+                    "description": "Receive text message alerts for critical updates"
+                }
+            },
+            "display": {
+                "title": "Display Settings",
+                "darkMode": {
+                    "title": "Dark Mode",
+                    "description": "Switch to a darker theme to reduce eye strain in low-light environments"
+                },
+                "language": {
+                    "title": "Language",
+                    "description": "Choose your preferred language for the application interface"
+                }
+            },
+            "communication": {
+                "title": "Communication Preferences",
+                "frequency": {
+                    "title": "Communication Frequency",
+                    "description": "How often would you like to receive updates from us?",
+                    "daily": "Daily",
+                    "weekly": "Weekly",
+                    "monthly": "Monthly"
+                },
+                "marketing": {
+                    "title": "Marketing Communications",
+                    "description": "Receive offers, promotions and updates about new features"
+                }
+            },
+            "security": {
+                "title": "Security Settings",
+                "twoFactor": {
+                    "title": "Two-Factor Authentication",
+                    "description": "Add an extra layer of security to your account by requiring a verification code"
+                }
+            },
+            "actions": {
+                "save": "Save Changes",
+                "cancel": "Cancel Changes"
+            }
+        },
+        "security": {
+            "changePassword": "Change Password",
+            "passwordChangeLimit": "You can change your password once every 24 hours.",
+            "currentPassword": "Current Password",
+            "newPassword": "New Password",
+            "newPasswordConfirm": "Confirm Password",
+            "passwordRequirements": "Password must be at least 8 characters and include uppercase, lowercase, number, and special character.",
+            "password_mismatch": "Passwords do not match",
+            "securityPreferences": "Security Preferences",
+            "preferencesDescription": "Manage your security preferences and settings",
+            "enable2FA": "Enable Two-Factor Authentication",
+            "2FADescription": "Add an extra layer of security to your account with two-factor authentication",
+            "askPasswordChangeSixMonths": "Ask to change password every 6 months",
+            "passwordChangeDescription": "We'll remind you to update your password periodically for better security",
+            "actions": {
+                "save": "Save",
+                "cancel": "Cancel"
+            }
+        },
         "collaborations": {
             "all": {
                 "title": "Available Collaborations",
@@ -380,6 +454,93 @@
                 "select_date_range": "Select Date Range",
                 "background_picture": "Upload photo"
             }
+        }
+    },
+    "address": {
+        "title": "Manage Your Addresses",
+        "description": "Add and manage your addresses to streamline your experience",
+        "noAddresses": "No addresses found",
+        "noAddressesDescription": "You haven't added any addresses yet. Add your first address to get started.",
+        "yourAddresses": "Your Addresses",
+        "primaryBadge": "Primary",
+        "additionalInfo": "Additional Info",
+        "types": {
+            "MAIN": "Main",
+            "SECONDARY": "Secondary",
+            "BILLING": "Billing",
+            "SHIPPING": "Shipping",
+            "TEMPORARY": "Temporary"
+        },
+        "form": {
+            "street": "Street Address",
+            "streetPlaceholder": "123 Main St",
+            "city": "City",
+            "cityPlaceholder": "City",
+            "state": "State/Province",
+            "statePlaceholder": "State",
+            "postalCode": "Postal Code",
+            "postalCodePlaceholder": "00-000",
+            "country": "Country",
+            "countryPlaceholder": "Country",
+            "additionalInfo": "Additional Information",
+            "additionalInfoPlaceholder": "Apartment number, delivery instructions, etc.",
+            "addressType": "Address Type",
+            "primaryAddress": "Set as Primary Address",
+            "primaryAddressDescription": "This will be used as your default address"
+        },
+        "actions": {
+            "addAddress": "Add Address",
+            "editAddress": "Edit Address",
+            "cancel": "Cancel",
+            "create": "Create",
+            "update": "Update",
+            "delete": "Delete",
+            "edit": "Edit",
+            "setPrimary": "Set as Primary"
+        },
+        "messages": {
+            "loadError": "Failed to load addresses",
+            "createSuccess": "Address created successfully",
+            "createError": "Failed to create address",
+            "updateSuccess": "Address updated successfully",
+            "updateError": "Failed to update address",
+            "deleteSuccess": "Address deleted successfully",
+            "deleteError": "Failed to delete address",
+            "primarySuccess": "Primary address updated",
+            "primaryError": "Failed to set primary address"
+        },
+        "confirm": {
+            "deleteTitle": "Delete address",
+            "deleteMessage": "Are you sure you want to delete this address? This action cannot be undone."
+        }
+    },
+    "settings": {
+        "title": "Settings",
+        "description": "Manage your account settings and preferences",
+        "panels": {
+            "account": {
+                "title": "Account",
+                "description": "Manage your public profile and private information"
+            },
+            "security": {
+                "title": "Security",
+                "description": "Manage your password and 2-step verification preferences"
+            },
+            "addresses": {
+                "title": "Addresses",
+                "description": "Manage your addresses for shipping, billing, and more"
+            },
+            "plan-billing": {
+                "title": "Plan & Billing",
+                "description": "Manage your subscription plan, payment method and billing information"
+            },
+            "preferences": {
+                "title": "Preferences",
+                "description": "Manage your communication and notification preferences"
+            }
+        },
+        "placeholders": {
+            "coming_soon": "This feature is coming soon"
         }
     }
 }
