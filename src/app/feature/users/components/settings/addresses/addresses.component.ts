@@ -33,6 +33,8 @@ import { AsyncPipe, NgClass, NgFor, NgIf } from '@angular/common';
 import { SnackbarService } from 'app/core/services/custom-snackbar/custom-snackbar.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
+import { UserService } from 'app/feature/users/services/user.service';
+import { User } from 'app/feature/users/services/user.types';
 
 @Component({
   selector: 'app-addresses',
@@ -57,13 +59,14 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class AddressesComponent implements OnInit, OnDestroy {
   addresses$: Observable<Address[]>;
+  currentUser: User;
   addressTypes: { label: string; value: AddressType }[] = [];
-  currentUser: MockUser = { id: 1, name: 'Mock User' };
   isLoading$ = new BehaviorSubject<boolean>(false);
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
 
   constructor(
+    private _userService: UserService,
     private _addressesService: UserAddressesService,
     private _fuseConfirmation: FuseConfirmationService,
     private _snackbarService: SnackbarService,
@@ -74,7 +77,7 @@ export class AddressesComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.addresses$ = this._addressesService.addresses$;
-
+    this.currentUser = this._userService.getCurrentUser();
     // Initial load of addresses
     this.loadAddresses();
 
@@ -104,10 +107,12 @@ export class AddressesComponent implements OnInit, OnDestroy {
       )
       .subscribe({
         error: error => {
-          console.error('Error loading addresses:', error);
-          this._snackbarService.showFailure(
-            this._translocoService.translate('address.messages.loadError')
-          );
+          if (error.statusText !== 'OK') {
+            console.error('Error loading addresses:', error);
+            this._snackbarService.showFailure(
+              this._translocoService.translate('address.messages.loadError')
+            );
+          }
         }
       });
   }
@@ -144,7 +149,6 @@ export class AddressesComponent implements OnInit, OnDestroy {
    */
   openCreateAddressForm(): void {
     const dialogRef = this._matDialog.open(AddressDialogComponent, {
-      width: '600px',
       disableClose: true,
       data: {
         operation: 'create',
@@ -185,7 +189,6 @@ export class AddressesComponent implements OnInit, OnDestroy {
    */
   openEditAddressForm(address: Address): void {
     const dialogRef = this._matDialog.open(AddressDialogComponent, {
-      width: '600px',
       disableClose: true,
       data: {
         operation: 'update',

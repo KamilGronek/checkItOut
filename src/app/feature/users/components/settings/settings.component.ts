@@ -44,7 +44,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
   drawerMode: 'over' | 'side' = 'side';
   drawerOpened: boolean = true;
   panels: any[] = [];
-  selectedPanel: string = 'preferences';
+  selectedPanel: string = 'account';
   private _unsubscribeAll: Subject<any> = new Subject<any>();
 
   /**
@@ -71,7 +71,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
         icon: 'heroicons_outline:user-circle',
         title: this._translocoService.translate('settings.panels.account.title'),
         description: this._translocoService.translate('settings.panels.account.description'),
-        disabled: true
+        disabled: false
       },
       {
         id: 'security',

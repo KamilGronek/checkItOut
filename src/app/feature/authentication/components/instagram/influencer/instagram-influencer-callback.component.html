@@ -1,82 +1,82 @@
-<div class="flex items-center justify-end h-full w-full" *ngIf="emailRequired()">
-    <div class="max-w-80">
-        <!-- Logo -->
-        <div class="w-12">
-            <img src="assets/images/logo/logo.svg"/>
-        </div>
-
-        <!-- Title -->
-        <div
-            class="mt-8 text-4xl font-extrabold tracking-tight leading-tight"
-        >
-            {{ 'auth.sign_up.influencer.finish_registration' | transloco }}
-        </div>
-        <div class="mt-0.5 font-medium">
-            {{ 'auth.sign_up.influencer.fill_credentials_description' | transloco }}
-        </div>
-
-        <form
-            [formGroup]="credentialsForm"
-            (ngSubmit)="handleEmailAndPasswordSubmission()"
-            class="mt-8 flex flex-col gap-3"
-        >
-            <app-input
-                type="email"
-                id="email"
-                placeholder="{{ 'auth.sign_up.influencer.email_placeholder' | transloco }}"
-                [control]="credentialsForm.controls.email"
-
-            >{{ 'auth.sign_up.influencer.email' | transloco }}</app-input>
-
-            <app-input
-                type="password"
-                [control]="credentialsForm.controls.password"
-                placeholder="{{ 'auth.sign_up.business.step3.password_placeholder' | transloco }}"
-                hint="{{ 'auth.sign_up.business.step3.password_hint' | transloco }}"
-            >{{ 'auth.sign_up.business.step3.password' | transloco }}</app-input>
-            <div>
-                <app-input
-                    type="password"
-                    [control]="credentialsForm.controls.confirmPassword"
-                    placeholder="{{ 'auth.sign_up.business.step3.confirm_password_placeholder' | transloco }}"
-                >{{ 'auth.sign_up.business.step3.confirm_password' | transloco }}</app-input>
-
-                <div *ngIf="credentialsForm.hasError('passwordMismatch')" class="text-red-500 text-sm">
-                    {{ 'auth.sign_up.business.step3.password_mismatch' | transloco }}
-                </div>
-            </div>
-
-            <app-input type="checkbox" [control]="credentialsForm.controls.termsOfService">
-                <span class="flex flex-wrap gap-1">
-                    {{ 'auth.sign_up.business.step3.agree_to' | transloco }} <app-link routerLink="/tos">{{ 'auth.sign_up.business.step3.terms_and_conditions' | transloco }}</app-link>
-                </span>
-            </app-input>
-
-            <app-button
-                customClass="mt-2"
-                variant="flat"
-                color="primary"
-                icon="feather:edit"
-                (click)="handleEmailAndPasswordSubmission()"
-                [disabled]="credentialsForm.disabled || credentialsForm.invalid"
-                [loading]="credentialsForm.disabled">
-                {{ 'auth.sign_up.influencer.register' | transloco }}
-            </app-button>
-
-            <!-- Form footer -->
-            <div class="mt-8 text-md font-medium text-secondary flex gap-1">
-                <span>{{ 'auth.sign_up.influencer.return_to' | transloco }} </span>
-                <app-link
-                    [routerLink]="['/auth/sign-in']"
-                >{{ 'auth.sign_in.title' | transloco }}
-                </app-link>
-            </div>
-        </form>
+<div class="flex items-center justify-center lg:justify-end h-full w-full" *ngIf="emailRequired()">
+  <div class="max-w-80">
+    <!-- Logo -->
+    <div class="w-12">
+      <img src="assets/images/logo/logo.svg" />
     </div>
+
+    <!-- Title -->
+    <div class="mt-8 text-4xl font-extrabold tracking-tight leading-tight">
+      {{ 'auth.sign_up.influencer.finish_registration' | transloco }}
+    </div>
+    <div class="mt-0.5 font-medium">
+      {{ 'auth.sign_up.influencer.fill_credentials_description' | transloco }}
+    </div>
+
+    <form
+      [formGroup]="credentialsForm"
+      (ngSubmit)="handleEmailAndPasswordSubmission()"
+      class="mt-8 flex flex-col gap-3"
+    >
+      <app-input
+        type="email"
+        id="email"
+        placeholder="{{ 'auth.sign_up.influencer.email_placeholder' | transloco }}"
+        [control]="credentialsForm.controls.email"
+        >{{ 'auth.sign_up.influencer.email' | transloco }}</app-input
+      >
+
+      <app-input
+        type="password"
+        [control]="credentialsForm.controls.password"
+        placeholder="{{ 'auth.sign_up.business.step3.password_placeholder' | transloco }}"
+        hint="{{ 'auth.sign_up.business.step3.password_hint' | transloco }}"
+        >{{ 'auth.sign_up.business.step3.password' | transloco }}</app-input
+      >
+      <div>
+        <app-input
+          type="password"
+          [control]="credentialsForm.controls.confirmPassword"
+          placeholder="{{ 'auth.sign_up.business.step3.confirm_password_placeholder' | transloco }}"
+          >{{ 'auth.sign_up.business.step3.confirm_password' | transloco }}</app-input
+        >
+
+        <div *ngIf="credentialsForm.hasError('passwordMismatch')" class="text-red-500 text-sm">
+          {{ 'auth.sign_up.business.step3.password_mismatch' | transloco }}
+        </div>
+      </div>
+
+      <app-input type="checkbox" [control]="credentialsForm.controls.termsOfService">
+        <span class="flex flex-wrap gap-1">
+          {{ 'auth.sign_up.business.step3.agree_to' | transloco }}
+          <app-link routerLink="/tos">{{
+            'auth.sign_up.business.step3.terms_and_conditions' | transloco
+          }}</app-link>
+        </span>
+      </app-input>
+
+      <app-button
+        customClass="mt-2"
+        variant="flat"
+        color="primary"
+        icon="feather:edit"
+        (click)="handleEmailAndPasswordSubmission()"
+        [disabled]="credentialsForm.disabled || credentialsForm.invalid"
+        [loading]="credentialsForm.disabled"
+      >
+        {{ 'auth.sign_up.influencer.register' | transloco }}
+      </app-button>
+
+      <!-- Form footer -->
+      <div class="mt-8 text-md font-medium text-secondary flex gap-1">
+        <span>{{ 'auth.sign_up.influencer.return_to' | transloco }} </span>
+        <app-link [routerLink]="['/auth/sign-in']"
+          >{{ 'auth.sign_in.title' | transloco }}
+        </app-link>
+      </div>
+    </form>
+  </div>
 </div>
-<div
-    class="w-full h-full flex items-center justify-center"
-    *ngIf="!emailRequired()"
->
-    <mat-spinner></mat-spinner>
+<div class="w-full h-full flex items-center justify-center" *ngIf="!emailRequired()">
+  <mat-spinner></mat-spinner>
 </div>

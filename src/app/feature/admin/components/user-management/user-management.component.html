@@ -1,0 +1,230 @@
+<div class="flex flex-col flex-auto min-w-0 p-6 sm:p-10">
+  <!-- Header -->
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between w-full mb-8">
+    <div>
+      <div class="text-4xl font-extrabold tracking-tight leading-none">User Management</div>
+      <div class="ml-0.5 text-secondary">Manage users, view statuses, and handle accounts</div>
+    </div>
+
+    <div class="mt-4 sm:mt-0">
+      <app-button
+        [variant]="'flat'"
+        [color]="'primary'"
+        [icon]="'heroicons_outline:plus'"
+        routerLink="/admin/users/create"
+      >
+        Add User
+      </app-button>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <app-card class="mb-8">
+    <div card-header class="pb-0">
+      <h2 class="text-xl font-medium">Filters</h2>
+    </div>
+
+    <form [formGroup]="filterForm" class="py-4">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <app-input
+          [control]="filterForm.get('search')"
+          [placeholder]="'Search by name or email'"
+          [prefixIcon]="'heroicons_outline:search'"
+        >
+          Search
+        </app-input>
+
+        <app-select
+          [label]="'User Type'"
+          [control]="filterForm.get('userType')"
+          [options]="userTypeOptions"
+        >
+        </app-select>
+
+        <app-select
+          [label]="'Status'"
+          [control]="filterForm.get('status')"
+          [options]="statusOptions"
+        >
+        </app-select>
+      </div>
+
+      <div class="flex justify-end mt-6">
+        <app-button [variant]="'text'" (click)="resetFilters()"> Reset Filters </app-button>
+      </div>
+    </form>
+  </app-card>
+
+  <!-- Results -->
+  <app-card>
+    <div class="overflow-x-auto">
+      <!-- Loading spinner -->
+      <div *ngIf="isLoading" class="flex justify-center items-center p-8">
+        <mat-spinner [diameter]="40"></mat-spinner>
+      </div>
+
+      <!-- Table -->
+      <table *ngIf="!isLoading" mat-table [dataSource]="dataSource" matSort class="w-full">
+        <!-- ID Column -->
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+          <td mat-cell *matCellDef="let user">{{ user.id }}</td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+          <td mat-cell *matCellDef="let user">
+            <div class="flex items-center">
+              <div class="w-10 h-10 rounded-full overflow-hidden bg-gray-100 mr-4">
+                <img
+                  *ngIf="user.profilePicture"
+                  [src]="user.profilePicture"
+                  class="w-full h-full object-cover"
+                />
+                <mat-icon *ngIf="!user.profilePicture" class="w-full h-full p-1 text-gray-400"
+                  >person</mat-icon
+                >
+              </div>
+              <div>
+                <div class="font-medium">{{ user.firstName }} {{ user.lastName }}</div>
+                <div *ngIf="user.name" class="text-sm text-secondary">{{ user.name }}</div>
+              </div>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Email Column -->
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+          <td mat-cell *matCellDef="let user">{{ user.email }}</td>
+        </ng-container>
+
+        <!-- User Type Column -->
+        <ng-container matColumnDef="userType">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Type</th>
+          <td mat-cell *matCellDef="let user">
+            <div
+              class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+              [ngClass]="getUserTypeBadgeClass(user.userType)"
+            >
+              {{ user.userType }}
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Status Column -->
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+          <td mat-cell *matCellDef="let user">
+            <div
+              class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+              [ngClass]="getStatusBadgeClass(user.accountStatus)"
+            >
+              {{ user.accountStatus }}
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let user">
+            <button mat-icon-button [matMenuTriggerFor]="userMenu" aria-label="User actions">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #userMenu="matMenu">
+              <button mat-menu-item (click)="viewUserDetails(user)">
+                <mat-icon>visibility</mat-icon>
+                <span>View Details</span>
+              </button>
+              <button mat-menu-item (click)="editUser(user)">
+                <mat-icon>edit</mat-icon>
+                <span>Edit</span>
+              </button>
+              <mat-divider></mat-divider>
+
+              <!-- Status Change Options -->
+              <button
+                *ngIf="user.accountStatus !== 'ACTIVE'"
+                mat-menu-item
+                (click)="changeStatus(user, 'ACTIVE')"
+              >
+                <mat-icon class="text-green-600">check_circle</mat-icon>
+                <span>Set Active</span>
+              </button>
+
+              <button
+                *ngIf="user.accountStatus !== 'IN_VALIDATION'"
+                mat-menu-item
+                (click)="changeStatus(user, 'IN_VALIDATION')"
+              >
+                <mat-icon class="text-amber-600">pending</mat-icon>
+                <span>Set In Validation</span>
+              </button>
+
+              <button
+                *ngIf="user.accountStatus !== 'INACTIVE'"
+                mat-menu-item
+                (click)="changeStatus(user, 'INACTIVE')"
+              >
+                <mat-icon class="text-red-600">cancel</mat-icon>
+                <span>Set Inactive</span>
+              </button>
+
+              <mat-divider></mat-divider>
+
+              <button mat-menu-item (click)="deleteUser(user)">
+                <mat-icon class="text-red-600">delete</mat-icon>
+                <span>Delete</span>
+              </button>
+            </mat-menu>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr
+          mat-row
+          *matRowDef="let row; columns: displayedColumns"
+          class="cursor-pointer hover:bg-gray-100"
+        ></tr>
+
+        <!-- No Results Row -->
+        <tr *matNoDataRow>
+          <td [attr.colspan]="displayedColumns.length" class="text-center py-8">
+            <div
+              *ngIf="
+                filterForm.get('search').value ||
+                filterForm.get('userType').value ||
+                filterForm.get('status').value
+              "
+            >
+              No users found matching your filters
+            </div>
+            <div
+              *ngIf="
+                !filterForm.get('search').value &&
+                !filterForm.get('userType').value &&
+                !filterForm.get('status').value
+              "
+            >
+              No users found
+            </div>
+          </td>
+        </tr>
+      </table>
+
+      <!-- Pagination -->
+      <mat-paginator
+        *ngIf="!isLoading && totalItems > 0"
+        [length]="totalItems"
+        [pageSize]="pageSize"
+        [pageSizeOptions]="pageSizeOptions"
+        [pageIndex]="pageIndex"
+        (page)="handlePageEvent($event)"
+        aria-label="Select page"
+      >
+      </mat-paginator>
+    </div>
+  </app-card>
+</div>

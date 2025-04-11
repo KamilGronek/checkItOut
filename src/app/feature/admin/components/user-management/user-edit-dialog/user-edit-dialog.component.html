@@ -1,0 +1,87 @@
+<h2 class="text-xl font-semibold mb-6">Edit User</h2>
+
+<mat-dialog-content class="mat-typography">
+  <form [formGroup]="userForm" class="flex flex-col gap-6">
+    <!-- Personal Information Section -->
+    <div>
+      <h3 class="text-lg font-medium mb-4">Personal Information</h3>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <app-input [control]="userForm.get('firstName')" placeholder="Enter first name">
+          First Name
+        </app-input>
+
+        <app-input [control]="userForm.get('lastName')" placeholder="Enter last name">
+          Last Name
+        </app-input>
+      </div>
+
+      <div class="mt-4">
+        <app-input [control]="userForm.get('email')" placeholder="Enter email address">
+          Email
+        </app-input>
+      </div>
+
+      <div class="mt-4">
+        <app-input
+          [control]="userForm.get('phoneNumber')"
+          placeholder="Enter phone number (optional)"
+        >
+          Phone Number
+        </app-input>
+      </div>
+
+      <div class="mt-4" *ngIf="data.user.userType === 'COMPANY'">
+        <app-input [control]="userForm.get('name')" placeholder="Enter business name (optional)">
+          Business Name
+        </app-input>
+      </div>
+    </div>
+
+    <!-- Account Settings Section -->
+    <div class="mt-4">
+      <h3 class="text-lg font-medium mb-4">Account Settings</h3>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <app-select
+          [label]="'User Type'"
+          [control]="userForm.get('userType')"
+          [options]="userTypeOptions"
+        >
+        </app-select>
+
+        <app-select
+          [label]="'Account Status'"
+          [control]="userForm.get('accountStatus')"
+          [options]="statusOptions"
+        >
+        </app-select>
+      </div>
+
+      <div class="mt-4">
+        <app-input
+          type="textarea"
+          [control]="userForm.get('noteFromAdmin')"
+          [rows]="3"
+          placeholder="Add notes for this user (only visible to admins)"
+        >
+          Admin Notes
+        </app-input>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <app-button [variant]="'text'" (click)="cancel()"> Cancel </app-button>
+
+  <app-button
+    [variant]="'flat'"
+    [color]="'primary'"
+    [loading]="isLoading"
+    [disabled]="userForm.invalid"
+    (click)="submitForm()"
+  >
+    Save Changes
+  </app-button>
+</mat-dialog-actions>

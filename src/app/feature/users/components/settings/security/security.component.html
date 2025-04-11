@@ -3,7 +3,12 @@
   <form [formGroup]="securityForm">
     <!-- Section -->
     <div class="w-full">
-      <div class="text-xl">{{ 'user.security.changePassword' | transloco }}</div>
+      <div class="flex items-center justify-between">
+        <div class="text-xl">{{ 'user.security.changePassword' | transloco }}</div>
+        <app-link customClass="text-md" [routerLink]="['/auth/forgot-password']"
+          >{{ 'auth.sign_in.forgot_password' | transloco }}
+        </app-link>
+      </div>
       <div class="text-secondary">
         {{ 'user.security.passwordChangeLimit' | transloco }}
       </div>

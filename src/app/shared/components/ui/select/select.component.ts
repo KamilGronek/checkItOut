@@ -35,41 +35,35 @@ import { Option } from 'app/shared/components/ui/select/select.types';
  * </app-select>
  */
 @Component({
-    selector: 'app-select',
-    standalone: true,
-    imports: [
-        MatFormFieldModule,
-        MatSelectModule,
-        MatOptionModule,
-        ReactiveFormsModule,
-        NgFor,
-    ],
-    templateUrl: './select.component.html',
+  selector: 'app-select',
+  standalone: true,
+  imports: [MatFormFieldModule, MatSelectModule, MatOptionModule, ReactiveFormsModule, NgFor],
+  templateUrl: './select.component.html'
 })
 export class SelectComponent {
-    /**
-     * The label displayed above the select input.
-     * @default 'Select an option'
-     */
-    @Input() label: string = 'Select an option';
+  /**
+   * The label displayed above the select input.
+   * @default 'Select an option'
+   */
+  @Input() label: string = null;
 
-    /**
-     * Array of options to display in the dropdown.
-     * Each option should have a label (displayed text) and value (form value).
-     * @default []
-     */
-    @Input() options: Option[] = [];
+  /**
+   * Array of options to display in the dropdown.
+   * Each option should have a label (displayed text) and value (form value).
+   * @default []
+   */
+  @Input() options: Option[] = [];
 
-    /**
-     * Form control for the select input.
-     * This allows the select to integrate with Angular Reactive Forms.
-     * @required
-     */
-    @Input() control!: FormControl;
+  /**
+   * Form control for the select input.
+   * This allows the select to integrate with Angular Reactive Forms.
+   * @required
+   */
+  @Input() control!: FormControl;
 
-    /**
-     * Event emitted when the selection changes.
-     * Emits the selected value (not the entire option object).
-     */
-    @Output() selectionChange = new EventEmitter<any>();
+  /**
+   * Event emitted when the selection changes.
+   * Emits the selected value (not the entire option object).
+   */
+  @Output() selectionChange = new EventEmitter<any>();
 }

@@ -1,546 +1,570 @@
 {
-    "layout": {
-        "nav": {
-            "horizontal": {
-                "fullscreen": "Pełny ekran"
-            },
-            "vertical": {
-                "user-profile": "Twoje dane",
-                "collaborations-list": "Współprace do podjęcia",
-                "companies-list": "Firmy",
-                "collaborations-companies": "Aktywne współprace",
-                "collaborations-companies-admin": "Aktywne współprace (Widok Influencera)",
-                "collaborations-influencers": "Aktywne współprace",
-                "influencers-new": "Zgłoszenia Nowych Influeserów"
-            }
+  "layout": {
+    "nav": {
+      "horizontal": {
+        "fullscreen": "Pełny ekran"
+      },
+      "vertical": {
+        "user-profile": "Twoje dane",
+        "collaborations-list": "Współprace do podjęcia",
+        "companies-list": "Firmy",
+        "collaborations-companies": "Aktywne współprace",
+        "collaborations-companies-admin": "Aktywne współprace (Widok Influencera)",
+        "collaborations-influencers": "Aktywne współprace",
+        "influencers-new": "Zgłoszenia Nowych Influeserów"
+      }
+    }
+  },
+  "languages": {
+    "en": "Angielski",
+    "pl": "Polski"
+  },
+  "auth": {
+    "sign_in": {
+      "title": "Zaloguj się",
+      "no_account": "Nie masz konta?",
+      "sign_up_link": "Zarejestruj się",
+      "email": "Email",
+      "email_placeholder": "Adres email",
+      "password": "Hasło",
+      "password_placeholder": "Hasło",
+      "remember_me": "Zapamiętaj mnie",
+      "forgot_password": "Zapomniałeś hasła?",
+      "submit": "Zaloguj się",
+      "or_continue_with": "Lub kontynuuj przez",
+      "instagram": "Instagram"
+    },
+    "sign_up": {
+      "title": "Zarejestruj się",
+      "already_have_account": "Masz już konto?",
+      "sign_up_influencer": "Influencer",
+      "sign_up_business": "Firma",
+      "sign_up_using": "Zarejestruj się przez",
+      "sign_up_using_form": "Zarejestruj się używając formularza",
+      "or_sign_up_as": "lub zarejestruj się jako",
+      "connect_instagram_after": "Będziesz mógł połączyć swoje konto Instagram po rejestracji.",
+      "business": {
+        "step1": {
+          "label": "Informacje o firmie",
+          "title": "Powiedz nam o swojej firmie",
+          "description": "Te informacje będą użyte do skonfigurowania profilu firmy",
+          "business_logo": "Logo firmy",
+          "business_name": "Nazwa firmy",
+          "business_name_placeholder": "Wprowadź nazwę firmy",
+          "business_category": "Kategoria firmy",
+          "business_description": "Opis firmy",
+          "business_description_placeholder": "Krótko opisz swoją firmę (maksymalnie 500 znaków)",
+          "email": "Adres email",
+          "phone": "Numer telefonu",
+          "country": "Kraj",
+          "country_placeholder": "Wprowadź swój kraj",
+          "business_address": "Adres firmy",
+          "street_address": "Ulica",
+          "city": "Miasto",
+          "city_placeholder": "Miasto",
+          "state": "Województwo",
+          "state_placeholder": "Województwo",
+          "postal_code": "Kod pocztowy"
+        },
+        "step2": {
+          "label": "Informacje o przedstawicielu",
+          "title": "Dane przedstawiciela",
+          "description": "Podaj informacje o głównej osobie kontaktowej",
+          "first_name": "Imię",
+          "first_name_placeholder": "Imię",
+          "last_name": "Nazwisko",
+          "last_name_placeholder": "Nazwisko",
+          "email": "Adres email",
+          "phone": "Numer telefonu"
+        },
+        "step3": {
+          "label": "Utwórz konto",
+          "title": "Ustaw dane logowania",
+          "description": "Utwórz dane logowania dla swojego konta firmowego",
+          "email": "Adres email",
+          "password": "Hasło",
+          "password_placeholder": "Utwórz silne hasło",
+          "password_hint": "Użyj co najmniej 8 znaków z dużymi literami, małymi literami, liczbami i symbolami",
+          "confirm_password": "Potwierdź hasło",
+          "confirm_password_placeholder": "Potwierdź swoje hasło",
+          "password_mismatch": "Hasła nie pasują do siebie",
+          "agree_to": "Zgadzam się z",
+          "terms_and_conditions": "Warunkami korzystania z usługi"
+        },
+        "continue": "Kontynuuj",
+        "back": "Wstecz",
+        "create_account": "Utwórz konto"
+      },
+      "influencer": {
+        "finish_registration": "Dokończ rejestrację",
+        "fill_credentials_description": "Wypełnij formularz swoimi danymi. Dodatkowo oprócz logowania przez Instagram, będziesz mógł logować się za pomocą adresu email i hasła.",
+        "email": "Email",
+        "email_placeholder": "Wprowadź swój email",
+        "register": "Zarejestruj się",
+        "return_to": "Wróć do"
+      }
+    },
+    "sign_out": {
+      "title": "Zostałeś wylogowany!",
+      "redirecting": "Przekierowanie za {{count}} sekundę",
+      "redirecting_plural": "Przekierowanie za {{count}} sekund",
+      "being_redirected": "Trwa przekierowanie!",
+      "go_to": "Przejdź do",
+      "sign_in_link": "Logowania"
+    },
+    "reset_password": {
+      "title": "Zresetuj hasło",
+      "subtitle": "Utwórz nowe hasło dla swojego konta",
+      "password": "Hasło",
+      "password_confirm": "Hasło (Potwierdź)",
+      "password_required": "Hasło jest wymagane",
+      "password_confirm_required": "Potwierdzenie hasła jest wymagane",
+      "passwords_must_match": "Hasła muszą być takie same",
+      "submit": "Zresetuj hasło",
+      "return_to": "Wróć do",
+      "sign_in_link": "Logowania"
+    },
+    "forgot_password": {
+      "title": "Zapomniałeś hasła?",
+      "subtitle": "Wypełnij formularz, aby zresetować hasło",
+      "email": "Adres email",
+      "email_required": "Adres email jest wymagany",
+      "email_invalid": "Wprowadź poprawny adres email",
+      "submit": "Wyślij link resetujący",
+      "return_to": "Wróć do",
+      "sign_in_link": "Logowania"
+    },
+    "confirmation_required": {
+      "title": "Wymagane potwierdzenie",
+      "message": "Email z instrukcjami potwierdzenia został wysłany na Twój adres email. Postępuj zgodnie z instrukcjami, aby potwierdzić adres email i aktywować konto.",
+      "return_to": "Wróć do",
+      "sign_in_link": "Logowania"
+    }
+  },
+  "admin": {
+    "new_influencers": {
+      "title": "Lista influencerów",
+      "filter": {
+        "column": "Kolumna:",
+        "value": "Wartość:"
+      },
+      "table_headers": {
+        "id": "Id",
+        "date": "Data",
+        "first_name": "Imię",
+        "last_name": "Nazwisko",
+        "email": "E-mail",
+        "city": "Miasto",
+        "address": "Adres",
+        "instagram": "Instagram",
+        "followers": "Ilość followersów",
+        "account_type": "Rodzaj konta",
+        "status": "Status"
+      },
+      "pagination": {
+        "select_page": "Wybierz stronę",
+        "page_number": "Strona nr: {{ pageIndex }}"
+      },
+      "edit_form": {
+        "city": "Miasto",
+        "followers": "Ilość followersów",
+        "account_type": "Rodzaj konta",
+        "status": "Status",
+        "note": "Notatka:",
+        "note_placeholder": "Wyślij notatkę...",
+        "submit": "Zatwierdź"
+      },
+      "messages": {
+        "fill_note": "Przed wysłaniem, proszę uzupełnić notatkę",
+        "fill_account_type": "Przed wysłaniem, proszę info o rodzaju konta",
+        "confirmation": "Influencer zatwierdzony"
+      },
+      "no_products": "Brak produktów!"
+    },
+    "companies": {
+      "title": "Lista firm",
+      "filter": {
+        "column": "Kolumna:",
+        "value": "Wartość:"
+      },
+      "table_headers": {
+        "id": "ID",
+        "name": "Nazwa",
+        "first_name": "Imię",
+        "last_name": "Nazwisko",
+        "email": "E-mail",
+        "city": "Miasto",
+        "address": "Adres",
+        "instagram": "Instagram",
+        "followers": "Ilość followersów",
+        "phone_number": "Numer telefonu",
+        "service_type": "Typ usługi"
+      },
+      "edit_form": {
+        "no_image": "Brak zdjęcia",
+        "add_image": "Dodaj zdjęcie",
+        "delete_image": "Usuń zdjęcie",
+        "company_name": "Nazwa firmy",
+        "email": "E-mail",
+        "address": "Dokładny adres",
+        "first_name": "Imię",
+        "city": "Miasto",
+        "service_type": "Typ usługi",
+        "last_name": "Nazwisko",
+        "phone_number": "Numer telefonu",
+        "note": "Notatka:",
+        "note_placeholder": "Wyślij notatkę...",
+        "submit": "Zatwierdź",
+        "delete": "Usuń"
+      },
+      "messages": {
+        "fill_note": "Przed wysłaniem, proszę uzupełnić notatkę",
+        "fill_followers": "Przed wysłaniem, proszę info o followersach",
+        "fill_account_type": "Przed wysłaniem, proszę info o rodzaju konta",
+        "confirmation": "Influencer zatwierdzony"
+      },
+      "pagination": {
+        "select_page": "Wybierz stronę",
+        "page_number": "Strona nr: {{ pageIndex }}"
+      },
+      "no_products": "Brak produktów!"
+    }
+  },
+  "user": {
+    "profile": {
+      "title": "Profil Użytkownika",
+      "description": "Zarządzaj i aktualizuj swoje dane osobowe",
+      "personal_info": "Informacje Osobiste",
+      "personal_info_desc": "Zaktualizuj swoje dane osobowe",
+      "first_name": "Imię",
+      "last_name": "Nazwisko",
+      "email": "Adres Email",
+      "email_hint": "Wprowadź swój główny adres email",
+      "phone": "Numer Telefonu",
+      "phone_hint": "Wprowadź swój numer kontaktowy",
+      "business_name": "Nazwa Firmy",
+      "business_name_hint": "Wprowadź nazwę swojej firmy lub działalności",
+      "influencer_name": "Pseudonim",
+      "influencer_name_hint": "Wprowadź swój pseudonim",
+      "profile_picture": "Zdjęcie Profilowe",
+      "change_picture": "Zmień Zdjęcie Profilowe",
+      "admin_note": "Notatka Administratora",
+      "cancel": "Anuluj",
+      "save": "Zapisz Zmiany",
+      "account_status": {
+        "ACTIVE": "Aktywny",
+        "IN_VALIDATION": "W Weryfikacji",
+        "INACTIVE": "Nieaktywny"
+      },
+      "registration": {
+        "greeting": "Witaj!",
+        "complete_registration": "Dokończ rejestrację, żeby zacząć zarabiać",
+        "account_status": "Status konta",
+        "status_active": "Aktywny",
+        "status_inactive": "Nieaktywny",
+        "status_validated": "Walidowany",
+        "instagram_nickname": "Nick na Instagramie",
+        "first_name": "Imię",
+        "last_name": "Nazwisko",
+        "email": "Mail",
+        "city": "Miasto",
+        "account_type": "Typ konta",
+        "new_message": "Nowa wiadomość",
+        "admin_message_placeholder": "Wiadomość od admina",
+        "warning_fill_data": "Przed wysłaniem, proszę uzupełnić dane",
+        "error_message": "Wystąpił błąd",
+        "registration_confirmed": "Jesteś zarejestrowany!",
+        "submit_button": "Wyślij",
+        "reset_button": "Reset"
+      },
+      "advertisement": {
+        "why_join": "Dlaczego warto?",
+        "join_us": "Dołącz do nas!",
+        "earning_potential": "Tyle jesteś w stanie zarabiać <span class='font-bold'>pieniędzy</span> w skali miesiąca. Rejestracja na naszej platformie daje dużo możliwości. Dzięki swojemu zaangażowaniu możesz zarabiać coraz więcej.",
+        "earning_note": "*Kwota jest uzależniona od ilości przyjętych zleceń",
+        "day": "Dzień",
+        "daily_growth": "O tyle mniej więcej zwiększa się <span class='font-bold'>dzienna liczba</span> naszych klientów. A my, aby sprostać ich potrzebom, stale poszukujemy nowych zleceniobiorców, którzy pomogą nam się rozwinąć.",
+        "completed_orders": "Tyle do tej pory zrealizowaliśmy <span class='font-bold'>zleceń</span> dzięki naszym influencerom. Mamy nadzieję, że przyczynisz się i Ty do powiększania tej liczby.",
+        "register_now": "Zarejestruj się teraz i zacznij zarabiać!",
+        "join_button": "Dołącz do nas",
+        "hide_forever": "Nie pokazuj więcej"
+      }
+    },
+    "preferences": {
+      "title": "Preferencje Użytkownika",
+      "subtitle": "Dostosuj swoje doświadczenie, zarządzając preferencjami",
+      "notifications": {
+        "title": "Powiadomienia",
+        "email": {
+          "title": "Powiadomienia E-mail",
+          "description": "Otrzymuj aktualizacje i ważne informacje przez e-mail"
+        },
+        "push": {
+          "title": "Powiadomienia Push",
+          "description": "Otrzymuj powiadomienia w czasie rzeczywistym bezpośrednio w przeglądarce lub na urządzeniu mobilnym"
+        },
+        "sms": {
+          "title": "Powiadomienia SMS",
+          "description": "Otrzymuj alerty SMS dla krytycznych aktualizacji"
         }
-    },
-    "languages": {
-        "en": "Angielski",
-        "pl": "Polski"
-    },
-    "auth": {
-        "sign_in": {
-            "title": "Zaloguj się",
-            "no_account": "Nie masz konta?",
-            "sign_up_link": "Zarejestruj się",
-            "email": "Email",
-            "email_placeholder": "Adres email",
-            "password": "Hasło",
-            "password_placeholder": "Hasło",
-            "remember_me": "Zapamiętaj mnie",
-            "forgot_password": "Zapomniałeś hasła?",
-            "submit": "Zaloguj się",
-            "or_continue_with": "Lub kontynuuj przez",
-            "instagram": "Instagram"
+      },
+      "display": {
+        "title": "Ustawienia Wyświetlania",
+        "darkMode": {
+          "title": "Tryb Ciemny",
+          "description": "Przełącz na ciemniejszy motyw, aby zmniejszyć zmęczenie oczu w warunkach słabego oświetlenia"
         },
-        "sign_up": {
-            "title": "Zarejestruj się",
-            "already_have_account": "Masz już konto?",
-            "sign_up_influencer": "Influencer",
-            "sign_up_business": "Firma",
-            "sign_up_using": "Zarejestruj się przez",
-            "sign_up_using_form": "Zarejestruj się używając formularza",
-            "or_sign_up_as": "lub zarejestruj się jako",
-            "connect_instagram_after": "Będziesz mógł połączyć swoje konto Instagram po rejestracji.",
-            "business": {
-                "step1": {
-                    "label": "Informacje o firmie",
-                    "title": "Powiedz nam o swojej firmie",
-                    "description": "Te informacje będą użyte do skonfigurowania profilu firmy",
-                    "business_logo": "Logo firmy",
-                    "business_name": "Nazwa firmy",
-                    "business_name_placeholder": "Wprowadź nazwę firmy",
-                    "business_category": "Kategoria firmy",
-                    "business_description": "Opis firmy",
-                    "business_description_placeholder": "Krótko opisz swoją firmę (maksymalnie 500 znaków)",
-                    "email": "Adres email",
-                    "phone": "Numer telefonu",
-                    "country": "Kraj",
-                    "country_placeholder": "Wprowadź swój kraj",
-                    "business_address": "Adres firmy",
-                    "street_address": "Adres ulicy",
-                    "city": "Miasto",
-                    "city_placeholder": "Miasto",
-                    "state": "Stan/Województwo",
-                    "state_placeholder": "Stan",
-                    "postal_code": "Kod pocztowy"
-                },
-                "step2": {
-                    "label": "Informacje o przedstawicielu",
-                    "title": "Dane przedstawiciela",
-                    "description": "Podaj informacje o głównej osobie kontaktowej",
-                    "first_name": "Imię",
-                    "first_name_placeholder": "Imię",
-                    "last_name": "Nazwisko",
-                    "last_name_placeholder": "Nazwisko",
-                    "email": "Adres email",
-                    "phone": "Numer telefonu"
-                },
-                "step3": {
-                    "label": "Utwórz konto",
-                    "title": "Ustaw dane logowania",
-                    "description": "Utwórz dane logowania dla swojego konta firmowego",
-                    "email": "Adres email",
-                    "password": "Hasło",
-                    "password_placeholder": "Utwórz silne hasło",
-                    "password_hint": "Użyj co najmniej 8 znaków z dużymi literami, małymi literami, liczbami i symbolami",
-                    "confirm_password": "Potwierdź hasło",
-                    "confirm_password_placeholder": "Potwierdź swoje hasło",
-                    "password_mismatch": "Hasła nie pasują do siebie",
-                    "agree_to": "Zgadzam się z",
-                    "terms_and_conditions": "Warunkami korzystania z usługi"
-                },
-                "continue": "Kontynuuj",
-                "back": "Wstecz",
-                "create_account": "Utwórz konto"
-            },
-            "influencer": {
-                "finish_registration": "Dokończ rejestrację",
-                "fill_credentials_description": "Wypełnij formularz swoimi danymi. Dodatkowo oprócz logowania przez Instagram, będziesz mógł logować się za pomocą adresu email i hasła.",
-                "email": "Email",
-                "email_placeholder": "Wprowadź swój email",
-                "register": "Zarejestruj się",
-                "return_to": "Wróć do"
-            }
-        },
-        "sign_out": {
-            "title": "Zostałeś wylogowany!",
-            "redirecting": "Przekierowanie za {{count}} sekundę",
-            "redirecting_plural": "Przekierowanie za {{count}} sekund",
-            "being_redirected": "Trwa przekierowanie!",
-            "go_to": "Przejdź do",
-            "sign_in_link": "Logowania"
-        },
-        "reset_password": {
-            "title": "Zresetuj hasło",
-            "subtitle": "Utwórz nowe hasło dla swojego konta",
-            "password": "Hasło",
-            "password_confirm": "Hasło (Potwierdź)",
-            "password_required": "Hasło jest wymagane",
-            "password_confirm_required": "Potwierdzenie hasła jest wymagane",
-            "passwords_must_match": "Hasła muszą być takie same",
-            "submit": "Zresetuj hasło",
-            "return_to": "Wróć do",
-            "sign_in_link": "Logowania"
-        },
-        "forgot_password": {
-            "title": "Zapomniałeś hasła?",
-            "subtitle": "Wypełnij formularz, aby zresetować hasło",
-            "email": "Adres email",
-            "email_required": "Adres email jest wymagany",
-            "email_invalid": "Wprowadź poprawny adres email",
-            "submit": "Wyślij link resetujący",
-            "return_to": "Wróć do",
-            "sign_in_link": "Logowania"
-        },
-        "confirmation_required": {
-            "title": "Wymagane potwierdzenie",
-            "message": "Email z instrukcjami potwierdzenia został wysłany na Twój adres email. Postępuj zgodnie z instrukcjami, aby potwierdzić adres email i aktywować konto.",
-            "return_to": "Wróć do",
-            "sign_in_link": "Logowania"
+        "language": {
+          "title": "Język",
+          "description": "Wybierz preferowany język interfejsu aplikacji"
         }
-    },
-    "admin": {
-        "new_influencers": {
-            "title": "Lista influencerów",
-            "filter": {
-                "column": "Kolumna:",
-                "value": "Wartość:"
-            },
-            "table_headers": {
-                "id": "Id",
-                "date": "Data",
-                "first_name": "Imię",
-                "last_name": "Nazwisko",
-                "email": "E-mail",
-                "city": "Miasto",
-                "address": "Adres",
-                "instagram": "Instagram",
-                "followers": "Ilość followersów",
-                "account_type": "Rodzaj konta",
-                "status": "Status"
-            },
-            "pagination": {
-                "select_page": "Wybierz stronę",
-                "page_number": "Strona nr: {{ pageIndex }}"
-            },
-            "edit_form": {
-                "city": "Miasto",
-                "followers": "Ilość followersów",
-                "account_type": "Rodzaj konta",
-                "status": "Status",
-                "note": "Notatka:",
-                "note_placeholder": "Wyślij notatkę...",
-                "submit": "Zatwierdź"
-            },
-            "messages": {
-                "fill_note": "Przed wysłaniem, proszę uzupełnić notatkę",
-                "fill_account_type": "Przed wysłaniem, proszę info o rodzaju konta",
-                "confirmation": "Influencer zatwierdzony"
-            },
-            "no_products": "Brak produktów!"
+      },
+      "communication": {
+        "title": "Preferencje Komunikacyjne",
+        "frequency": {
+          "title": "Częstotliwość Komunikacji",
+          "description": "Jak często chcesz otrzymywać od nas aktualizacje?",
+          "daily": "Codziennie",
+          "weekly": "Co tydzień",
+          "monthly": "Co miesiąc"
         },
-        "companies": {
-            "title": "Lista firm",
-            "filter": {
-                "column": "Kolumna:",
-                "value": "Wartość:"
-            },
-            "table_headers": {
-                "id": "ID",
-                "name": "Nazwa",
-                "first_name": "Imię",
-                "last_name": "Nazwisko",
-                "email": "E-mail",
-                "city": "Miasto",
-                "address": "Adres",
-                "instagram": "Instagram",
-                "followers": "Ilość followersów",
-                "phone_number": "Numer telefonu",
-                "service_type": "Typ usługi"
-            },
-            "edit_form": {
-                "no_image": "Brak zdjęcia",
-                "add_image": "Dodaj zdjęcie",
-                "delete_image": "Usuń zdjęcie",
-                "company_name": "Nazwa firmy",
-                "email": "E-mail",
-                "address": "Dokładny adres",
-                "first_name": "Imię",
-                "city": "Miasto",
-                "service_type": "Typ usługi",
-                "last_name": "Nazwisko",
-                "phone_number": "Numer telefonu",
-                "note": "Notatka:",
-                "note_placeholder": "Wyślij notatkę...",
-                "submit": "Zatwierdź",
-                "delete": "Usuń"
-            },
-            "messages": {
-                "fill_note": "Przed wysłaniem, proszę uzupełnić notatkę",
-                "fill_followers": "Przed wysłaniem, proszę info o followersach",
-                "fill_account_type": "Przed wysłaniem, proszę info o rodzaju konta",
-                "confirmation": "Influencer zatwierdzony"
-            },
-            "pagination": {
-                "select_page": "Wybierz stronę",
-                "page_number": "Strona nr: {{ pageIndex }}"
-            },
-            "no_products": "Brak produktów!"
+        "marketing": {
+          "title": "Komunikacja Marketingowa",
+          "description": "Otrzymuj oferty, promocje i aktualizacje o nowych funkcjach"
         }
-    },
-    "user": {
-        "profile": {
-            "registration": {
-                "greeting": "Witaj!",
-                "complete_registration": "Dokończ rejestrację, żeby zacząć zarabiać",
-                "account_status": "Status konta",
-                "status_active": "Aktywny",
-                "status_inactive": "Nieaktywny",
-                "status_validated": "Walidowany",
-                "instagram_nickname": "Nick na Instagramie",
-                "first_name": "Imię",
-                "last_name": "Nazwisko",
-                "email": "Mail",
-                "city": "Miasto",
-                "account_type": "Typ konta",
-                "new_message": "Nowa wiadomość",
-                "admin_message_placeholder": "Wiadomość od admina",
-                "warning_fill_data": "Przed wysłaniem, proszę uzupełnić dane",
-                "error_message": "Wystąpił błąd",
-                "registration_confirmed": "Jesteś zarejestrowany!",
-                "submit_button": "Wyślij",
-                "reset_button": "Reset"
-            },
-            "advertisement": {
-                "why_join": "Dlaczego warto?",
-                "join_us": "Dołącz do nas!",
-                "earning_potential": "Tyle jesteś w stanie zarabiać <span class='font-bold'>pieniędzy</span> w skali miesiąca. Rejestracja na naszej platformie daje dużo możliwości. Dzięki swojemu zaangażowaniu możesz zarabiać coraz więcej.",
-                "earning_note": "*Kwota jest uzależniona od ilości przyjętych zleceń",
-                "day": "Dzień",
-                "daily_growth": "O tyle mniej więcej zwiększa się <span class='font-bold'>dzienna liczba</span> naszych klientów. A my, aby sprostać ich potrzebom, stale poszukujemy nowych zleceniobiorców, którzy pomogą nam się rozwinąć.",
-                "completed_orders": "Tyle do tej pory zrealizowaliśmy <span class='font-bold'>zleceń</span> dzięki naszym influencerom. Mamy nadzieję, że przyczynisz się i Ty do powiększania tej liczby.",
-                "register_now": "Zarejestruj się teraz i zacznij zarabiać!",
-                "join_button": "Dołącz do nas",
-                "hide_forever": "Nie pokazuj więcej"
-            }
-        },
-        "preferences": {
-            "title": "Preferencje Użytkownika",
-            "subtitle": "Dostosuj swoje doświadczenie, zarządzając preferencjami",
-            "notifications": {
-                "title": "Powiadomienia",
-                "email": {
-                    "title": "Powiadomienia E-mail",
-                    "description": "Otrzymuj aktualizacje i ważne informacje przez e-mail"
-                },
-                "push": {
-                    "title": "Powiadomienia Push",
-                    "description": "Otrzymuj powiadomienia w czasie rzeczywistym bezpośrednio w przeglądarce lub na urządzeniu mobilnym"
-                },
-                "sms": {
-                    "title": "Powiadomienia SMS",
-                    "description": "Otrzymuj alerty SMS dla krytycznych aktualizacji"
-                }
-            },
-            "display": {
-                "title": "Ustawienia Wyświetlania",
-                "darkMode": {
-                    "title": "Tryb Ciemny",
-                    "description": "Przełącz na ciemniejszy motyw, aby zmniejszyć zmęczenie oczu w warunkach słabego oświetlenia"
-                },
-                "language": {
-                    "title": "Język",
-                    "description": "Wybierz preferowany język interfejsu aplikacji"
-                }
-            },
-            "communication": {
-                "title": "Preferencje Komunikacyjne",
-                "frequency": {
-                    "title": "Częstotliwość Komunikacji",
-                    "description": "Jak często chcesz otrzymywać od nas aktualizacje?",
-                    "daily": "Codziennie",
-                    "weekly": "Co tydzień",
-                    "monthly": "Co miesiąc"
-                },
-                "marketing": {
-                    "title": "Komunikacja Marketingowa",
-                    "description": "Otrzymuj oferty, promocje i aktualizacje o nowych funkcjach"
-                }
-            },
-            "security": {
-                "title": "Ustawienia Bezpieczeństwa",
-                "twoFactor": {
-                    "title": "Uwierzytelnianie Dwuskładnikowe",
-                    "description": "Dodaj dodatkową warstwę zabezpieczeń do swojego konta, wymagając kodu weryfikacyjnego"
-                }
-            },
-            "actions": {
-                "save": "Zapisz Zmiany",
-                "cancel": "Anuluj Zmiany"
-            }
-        },
-        "security": {
-            "changePassword": "Zmień hasło",
-            "passwordChangeLimit": "Możesz zmienić hasło raz na 24 godziny.",
-            "currentPassword": "Obecne hasło",
-            "newPassword": "Nowe hasło",
-            "newPasswordConfirm": "Potwierdź hasło",
-            "passwordRequirements": "Hasło musi mieć co najmniej 8 znaków i zawierać wielkie litery, małe litery, cyfry i znaki specjalne.",
-            "password_mismatch": "Hasła nie pasują do siebie",
-            "securityPreferences": "Preferencje bezpieczeństwa",
-            "preferencesDescription": "Zarządzaj swoimi preferencjami i ustawieniami bezpieczeństwa",
-            "enable2FA": "Włącz uwierzytelnianie dwuskładnikowe",
-            "2FADescription": "Dodaj dodatkową warstwę bezpieczeństwa do swojego konta dzięki uwierzytelnianiu dwuskładnikowemu",
-            "askPasswordChangeSixMonths": "Proś o zmianę hasła co 6 miesięcy",
-            "passwordChangeDescription": "Będziemy przypominać o okresowej aktualizacji hasła dla lepszego bezpieczeństwa",
-            "actions": {
-                "save": "Zapisz",
-                "cancel": "Anuluj"
-            }
-        },
-        "collaborations": {
-            "all": {
-                "title": "Współprace do podjęcia",
-                "filter": {
-                    "column": "Kolumna:",
-                    "value": "Wartość:"
-                },
-                "add_collaboration": "Dodaj współpracę",
-                "collaboration_card": {
-                    "details_button": "Szczegóły współpracy"
-                },
-                "add_new_collaboration": "Dodaj nową",
-                "pagination": {
-                    "select_page": "Wybierz stronę",
-                    "page_number": "Strona nr: {{ pageIndex }}"
-                }
-            },
-            "pop_up_notice":{
-                "edit" : {
-                    "title": "Edycja współpracy",
-                    "message": "Współpraca została pomyślnie edytowana"
-                },
-                "confirm" : {
-                    "title": "Dodałeś nową wspołpracę",
-                    "message": "Nowa współpraca jest widoczna na głównej stronie"
-                },
-                "remove" : {
-                    "title": "Usuń pozycję",
-                    "message": "Czy jesteś pewien że chcesz usunąć pozycje?"
-                }
-            },
-            "cities": {
-                "Warszawa": "Warszawa",
-                "Kraków": "Kraków",
-                "Wrocław": "Wrocław",
-                "Gdańsk": "Gdańsk"
-            },
-            "compensationType":{
-                "cash": "Gotówka",
-                "barter": "Barter (Prezent)"
-            },
-            "service-types": {
-                "Restauracja": "Restauracja",
-                "Kawiarnia": "Kawiarnia",
-                "Sklep odzieżowy": "Sklep odzieżowy",
-                "Studio urody": "Studio urody",
-                "Salon fryzjerski": "Salon fryzjerski",
-                "Siłownia i fitness": "Siłownia i fitness",
-                "Park rozrywki": "Park rozrywki",
-                "Hotel i spa": "Hotel i spa",
-                "Usługi cateringowe": "Usługi cateringowe",
-                "Sklep z kosmetykami": "Sklep z kosmetykami",
-                "Studio fotograficzne": "Studio fotograficzne",
-                "Agencja marketingowa": "Agencja marketingowa",
-                "Studio tatuażu": "Studio tatuażu",
-                "Klub muzyczny":  "Klub muzyczny",
-                "Sklep z biżuterią": "Sklep z biżuterią"
-            },
-            "months": {
-                "january": "January",
-                "february": "February",
-                "march": "March",
-                "april": "April",
-                "may": "May",
-                "june": "June",
-                "july": "July",
-                "august": "August",
-                "september": "September",
-                "october": "October",
-                "november": "November",
-                "december": "December"
-            },
-            "details": {
-                "description": "Opis",
-                "description_placeholder": "Dodaj opis współpracy...",
-                "name": "Szczegóły Współpracy",
-                "title_placeholder": "Podaj nazwę zlecenia",
-                "start_date": "Data rozpoczęcia",
-                "end_date": "Data zakończenia",
-                "date_not_set": "Nie ustawiono",
-                "clear_button": "Wyczyść",
-                "pick_button": "Wybierz",
-                "return_button": "Powrót",
-                "delete_button": "Usuń",
-                "cancel_button":"Anuluj",
-                "save_button": "Zapisz",
-                "edit_button": "Edytuj",
-                "requirements": "Wymagania",
-                "requirements_placeholder": "Wpisz wymagania dotyczące współpracy...",
-                "compensationType": "Wynagrodzenie",
-                "compensation_placeholder": "Wpisz szczegóły wynagrodzenia...",
-                "campaign_details": "Detale Kampanii",
-                "campaign_details_placeholder": "Opisz detale nowej kampanii...",
-                "company_details": "Detale Firmy",
-                "slider_configuration": "Konfiguracja Suwaka",
-                "result": "Wynik",
-                "city": "Miasto",
-                "company": "Firma",
-                "service_type": "Typ Serwisu",
-                "value": "Wartość",
-                "followers_count": "Liczba followersów",
-                "content_type": "Rodzaj kontentu",
-                "platform": "Platforma",
-                "min_value": "Minimalna Wartość",
-                "max_value": "Maksymalna Wartość",
-                "step_size": "Rozmiar Kroku",
-                "show_ticks": "Pokaż Podziałkę",
-                "show_thumb_label": "Pokaż Etykietę",
-                "disabled": "Wyłączone",
-                "tooltip" : "Niedostępna",
-                "anddWarning": "Przed wysłaniem, proszę uzupełnić wszystkie dane",
-                "select_date_range": "Wybierz zakres daty",
-                "background_picture": "Wgraj zdjęcie"
-            }
+      },
+      "security": {
+        "title": "Ustawienia Bezpieczeństwa",
+        "twoFactor": {
+          "title": "Uwierzytelnianie Dwuskładnikowe",
+          "description": "Dodaj dodatkową warstwę zabezpieczeń do swojego konta, wymagając kodu weryfikacyjnego"
         }
+      },
+      "actions": {
+        "save": "Zapisz Zmiany",
+        "cancel": "Anuluj Zmiany"
+      }
     },
-    "address": {
-        "title": "Zarządzaj Adresami",
-        "description": "Dodawaj i zarządzaj swoimi adresami, aby usprawnić swoje doświadczenie",
-        "noAddresses": "Brak adresów",
-        "noAddressesDescription": "Nie dodałeś jeszcze żadnych adresów. Dodaj swój pierwszy adres, aby rozpocząć.",
-        "yourAddresses": "Twoje Adresy",
-        "primaryBadge": "Główny",
-        "additionalInfo": "Dodatkowe Informacje",
-        "types": {
-            "MAIN": "Główny",
-            "SECONDARY": "Dodatkowy",
-            "BILLING": "Rozliczeniowy",
-            "SHIPPING": "Wysyłkowy",
-            "TEMPORARY": "Tymczasowy"
+    "security": {
+      "changePassword": "Zmień hasło",
+      "passwordChangeLimit": "Możesz zmienić hasło raz na 24 godziny.",
+      "currentPassword": "Obecne hasło",
+      "newPassword": "Nowe hasło",
+      "newPasswordConfirm": "Potwierdź hasło",
+      "passwordRequirements": "Hasło musi mieć co najmniej 8 znaków i zawierać wielkie litery, małe litery, cyfry i znaki specjalne.",
+      "password_mismatch": "Hasła nie pasują do siebie",
+      "securityPreferences": "Preferencje bezpieczeństwa",
+      "preferencesDescription": "Zarządzaj swoimi preferencjami i ustawieniami bezpieczeństwa",
+      "enable2FA": "Włącz uwierzytelnianie dwuskładnikowe",
+      "2FADescription": "Dodaj dodatkową warstwę bezpieczeństwa do swojego konta dzięki uwierzytelnianiu dwuskładnikowemu",
+      "askPasswordChangeSixMonths": "Proś o zmianę hasła co 6 miesięcy",
+      "passwordChangeDescription": "Będziemy przypominać o okresowej aktualizacji hasła dla lepszego bezpieczeństwa",
+      "actions": {
+        "save": "Zapisz",
+        "cancel": "Anuluj"
+      }
+    },
+    "collaborations": {
+      "all": {
+        "title": "Współprace do podjęcia",
+        "filter": {
+          "column": "Kolumna:",
+          "value": "Wartość:"
         },
-        "form": {
-            "street": "Ulica i numer",
-            "streetPlaceholder": "ul. Przykładowa 123",
-            "city": "Miasto",
-            "cityPlaceholder": "Miasto",
-            "state": "Województwo",
-            "statePlaceholder": "Województwo",
-            "postalCode": "Kod Pocztowy",
-            "postalCodePlaceholder": "00-000",
-            "country": "Kraj",
-            "countryPlaceholder": "Kraj",
-            "additionalInfo": "Dodatkowe Informacje",
-            "additionalInfoPlaceholder": "Numer mieszkania, instrukcje dostawy, itp.",
-            "addressType": "Typ Adresu",
-            "primaryAddress": "Ustaw jako Adres Główny",
-            "primaryAddressDescription": "Ten adres będzie używany jako domyślny"
+        "add_collaboration": "Dodaj współpracę",
+        "collaboration_card": {
+          "details_button": "Szczegóły współpracy"
         },
-        "actions": {
-            "addAddress": "Dodaj Adres",
-            "editAddress": "Edytuj Adres",
-            "cancel": "Anuluj",
-            "create": "Utwórz",
-            "update": "Aktualizuj",
-            "delete": "Usuń",
-            "edit": "Edytuj",
-            "setPrimary": "Ustaw jako Główny"
-        },
-        "messages": {
-            "loadError": "Nie udało się załadować adresów",
-            "createSuccess": "Adres został pomyślnie utworzony",
-            "createError": "Nie udało się utworzyć adresu",
-            "updateSuccess": "Adres został pomyślnie zaktualizowany",
-            "updateError": "Nie udało się zaktualizować adresu",
-            "deleteSuccess": "Adres został pomyślnie usunięty",
-            "deleteError": "Nie udało się usunąć adresu",
-            "primarySuccess": "Główny adres został zaktualizowany",
-            "primaryError": "Nie udało się ustawić głównego adresu"
+        "add_new_collaboration": "Dodaj nową",
+        "pagination": {
+          "select_page": "Wybierz stronę",
+          "page_number": "Strona nr: {{ pageIndex }}"
+        }
+      },
+      "pop_up_notice": {
+        "edit": {
+          "title": "Edycja współpracy",
+          "message": "Współpraca została pomyślnie edytowana"
         },
         "confirm": {
-            "deleteTitle": "Usuń adres",
-            "deleteMessage": "Czy na pewno chcesz usunąć ten adres? Ta akcja nie może być cofnięta."
-        }
-    },
-    "settings": {
-        "title": "Ustawienia",
-        "description": "Zarządzaj ustawieniami i preferencjami konta",
-        "panels": {
-            "account": {
-                "title": "Konto",
-                "description": "Zarządzaj swoim profilem publicznym i prywatnymi informacjami"
-            },
-            "security": {
-                "title": "Bezpieczeństwo",
-                "description": "Zarządzaj hasłem i preferencjami weryfikacji dwuetapowej"
-            },
-            "addresses": {
-                "title": "Adresy",
-                "description": "Zarządzaj adresami do wysyłki, rozliczeń i innymi"
-            },
-            "plan-billing": {
-                "title": "Plan i Płatności",
-                "description": "Zarządzaj planem subskrypcji, metodami płatności i informacjami rozliczeniowymi"
-            },
-            "preferences": {
-                "title": "Preferencje",
-                "description": "Zarządzaj preferencjami komunikacji i powiadomień"
-            }
+          "title": "Dodałeś nową wspołpracę",
+          "message": "Nowa współpraca jest widoczna na głównej stronie"
         },
-        "placeholders": {
-            "coming_soon": "Ta funkcja będzie dostępna wkrótce"
+        "remove": {
+          "title": "Usuń pozycję",
+          "message": "Czy jesteś pewien że chcesz usunąć pozycje?"
         }
+      },
+      "cities": {
+        "Warszawa": "Warszawa",
+        "Kraków": "Kraków",
+        "Wrocław": "Wrocław",
+        "Gdańsk": "Gdańsk"
+      },
+      "compensationType": {
+        "cash": "Gotówka",
+        "barter": "Barter (Prezent)"
+      },
+      "service-types": {
+        "Restauracja": "Restauracja",
+        "Kawiarnia": "Kawiarnia",
+        "Sklep odzieżowy": "Sklep odzieżowy",
+        "Studio urody": "Studio urody",
+        "Salon fryzjerski": "Salon fryzjerski",
+        "Siłownia i fitness": "Siłownia i fitness",
+        "Park rozrywki": "Park rozrywki",
+        "Hotel i spa": "Hotel i spa",
+        "Usługi cateringowe": "Usługi cateringowe",
+        "Sklep z kosmetykami": "Sklep z kosmetykami",
+        "Studio fotograficzne": "Studio fotograficzne",
+        "Agencja marketingowa": "Agencja marketingowa",
+        "Studio tatuażu": "Studio tatuażu",
+        "Klub muzyczny": "Klub muzyczny",
+        "Sklep z biżuterią": "Sklep z biżuterią"
+      },
+      "months": {
+        "january": "January",
+        "february": "February",
+        "march": "March",
+        "april": "April",
+        "may": "May",
+        "june": "June",
+        "july": "July",
+        "august": "August",
+        "september": "September",
+        "october": "October",
+        "november": "November",
+        "december": "December"
+      },
+      "details": {
+        "description": "Opis",
+        "description_placeholder": "Dodaj opis współpracy...",
+        "name": "Szczegóły Współpracy",
+        "title_placeholder": "Podaj nazwę zlecenia",
+        "start_date": "Data rozpoczęcia",
+        "end_date": "Data zakończenia",
+        "date_not_set": "Nie ustawiono",
+        "clear_button": "Wyczyść",
+        "pick_button": "Wybierz",
+        "return_button": "Powrót",
+        "delete_button": "Usuń",
+        "cancel_button": "Anuluj",
+        "save_button": "Zapisz",
+        "edit_button": "Edytuj",
+        "requirements": "Wymagania",
+        "requirements_placeholder": "Wpisz wymagania dotyczące współpracy...",
+        "compensationType": "Wynagrodzenie",
+        "compensation_placeholder": "Wpisz szczegóły wynagrodzenia...",
+        "campaign_details": "Detale Kampanii",
+        "campaign_details_placeholder": "Opisz detale nowej kampanii...",
+        "company_details": "Detale Firmy",
+        "slider_configuration": "Konfiguracja Suwaka",
+        "result": "Wynik",
+        "city": "Miasto",
+        "company": "Firma",
+        "service_type": "Typ Serwisu",
+        "value": "Wartość",
+        "followers_count": "Liczba followersów",
+        "content_type": "Rodzaj kontentu",
+        "platform": "Platforma",
+        "min_value": "Minimalna Wartość",
+        "max_value": "Maksymalna Wartość",
+        "step_size": "Rozmiar Kroku",
+        "show_ticks": "Pokaż Podziałkę",
+        "show_thumb_label": "Pokaż Etykietę",
+        "disabled": "Wyłączone",
+        "tooltip": "Niedostępna",
+        "anddWarning": "Przed wysłaniem, proszę uzupełnić wszystkie dane",
+        "select_date_range": "Wybierz zakres daty",
+        "background_picture": "Wgraj zdjęcie"
+      }
     }
+  },
+  "address": {
+    "title": "Zarządzaj Adresami",
+    "description": "Dodawaj i zarządzaj swoimi adresami, aby usprawnić swoje doświadczenie",
+    "noAddresses": "Brak adresów",
+    "noAddressesDescription": "Nie dodałeś jeszcze żadnych adresów. Dodaj swój pierwszy adres, aby rozpocząć.",
+    "yourAddresses": "Twoje Adresy",
+    "primaryBadge": "Główny",
+    "additionalInfo": "Dodatkowe Informacje",
+    "types": {
+      "MAIN": "Główny",
+      "SECONDARY": "Dodatkowy",
+      "BILLING": "Rozliczeniowy",
+      "SHIPPING": "Wysyłkowy",
+      "TEMPORARY": "Tymczasowy"
+    },
+    "form": {
+      "street": "Ulica i numer",
+      "streetPlaceholder": "ul. Przykładowa 123",
+      "city": "Miasto",
+      "cityPlaceholder": "Miasto",
+      "state": "Województwo",
+      "statePlaceholder": "Województwo",
+      "postalCode": "Kod Pocztowy",
+      "postalCodePlaceholder": "00-000",
+      "country": "Kraj",
+      "countryPlaceholder": "Kraj",
+      "additionalInfo": "Dodatkowe Informacje",
+      "additionalInfoPlaceholder": "Numer mieszkania, instrukcje dostawy, itp.",
+      "addressType": "Typ Adresu",
+      "primaryAddress": "Ustaw jako Adres Główny",
+      "primaryAddressDescription": "Ten adres będzie używany jako domyślny"
+    },
+    "actions": {
+      "addAddress": "Dodaj Adres",
+      "editAddress": "Edytuj Adres",
+      "cancel": "Anuluj",
+      "create": "Utwórz",
+      "update": "Aktualizuj",
+      "delete": "Usuń",
+      "edit": "Edytuj",
+      "setPrimary": "Ustaw jako Główny"
+    },
+    "messages": {
+      "loadError": "Nie udało się załadować adresów",
+      "createSuccess": "Adres został pomyślnie utworzony",
+      "createError": "Nie udało się utworzyć adresu",
+      "updateSuccess": "Adres został pomyślnie zaktualizowany",
+      "updateError": "Nie udało się zaktualizować adresu",
+      "deleteSuccess": "Adres został pomyślnie usunięty",
+      "deleteError": "Nie udało się usunąć adresu",
+      "primarySuccess": "Główny adres został zaktualizowany",
+      "primaryError": "Nie udało się ustawić głównego adresu"
+    },
+    "confirm": {
+      "deleteTitle": "Usuń adres",
+      "deleteMessage": "Czy na pewno chcesz usunąć ten adres? Ta akcja nie może być cofnięta."
+    }
+  },
+  "settings": {
+    "title": "Ustawienia",
+    "description": "Zarządzaj ustawieniami i preferencjami konta",
+    "panels": {
+      "account": {
+        "title": "Konto",
+        "description": "Zarządzaj swoim profilem publicznym i prywatnymi informacjami"
+      },
+      "security": {
+        "title": "Bezpieczeństwo",
+        "description": "Zarządzaj hasłem i preferencjami weryfikacji dwuetapowej"
+      },
+      "addresses": {
+        "title": "Adresy",
+        "description": "Zarządzaj adresami do wysyłki, rozliczeń i innymi"
+      },
+      "plan-billing": {
+        "title": "Plan i Płatności",
+        "description": "Zarządzaj planem subskrypcji, metodami płatności i informacjami rozliczeniowymi"
+      },
+      "preferences": {
+        "title": "Preferencje",
+        "description": "Zarządzaj preferencjami komunikacji i powiadomień"
+      }
+    },
+    "placeholders": {
+      "coming_soon": "Ta funkcja będzie dostępna wkrótce"
+    }
+  }
 }

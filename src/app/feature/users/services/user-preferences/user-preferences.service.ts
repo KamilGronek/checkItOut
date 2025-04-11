@@ -4,7 +4,7 @@ import { catchError, Observable, tap, throwError } from 'rxjs';
 import { environment } from 'environments/environment';
 import { UserPreference } from './user-preferences.types';
 import { TranslocoService } from '@ngneat/transloco';
-import { AuthService } from 'app/core/services/authentication/auth.service';
+import { UserService } from '../user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,7 @@ export class UserPreferencesService {
   constructor(
     private http: HttpClient,
     private translocoService: TranslocoService,
-    private authService: AuthService
+    private userService: UserService
   ) {}
 
   /**
@@ -114,7 +114,7 @@ export class UserPreferencesService {
    * Used when loading the app to set theme, language, etc.
    */
   applyUserPreferences(): void {
-    const user = this.authService.getCurrentUser();
+    const user = this.userService.getCurrentUser();
     if (!user) return;
 
     this.getCurrentUserPreference()

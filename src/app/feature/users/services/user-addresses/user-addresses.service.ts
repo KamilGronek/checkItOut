@@ -32,7 +32,7 @@ export class UserAddressesService {
         this._addresses.next(this.sortAddresses(addresses));
       }),
       catchError(error => {
-        console.error('Error fetching addresses:', error);
+        console.error('Error fetching addresses:', error.message);
         return throwError(() => error);
       })
     );

@@ -1,546 +1,570 @@
 {
-    "layout": {
-        "nav": {
-            "horizontal": {
-                "fullscreen": "Toggle Fullscreen"
-            },
-            "vertical": {
-                "user-profile": "Your profile",
-                "collaborations-list": "Collaborations to take",
-                "companies-list": "Companies",
-                "collaborations-companies": "Active collaborations",
-                "collaborations-companies-admin": "Active collaborations (Influencer view)",
-                "collaborations-influencers": "Active collaborations",
-                "influencers-new": "New Influencers applications"
-            }
+  "layout": {
+    "nav": {
+      "horizontal": {
+        "fullscreen": "Toggle Fullscreen"
+      },
+      "vertical": {
+        "user-profile": "Your profile",
+        "collaborations-list": "Collaborations to take",
+        "companies-list": "Companies",
+        "collaborations-companies": "Active collaborations",
+        "collaborations-companies-admin": "Active collaborations (Influencer view)",
+        "collaborations-influencers": "Active collaborations",
+        "influencers-new": "New Influencers applications"
+      }
+    }
+  },
+  "languages": {
+    "en": "English",
+    "pl": "Polish"
+  },
+  "auth": {
+    "sign_in": {
+      "title": "Sign in",
+      "no_account": "Don't have an account?",
+      "sign_up_link": "Sign up",
+      "email": "Email",
+      "email_placeholder": "Email address",
+      "password": "Password",
+      "password_placeholder": "Password",
+      "remember_me": "Remember me",
+      "forgot_password": "Forgot password?",
+      "submit": "Sign in",
+      "or_continue_with": "Or continue with",
+      "instagram": "Instagram"
+    },
+    "sign_up": {
+      "title": "Sign up",
+      "already_have_account": "Already have an account?",
+      "sign_up_influencer": "Influencer",
+      "sign_up_business": "Business",
+      "sign_up_using": "Sign up using",
+      "sign_up_using_form": "Sign up using Form",
+      "or_sign_up_as": "or Sign up as",
+      "connect_instagram_after": "You'll be able to connect your Instagram account after registration.",
+      "business": {
+        "step1": {
+          "label": "Business Information",
+          "title": "Tell us about your business",
+          "description": "This information will be used to set up your business profile",
+          "business_logo": "Business logo",
+          "business_name": "Business Name",
+          "business_name_placeholder": "Enter your business name",
+          "business_category": "Business Category",
+          "business_description": "Business Description",
+          "business_description_placeholder": "Briefly describe your business (max 500 characters)",
+          "email": "Email Address",
+          "phone": "Phone Number",
+          "country": "Country",
+          "country_placeholder": "Enter your country",
+          "business_address": "Business Address",
+          "street_address": "Street",
+          "city": "City",
+          "city_placeholder": "City",
+          "state": "State/Province",
+          "state_placeholder": "State",
+          "postal_code": "Postal/ZIP Code"
+        },
+        "step2": {
+          "label": "Representative Information",
+          "title": "Representative Details",
+          "description": "Provide information about the primary contact person",
+          "first_name": "First Name",
+          "first_name_placeholder": "First name",
+          "last_name": "Last Name",
+          "last_name_placeholder": "Last name",
+          "email": "Email Address",
+          "phone": "Phone Number"
+        },
+        "step3": {
+          "label": "Create Account",
+          "title": "Set Up Account Credentials",
+          "description": "Create login credentials for your business account",
+          "email": "Email Address",
+          "password": "Password",
+          "password_placeholder": "Create a strong password",
+          "password_hint": "Use at least 8 characters with uppercase, lowercase, numbers and symbols",
+          "confirm_password": "Confirm Password",
+          "confirm_password_placeholder": "Confirm your password",
+          "password_mismatch": "Passwords do not match",
+          "agree_to": "Agree to the",
+          "terms_and_conditions": "Terms and Conditions"
+        },
+        "continue": "Continue",
+        "back": "Back",
+        "create_account": "Create Account"
+      },
+      "influencer": {
+        "finish_registration": "Finish your registration",
+        "fill_credentials_description": "Fill the form with your credentials. Additionally to Instagram log in method, you'll be able to log in with email and password.",
+        "email": "Email",
+        "email_placeholder": "Enter your email",
+        "register": "Register",
+        "return_to": "Return to"
+      }
+    },
+    "sign_out": {
+      "title": "You have signed out!",
+      "redirecting": "Redirecting in {{count}} second",
+      "redirecting_plural": "Redirecting in {{count}} seconds",
+      "being_redirected": "You are now being redirected!",
+      "go_to": "Go to",
+      "sign_in_link": "Sign in"
+    },
+    "reset_password": {
+      "title": "Reset your password",
+      "subtitle": "Create a new password for your account",
+      "password": "Password",
+      "password_confirm": "Password (Confirm)",
+      "password_required": "Password is required",
+      "password_confirm_required": "Password confirmation is required",
+      "passwords_must_match": "Passwords must match",
+      "submit": "Reset your password",
+      "return_to": "Return to",
+      "sign_in_link": "Sign in"
+    },
+    "forgot_password": {
+      "title": "Forgot password?",
+      "subtitle": "Fill the form to reset your password",
+      "email": "Email address",
+      "email_required": "Email address is required",
+      "email_invalid": "Please enter a valid email address",
+      "submit": "Send reset link",
+      "return_to": "Return to",
+      "sign_in_link": "Sign in"
+    },
+    "confirmation_required": {
+      "title": "Confirmation required",
+      "message": "A confirmation mail with instructions has been sent to your email address. Follow those instructions to confirm your email address and activate your account.",
+      "return_to": "Return to",
+      "sign_in_link": "Sign in"
+    }
+  },
+  "admin": {
+    "new_influencers": {
+      "title": "Influencer List",
+      "filter": {
+        "column": "Column:",
+        "value": "Value:"
+      },
+      "table_headers": {
+        "id": "Id",
+        "date": "Date",
+        "first_name": "First Name",
+        "last_name": "Last Name",
+        "email": "E-mail",
+        "city": "City",
+        "address": "Address",
+        "instagram": "Instagram",
+        "followers": "Followers Count",
+        "account_type": "Account Type",
+        "status": "Status"
+      },
+      "pagination": {
+        "select_page": "Select page",
+        "page_number": "Page number: {{ pageIndex }}"
+      },
+      "edit_form": {
+        "city": "City",
+        "followers": "Followers Count",
+        "account_type": "Account Type",
+        "status": "Status",
+        "note": "Note:",
+        "note_placeholder": "Send a note...",
+        "submit": "Confirm"
+      },
+      "messages": {
+        "fill_note": "Please complete the note before submitting",
+        "fill_account_type": "Please provide account type information before submitting",
+        "confirmation": "Influencer approved"
+      },
+      "no_products": "There are no products!"
+    },
+    "companies": {
+      "title": "Company List",
+      "filter": {
+        "column": "Column:",
+        "value": "Value:"
+      },
+      "table_headers": {
+        "id": "ID",
+        "name": "Name",
+        "first_name": "First Name",
+        "last_name": "Last Name",
+        "email": "E-mail",
+        "city": "City",
+        "address": "Address",
+        "instagram": "Instagram",
+        "followers": "Followers Count",
+        "phone_number": "Phone Number",
+        "service_type": "Service Type"
+      },
+      "edit_form": {
+        "no_image": "No image",
+        "add_image": "Add image",
+        "delete_image": "Delete image",
+        "company_name": "Company Name",
+        "email": "E-mail",
+        "address": "Exact Address",
+        "first_name": "First Name",
+        "city": "City",
+        "service_type": "Service Type",
+        "last_name": "Last Name",
+        "phone_number": "Phone Number",
+        "note": "Note:",
+        "note_placeholder": "Send a note...",
+        "submit": "Confirm",
+        "delete": "Delete"
+      },
+      "messages": {
+        "fill_note": "Please complete the note before submitting",
+        "fill_followers": "Please provide followers count before submitting",
+        "fill_account_type": "Please provide account type before submitting",
+        "confirmation": "Influencer approved"
+      },
+      "pagination": {
+        "select_page": "Select page",
+        "page_number": "Page number: {{ pageIndex }}"
+      },
+      "no_products": "There are no products!"
+    }
+  },
+  "user": {
+    "profile": {
+      "title": "User Profile",
+      "description": "Manage and update your personal information",
+      "personal_info": "Personal Information",
+      "personal_info_desc": "Update your personal details",
+      "first_name": "First Name",
+      "last_name": "Last Name",
+      "email": "Email Address",
+      "email_hint": "Enter your primary email address",
+      "phone": "Phone Number",
+      "phone_hint": "Enter your contact phone number",
+      "business_name": "Business Name",
+      "business_name_hint": "Enter your company or business name",
+      "influencer_name": "Your Username",
+      "influencer_name_hint": "Enter your Username",
+      "profile_picture": "Profile Picture",
+      "change_picture": "Change Profile Picture",
+      "admin_note": "Admin Note",
+      "cancel": "Cancel",
+      "save": "Save Changes",
+      "account_status": {
+        "ACTIVE": "Active",
+        "IN_VALIDATION": "In Validation",
+        "INACTIVE": "Inactive"
+      },
+      "registration": {
+        "greeting": "Welcome!",
+        "complete_registration": "Complete your registration to start earning",
+        "account_status": "Account status",
+        "status_active": "Active",
+        "status_inactive": "Inactive",
+        "status_validated": "Validated",
+        "instagram_nickname": "Instagram nickname",
+        "first_name": "First name",
+        "last_name": "Last name",
+        "email": "Email",
+        "city": "City",
+        "account_type": "Account type",
+        "new_message": "New message",
+        "admin_message_placeholder": "Message from admin",
+        "warning_fill_data": "Please complete the data before submitting",
+        "error_message": "An error occurred",
+        "registration_confirmed": "You are registered!",
+        "submit_button": "Submit",
+        "reset_button": "Reset"
+      },
+      "advertisement": {
+        "why_join": "Why join?",
+        "join_us": "Join us!",
+        "earning_potential": "This is how much you can earn <span class='font-bold'>money</span> per month. Registering on our platform gives you many opportunities. With your engagement, you can earn more and more.",
+        "earning_note": "*The amount depends on the number of accepted orders",
+        "day": "Day",
+        "daily_growth": "This is how much <span class='font-bold'>daily client count</span> increases. To meet their needs, we are constantly looking for new contractors to help us grow.",
+        "completed_orders": "This is how many <span class='font-bold'>orders</span> we have completed thanks to our influencers. We hope you will contribute to increasing this number.",
+        "register_now": "Register now and start earning!",
+        "join_button": "Join us",
+        "hide_forever": "Do not show again"
+      }
+    },
+    "preferences": {
+      "title": "User Preferences",
+      "subtitle": "Customize your app experience by managing your preferences",
+      "notifications": {
+        "title": "Notifications",
+        "email": {
+          "title": "Email Notifications",
+          "description": "Receive updates and important information via email"
+        },
+        "push": {
+          "title": "Push Notifications",
+          "description": "Get real-time alerts directly to your browser or mobile device"
+        },
+        "sms": {
+          "title": "SMS Notifications",
+          "description": "Receive text message alerts for critical updates"
         }
-    },
-    "languages": {
-        "en": "English",
-        "pl": "Polish"
-    },
-    "auth": {
-        "sign_in": {
-            "title": "Sign in",
-            "no_account": "Don't have an account?",
-            "sign_up_link": "Sign up",
-            "email": "Email",
-            "email_placeholder": "Email address",
-            "password": "Password",
-            "password_placeholder": "Password",
-            "remember_me": "Remember me",
-            "forgot_password": "Forgot password?",
-            "submit": "Sign in",
-            "or_continue_with": "Or continue with",
-            "instagram": "Instagram"
+      },
+      "display": {
+        "title": "Display Settings",
+        "darkMode": {
+          "title": "Dark Mode",
+          "description": "Switch to a darker theme to reduce eye strain in low-light environments"
         },
-        "sign_up": {
-            "title": "Sign up",
-            "already_have_account": "Already have an account?",
-            "sign_up_influencer": "Influencer",
-            "sign_up_business": "Business",
-            "sign_up_using": "Sign up using",
-            "sign_up_using_form": "Sign up using Form",
-            "or_sign_up_as": "or Sign up as",
-            "connect_instagram_after": "You'll be able to connect your Instagram account after registration.",
-            "business": {
-                "step1": {
-                    "label": "Business Information",
-                    "title": "Tell us about your business",
-                    "description": "This information will be used to set up your business profile",
-                    "business_logo": "Business logo",
-                    "business_name": "Business Name",
-                    "business_name_placeholder": "Enter your business name",
-                    "business_category": "Business Category",
-                    "business_description": "Business Description",
-                    "business_description_placeholder": "Briefly describe your business (max 500 characters)",
-                    "email": "Email Address",
-                    "phone": "Phone Number",
-                    "country": "Country",
-                    "country_placeholder": "Enter your country",
-                    "business_address": "Business Address",
-                    "street_address": "Street Address",
-                    "city": "City",
-                    "city_placeholder": "City",
-                    "state": "State/Province",
-                    "state_placeholder": "State",
-                    "postal_code": "Postal/ZIP Code"
-                },
-                "step2": {
-                    "label": "Representative Information",
-                    "title": "Representative Details",
-                    "description": "Provide information about the primary contact person",
-                    "first_name": "First Name",
-                    "first_name_placeholder": "First name",
-                    "last_name": "Last Name",
-                    "last_name_placeholder": "Last name",
-                    "email": "Email Address",
-                    "phone": "Phone Number"
-                },
-                "step3": {
-                    "label": "Create Account",
-                    "title": "Set Up Account Credentials",
-                    "description": "Create login credentials for your business account",
-                    "email": "Email Address",
-                    "password": "Password",
-                    "password_placeholder": "Create a strong password",
-                    "password_hint": "Use at least 8 characters with uppercase, lowercase, numbers and symbols",
-                    "confirm_password": "Confirm Password",
-                    "confirm_password_placeholder": "Confirm your password",
-                    "password_mismatch": "Passwords do not match",
-                    "agree_to": "Agree to the",
-                    "terms_and_conditions": "Terms and Conditions"
-                },
-                "continue": "Continue",
-                "back": "Back",
-                "create_account": "Create Account"
-            },
-            "influencer": {
-                "finish_registration": "Finish your registration",
-                "fill_credentials_description": "Fill the form with your credentials. Additionally to Instagram log in method, you'll be able to log in with email and password.",
-                "email": "Email",
-                "email_placeholder": "Enter your email",
-                "register": "Register",
-                "return_to": "Return to"
-            }
-        },
-        "sign_out": {
-            "title": "You have signed out!",
-            "redirecting": "Redirecting in {{count}} second",
-            "redirecting_plural": "Redirecting in {{count}} seconds",
-            "being_redirected": "You are now being redirected!",
-            "go_to": "Go to",
-            "sign_in_link": "Sign in"
-        },
-        "reset_password": {
-            "title": "Reset your password",
-            "subtitle": "Create a new password for your account",
-            "password": "Password",
-            "password_confirm": "Password (Confirm)",
-            "password_required": "Password is required",
-            "password_confirm_required": "Password confirmation is required",
-            "passwords_must_match": "Passwords must match",
-            "submit": "Reset your password",
-            "return_to": "Return to",
-            "sign_in_link": "Sign in"
-        },
-        "forgot_password": {
-            "title": "Forgot password?",
-            "subtitle": "Fill the form to reset your password",
-            "email": "Email address",
-            "email_required": "Email address is required",
-            "email_invalid": "Please enter a valid email address",
-            "submit": "Send reset link",
-            "return_to": "Return to",
-            "sign_in_link": "Sign in"
-        },
-        "confirmation_required": {
-            "title": "Confirmation required",
-            "message": "A confirmation mail with instructions has been sent to your email address. Follow those instructions to confirm your email address and activate your account.",
-            "return_to": "Return to",
-            "sign_in_link": "Sign in"
+        "language": {
+          "title": "Language",
+          "description": "Choose your preferred language for the application interface"
         }
-    },
-    "admin": {
-        "new_influencers": {
-            "title": "Influencer List",
-            "filter": {
-                "column": "Column:",
-                "value": "Value:"
-            },
-            "table_headers": {
-                "id": "Id",
-                "date": "Date",
-                "first_name": "First Name",
-                "last_name": "Last Name",
-                "email": "E-mail",
-                "city": "City",
-                "address": "Address",
-                "instagram": "Instagram",
-                "followers": "Followers Count",
-                "account_type": "Account Type",
-                "status": "Status"
-            },
-            "pagination": {
-                "select_page": "Select page",
-                "page_number": "Page number: {{ pageIndex }}"
-            },
-            "edit_form": {
-                "city": "City",
-                "followers": "Followers Count",
-                "account_type": "Account Type",
-                "status": "Status",
-                "note": "Note:",
-                "note_placeholder": "Send a note...",
-                "submit": "Confirm"
-            },
-            "messages": {
-                "fill_note": "Please complete the note before submitting",
-                "fill_account_type": "Please provide account type information before submitting",
-                "confirmation": "Influencer approved"
-            },
-            "no_products": "There are no products!"
+      },
+      "communication": {
+        "title": "Communication Preferences",
+        "frequency": {
+          "title": "Communication Frequency",
+          "description": "How often would you like to receive updates from us?",
+          "daily": "Daily",
+          "weekly": "Weekly",
+          "monthly": "Monthly"
         },
-        "companies": {
-            "title": "Company List",
-            "filter": {
-                "column": "Column:",
-                "value": "Value:"
-            },
-            "table_headers": {
-                "id": "ID",
-                "name": "Name",
-                "first_name": "First Name",
-                "last_name": "Last Name",
-                "email": "E-mail",
-                "city": "City",
-                "address": "Address",
-                "instagram": "Instagram",
-                "followers": "Followers Count",
-                "phone_number": "Phone Number",
-                "service_type": "Service Type"
-            },
-            "edit_form": {
-                "no_image": "No image",
-                "add_image": "Add image",
-                "delete_image": "Delete image",
-                "company_name": "Company Name",
-                "email": "E-mail",
-                "address": "Exact Address",
-                "first_name": "First Name",
-                "city": "City",
-                "service_type": "Service Type",
-                "last_name": "Last Name",
-                "phone_number": "Phone Number",
-                "note": "Note:",
-                "note_placeholder": "Send a note...",
-                "submit": "Confirm",
-                "delete": "Delete"
-            },
-            "messages": {
-                "fill_note": "Please complete the note before submitting",
-                "fill_followers": "Please provide followers count before submitting",
-                "fill_account_type": "Please provide account type before submitting",
-                "confirmation": "Influencer approved"
-            },
-            "pagination": {
-                "select_page": "Select page",
-                "page_number": "Page number: {{ pageIndex }}"
-            },
-            "no_products": "There are no products!"
+        "marketing": {
+          "title": "Marketing Communications",
+          "description": "Receive offers, promotions and updates about new features"
         }
-    },
-    "user": {
-        "profile": {
-            "registration": {
-                "greeting": "Welcome!",
-                "complete_registration": "Complete your registration to start earning",
-                "account_status": "Account status",
-                "status_active": "Active",
-                "status_inactive": "Inactive",
-                "status_validated": "Validated",
-                "instagram_nickname": "Instagram nickname",
-                "first_name": "First name",
-                "last_name": "Last name",
-                "email": "Email",
-                "city": "City",
-                "account_type": "Account type",
-                "new_message": "New message",
-                "admin_message_placeholder": "Message from admin",
-                "warning_fill_data": "Please complete the data before submitting",
-                "error_message": "An error occurred",
-                "registration_confirmed": "You are registered!",
-                "submit_button": "Submit",
-                "reset_button": "Reset"
-            },
-            "advertisement": {
-                "why_join": "Why join?",
-                "join_us": "Join us!",
-                "earning_potential": "This is how much you can earn <span class='font-bold'>money</span> per month. Registering on our platform gives you many opportunities. With your engagement, you can earn more and more.",
-                "earning_note": "*The amount depends on the number of accepted orders",
-                "day": "Day",
-                "daily_growth": "This is how much <span class='font-bold'>daily client count</span> increases. To meet their needs, we are constantly looking for new contractors to help us grow.",
-                "completed_orders": "This is how many <span class='font-bold'>orders</span> we have completed thanks to our influencers. We hope you will contribute to increasing this number.",
-                "register_now": "Register now and start earning!",
-                "join_button": "Join us",
-                "hide_forever": "Do not show again"
-            }
-        },
-        "preferences": {
-            "title": "User Preferences",
-            "subtitle": "Customize your app experience by managing your preferences",
-            "notifications": {
-                "title": "Notifications",
-                "email": {
-                    "title": "Email Notifications",
-                    "description": "Receive updates and important information via email"
-                },
-                "push": {
-                    "title": "Push Notifications",
-                    "description": "Get real-time alerts directly to your browser or mobile device"
-                },
-                "sms": {
-                    "title": "SMS Notifications",
-                    "description": "Receive text message alerts for critical updates"
-                }
-            },
-            "display": {
-                "title": "Display Settings",
-                "darkMode": {
-                    "title": "Dark Mode",
-                    "description": "Switch to a darker theme to reduce eye strain in low-light environments"
-                },
-                "language": {
-                    "title": "Language",
-                    "description": "Choose your preferred language for the application interface"
-                }
-            },
-            "communication": {
-                "title": "Communication Preferences",
-                "frequency": {
-                    "title": "Communication Frequency",
-                    "description": "How often would you like to receive updates from us?",
-                    "daily": "Daily",
-                    "weekly": "Weekly",
-                    "monthly": "Monthly"
-                },
-                "marketing": {
-                    "title": "Marketing Communications",
-                    "description": "Receive offers, promotions and updates about new features"
-                }
-            },
-            "security": {
-                "title": "Security Settings",
-                "twoFactor": {
-                    "title": "Two-Factor Authentication",
-                    "description": "Add an extra layer of security to your account by requiring a verification code"
-                }
-            },
-            "actions": {
-                "save": "Save Changes",
-                "cancel": "Cancel Changes"
-            }
-        },
-        "security": {
-            "changePassword": "Change Password",
-            "passwordChangeLimit": "You can change your password once every 24 hours.",
-            "currentPassword": "Current Password",
-            "newPassword": "New Password",
-            "newPasswordConfirm": "Confirm Password",
-            "passwordRequirements": "Password must be at least 8 characters and include uppercase, lowercase, number, and special character.",
-            "password_mismatch": "Passwords do not match",
-            "securityPreferences": "Security Preferences",
-            "preferencesDescription": "Manage your security preferences and settings",
-            "enable2FA": "Enable Two-Factor Authentication",
-            "2FADescription": "Add an extra layer of security to your account with two-factor authentication",
-            "askPasswordChangeSixMonths": "Ask to change password every 6 months",
-            "passwordChangeDescription": "We'll remind you to update your password periodically for better security",
-            "actions": {
-                "save": "Save",
-                "cancel": "Cancel"
-            }
-        },
-        "collaborations": {
-            "all": {
-                "title": "Available Collaborations",
-                "filter": {
-                    "column": "Column:",
-                    "value": "Value:"
-                },
-                "add_collaboration": "Add Collaboration",
-                "collaboration_card": {
-                    "details_button": "Collaboration Details"
-                },
-                "add_new_collaboration": "Add new",
-                "pagination": {
-                    "select_page": "Select page",
-                    "page_number": "Page number: {{ pageIndex }}"
-                }
-            },
-            "pop_up_notice":{
-                "edit" : {
-                    "title": "Collaboration edit",
-                    "message": "Collaboration has been successfully edited"
-                },
-                "confirm" : {
-                    "title": "You have added a new collaboration",
-                    "message": "The new collaboration is visible on the main page"
-                },
-                "remove" : {
-                    "title": "Delete item",
-                    "message": "Are you sure you want to delete the items?"
-                }
-            },
-            "cities": {
-                "Warszawa": "Warsaw",
-                "Kraków": "Cracow",
-                "Wrocław": "Wroclaw",
-                "Gdańsk": "Gdansk"
-            },
-            "compensationType":{
-                "cash": "Cash",
-                "barter": "Barter (Gift)"
-            },
-            "service-types": {
-                "Restauracja": "Restaurant",
-                "Kawiarnia": "Coffeehouse",
-                "Sklep odzieżowy": "Clothing store",
-                "Studio urody": "Beauty studio",
-                "Salon fryzjerski": "Hairdresser",
-                "Siłownia i fitness": "Gym and fitness",
-                "Park rozrywki": "Amusement park",
-                "Hotel i spa": "Hotel and spa",
-                "Usługi cateringowe": "Catering services",
-                "Sklep z kosmetykami": "Cosmetics store",
-                "Studio fotograficzne": "Photographic studio",
-                "Agencja marketingowa": "Marketing agency",
-                "Studio tatuażu": "Tattoo studio",
-                "Klub muzyczny":  "Music club",
-                "Sklep z biżuterią": "Jewelry store"
-            },
-            "months": {
-                "january": "Styczeń",
-                "february": "Luty",
-                "march": "Marzec",
-                "april": "Kwiecień",
-                "may": "Maj",
-                "june": "Czerwiec",
-                "july": "Lipiec",
-                "august": "Sierpień",
-                "september": "Wrzesień",
-                "october": "Październik",
-                "november": "Listopad",
-                "december": "Grudzień"
-            },
-            "details": {
-                "description": "Description",
-                "description_placeholder": "Add description of collaboration...",
-                "name": "Collaboration Details",
-                "title_placeholder": "Enter the name of the order",
-                "start_date": "Start Date",
-                "end_date": "End Date",
-                "date_not_set": "Not set",
-                "clear_button": "Clear",
-                "pick_button": "Pick",
-                "return_button": "Return",
-                "delete_button": "Delete",
-                "cancel_button":"Cancel",
-                "save_button": "Save",
-                "edit_button": "Edit",
-                "requirements": "Requirements",
-                "requirements_placeholder": "Enter collaboration requirements here...",
-                "compensationType": "Compensation",
-                "compensation_placeholder": "Enter compensation details here...",
-                "campaign_details": "Campaign Details",
-                "campaign_details_placeholder": "Describe the new campaign details...",
-                "company_details": "Company Details",
-                "slider_configuration": "Slider Configuration",
-                "result": "Result",
-                "city": "City",
-                "company": "Company",
-                "service_type": "Service Type",
-                "value": "Value",
-                "followers_count": "Followers Amount",
-                "content_type": "Content Type",
-                "platform": "Platform",
-                "min_value": "Min Value",
-                "max_value": "Max Value",
-                "step_size": "Step Size",
-                "show_ticks": "Show Ticks",
-                "show_thumb_label": "Show Thumb Label",
-                "disabled": "Disabled",
-                "tooltip" : "Unavailable",
-                "anddWarning": "Before sending, please fill in all details",
-                "select_date_range": "Select Date Range",
-                "background_picture": "Upload photo"
-            }
+      },
+      "security": {
+        "title": "Security Settings",
+        "twoFactor": {
+          "title": "Two-Factor Authentication",
+          "description": "Add an extra layer of security to your account by requiring a verification code"
         }
+      },
+      "actions": {
+        "save": "Save Changes",
+        "cancel": "Cancel Changes"
+      }
     },
-    "address": {
-        "title": "Manage Your Addresses",
-        "description": "Add and manage your addresses to streamline your experience",
-        "noAddresses": "No addresses found",
-        "noAddressesDescription": "You haven't added any addresses yet. Add your first address to get started.",
-        "yourAddresses": "Your Addresses",
-        "primaryBadge": "Primary",
-        "additionalInfo": "Additional Info",
-        "types": {
-            "MAIN": "Main",
-            "SECONDARY": "Secondary",
-            "BILLING": "Billing",
-            "SHIPPING": "Shipping",
-            "TEMPORARY": "Temporary"
+    "security": {
+      "changePassword": "Change Password",
+      "passwordChangeLimit": "You can change your password once every 24 hours.",
+      "currentPassword": "Current Password",
+      "newPassword": "New Password",
+      "newPasswordConfirm": "Confirm Password",
+      "passwordRequirements": "Password must be at least 8 characters and include uppercase, lowercase, number, and special character.",
+      "password_mismatch": "Passwords do not match",
+      "securityPreferences": "Security Preferences",
+      "preferencesDescription": "Manage your security preferences and settings",
+      "enable2FA": "Enable Two-Factor Authentication",
+      "2FADescription": "Add an extra layer of security to your account with two-factor authentication",
+      "askPasswordChangeSixMonths": "Ask to change password every 6 months",
+      "passwordChangeDescription": "We'll remind you to update your password periodically for better security",
+      "actions": {
+        "save": "Save",
+        "cancel": "Cancel"
+      }
+    },
+    "collaborations": {
+      "all": {
+        "title": "Available Collaborations",
+        "filter": {
+          "column": "Column:",
+          "value": "Value:"
         },
-        "form": {
-            "street": "Street Address",
-            "streetPlaceholder": "123 Main St",
-            "city": "City",
-            "cityPlaceholder": "City",
-            "state": "State/Province",
-            "statePlaceholder": "State",
-            "postalCode": "Postal Code",
-            "postalCodePlaceholder": "00-000",
-            "country": "Country",
-            "countryPlaceholder": "Country",
-            "additionalInfo": "Additional Information",
-            "additionalInfoPlaceholder": "Apartment number, delivery instructions, etc.",
-            "addressType": "Address Type",
-            "primaryAddress": "Set as Primary Address",
-            "primaryAddressDescription": "This will be used as your default address"
+        "add_collaboration": "Add Collaboration",
+        "collaboration_card": {
+          "details_button": "Collaboration Details"
         },
-        "actions": {
-            "addAddress": "Add Address",
-            "editAddress": "Edit Address",
-            "cancel": "Cancel",
-            "create": "Create",
-            "update": "Update",
-            "delete": "Delete",
-            "edit": "Edit",
-            "setPrimary": "Set as Primary"
-        },
-        "messages": {
-            "loadError": "Failed to load addresses",
-            "createSuccess": "Address created successfully",
-            "createError": "Failed to create address",
-            "updateSuccess": "Address updated successfully",
-            "updateError": "Failed to update address",
-            "deleteSuccess": "Address deleted successfully",
-            "deleteError": "Failed to delete address",
-            "primarySuccess": "Primary address updated",
-            "primaryError": "Failed to set primary address"
+        "add_new_collaboration": "Add new",
+        "pagination": {
+          "select_page": "Select page",
+          "page_number": "Page number: {{ pageIndex }}"
+        }
+      },
+      "pop_up_notice": {
+        "edit": {
+          "title": "Collaboration edit",
+          "message": "Collaboration has been successfully edited"
         },
         "confirm": {
-            "deleteTitle": "Delete address",
-            "deleteMessage": "Are you sure you want to delete this address? This action cannot be undone."
-        }
-    },
-    "settings": {
-        "title": "Settings",
-        "description": "Manage your account settings and preferences",
-        "panels": {
-            "account": {
-                "title": "Account",
-                "description": "Manage your public profile and private information"
-            },
-            "security": {
-                "title": "Security",
-                "description": "Manage your password and 2-step verification preferences"
-            },
-            "addresses": {
-                "title": "Addresses",
-                "description": "Manage your addresses for shipping, billing, and more"
-            },
-            "plan-billing": {
-                "title": "Plan & Billing",
-                "description": "Manage your subscription plan, payment method and billing information"
-            },
-            "preferences": {
-                "title": "Preferences",
-                "description": "Manage your communication and notification preferences"
-            }
+          "title": "You have added a new collaboration",
+          "message": "The new collaboration is visible on the main page"
         },
-        "placeholders": {
-            "coming_soon": "This feature is coming soon"
+        "remove": {
+          "title": "Delete item",
+          "message": "Are you sure you want to delete the items?"
         }
+      },
+      "cities": {
+        "Warszawa": "Warsaw",
+        "Kraków": "Cracow",
+        "Wrocław": "Wroclaw",
+        "Gdańsk": "Gdansk"
+      },
+      "compensationType": {
+        "cash": "Cash",
+        "barter": "Barter (Gift)"
+      },
+      "service-types": {
+        "Restauracja": "Restaurant",
+        "Kawiarnia": "Coffeehouse",
+        "Sklep odzieżowy": "Clothing store",
+        "Studio urody": "Beauty studio",
+        "Salon fryzjerski": "Hairdresser",
+        "Siłownia i fitness": "Gym and fitness",
+        "Park rozrywki": "Amusement park",
+        "Hotel i spa": "Hotel and spa",
+        "Usługi cateringowe": "Catering services",
+        "Sklep z kosmetykami": "Cosmetics store",
+        "Studio fotograficzne": "Photographic studio",
+        "Agencja marketingowa": "Marketing agency",
+        "Studio tatuażu": "Tattoo studio",
+        "Klub muzyczny": "Music club",
+        "Sklep z biżuterią": "Jewelry store"
+      },
+      "months": {
+        "january": "Styczeń",
+        "february": "Luty",
+        "march": "Marzec",
+        "april": "Kwiecień",
+        "may": "Maj",
+        "june": "Czerwiec",
+        "july": "Lipiec",
+        "august": "Sierpień",
+        "september": "Wrzesień",
+        "october": "Październik",
+        "november": "Listopad",
+        "december": "Grudzień"
+      },
+      "details": {
+        "description": "Description",
+        "description_placeholder": "Add description of collaboration...",
+        "name": "Collaboration Details",
+        "title_placeholder": "Enter the name of the order",
+        "start_date": "Start Date",
+        "end_date": "End Date",
+        "date_not_set": "Not set",
+        "clear_button": "Clear",
+        "pick_button": "Pick",
+        "return_button": "Return",
+        "delete_button": "Delete",
+        "cancel_button": "Cancel",
+        "save_button": "Save",
+        "edit_button": "Edit",
+        "requirements": "Requirements",
+        "requirements_placeholder": "Enter collaboration requirements here...",
+        "compensationType": "Compensation",
+        "compensation_placeholder": "Enter compensation details here...",
+        "campaign_details": "Campaign Details",
+        "campaign_details_placeholder": "Describe the new campaign details...",
+        "company_details": "Company Details",
+        "slider_configuration": "Slider Configuration",
+        "result": "Result",
+        "city": "City",
+        "company": "Company",
+        "service_type": "Service Type",
+        "value": "Value",
+        "followers_count": "Followers Amount",
+        "content_type": "Content Type",
+        "platform": "Platform",
+        "min_value": "Min Value",
+        "max_value": "Max Value",
+        "step_size": "Step Size",
+        "show_ticks": "Show Ticks",
+        "show_thumb_label": "Show Thumb Label",
+        "disabled": "Disabled",
+        "tooltip": "Unavailable",
+        "anddWarning": "Before sending, please fill in all details",
+        "select_date_range": "Select Date Range",
+        "background_picture": "Upload photo"
+      }
     }
+  },
+  "address": {
+    "title": "Manage Your Addresses",
+    "description": "Add and manage your addresses to streamline your experience",
+    "noAddresses": "No addresses found",
+    "noAddressesDescription": "You haven't added any addresses yet. Add your first address to get started.",
+    "yourAddresses": "Your Addresses",
+    "primaryBadge": "Primary",
+    "additionalInfo": "Additional Info",
+    "types": {
+      "MAIN": "Main",
+      "SECONDARY": "Secondary",
+      "BILLING": "Billing",
+      "SHIPPING": "Shipping",
+      "TEMPORARY": "Temporary"
+    },
+    "form": {
+      "street": "Street Address",
+      "streetPlaceholder": "123 Main St",
+      "city": "City",
+      "cityPlaceholder": "City",
+      "state": "State/Province",
+      "statePlaceholder": "State",
+      "postalCode": "Postal Code",
+      "postalCodePlaceholder": "00-000",
+      "country": "Country",
+      "countryPlaceholder": "Country",
+      "additionalInfo": "Additional Information",
+      "additionalInfoPlaceholder": "Apartment number, delivery instructions, etc.",
+      "addressType": "Address Type",
+      "primaryAddress": "Set as Primary Address",
+      "primaryAddressDescription": "This will be used as your default address"
+    },
+    "actions": {
+      "addAddress": "Add Address",
+      "editAddress": "Edit Address",
+      "cancel": "Cancel",
+      "create": "Create",
+      "update": "Update",
+      "delete": "Delete",
+      "edit": "Edit",
+      "setPrimary": "Set as Primary"
+    },
+    "messages": {
+      "loadError": "Failed to load addresses",
+      "createSuccess": "Address created successfully",
+      "createError": "Failed to create address",
+      "updateSuccess": "Address updated successfully",
+      "updateError": "Failed to update address",
+      "deleteSuccess": "Address deleted successfully",
+      "deleteError": "Failed to delete address",
+      "primarySuccess": "Primary address updated",
+      "primaryError": "Failed to set primary address"
+    },
+    "confirm": {
+      "deleteTitle": "Delete address",
+      "deleteMessage": "Are you sure you want to delete this address? This action cannot be undone."
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "description": "Manage your account settings and preferences",
+    "panels": {
+      "account": {
+        "title": "Account",
+        "description": "Manage your public profile and private information"
+      },
+      "security": {
+        "title": "Security",
+        "description": "Manage your password and 2-step verification preferences"
+      },
+      "addresses": {
+        "title": "Addresses",
+        "description": "Manage your addresses for shipping, billing, and more"
+      },
+      "plan-billing": {
+        "title": "Plan & Billing",
+        "description": "Manage your subscription plan, payment method and billing information"
+      },
+      "preferences": {
+        "title": "Preferences",
+        "description": "Manage your communication and notification preferences"
+      }
+    },
+    "placeholders": {
+      "coming_soon": "This feature is coming soon"
+    }
+  }
 }

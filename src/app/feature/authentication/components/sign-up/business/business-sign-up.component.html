@@ -1,45 +1,45 @@
 <!-- Logo -->
 <div class="w-12">
-    <img src="assets/images/logo/logo.svg">
+  <img src="assets/images/logo/logo.svg" />
 </div>
 
 <!-- Title -->
-<div class="mt-8 text-4xl font-extrabold tracking-tight leading-tight">{{ 'auth.sign_up.title' | transloco }}</div>
+<div class="mt-8 text-4xl font-extrabold tracking-tight leading-tight">
+  {{ 'auth.sign_up.title' | transloco }}
+</div>
 <div class="flex items-center gap-2 items-baseline mt-0.5 font-medium">
-    <div>{{ 'auth.sign_up.already_have_account' | transloco }}</div>
-    <app-link
-        [routerLink]="['/auth/sign-in']">{{ 'auth.sign_in.title' | transloco }}
-    </app-link>
+  <div>{{ 'auth.sign_up.already_have_account' | transloco }}</div>
+  <app-link [routerLink]="['/auth/sign-in']">{{ 'auth.sign_in.title' | transloco }} </app-link>
 </div>
 
 <!-- Business signup wizard -->
 <mat-stepper class="bg-gray-100" [linear]="true" #stepper orientation="vertical">
-    <!-- Step 1: Business Information -->
-    <mat-step [completed]="businessFormCompleted">
-        <ng-template matStepLabel>{{ 'auth.sign_up.business.step1.label' | transloco }}</ng-template>
-        <div class="py-8">
-            <h2 class="text-2xl font-medium mb-1">{{ 'auth.sign_up.business.step1.title' | transloco }}</h2>
-            <p class="text-gray-600 mb-8">{{ 'auth.sign_up.business.step1.description' | transloco }}</p>
+  <!-- Step 1: Business Information -->
+  <mat-step [completed]="businessFormCompleted">
+    <ng-template matStepLabel>{{ 'auth.sign_up.business.step1.label' | transloco }}</ng-template>
+    <div class="py-8">
+      <h2 class="text-2xl font-medium mb-1">
+        {{ 'auth.sign_up.business.step1.title' | transloco }}
+      </h2>
+      <p class="text-gray-600 mb-8">{{ 'auth.sign_up.business.step1.description' | transloco }}</p>
 
-            <div class="flex flex-col space-y-6 mb-8" [formGroup]="businessForm">
-                <app-input
-                    type="image"
-                    [control]="businessForm.controls.logo"
-                    storagePath="companies/logos"
-                    acceptedFileTypes="image/jpeg,image/png,image/gif"
-                    (imageUploaded)="onProfilePictureUploaded()"
-                >{{ 'auth.sign_up.business.step1.business_logo' | transloco }}</app-input>
+      <div class="flex flex-col space-y-6 mb-8" [formGroup]="businessForm">
+        <app-input
+          type="image"
+          [control]="businessForm.controls.profilePicture"
+          storagePath="companies/logos"
+          acceptedFileTypes="image/jpeg,image/png,image/gif"
+          (imageUploaded)="onProfilePictureUploaded()"
+          >{{ 'auth.sign_up.business.step1.business_logo' | transloco }}</app-input
+        >
 
-                <app-input
-                    [control]="businessForm.controls.name"
-                    placeholder="{{ 'auth.sign_up.business.step1.business_name_placeholder' | transloco }}"
-                >{{ 'auth.sign_up.business.step1.business_name' | transloco }}</app-input>
+        <app-input
+          [control]="businessForm.controls.name"
+          placeholder="{{ 'auth.sign_up.business.step1.business_name_placeholder' | transloco }}"
+          >{{ 'auth.sign_up.business.step1.business_name' | transloco }}</app-input
+        >
 
-                <app-select
-                    [options]="categories"
-                    [control]="businessForm.controls.category"
-                >{{ 'auth.sign_up.business.step1.business_category' | transloco }}</app-select>
-
+        <!-- Commented out business description for now
                 <app-input
                     type="textarea"
                     [control]="businessForm.controls.description"
@@ -47,181 +47,158 @@
                     [rows]="3"
                     [maxLength]="500"
                 >{{ 'auth.sign_up.business.step1.business_description' | transloco }}</app-input>
+                -->
 
-                <app-input
-                    type="email"
-                    [control]="businessForm.controls.email"
-                    placeholder="business@example.com"
-                >{{ 'auth.sign_up.business.step1.email' | transloco }}</app-input>
+        <app-input
+          type="email"
+          [control]="businessForm.controls.email"
+          placeholder="business@example.com"
+          >{{ 'auth.sign_up.business.step1.email' | transloco }}</app-input
+        >
 
-                <app-input
-                    [control]="businessForm.controls.phone"
-                    placeholder="+1 (123) 456-7890"
-                >{{ 'auth.sign_up.business.step1.phone' | transloco }}</app-input>
+        <app-input [control]="businessForm.controls.phoneNumber" placeholder="+1 (123) 456-7890">{{
+          'auth.sign_up.business.step1.phone' | transloco
+        }}</app-input>
 
-                <app-input
-                    [control]="businessForm.controls.country"
-                    placeholder="{{ 'auth.sign_up.business.step1.country_placeholder' | transloco }}"
-                >{{ 'auth.sign_up.business.step1.country' | transloco }}</app-input>
+        <!-- Address Information -->
+        <h3 class="text-lg font-semibold mt-4">
+          {{ 'auth.sign_up.business.step1.business_address' | transloco }}
+        </h3>
 
-                <!-- Address group -->
-                <div class="bg-gray-200 border border-gray-200 rounded-lg p-6 mt-4" formGroupName="address">
-                    <h3 class="text-lg font-medium mt-0 mb-6">{{ 'auth.sign_up.business.step1.business_address' | transloco }}</h3>
+        <app-input [control]="businessForm.controls.street" placeholder="123 Main St">{{
+          'auth.sign_up.business.step1.street_address' | transloco
+        }}</app-input>
 
-                    <app-input
-                        [control]="businessForm.controls.address.controls.street"
-                        placeholder="123 Main St"
-                    >{{ 'auth.sign_up.business.step1.street_address' | transloco }}</app-input>
+        <div class="grid grid-cols-2 gap-4">
+          <app-input
+            [control]="businessForm.controls.city"
+            placeholder="{{ 'auth.sign_up.business.step1.city_placeholder' | transloco }}"
+            >{{ 'auth.sign_up.business.step1.city' | transloco }}</app-input
+          >
 
-                    <div class="flex flex-wrap gap-4 mt-6">
-                        <app-input
-                            class="grow"
-                            [control]="businessForm.controls.address.controls.city"
-                            placeholder="{{ 'auth.sign_up.business.step1.city_placeholder' | transloco }}"
-                        >{{ 'auth.sign_up.business.step1.city' | transloco }}</app-input>
-
-                        <app-input
-                            class="grow"
-                            [control]="businessForm.controls.address.controls.state"
-                            placeholder="{{ 'auth.sign_up.business.step1.state_placeholder' | transloco }}"
-                        >{{ 'auth.sign_up.business.step1.state' | transloco }}</app-input>
-                    </div>
-
-                    <div class="mt-6">
-                        <app-input
-                            [control]="businessForm.controls.address.controls.zip"
-                            placeholder="12345"
-                        >{{ 'auth.sign_up.business.step1.postal_code' | transloco }}</app-input>
-                    </div>
-                </div>
-            </div>
-
-            <div class="flex justify-end space-x-4 mt-8">
-                <app-button
-                    variant="stroked"
-                    color="primary"
-                    [disabled]="businessForm.invalid"
-                    (click)="completeBusinessForm()"
-                >
-                    {{ 'auth.sign_up.business.continue' | transloco }}
-                </app-button>
-            </div>
+          <app-input
+            [control]="businessForm.controls.state"
+            placeholder="{{ 'auth.sign_up.business.step1.state_placeholder' | transloco }}"
+            >{{ 'auth.sign_up.business.step1.state' | transloco }}</app-input
+          >
         </div>
-    </mat-step>
 
-    <!-- Step 2: Representative Information -->
-    <mat-step [completed]="representativeFormCompleted">
-        <ng-template matStepLabel>{{ 'auth.sign_up.business.step2.label' | transloco }}</ng-template>
-        <div class="py-8">
-            <h2 class="text-2xl font-medium mb-1">{{ 'auth.sign_up.business.step2.title' | transloco }}</h2>
-            <p class="text-gray-600 mb-8">{{ 'auth.sign_up.business.step2.description' | transloco }}</p>
+        <div class="grid grid-cols-2 gap-4">
+          <app-input [control]="businessForm.controls.postalCode" placeholder="12345">{{
+            'auth.sign_up.business.step1.postal_code' | transloco
+          }}</app-input>
 
-            <div class="flex flex-col space-y-6 mb-8" [formGroup]="representativeForm">
-                <div class="grid grid-cols-2 gap-4">
-                    <app-input
-                        [control]="representativeForm.controls.firstName"
-                        placeholder="{{ 'auth.sign_up.business.step2.first_name_placeholder' | transloco }}"
-                    >{{ 'auth.sign_up.business.step2.first_name' | transloco }}</app-input>
-
-                    <app-input
-                        [control]="representativeForm.controls.lastName"
-                        placeholder="{{ 'auth.sign_up.business.step2.last_name_placeholder' | transloco }}"
-                    >{{ 'auth.sign_up.business.step2.last_name' | transloco }}</app-input>
-                </div>
-
-                <app-input
-                    type="email"
-                    [control]="representativeForm.controls.email"
-                    placeholder="representative@example.com"
-                >{{ 'auth.sign_up.business.step2.email' | transloco }}</app-input>
-
-                <app-input
-                    [control]="representativeForm.controls.phone"
-                    placeholder="+1 (123) 456-7890"
-                >{{ 'auth.sign_up.business.step2.phone' | transloco }}</app-input>
-            </div>
-
-            <div class="flex justify-end space-x-4 mt-8">
-                <app-button
-                    variant="text"
-                    color="primary"
-                    (click)="stepper.previous()"
-                >
-                    {{ 'auth.sign_up.business.back' | transloco }}
-                </app-button>
-
-                <app-button
-                    variant="stroked"
-                    color="primary"
-                    [disabled]="representativeForm.invalid"
-                    (click)="completeRepresentativeForm()"
-                >
-                    {{ 'auth.sign_up.business.continue' | transloco }}
-                </app-button>
-            </div>
+          <app-input
+            [control]="businessForm.controls.country"
+            placeholder="{{ 'auth.sign_up.business.step1.country_placeholder' | transloco }}"
+            >{{ 'auth.sign_up.business.step1.country' | transloco }}</app-input
+          >
         </div>
-    </mat-step>
 
-    <!-- Step 3: Account Credentials -->
-    <mat-step>
-        <ng-template matStepLabel>{{ 'auth.sign_up.business.step3.label' | transloco }}</ng-template>
-        <div class="py-8">
-            <h2 class="text-2xl font-medium mb-1">{{ 'auth.sign_up.business.step3.title' | transloco }}</h2>
-            <p class="text-gray-600 mb-8">{{ 'auth.sign_up.business.step3.description' | transloco }}</p>
+        <app-input
+          type="textarea"
+          [control]="businessForm.controls.additionalInfo"
+          [rows]="3"
+          placeholder="{{ 'address.form.additionalInfoPlaceholder' | transloco }}"
+          >{{ 'address.form.additionalInfo' | transloco }}</app-input
+        >
+      </div>
 
-            <div class="flex flex-col gap-3 mb-8" [formGroup]="credentialsForm">
-                <app-input
-                    type="email"
-                    [control]="credentialsForm.controls.email"
-                    placeholder="your@email.com"
-                >{{ 'auth.sign_up.business.step3.email' | transloco }}</app-input>
+      <div class="flex justify-end space-x-4 mt-8">
+        <app-button
+          variant="stroked"
+          color="primary"
+          [disabled]="businessForm.invalid"
+          (click)="completeBusinessForm()"
+        >
+          {{ 'auth.sign_up.business.continue' | transloco }}
+        </app-button>
+      </div>
+    </div>
+  </mat-step>
 
-                <app-input
-                    type="password"
-                    [control]="credentialsForm.controls.password"
-                    placeholder="{{ 'auth.sign_up.business.step3.password_placeholder' | transloco }}"
-                    hint="{{ 'auth.sign_up.business.step3.password_hint' | transloco }}"
-                >{{ 'auth.sign_up.business.step3.password' | transloco }}</app-input>
+  <!-- Step 2: Account Credentials -->
+  <mat-step>
+    <ng-template matStepLabel>{{ 'auth.sign_up.business.step3.label' | transloco }}</ng-template>
+    <div class="py-8">
+      <h2 class="text-2xl font-medium mb-1">
+        {{ 'auth.sign_up.business.step3.title' | transloco }}
+      </h2>
+      <p class="text-gray-600 mb-8">{{ 'auth.sign_up.business.step3.description' | transloco }}</p>
 
-                <div>
-                    <app-input
-                        type="password"
-                        [control]="credentialsForm.controls.confirmPassword"
-                        placeholder="{{ 'auth.sign_up.business.step3.confirm_password_placeholder' | transloco }}"
-                    >{{ 'auth.sign_up.business.step3.confirm_password' | transloco }}</app-input>
+      <div class="flex flex-col gap-3 mb-8" [formGroup]="credentialsForm">
+        <div class="grid grid-cols-2 gap-4">
+          <app-input
+            [control]="credentialsForm.controls.firstName"
+            placeholder="{{ 'auth.sign_up.business.step2.first_name_placeholder' | transloco }}"
+            >{{ 'auth.sign_up.business.step2.first_name' | transloco }}</app-input
+          >
 
-                    <div *ngIf="credentialsForm.hasError('passwordMismatch')" class="text-red-500 text-sm -mt-4">
-                        {{ 'auth.sign_up.business.step3.password_mismatch' | transloco }}
-                    </div>
-                </div>
-
-                <app-input type="checkbox" [control]="credentialsForm.controls.termsOfService">
-                    <span class="flex gap-1">
-                        {{ 'auth.sign_up.business.step3.agree_to' | transloco }} <app-link routerLink="/tos">{{ 'auth.sign_up.business.step3.terms_and_conditions' | transloco }}</app-link>
-                    </span>
-                </app-input>
-
-            </div>
-
-            <div class="flex justify-end space-x-4 mt-8">
-                <app-button
-                    variant="text"
-                    color="primary"
-                    (click)="stepper.previous()"
-                >
-                    {{ 'auth.sign_up.business.back' | transloco }}
-                </app-button>
-
-                <app-button
-                    variant="stroked"
-                    color="primary"
-                    [disabled]="credentialsForm.invalid"
-                    [loading]="isSubmitting"
-                    (click)="submitForms()"
-                >
-                    {{ 'auth.sign_up.business.create_account' | transloco }}
-                </app-button>
-            </div>
+          <app-input
+            [control]="credentialsForm.controls.lastName"
+            placeholder="{{ 'auth.sign_up.business.step2.last_name_placeholder' | transloco }}"
+            >{{ 'auth.sign_up.business.step2.last_name' | transloco }}</app-input
+          >
         </div>
-    </mat-step>
+
+        <app-input
+          type="email"
+          [control]="credentialsForm.controls.email"
+          placeholder="your@email.com"
+          >{{ 'auth.sign_up.business.step3.email' | transloco }}</app-input
+        >
+
+        <app-input
+          type="password"
+          [control]="credentialsForm.controls.password"
+          placeholder="{{ 'auth.sign_up.business.step3.password_placeholder' | transloco }}"
+          hint="{{ 'auth.sign_up.business.step3.password_hint' | transloco }}"
+          >{{ 'auth.sign_up.business.step3.password' | transloco }}</app-input
+        >
+
+        <div>
+          <app-input
+            type="password"
+            [control]="credentialsForm.controls.confirmPassword"
+            placeholder="{{
+              'auth.sign_up.business.step3.confirm_password_placeholder' | transloco
+            }}"
+            >{{ 'auth.sign_up.business.step3.confirm_password' | transloco }}</app-input
+          >
+
+          <div
+            *ngIf="credentialsForm.hasError('passwordMismatch')"
+            class="text-red-500 text-sm -mt-4"
+          >
+            {{ 'auth.sign_up.business.step3.password_mismatch' | transloco }}
+          </div>
+        </div>
+
+        <app-input type="checkbox" [control]="credentialsForm.controls.termsOfService">
+          <span class="flex gap-1">
+            {{ 'auth.sign_up.business.step3.agree_to' | transloco }}
+            <app-link routerLink="/tos">{{
+              'auth.sign_up.business.step3.terms_and_conditions' | transloco
+            }}</app-link>
+          </span>
+        </app-input>
+      </div>
+
+      <div class="flex justify-end space-x-4 mt-8">
+        <app-button variant="text" color="primary" (click)="stepper.previous()">
+          {{ 'auth.sign_up.business.back' | transloco }}
+        </app-button>
+
+        <app-button
+          variant="stroked"
+          color="primary"
+          [disabled]="credentialsForm.invalid"
+          [loading]="isSubmitting"
+          (click)="submitForms()"
+        >
+          {{ 'auth.sign_up.business.create_account' | transloco }}
+        </app-button>
+      </div>
+    </div>
+  </mat-step>
 </mat-stepper>

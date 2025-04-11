@@ -36,6 +36,7 @@ import { NgIf } from '@angular/common';
 import { InputComponent } from 'app/shared/components/ui/input/input.component';
 import { SecurityForm } from './security.types';
 import { SnackbarService } from 'app/core/services/custom-snackbar/custom-snackbar.service';
+import { LinkComponent } from '../../../../../shared/components/ui/link/link.component';
 
 @Component({
   selector: 'settings-security',
@@ -54,7 +55,8 @@ import { SnackbarService } from 'app/core/services/custom-snackbar/custom-snackb
     TranslocoModule,
     ButtonComponent,
     NgIf,
-    InputComponent
+    InputComponent,
+    LinkComponent
   ],
   standalone: true
 })
@@ -98,7 +100,7 @@ export class SettingsSecurityComponent implements OnInit {
     );
 
     // Fetch additional user preferences from your user service if needed
-    this._userService.user$
+    this._userService.currentUser$
       .pipe(
         tap(user => {
           if (user) {
