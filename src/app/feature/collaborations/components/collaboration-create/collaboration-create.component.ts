@@ -69,6 +69,7 @@ import { CollaborationFormService } from 'app/feature/collaborations/components/
 import { CollaborationCalendarService } from 'app/feature/collaborations/components/collaboration-create/collaboration-create-form/collaboration-calendar.service';
 import { InputComponent } from 'app/shared/components/ui/input/input.component';
 import { SelectComponent } from 'app/shared/components/ui/select/select.component';
+import { CategorizedSelectComponent } from 'app/shared/components/ui/select/categorized-select.component';
 import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 
 import { ButtonComponent } from 'app/shared/components/ui/button/button.component';
@@ -122,6 +123,7 @@ registerLocaleData(localePl);
     TranslocoModule,
     InputComponent,
     SelectComponent,
+    CategorizedSelectComponent,
     ButtonComponent
   ],
   styleUrl: 'collaboration-create.styles.css'
@@ -228,6 +230,9 @@ export class CollaborationCreateComponent implements OnInit {
   profilImageControl = new FormControl('', [Validators.required]);
   imageControl = new FormControl('', [Validators.required]);
 
+  selectCurrenciesControl = new FormControl('PLN', [Validators.required]);
+  selectCurrenciesBarter = new FormControl('', [Validators.required]);
+
   private _unsubscribeAll: Subject<any> = new Subject<any>();
 
   imageUrl: string | null = null;
@@ -296,6 +301,7 @@ export class CollaborationCreateComponent implements OnInit {
     this._confirmPopUpService.configForm$.subscribe(form => {
       this.configFormUpdate = form;
     });
+  }
 
     this._validateCollaborationData.warningChanged.subscribe(newWarningState => {
       this.warning = newWarningState;
@@ -308,30 +314,66 @@ export class CollaborationCreateComponent implements OnInit {
     this._lookingUpDataService.getCityList();
     this._lookingUpDataService.getCompensationType();
     this._lookingUpDataService.getUserCompany();
-    this._lookingUpDataService.getCompany();
+    // this._lookingUpDataService.getCompany();
+  }
+
+  //=====================================
+
+  currencies = [
+    { label: 'PLN', value: 'PLN', symbol: 'zł' },
+    { label: 'EUR', value: 'EUR', symbol: '€' },
+    { label: 'USD', value: 'USD', symbol: '$' }
+  ];
+
+  categoryControl = new FormControl('');
+
+  categoryOptions: string[] = [];
+
+  isCategorySelected = false;
+
+  onCategoryReset() {
+    this.isCategorySelected = false;
+    this.categoryOptions = [];
+    this.categoryControl.reset();
+  }
+
+  showResultCash = false;
+  showResultBarter = false;
+
+  switchResult(event: any): void {
+    switch (event) {
+      case 'CASH':
+        this.showResultCash = true;
+        this.showResultBarter = false;
+        break;
+      case 'BARTER':
+        this.showResultCash = false;
+        this.showResultBarter = true;
+      default:
+        return;
+    }
   }
 
   getProfilPhoto() {
-    combineLatest([this.userList$, this.companyList$, this.companyControl.valueChanges])
+    combineLatest([this.userList$, this.companyControl.valueChanges])
       .pipe(distinctUntilChanged())
-      .subscribe(([userList, companyList, selectedValue]) => {
-        const selectedCompany = userList.find(user => user.value === Number(selectedValue));
+      .subscribe(([userList, selectedValue]) => {
+        const selectedUser = userList.find(user => user.value === selectedValue);
 
-        if (!selectedCompany) {
+        console.log('userList:', userList);
+        console.log('selectedValue:', selectedValue);
+
+        console.log('selectedUser:', selectedUser);
+
+        if (!selectedUser) {
           this.profilImageControl.setValue(null);
           return;
         }
 
-        const matchedCompany = companyList.find(company => company.value === selectedCompany.label);
-
-        if (matchedCompany) {
-          this.profilImageControl.reset();
-          setTimeout(() => {
-            this.profilImageControl.setValue(matchedCompany.label);
-          });
-        } else {
-          this.profilImageControl.setValue(null);
-        }
+        this.profilImageControl.reset();
+        setTimeout(() => {
+          this.profilImageControl.setValue(selectedUser.value);
+        });
       });
   }
 
@@ -434,8 +476,8 @@ export class CollaborationCreateComponent implements OnInit {
     this._lookingUpDataService.toggleChip(type, item);
   }
 
-  getTooltipText(platform: any) {
-    return this._lookingUpDataService.getTooltipText(platform);
+  getTooltipText(type: 'contentTypes' | 'platforms', item: any) {
+    return this._lookingUpDataService.getTooltipText(type, item);
   }
 
   goBackToMain(): void {

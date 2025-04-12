@@ -30,41 +30,46 @@
         aria-label="Select an image file"
       />
 
-      <!-- Image container with preview or placeholder -->
-      <div class="relative w-fit">
-        <!-- Placeholder when no image is selected -->
-        <div
-          *ngIf="!previewUrl && (!control.value || control.value.length === 0)"
-          class="h-32 w-32 border-2 border-dashed border-gray-300 flex items-center justify-center cursor-pointer bg-gray-50"
-          [ngClass]="{
-            'rounded-full': rounded,
-            'rounded-md': !rounded
-          }"
-          (click)="fileInput.click()"
-        >
-          <div class="text-center p-4">
-            <mat-icon class="text-gray-400 text-3xl mb-2">photo_camera</mat-icon>
-            <p class="text-sm text-gray-500">Click to select image</p>
-          </div>
-        </div>
+            <!-- Image container with preview or placeholder -->
+            <div
+                class="relative w-full">
+                <!-- Placeholder when no image is selected -->
+                <div
+                    *ngIf="!previewUrl && (!control.value || control.value.length === 0)"
+                    [class]="height + ' ' + width"  
+                    class="
+                    border-2 border-dashed border-gray-300 flex items-center justify-center cursor-pointer bg-gray-50"
+                    [ngClass]="{
+                        'rounded-full':  rounded,
+                        'rounded-md': !rounded
+                        }"
+                    (click)="fileInput.click()"
+                >
+                    <div class="text-center p-4">
+                        <mat-icon class="text-gray-400 text-3xl mb-2">photo_camera</mat-icon>
+                        <p class="text-sm text-gray-500">Click to select image</p>
+                    </div>
+                </div>
 
-        <!-- Preview image if available -->
-        <div *ngIf="previewUrl || (control.value && control.value.length > 0)" class="relative">
-          <div
-            class="h-32 w-32 border overflow-hidden cursor-pointer"
-            [ngClass]="{
-              'rounded-full': rounded,
-              'rounded-md': !rounded
-            }"
-            (click)="fileInput.click()"
-          >
-            <img
-              [src]="previewUrl || control.value"
-              class="w-full h-full object-cover"
-              alt="Selected image"
-            />
-          </div>
-
+                <!-- Preview image if available -->
+                <div *ngIf="previewUrl || (control.value && control.value.length > 0)" class="relative">
+                    <div
+                        [class]="height + ' ' + width"
+                        class="border 
+                        overflow-hidden cursor-pointer"
+                        [ngClass]="{
+                        'rounded-full':  rounded,
+                        'rounded-md': !rounded
+                        }"
+                        (click)="fileInput.click()"
+                    >
+                        <img
+                            [src]="previewUrl || control.value"
+                            class="w-full h-full object-cover"
+                            alt="Selected image"
+                        />
+                    </div>
+                  
           <!-- Remove button -->
           <button
             mat-mini-fab

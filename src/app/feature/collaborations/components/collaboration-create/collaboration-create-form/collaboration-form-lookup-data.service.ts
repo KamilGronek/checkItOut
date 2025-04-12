@@ -42,7 +42,7 @@ export class LookingUpDataService {
   cityList$ = this.cityListSubject.asObservable();
   compensationList$ = this.compensationTypeSubject.asObservable();
 
-  userListSubject = new BehaviorSubject<{ value: number; label: string }[]>([]);
+  userListSubject = new BehaviorSubject<{ value: string; label: number }[]>([]);
   userList$ = this.userListSubject.asObservable();
 
   companyListSubject = new BehaviorSubject<{ value: string; label: string }[]>([]);
@@ -50,6 +50,8 @@ export class LookingUpDataService {
 
   serviceTypeSubject = new BehaviorSubject<{ value: number; label: string }[]>([]);
   serviceType$ = this.serviceTypeSubject.asObservable();
+
+  contentTypesContent = [];
 
   constructor(
     private fb: FormBuilder,
@@ -69,7 +71,7 @@ export class LookingUpDataService {
               this.translocoService
                 .selectTranslate(
                   `user.collaborations.compensationType.${
-                    compensation === 'Gotówka' ? 'cash' : 'barter'
+                    compensation === 'CASH' ? 'cash' : 'barter'
                   }`
                 )
                 .pipe(map(label => ({ value: compensation, label })))
@@ -114,12 +116,10 @@ export class LookingUpDataService {
   getUserCompany() {
     this._collaborationService.getUser().subscribe({
       next: (response: User) => {
-        const filteredUsers = response.content
-          .filter(company => company.company)
-          .map(company => ({
-            value: company.id,
-            label: company.company.name
-          }));
+        const filteredUsers = response.content.map(user => ({
+          value: user.profilePicture,
+          label: user.id
+        }));
         this.userListSubject.next(filteredUsers);
       },
       error: error => {
@@ -127,24 +127,7 @@ export class LookingUpDataService {
       }
     });
   }
-
-  getCompany() {
-    this._collaborationService.getCompany().subscribe({
-      next: (response: any) => {
-        const mappedCompany = response.content.map(company => ({
-          value: company.name,
-          label: company.imageUrl
-        }));
-        this.companyListSubject.next(mappedCompany);
-
-        console.log('mappedCompany', mappedCompany);
-      },
-      error: error => {
-        console.error('Error fetching user list:', error);
-      }
-    });
-  }
-
+  
   getServiceTypeList() {
     this._collaborationService.getServiceTypeList().subscribe({
       next: (response: ServiceTypeCollaboration) => {
@@ -163,7 +146,12 @@ export class LookingUpDataService {
   getContentType(): void {
     this._collaborationService.getCollaborationContentType().subscribe({
       next: response => {
-        this.contentTypeSubject.next(response.content);
+        this.contentTypesContent = response.content.map(contentType => ({
+          name: contentType.name,
+          active: false
+        }));
+        
+        this.contentTypeSubject.next(this.contentTypesContent);
       },
       error: error => {
         console.error('Error fetching content type:', error);
@@ -180,8 +168,6 @@ export class LookingUpDataService {
             isDisplay: platform.active
           };
         });
-
-        console.log('platforms');
 
         this.getPlatformSubject.next(platforms);
         this.initializePlatformToggle(platforms);
@@ -204,26 +190,23 @@ export class LookingUpDataService {
   }
 
   toggleChip(type: 'contentTypes' | 'platforms', item: any): void {
-    console.log('item:', item);
 
     if (type === 'contentTypes') {
       item.active = !item.active;
     } else if (type === 'platforms') {
       item.isDisplay = !item.isDisplay;
+      console.log(' item.isDisplay:', item.isDisplay);
+
+      this.contentTypesContent.map(contentType => {
+        contentType.active = item.isDisplay;
+      });
+
+      let currentValues = this.getCurrentValues(type);
+
+      console.log('contentTypesContent', this.contentTypesContent);
+
+      this.updateFormValue(type, currentValues);
     }
-
-    let currentValues = this.getCurrentValues(type);
-
-    if ((type === 'platforms' && item.isDisplay) || (type === 'contentTypes' && item.active)) {
-      currentValues.push(item.id);
-
-      console.log('currentValues:', currentValues);
-    } else {
-      currentValues = currentValues.filter((id: string) => id !== item.id);
-    }
-    console.log(`Updated ${type}:`, currentValues);
-
-    this.updateFormValue(type, currentValues);
   }
 
   private updateFormValue(type: 'contentTypes' | 'platforms', values: any[]): void {
@@ -240,13 +223,27 @@ export class LookingUpDataService {
     return this.formGroup?.get(type)?.value || [];
   }
 
-  getTooltipText(platform: any): string {
-    if (!platform.active) {
-      return `${platform.name} - ${this.translocoService.translate(
-        'user.collaborations.details.tooltip'
-      )}`;
+  itemPlatform = '';
+
+  getTooltipText(type: 'contentTypes' | 'platforms', item: any) {
+    if (type === 'platforms') {
+      if (!item.active) {
+        return `${item.name} - ${this.translocoService.translate(
+          'user.collaborations.details.tooltip'
+        )}`;
+      }
+
+      this.itemPlatform = item.name;
+
+      return this.itemPlatform;
     }
-    return platform.name;
+
+    const allActive = this.contentTypesContent.some(contentItem => contentItem.active);
+    console.log(allActive, 'allActive');
+
+    if (allActive) {
+      return this.itemPlatform, this.itemPlatform;
+    }
   }
 
   ngOnDestroy(): void {

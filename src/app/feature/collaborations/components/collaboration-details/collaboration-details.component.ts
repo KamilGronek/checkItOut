@@ -298,6 +298,13 @@ export class CollaborationsDetailComponent implements OnInit {
           ? response.platforms
           : [response.platforms];
 
+        this.mapActiveItemsToForm('platforms', this.platformsList);
+        // this._collaborationEditService.mapActiveItemsToForm(
+        //   this.editCollaborationFormGroup,
+        //   'platforms',
+        //   this.platformsList
+        // );
+
         this._cdRef.detectChanges();
 
         this.card = {
@@ -312,6 +319,23 @@ export class CollaborationsDetailComponent implements OnInit {
     });
   }
 
+  mapActiveItemsToForm(type: 'platforms' | 'contentTypes', list: any[]) {
+    const activeIds: string[] = [];
+
+    list.forEach(item => {
+      if (item.active) {
+        activeIds.push(item.id);
+        item.active = false;
+      }
+    });
+
+    this.editCollaborationFormGroup.patchValue({
+      [type]: activeIds
+    });
+
+    console.log(`Mapped active ${type}:`, activeIds);
+  }
+
   getCollaborationList() {
     this._collaborationService.getCollaborationList().subscribe({
       next: (response: CollaborationResponse) => {
@@ -324,6 +348,7 @@ export class CollaborationsDetailComponent implements OnInit {
         this.collaborationList = response.content;
         console.log('collaborationList (po aktualizacji):', this.collaborationList);
       },
+
       error: err => {
         console.error('Error fetching collaboration:', err);
         this.error = 'Failed to load collaboration.';

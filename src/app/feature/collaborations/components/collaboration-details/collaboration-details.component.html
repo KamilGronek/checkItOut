@@ -281,13 +281,13 @@
             <form  [formGroup]="editCollaborationFormGroup">
               <div class="font-semibold leading-tight ng-tns-c2638821912-677 ng-star-inserted"  [ngClass]="{ hidden: isEditing }">
                   {{
-                      "user.collaborations.details.compensationType"
+                      "user.collaborations.details.compensation_type"
                           | transloco
                   }}
               </div>
               <div class="mt-4 ng-tns-c2638821912-677 ng-star-inserted" [ngClass]="{ hidden: !isEditing }">
                 <app-select
-                  [label]="'user.collaborations.details.compensationType' | transloco"
+                  [label]="'user.collaborations.details.compensation_type' | transloco"
                   [control]="compensationTypeControl"
                   [options]="compensationList$ |async">
               </app-select>
@@ -295,7 +295,7 @@
             <div class="mt-4 ng-tns-c2638821912-677 ng-star-inserted"
                 [ngClass]="{ hidden: isEditing }"
             >
-              {{ 'user.collaborations.compensationType.' + (collaboration.compensationType === 'Gotówka' ? 'cash' : 'barter') | transloco }}
+              {{ 'user.collaborations.compensation_type.' + (collaboration.compensation_type === 'Gotówka' ? 'cash' : 'barter') | transloco }}
             </div>
             </form>
           </fuse-card>
@@ -499,13 +499,13 @@
           <form  [formGroup]="editCollaborationFormGroup">
             <div class="font-semibold leading-tight ng-tns-c2638821912-677 ng-star-inserted"  >
                 {{
-                    "user.collaborations.details.compensationType"
+                    "user.collaborations.details.compensation_type"
                         | transloco
                 }}
             </div>
           <div class="mt-4 ng-tns-c2638821912-677 ng-star-inserted" [ngClass]="{ hidden: !isEditing }">
               <app-select
-              [label]="'user.collaborations.details.compensationType' | transloco"
+              [label]="'user.collaborations.details.compensation_type' | transloco"
               [control]="compensationTypeControl"
               [options]="compensationList$ |async">
               </app-select>

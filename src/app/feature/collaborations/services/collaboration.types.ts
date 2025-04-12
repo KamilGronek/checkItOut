@@ -116,6 +116,7 @@ export interface ServiceType {
 export interface UserContent {
   id: number;
   firebaseUserId: string;
+  profilePicture: string;
   userType: string;
   userTypePL: string;
   email: string;
