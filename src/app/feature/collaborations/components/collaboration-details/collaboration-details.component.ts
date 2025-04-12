@@ -361,8 +361,6 @@ export class CollaborationsDetailComponent implements OnInit {
   }
 
   toggleChip(type: 'contentTypes' | 'platforms', item: any) {
-    console.log('item:', item);
-
     item.active = !item.active;
 
     if (type === 'platforms') {
@@ -383,7 +381,6 @@ export class CollaborationsDetailComponent implements OnInit {
       [type]: currentValues
     });
 
-    console.log(`Updated ${type}:`, currentValues);
   }
 
   editCollaboration(): void {

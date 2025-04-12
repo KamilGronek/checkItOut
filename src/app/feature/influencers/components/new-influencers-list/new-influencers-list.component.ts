@@ -346,11 +346,11 @@ export class newInfluencersListComponent
             )
             .subscribe({
                 next: (response: InfluencerUserResponse) => {
-                    this.length = response.page.totalElements;
-                    this.pageIndex = response.page.number;
-                    this.paginator.length = response.page.totalElements;
-                    this.paginator.pageIndex = response.page.number;
-                    this.paginator.pageSize = response.page.size;
+                    this.length = response.totalElements;
+                    this.pageIndex = response.number;
+                    this.paginator.length = response.totalElements;
+                    this.paginator.pageIndex = response.number;
+                    this.paginator.pageSize = response.size;
 
                     this.dataSource.data = response.content;
                     this.snackbarService.showSuccess(

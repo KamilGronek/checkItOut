@@ -39,12 +39,10 @@ export interface InfluencerResponse {
 
 export interface InfluencerUserResponse {
   content: InfluencerUser[];
-  page: {
-    size: number;
-    number: number;
-    totalElements: number;
-    totalPages: number;
-  };
+  size: number;
+  number: number;
+  totalElements: number;
+  totalPages: number;
 }
 
 export interface CityResponse {

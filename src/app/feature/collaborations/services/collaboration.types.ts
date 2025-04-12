@@ -10,12 +10,10 @@ export interface Card {
 
 export interface CollaborationResponse {
   content: Collaboration[];
-  page: {
-    size: number;
-    number: number;
-    totalElements: number;
-    totalPages: number;
-  };
+  size: number;
+  number: number;
+  totalElements: number;
+  totalPages: number;
 }
 
 export interface Collaboration {
