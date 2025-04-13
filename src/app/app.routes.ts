@@ -6,9 +6,7 @@ import {LayoutComponent} from 'app/shared/components/layout/layout.component';
 import {AuthResolver} from 'app/core/resolvers/auth.resolver';
 import {ComponentSamplesComponent} from "./shared/components/ui/component-samples.component";
 import {AuthSignOutComponent} from "./feature/authentication/components/sign-out/sign-out.component";
-import {LandingPageComponent} from "../landing-page/landing-page.component";
-import {InfluencerViewComponent} from "../landing-page/influencer/influencer-view/influencer-view.component";
-import {CompanyViewComponent} from "../landing-page/company/company-view/company-view.component";
+import {LandingPageComponent} from "./feature/landing-page/landing-page.component";
 
 // @formatter:off
 /* eslint-disable max-len */
@@ -35,15 +33,6 @@ export const appRoutes: Route[] = [
                 path: 'landing-page',
                 component: LandingPageComponent,
             },
-            {
-                path: 'landing-page/influencer',
-                component: InfluencerViewComponent,
-            },
-            {
-                path: 'landing-page/company',
-                component: CompanyViewComponent,
-            },
-
         ],
     },
 

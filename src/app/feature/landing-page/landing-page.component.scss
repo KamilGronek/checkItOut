@@ -32,7 +32,7 @@ mat-accordion {
         margin-bottom: 1rem;
         border-radius: 4px;
         overflow: hidden;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
         .mat-expansion-panel-header {
             background-color: #f9f9f9;
@@ -47,5 +47,20 @@ mat-accordion {
             font-size: 0.95rem;
             line-height: 1.5;
         }
+
+
     }
+
+        @media (max-width: 600px) {
+            .mat-expansion-panel {
+                .mat-expansion-panel-header {
+                    font-size: 1rem;
+                    padding: 0.5rem 1rem;
+                }
+
+                .faq-answer {
+                    font-size: 0.85rem;
+                }
+            }
+        }
 }
