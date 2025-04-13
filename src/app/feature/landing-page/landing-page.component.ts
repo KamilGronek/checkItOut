@@ -1,19 +1,50 @@
-import {Component} from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    ViewEncapsulation,
+} from '@angular/core';
+import {FooterComponent} from "./footer/footer.component";
+import {HeaderComponent} from "./header/header.component";
+import {RouterLink, RouterOutlet} from "@angular/router";
 import {MatIcon} from "@angular/material/icon";
 import {MatExpansionModule} from "@angular/material/expansion";
 import {DatePipe, NgForOf} from "@angular/common";
-import {RouterLink, RouterOutlet} from "@angular/router";
-import {FooterComponent} from "./footer/footer.component";
+import {MatButton} from "@angular/material/button";
+import {NgClass} from '@angular/common';
+import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
+import {FuseCardComponent} from '@fuse/components/card';
+import {CollaborationComponent} from "./collaboration/collaboration.component";
 
 @Component({
     selector: 'app-landing-page',
     standalone: true,
-    imports: [MatIcon, MatExpansionModule, NgForOf, DatePipe, RouterLink, RouterOutlet, FooterComponent],
+    imports: [MatIcon, MatButtonModule,
+        NgClass, MatIconModule, CollaborationComponent,
+        MatExpansionModule, NgForOf, DatePipe, RouterLink,
+        RouterOutlet, FooterComponent, HeaderComponent,
+        FuseCardComponent, MatButton],
     templateUrl: './landing-page.component.html',
     styleUrl: './landing-page.component.scss'
 })
 export class LandingPageComponent {
     protected readonly Date = Date;
+    yearlyBilling: boolean = true;
+
+    steps = [
+        {
+            title: 'Zarejestruj się',
+            description: 'Załóż konto influencera w kilka sekund i pokaż markom swój profil.'
+        },
+        {
+            title: 'Wypełnij profil',
+            description: 'Dodaj swoje statystyki, linki do social mediów i preferencje dotyczące współprac.'
+        },
+        {
+            title: 'Otrzymuj oferty',
+            description: 'Dopasujemy dla Ciebie najlepsze współprace z firmami.'
+        }
+    ];
 
     faqs = [
         {
