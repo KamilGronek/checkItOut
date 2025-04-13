@@ -81,6 +81,10 @@ export class CollaborationService {
     return this.http.get<User>(this.mainApiUrl + '/user/paged');
   }
 
+  getCompany(): Observable<User> {
+    return this.http.get<User>(this.mainApiUrl + '/company/paged');
+  }
+
   getServiceTypeList(): Observable<ServiceTypeCollaboration> {
     return this.http.get<ServiceTypeCollaboration>(this.mainApiUrl + '/service-type/paged');
   }

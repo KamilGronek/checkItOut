@@ -101,22 +101,4 @@ export class CollaborationEditService {
         }
       });
   }
-
-  mapActiveItemsToForm(form: FormGroup, type: 'platforms' | 'contentTypes', list: any[]): void {
-    const activeIds: string[] = [];
-
-    list.forEach(item => {
-      if (item.active) {
-        activeIds.push(item.id);
-        item.active = false;
-      }
-    });
-
-    form.patchValue({
-      [type]: activeIds
-    });
-
-    console.log(`Mapped active ${type}:`, activeIds);
-  }
-
 }
