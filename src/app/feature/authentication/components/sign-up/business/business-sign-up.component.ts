@@ -143,15 +143,14 @@ export class BusinessSignUpComponent {
         .pipe(
           finalize(() => (this.isSubmitting = false)),
           catchError(error => {
-            console.log(error);
-            this._snackbarService.showFailure(
-              `Registration failed: ${error.error.errorMessage || 'Unknown error'}`
-            );
-            return of(null);
+            console.log(error.error.errorMessage);
+            this._snackbarService.showFailure(error.error.errorMessage);
+            return of(error);
           })
         )
         .subscribe((response: RegisterUserResponse) => {
           if (!response || response.error) {
+            console.log(response);
             this._snackbarService.showFailure(
               response?.error.errorMessage || 'Registration failed'
             );
