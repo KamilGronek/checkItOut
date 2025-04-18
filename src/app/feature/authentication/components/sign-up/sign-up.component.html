@@ -1,62 +1,78 @@
 <div class="flex items-center justify-center lg:justify-end h-full">
-    <div class="max-w-80">
-        <!-- Logo -->
-        <div class="w-12">
-            <img src="assets/images/logo/logo.svg">
-        </div>
-
-        <!-- Title -->
-        <div class="mt-8 text-4xl font-extrabold tracking-tight leading-tight">{{ 'auth.sign_up.title' | transloco }}</div>
-        <div class="flex items-center gap-2 items-baseline mt-0.5 font-medium">
-            <div>{{ 'auth.sign_up.already_have_account' | transloco }}</div>
-            <app-link
-            [routerLink]="['/auth/sign-in']">
-                {{ 'auth.sign_in.title' | transloco }}
-            </app-link>
-        </div>
-
-        <div class="flex flex-col gap-4 mt-8">
-            <app-card (click)="signUpAsInfluencer()" customClass="hover:-translate-y-1 duration-300">
-                <p card-header class="flex items-center gap-4">
-                    <mat-icon color="accent" svgIcon="feather:instagram" class="icon-size-7"></mat-icon>
-                    <span>
-                        {{ 'auth.sign_up.sign_up_influencer' | transloco }}
-                    </span>
-                </p>
-                <p class="mt-2">
-                    {{ 'auth.sign_up.sign_up_using' | transloco }} <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#f9ba34] via-[#ee2a7b] to-[#6228d7]">Instagram</span>
-                </p>
-            </app-card>
-            <div class="flex items-center">
-                <div class="flex-auto mt-px border-t"></div>
-                <div class="mx-2 text-secondary">{{ 'auth.sign_up.or_sign_up_as' | transloco }}</div>
-                <div class="flex-auto mt-px border-t"></div>
-            </div>
-            <app-card (click)="signUpAsBusiness()" customClass="hover:-translate-y-1 duration-300">
-                <p card-header class="flex items-center gap-4">
-                    <mat-icon color="accent" svgIcon="feather:clipboard" class="icon-size-7"></mat-icon>
-                    <span>
-                        {{ 'auth.sign_up.sign_up_business' | transloco }}
-                    </span>
-                </p>
-                <p class="mt-2">
-                    {{ 'auth.sign_up.sign_up_using_form' | transloco }}
-                </p>
-                <p card-footer class="mt-3">
-                    {{ 'auth.sign_up.connect_instagram_after' | transloco }}
-                </p>
-            </app-card>
-        </div>
-
-        <!-- Alert -->
-        <fuse-alert
-            class="mt-8"
-            *ngIf="showAlert"
-            [appearance]="'outline'"
-            [showIcon]="false"
-            [type]="alert.type"
-            [@shake]="alert.type === 'error'">
-            {{ alert.message }}
-        </fuse-alert>
+  <div class="max-w-80">
+    <!-- Logo -->
+    <div class="w-12">
+      <img src="assets/images/logo/logo.svg" />
     </div>
+
+    <!-- Title -->
+    <div class="mt-8 text-4xl font-extrabold tracking-tight leading-tight">
+      {{ 'auth.sign_up.title' | transloco }}
+    </div>
+    <div class="flex items-center gap-2 items-baseline mt-0.5 font-medium">
+      <div>{{ 'auth.sign_up.already_have_account' | transloco }}</div>
+      <app-link [routerLink]="['/auth/sign-in']">
+        {{ 'auth.sign_in.title' | transloco }}
+      </app-link>
+    </div>
+
+    <!-- Loading state -->
+    <div *ngIf="isLoading" class="flex justify-center my-8">
+      <mat-spinner [diameter]="40"></mat-spinner>
+    </div>
+
+    <!-- Sign up options -->
+    <div *ngIf="!isLoading" class="flex flex-col gap-4 mt-8">
+      <!-- Instagram sign up option -->
+      <app-card
+        (click)="signUpAsInfluencer('instagram')"
+        customClass="hover:-translate-y-1 duration-300"
+      >
+        <p card-header class="flex items-center gap-4">
+          <mat-icon color="accent" svgIcon="feather:instagram" class="icon-size-7"></mat-icon>
+          <span>
+            {{ 'auth.sign_up.sign_up_influencer' | transloco }}
+          </span>
+        </p>
+        <p class="mt-2">
+          {{ 'auth.sign_up.sign_up_using' | transloco }}
+          <span
+            class="text-transparent bg-clip-text bg-gradient-to-r from-[#f9ba34] via-[#ee2a7b] to-[#6228d7]"
+            >Instagram</span
+          >
+        </p>
+      </app-card>
+      <div class="flex items-center">
+        <div class="flex-auto mt-px border-t"></div>
+        <div class="mx-2 text-secondary">{{ 'auth.sign_up.or_sign_up_as' | transloco }}</div>
+        <div class="flex-auto mt-px border-t"></div>
+      </div>
+      <app-card (click)="signUpAsBusiness()" customClass="hover:-translate-y-1 duration-300">
+        <p card-header class="flex items-center gap-4">
+          <mat-icon color="accent" svgIcon="feather:clipboard" class="icon-size-7"></mat-icon>
+          <span>
+            {{ 'auth.sign_up.sign_up_business' | transloco }}
+          </span>
+        </p>
+        <p class="mt-2">
+          {{ 'auth.sign_up.sign_up_using_form' | transloco }}
+        </p>
+        <p card-footer class="mt-3">
+          {{ 'auth.sign_up.connect_instagram_after' | transloco }}
+        </p>
+      </app-card>
+    </div>
+
+    <!-- Alert -->
+    <fuse-alert
+      class="mt-8"
+      *ngIf="showAlert"
+      [appearance]="'outline'"
+      [showIcon]="false"
+      [type]="alert.type"
+      [@shake]="alert.type === 'error'"
+    >
+      {{ alert.message }}
+    </fuse-alert>
+  </div>
 </div>

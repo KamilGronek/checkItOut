@@ -20,6 +20,26 @@
     "pl": "Polish"
   },
   "auth": {
+    "social": {
+      "processing": "Processing your authentication...",
+      "error_title": "Authentication Error",
+      "back_to_sign_in": "Back to Sign In",
+      "complete_registration": "Complete Your Registration",
+      "email_needed": "Please provide your email address to complete the registration.",
+      "email_placeholder": "Enter your email address",
+      "email": "Email Address",
+      "agree_to": "I agree to the",
+      "terms_and_conditions": "Terms and Conditions",
+      "complete_registration_button": "Complete Registration",
+      "return_to": "Return to",
+      "sign_in": "Sign In",
+      "platforms": {
+        "instagram": {
+          "name": "Instagram",
+          "description": "Connect with your Instagram account"
+        }
+      }
+    },
     "sign_in": {
       "title": "Sign in",
       "no_account": "Don't have an account?",
@@ -96,11 +116,11 @@
         "create_account": "Create Account"
       },
       "influencer": {
-        "finish_registration": "Finish your registration",
-        "fill_credentials_description": "Fill the form with your credentials. Additionally to Instagram log in method, you'll be able to log in with email and password.",
-        "email": "Email",
-        "email_placeholder": "Enter your email",
-        "register": "Register",
+        "finish_registration": "Complete Your Registration",
+        "fill_credentials_description": "Please provide your email to complete the registration.",
+        "email_placeholder": "Enter your email address",
+        "email": "Email Address",
+        "register": "Complete Registration",
         "return_to": "Return to"
       }
     },

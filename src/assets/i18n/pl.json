@@ -20,6 +20,26 @@
     "pl": "Polski"
   },
   "auth": {
+    "social": {
+      "processing": "Przetwarzanie uwierzytelniania...",
+      "error_title": "Błąd uwierzytelniania",
+      "back_to_sign_in": "Wróć do logowania",
+      "complete_registration": "Dokończ rejestrację",
+      "email_needed": "Podaj swój adres email, aby dokończyć rejestrację.",
+      "email_placeholder": "Wprowadź swój adres email",
+      "email": "Adres email",
+      "agree_to": "Zgadzam się z",
+      "terms_and_conditions": "Warunkami korzystania z usługi",
+      "complete_registration_button": "Dokończ rejestrację",
+      "return_to": "Wróć do",
+      "sign_in": "Logowania",
+      "platforms": {
+        "instagram": {
+          "name": "Instagram",
+          "description": "Połącz ze swoim kontem Instagram"
+        }
+      }
+    },
     "sign_in": {
       "title": "Zaloguj się",
       "no_account": "Nie masz konta?",
@@ -97,10 +117,10 @@
       },
       "influencer": {
         "finish_registration": "Dokończ rejestrację",
-        "fill_credentials_description": "Wypełnij formularz swoimi danymi. Dodatkowo oprócz logowania przez Instagram, będziesz mógł logować się za pomocą adresu email i hasła.",
-        "email": "Email",
-        "email_placeholder": "Wprowadź swój email",
-        "register": "Zarejestruj się",
+        "fill_credentials_description": "Podaj swój adres email, aby dokończyć rejestrację.",
+        "email_placeholder": "Wprowadź swój adres email",
+        "email": "Adres email",
+        "register": "Dokończ rejestrację",
         "return_to": "Wróć do"
       }
     },
@@ -489,7 +509,7 @@
     "primaryBadge": "Główny",
     "additionalInfo": "Dodatkowe Informacje",
     "types": {
-      "MAIN": "Główny",
+      "MAIN": "Domyślny",
       "SECONDARY": "Dodatkowy",
       "BILLING": "Rozliczeniowy",
       "SHIPPING": "Wysyłkowy",

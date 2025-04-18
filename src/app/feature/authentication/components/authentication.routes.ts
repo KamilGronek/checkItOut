@@ -4,10 +4,10 @@ import { AuthForgotPasswordComponent } from './forgot-password/forgot-password.c
 import { AuthResetPasswordComponent } from './reset-password/reset-password.component';
 import { AuthSignInComponent } from './sign-in/sign-in.component';
 import { AuthSignUpComponent } from './sign-up/sign-up.component';
-import { InstagramInfluencerCallbackComponent } from './instagram/influencer/instagram-influencer-callback.component';
 import { AuthSignOutComponent } from './sign-out/sign-out.component';
 import { BusinessSignUpComponent } from './sign-up/business/business-sign-up.component';
 import { NoAuthGuard } from 'app/core/guards/no-auth.guard';
+import { SocialCallbackComponent } from './social/social-callback.component';
 
 export default [
   {
@@ -43,7 +43,7 @@ export default [
     component: AuthSignOutComponent
   },
   {
-    path: 'instagram/influencer/callback',
-    component: InstagramInfluencerCallbackComponent
+    path: 'social/callback/:platform',
+    component: SocialCallbackComponent
   }
 ] as Routes;

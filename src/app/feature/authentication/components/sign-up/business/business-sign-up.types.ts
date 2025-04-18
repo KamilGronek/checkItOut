@@ -7,7 +7,6 @@ export type BusinessInfoForm = {
   // User fields
   profilePicture: FormControl<string | null>;
   name: FormControl<string | null>;
-  email: FormControl<string | null>;
   phoneNumber: FormControl<string | null>;
 
   // Address fields
@@ -31,9 +30,10 @@ export type AccountCredentialsForm = {
   termsOfService: FormControl<boolean>;
 };
 
-export type AccountCredentialsInstagramForm = {
+/**
+ * Form controls for influence registration via social
+ */
+export type SocialRegistrationForm = {
   email: FormControl<string | null>;
-  password: FormControl<string | null>;
-  confirmPassword: FormControl<string | null>;
   termsOfService: FormControl<boolean>;
 };

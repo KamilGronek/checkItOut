@@ -1,86 +1,90 @@
 <div class="flex items-center justify-center lg:justify-end h-full">
-    <div class="max-w-80">
-        <!-- Logo -->
-        <div class="w-12">
-            <img src="assets/images/logo/logo.svg"/>
-        </div>
-
-        <!-- Title -->
-        <div
-            class="mt-8 text-4xl font-extrabold tracking-tight leading-tight"
-        >{{ 'auth.sign_in.title' | transloco }}</div>
-        <div class="flex gap-1 items-baseline mt-0.5 font-medium">
-            <span>{{ 'auth.sign_in.no_account' | transloco }} </span>
-            <app-link [routerLink]="['/auth/sign-up']">{{ 'auth.sign_in.sign_up_link' | transloco }}</app-link>
-        </div>
-
-        <!-- Alert -->
-        <fuse-alert
-            class="mt-8"
-            *ngIf="showAlert"
-            [appearance]="'outline'"
-            [showIcon]="false"
-            [type]="alert.type"
-            [@shake]="alert.type === 'error'"
-        >
-            {{ alert.message }}
-        </fuse-alert>
-
-        <!-- Sign in form -->
-        <form class="mt-8" [formGroup]="signInForm" #signInNgForm="ngForm">
-            <app-input
-                type="email"
-                id="email"
-                [placeholder]="'auth.sign_in.email_placeholder' | transloco"
-                [control]="signInForm.controls['email']"
-            >{{ 'auth.sign_in.email' | transloco }}</app-input>
-
-            <div class="mt-3">
-                <app-input
-                    type="password"
-                    id="password"
-                    [placeholder]="'auth.sign_in.password_placeholder' | transloco"
-                    [control]="signInForm.controls['password']"
-                >{{ 'auth.sign_in.password' | transloco }}</app-input>
-            </div>
-
-            <!-- Actions -->
-            <div class="grow inline-flex items-center justify-between w-full mt-3">
-                <app-input
-                    type="checkbox"
-                    id="checkbox"
-                    [control]="signInForm.controls['rememberMe']"
-                >{{ 'auth.sign_in.remember_me' | transloco }}</app-input>
-                <app-link
-                    customClass="text-md"
-                    [routerLink]="['/auth/forgot-password']"
-                >{{ 'auth.sign_in.forgot_password' | transloco }}
-                </app-link>
-            </div>
-
-            <app-button
-                color="primary"
-                variant="flat"
-                [loading]="signInForm.disabled"
-                (click)="signInWithEmailAndPassword()"
-                [icon]="'feather:log-in'">
-                {{ 'auth.sign_in.submit' | transloco }}
-            </app-button>
-        </form>
-        <!-- Separator -->
-        <div class="flex items-center my-6">
-            <div class="flex-auto mt-px border-t"></div>
-            <div class="mx-2 text-secondary">{{ 'auth.sign_in.or_continue_with' | transloco }}</div>
-            <div class="flex-auto mt-px border-t"></div>
-        </div>
-
-        <!-- Single sign-on buttons -->
-        <app-button
-            variant="flat"
-            color="accent"
-            (click)="signInWithInstagram()"
-            [icon]="'feather:instagram'">
-            <span class="">{{ 'auth.sign_in.instagram' | transloco }}</span>
-        </app-button>
+  <div class="max-w-80">
+    <!-- Logo -->
+    <div class="w-12">
+      <img src="assets/images/logo/logo.svg" />
     </div>
+
+    <!-- Title -->
+    <div class="mt-8 text-4xl font-extrabold tracking-tight leading-tight">
+      {{ 'auth.sign_in.title' | transloco }}
+    </div>
+    <div class="flex gap-1 items-baseline mt-0.5 font-medium">
+      <span>{{ 'auth.sign_in.no_account' | transloco }} </span>
+      <app-link [routerLink]="['/auth/sign-up']">{{
+        'auth.sign_in.sign_up_link' | transloco
+      }}</app-link>
+    </div>
+
+    <!-- Alert -->
+    <fuse-alert
+      class="mt-8"
+      *ngIf="showAlert"
+      [appearance]="'outline'"
+      [showIcon]="false"
+      [type]="alert.type"
+      [@shake]="alert.type === 'error'"
+    >
+      {{ alert.message }}
+    </fuse-alert>
+
+    <!-- Sign in form -->
+    <form class="mt-8" [formGroup]="signInForm" #signInNgForm="ngForm">
+      <app-input
+        type="email"
+        id="email"
+        [placeholder]="'auth.sign_in.email_placeholder' | transloco"
+        [control]="signInForm.controls['email']"
+        >{{ 'auth.sign_in.email' | transloco }}</app-input
+      >
+
+      <div class="mt-3">
+        <app-input
+          type="password"
+          id="password"
+          [placeholder]="'auth.sign_in.password_placeholder' | transloco"
+          [control]="signInForm.controls['password']"
+          >{{ 'auth.sign_in.password' | transloco }}</app-input
+        >
+      </div>
+
+      <!-- Actions -->
+      <div class="grow inline-flex items-center justify-between w-full mt-3">
+        <app-input type="checkbox" id="checkbox" [control]="signInForm.controls['rememberMe']">{{
+          'auth.sign_in.remember_me' | transloco
+        }}</app-input>
+        <app-link customClass="text-md" [routerLink]="['/auth/forgot-password']"
+          >{{ 'auth.sign_in.forgot_password' | transloco }}
+        </app-link>
+      </div>
+
+      <app-button
+        color="primary"
+        variant="flat"
+        class="w-full"
+        [loading]="isLoading"
+        (click)="signInWithEmailAndPassword()"
+        [icon]="'feather:log-in'"
+      >
+        {{ 'auth.sign_in.submit' | transloco }}
+      </app-button>
+    </form>
+    <!-- Separator -->
+    <div class="flex items-center my-6">
+      <div class="flex-auto mt-px border-t"></div>
+      <div class="mx-2 text-secondary">{{ 'auth.sign_in.or_continue_with' | transloco }}</div>
+      <div class="flex-auto mt-px border-t"></div>
+    </div>
+
+    <!-- Single sign-on buttons -->
+    <app-button
+      variant="flat"
+      color="accent"
+      class="w-full"
+      (click)="signInWithSocialPlatform('instagram')"
+      [icon]="'feather:instagram'"
+    >
+      <span class="">{{ 'auth.sign_in.instagram' | transloco }}</span>
+    </app-button>
+  </div>
 </div>

@@ -9,12 +9,14 @@ import { SelectComponent } from 'app/shared/components/ui/select/select.componen
 import { ButtonComponent } from 'app/shared/components/ui/button/button.component';
 import { SnackbarService } from 'app/core/services/custom-snackbar/custom-snackbar.service';
 import { LinkComponent } from 'app/shared/components/ui/link/link.component';
-import { AuthService } from 'app/core/services/authentication/auth.service';
+import {
+  AuthService,
+  RegisterUserRequest,
+  RegisterUserResponse
+} from 'app/core/services/authentication/auth.service';
 import { TranslocoPipe } from '@ngneat/transloco';
-import { UserService } from 'app/feature/users/services/user.service';
-import { AccountStatus, CreateUserRequest, UserType } from 'app/feature/users/services/user.types';
-import { UserAddressesService } from 'app/feature/users/services/user-addresses/user-addresses.service';
-import { AddressType } from 'app/feature/users/services/user-addresses/user-addresses.types';
+import { catchError, finalize, of } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-business',
@@ -39,8 +41,6 @@ export class BusinessSignUpComponent {
 
   private _formBuilder = inject(FormBuilder);
   private _snackbarService = inject(SnackbarService);
-  private _userService = inject(UserService);
-  private _addressService = inject(UserAddressesService);
   private _authService = inject(AuthService);
   private _router = inject(Router);
 
@@ -55,7 +55,6 @@ export class BusinessSignUpComponent {
   businessForm: FormGroup<BusinessInfoForm> = this._formBuilder.group({
     profilePicture: this._formBuilder.control(null),
     name: this._formBuilder.control('', [Validators.required]),
-    email: this._formBuilder.control('', [Validators.required, Validators.email]),
     phoneNumber: this._formBuilder.control('', [
       Validators.required
       //   Validators.pattern(/^\+?[0-9\s-()]+$/) validation to be implemented
@@ -121,97 +120,66 @@ export class BusinessSignUpComponent {
     if (this.businessForm.valid && this.credentialsForm.valid) {
       this.isSubmitting = true;
 
-      // Use credentials email for login, but business email for the account
-      const accountEmail = this.businessForm.value.email;
-      const loginEmail = this.credentialsForm.value.email;
+      // Prepare registration request
+      const request: RegisterUserRequest = {
+        email: this.credentialsForm.value.email,
+        password: this.credentialsForm.value.password,
+        firstName: this.credentialsForm.value.firstName,
+        lastName: this.credentialsForm.value.lastName,
+        userType: 'COMPANY',
+        companyName: this.businessForm.value.name,
+        phoneNumber: this.businessForm.value.phoneNumber,
+        addressStreet: this.businessForm.value.street,
+        addressCity: this.businessForm.value.city,
+        addressPostalCode: this.businessForm.value.postalCode,
+        addressCountry: this.businessForm.value.country,
+        addressState: this.businessForm.value.state,
+        addressInfo: this.businessForm.value.additionalInfo
+      };
 
-      // Create Firebase user
+      // Register business user with the unified API
       this._authService
-        .signUpWithPassword({
-          name: this.credentialsForm.value.firstName,
-          email: loginEmail,
-          password: this.credentialsForm.value.password
-        })
-        .then(userCredential => {
-          // Create user record using the user service
-          const newUser: CreateUserRequest = {
-            userType: UserType.COMPANY,
-            email: accountEmail,
-            firstName: this.credentialsForm.value.firstName,
-            lastName: this.credentialsForm.value.lastName,
-            name: this.businessForm.value.name,
-            profilePicture: this.businessForm.value.profilePicture,
-            phoneNumber: this.businessForm.value.phoneNumber,
-            accountStatus: AccountStatus.INACTIVE
-          };
+        .registerBusinessUser(request)
+        .pipe(
+          finalize(() => (this.isSubmitting = false)),
+          catchError(error => {
+            console.log(error);
+            this._snackbarService.showFailure(
+              `Registration failed: ${error.error.errorMessage || 'Unknown error'}`
+            );
+            return of(null);
+          })
+        )
+        .subscribe((response: RegisterUserResponse) => {
+          if (!response || response.error) {
+            this._snackbarService.showFailure(
+              response?.error.errorMessage || 'Registration failed'
+            );
+            return;
+          }
 
-          // Use the new user service to create the user
-          this._userService.createUser(newUser).subscribe({
-            next: createdUser => {
-              // After user is created, create the address
-              if (createdUser && createdUser.id) {
-                // Create the address record
-                this._addressService
-                  .createAddress(createdUser.id, {
-                    userId: createdUser.id,
-                    street: this.businessForm.value.street,
-                    city: this.businessForm.value.city,
-                    postalCode: this.businessForm.value.postalCode,
-                    country: this.businessForm.value.country,
-                    state: this.businessForm.value.state,
-                    additionalInfo: this.businessForm.value.additionalInfo,
-                    addressType: AddressType.MAIN,
-                    primary: true
-                  })
-                  .subscribe({
-                    next: () => {
-                      this.isSubmitting = false;
-                      this._snackbarService.showSuccess('Business account created successfully.');
-                      this._router.navigateByUrl('/collaborations/list');
-                    },
-                    error: err => {
-                      console.error('Error creating address:', err);
-                      // Continue anyway since user was created
-                      this.isSubmitting = false;
-                      this._snackbarService.showSuccess(
-                        'Account created, but address could not be saved.'
-                      );
-                      this._router.navigateByUrl('/collaborations/list');
-                    }
-                  });
-              } else {
-                this.isSubmitting = false;
-                this._snackbarService.showSuccess('Business account created successfully.');
+          // Sign in with Firebase using the custom token
+          if (response.customToken) {
+            this._authService
+              .signInWithCustomToken(response.customToken)
+              .then(() => {
+                this._snackbarService.showSuccess('Business account created successfully');
                 this._router.navigateByUrl('/collaborations/list');
-              }
-            },
-            error: async err => {
-              this.isSubmitting = false;
-              console.error('Error creating user:', err);
-              this._snackbarService.showFailure(
-                `Error creating account: ${err.message || 'Unknown error'}`
-              );
-
-              // Delete Firebase user if backend creation fails
-              const user = this._authService.getCurrentUser();
-              console.log(user);
-              if (user) {
-                try {
-                  await user.delete();
-                  this._authService.signOut();
-                } catch (deleteError) {
-                  console.error('Error deleting Firebase user:', deleteError);
-                }
-              }
-            }
-          });
-        })
-        .catch(err => {
-          this.isSubmitting = false;
-          console.error('Firebase signup error:', err);
-          this._snackbarService.showFailure(
-            `Account creation failed: ${err.message || 'Email already in use or invalid'}`
-          );
+              })
+              .catch(error => {
+                console.error('Error signing in after registration:', error.message);
+                this._snackbarService.showFailure(
+                  'Account created but sign-in failed. Please sign in manually.'
+                );
+                this._router.navigateByUrl('/auth/sign-in');
+              });
+          } else {
+            // If no custom token is provided, redirect to sign-in
+            this._snackbarService.showSuccess(
+              'Business account created successfully. Please sign in.'
+            );
+            this._router.navigateByUrl('/auth/sign-in');
+          }
         });
     }
   }

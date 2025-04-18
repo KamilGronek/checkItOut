@@ -93,7 +93,11 @@
         <!-- Loading overlay -->
         <div
           *ngIf="isUploading"
-          class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center rounded-md"
+          class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center"
+          [ngClass]="{
+            'rounded-full': rounded,
+            'rounded-md': !rounded
+          }"
         >
           <mat-progress-spinner
             mode="indeterminate"

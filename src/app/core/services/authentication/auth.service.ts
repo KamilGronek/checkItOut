@@ -15,6 +15,32 @@ import {
 import { jwtDecode } from 'jwt-decode';
 import { User } from '../../../feature/users/services/user.types';
 import { SnackbarService } from '../custom-snackbar/custom-snackbar.service';
+import { environment } from 'environments/environment';
+
+export interface RegisterUserRequest {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  userType: 'COMPANY'; // Only COMPANY for this endpoint
+  companyName: string;
+  phoneNumber?: string;
+  addressStreet: string;
+  addressCity: string;
+  addressPostalCode: string;
+  addressCountry: string;
+  addressState?: string;
+  addressInfo?: string;
+}
+
+export interface RegisterUserResponse {
+  success: boolean;
+  firebaseUserId?: string;
+  userId?: number;
+  customToken?: string;
+  errorMessage?: string;
+  error?: any;
+}
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -22,7 +48,8 @@ export class AuthService {
   private _httpClient = inject(HttpClient);
   private _userService = inject(UserService);
   private _snackbarService = inject(SnackbarService);
-  private auth = inject(Auth);
+  private _auth = inject(Auth);
+  private _baseUrl = `${environment.apiUrl}/auth`;
 
   constructor() {
     this.initializeAuth();
@@ -61,14 +88,14 @@ export class AuthService {
   }
 
   getCurrentUser() {
-    return this.auth.currentUser;
+    return this._auth.currentUser;
   }
 
   async refreshToken(): Promise<void> {
     const token = this.getAccessToken();
 
     if (!token || AuthUtils.isTokenExpired(token)) {
-      const user = this.auth.currentUser;
+      const user = this._auth.currentUser;
       if (user) {
         const newToken = await user.getIdToken(true); // Force refresh
         this.accessToken = newToken;
@@ -134,7 +161,7 @@ export class AuthService {
    * @param email
    */
   forgotPassword(email: string): Promise<any> {
-    return sendPasswordResetEmail(this.auth, email);
+    return sendPasswordResetEmail(this._auth, email);
   }
 
   /**
@@ -146,6 +173,11 @@ export class AuthService {
     return this._httpClient.post('api/auth/reset-password', password);
   }
 
+  /**
+   * Sign in with email and password
+   *
+   * @param credentials User credentials
+   */
   async signInUsingEmailAndPassword(credentials: {
     email: string;
     password: string;
@@ -155,44 +187,45 @@ export class AuthService {
     }
 
     const userCredential = await signInWithEmailAndPassword(
-      this.auth,
+      this._auth,
       credentials.email,
       credentials.password
     );
-    const token = await new Promise<string>((resolve, reject) => {
-      resolve(userCredential.user.getIdToken());
-    });
-    return await new Promise((resolve_1, reject_1) => {
+    const token = await userCredential.user.getIdToken();
+
+    return await new Promise((resolve, reject) => {
       this.accessToken = token;
       this._authenticated = true;
 
       // Load user data from backend
       this._userService.getLoggedInUser().subscribe({
-        next: user_1 => {
-          if (user_1) {
-            this._snackbarService.showSuccess(`Welcome back, ${user_1.firstName}!`);
+        next: user => {
+          if (user) {
+            this._snackbarService.showSuccess(`Welcome back, ${user.firstName}!`);
           }
-          resolve_1(true);
+          resolve(true);
         },
-        error: error_1 => {
-          console.error('Error loading user data:', error_1);
+        error: error => {
+          console.error('Error loading user data:', error);
           // Continue even if user data fails to load
-          resolve_1(true);
+          resolve(true);
         }
       });
     });
   }
 
   /**
-   * Sign in with instagram
+   * Sign in with custom token (used for social auth)
+   *
+   * @param customToken Firebase custom token
    */
-  async signInWithInstagram(firebaseToken: string): Promise<void> {
+  async signInWithCustomToken(customToken: string): Promise<void> {
     if (this._authenticated) {
       throwError(() => 'User is already logged in.');
     }
 
     try {
-      const userCredential = await signInWithCustomToken(this.auth, firebaseToken);
+      const userCredential = await signInWithCustomToken(this._auth, customToken);
       const token = await userCredential.user.getIdToken();
 
       this.accessToken = token;
@@ -257,20 +290,45 @@ export class AuthService {
     // Clear user data
     this._userService.setCurrentUser(null);
 
-    return this.auth.signOut().then(() => {
+    return this._auth.signOut().then(() => {
       this._snackbarService.showSuccess('You have been successfully signed out.');
     });
   }
 
   /**
-   * Sign up
+   * Register business user
    *
-   * @param user
+   * @param businessData Business registration data
    */
-  signUpWithPassword(user: { name: string; email: string; password: string }): Promise<any> {
-    return createUserWithEmailAndPassword(this.auth, user.email, user.password);
+  registerBusinessUser(businessData: RegisterUserRequest): Observable<RegisterUserResponse> {
+    return this._httpClient
+      .post<RegisterUserResponse>(`${this._baseUrl}/register`, businessData)
+      .pipe(
+        catchError(error => {
+          console.error('Business registration error:', error);
+          return throwError(() => error);
+        })
+      );
   }
 
+  /**
+   * Sign up with email and password (Firebase only, used internally)
+   *
+   * @param user User credentials
+   */
+  signUpWithPassword(user: {
+    name: string;
+    email: string;
+    password: string;
+  }): Promise<UserCredential> {
+    return createUserWithEmailAndPassword(this._auth, user.email, user.password);
+  }
+
+  /**
+   * Send email verification
+   *
+   * @param userCredential Firebase user credential
+   */
   sendConfirmationEmail(userCredential: UserCredential): Promise<any> {
     return sendEmailVerification(userCredential.user);
   }
