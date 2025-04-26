@@ -45,7 +45,7 @@ export class SelectComponent {
    * The label displayed above the select input.
    * @default 'Select an option'
    */
-  @Input() label: string = null;
+  @Input() label: string = 'Select an option';
 
   /**
    * Array of options to display in the dropdown.

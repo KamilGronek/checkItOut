@@ -47,6 +47,7 @@ import { MatNativeDateModule } from '@angular/material/core';
  * <!-- Image upload -->
  * <app-input type="image" [control]="imageControl" storagePath="profile-images" [rounded]="true">Profile Image</app-input>
  */
+
 @Component({
   selector: 'app-input',
   standalone: true,

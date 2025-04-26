@@ -28,7 +28,7 @@ export interface Collaboration {
   compensationAmountMax: number;
   compensationDescription: null;
   platforms: Platforms[];
-  contentTypes: ContentTypes[];
+  contentTypes: number[];
   company: CompanyCollaboration | number;
   serviceType: ServiceTypeCollaboration | number;
   startDate: string;
@@ -114,6 +114,7 @@ export interface ServiceType {
 export interface UserContent {
   id: number;
   firebaseUserId: string;
+  profilePicture: string;
   userType: string;
   userTypePL: string;
   email: string;

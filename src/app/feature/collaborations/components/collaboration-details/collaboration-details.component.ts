@@ -106,7 +106,6 @@ export class CollaborationsDetailComponent implements OnInit {
   id: number;
   influencerList: Influencer[];
   collaboration = {};
-  // serviceType = {};
   serviceType = '';
 
   card: any;
@@ -148,7 +147,7 @@ export class CollaborationsDetailComponent implements OnInit {
 
   markerValues: (string | number)[] = [250, 500, 1000, 2500, 5000, 10000];
 
-  contentTypesList: { id: number; name: string }[] = [];
+  contentTypesList = [];
   platformsList: { id: number; name: string }[] = [];
 
   contentTypeSend: boolean = true;
@@ -174,7 +173,6 @@ export class CollaborationsDetailComponent implements OnInit {
   compensationList$ = this._lookingUpEditDataService.compensationList$;
 
   collaboration$ = this._lookingUpEditDataService.collaboration$;
-  // prevAmountMin$ = this._lookingUpEditDataService.prevAmountMin$;
 
   requirementsControl = new FormControl('', [Validators.required]);
   campaignDetailsControl = new FormControl('', [Validators.required]);
@@ -243,8 +241,6 @@ export class CollaborationsDetailComponent implements OnInit {
         this.collaborationId = +id;
         this.getCollaborationId(this.collaborationId);
 
-        // this._lookingUpEditDataService.getCollaborationId(this.collaborationId);
-
         console.log('this.collaborationId:', this.collaborationId);
       }
     });
@@ -298,6 +294,8 @@ export class CollaborationsDetailComponent implements OnInit {
           ? response.platforms
           : [response.platforms];
 
+        this.mapActiveItemsToForm('platforms', this.platformsList);
+
         this._cdRef.detectChanges();
 
         this.card = {
@@ -312,6 +310,23 @@ export class CollaborationsDetailComponent implements OnInit {
     });
   }
 
+  mapActiveItemsToForm(type: 'platforms' | 'contentTypes', list: any[]) {
+    const activeIds: string[] = [];
+
+    list.forEach(item => {
+      if (item.active) {
+        activeIds.push(item.id);
+        item.active = false;
+      }
+    });
+
+    this.editCollaborationFormGroup.patchValue({
+      [type]: activeIds
+    });
+
+    console.log(`Mapped active ${type}:`, activeIds);
+  }
+
   getCollaborationList() {
     this._collaborationService.getCollaborationList().subscribe({
       next: (response: CollaborationResponse) => {
@@ -324,6 +339,7 @@ export class CollaborationsDetailComponent implements OnInit {
         this.collaborationList = response.content;
         console.log('collaborationList (po aktualizacji):', this.collaborationList);
       },
+
       error: err => {
         console.error('Error fetching collaboration:', err);
         this.error = 'Failed to load collaboration.';
@@ -355,7 +371,6 @@ export class CollaborationsDetailComponent implements OnInit {
     this.editCollaborationFormGroup.patchValue({
       [type]: currentValues
     });
-
   }
 
   editCollaboration(): void {

@@ -384,23 +384,123 @@
         "cancel": "Anuluj"
       }
     },
-    "collaborations": {
-      "all": {
-        "title": "Współprace do podjęcia",
-        "filter": {
-          "column": "Kolumna:",
-          "value": "Wartość:"
+        "collaborations": {
+            "all": {
+                "title": "Współprace do podjęcia",
+                "filter": {
+                    "column": "Kolumna:",
+                    "value": "Wartość:"
+                },
+                "add_collaboration": "Dodaj współpracę",
+                "collaboration_card": {
+                    "details_button": "Szczegóły współpracy"
+                },
+                "add_new_collaboration": "Dodaj nową",
+                "pagination": {
+                    "select_page": "Wybierz stronę",
+                    "page_number": "Strona nr: {{ pageIndex }}"
+                }
+            },
+            "pop_up_notice":{
+                "edit" : {
+                    "title": "Edycja współpracy",
+                    "message": "Współpraca została pomyślnie edytowana"
+                },
+                "confirm" : {
+                    "title": "Dodałeś nową wspołpracę",
+                    "message": "Nowa współpraca jest widoczna na głównej stronie"
+                },
+                "remove" : {
+                    "title": "Usuń pozycję",
+                    "message": "Czy jesteś pewien że chcesz usunąć pozycje?"
+                }
+            }, 
+            "cities": {
+                "Warszawa": "Warszawa",
+                "Kraków": "Kraków",
+                "Wrocław": "Wrocław",
+                "Gdańsk": "Gdańsk"
+            },
+                "compensationType":{
+                "cash": "Gotówka",
+                "barter": "Barter (Prezent)"
+            },
+            "service-types": {
+                "Restauracja": "Restauracja",
+                "Kawiarnia": "Kawiarnia",
+                "Sklep odzieżowy": "Sklep odzieżowy",
+                "Studio urody": "Studio urody",
+                "Salon fryzjerski": "Salon fryzjerski",
+                "Siłownia i fitness": "Siłownia i fitness",
+                "Park rozrywki": "Park rozrywki",
+                "Hotel i spa": "Hotel i spa",
+                "Usługi cateringowe": "Usługi cateringowe",
+                "Sklep z kosmetykami": "Sklep z kosmetykami",
+                "Studio fotograficzne": "Studio fotograficzne",
+                "Agencja marketingowa": "Agencja marketingowa",
+                "Studio tatuażu": "Studio tatuażu",
+                "Klub muzyczny":  "Klub muzyczny",
+                "Sklep z biżuterią": "Sklep z biżuterią"
+            }, 
+                "months": {
+                "january": "January",
+                "february": "February",
+                "march": "March",
+                "april": "April",
+                "may": "May",
+                "june": "June",
+                "july": "July",
+                "august": "August",
+                "september": "September",
+                "october": "October",
+                "november": "November",
+                "december": "December"
+            },
+            "details": {
+                "description": "Opis",
+                "description_placeholder": "Dodaj opis współpracy...",
+                "name": "Szczegóły Współpracy",
+                "title_placeholder": "Podaj nazwę zlecenia",
+                "start_date": "Data rozpoczęcia",
+                "end_date": "Data zakończenia",
+                "date_not_set": "Nie ustawiono",
+                "clear_button": "Wyczyść",
+                "pick_button": "Wybierz",
+                "return_button": "Powrót",
+                "delete_button": "Usuń",
+                "cancel_button":"Anuluj",
+                "save_button": "Zapisz",
+                "edit_button": "Edytuj",
+                "requirements": "Wymagania",
+                "requirements_placeholder": "Wpisz wymagania dotyczące współpracy...",
+                "compensation_type": "Wynagrodzenie",
+                "compensation_result": "Wyniki",
+                "barter_subscrition": "Opis barteru",
+                "compensation_placeholder": "Wpisz szczegóły wynagrodzenia...",
+                "campaign_details": "Detale Kampanii",
+                "campaign_details_placeholder": "Opisz detale nowej kampanii...",
+                "company_details": "Detale Firmy",
+                "slider_configuration": "Konfiguracja Suwaka",
+                "result": "Wynik",
+                "city": "Miasto",
+                "user": "Użytkownik",
+                "service_type": "Typ Serwisu",
+                "value": "Wartość",
+                "followers_count": "Liczba followersów",
+                "content_type": "Rodzaj kontentu",
+                "platform": "Platforma",
+                "min_value": "Minimalna Wartość",
+                "max_value": "Maksymalna Wartość",
+                "step_size": "Rozmiar Kroku",
+                "show_ticks": "Pokaż Podziałkę",
+                "show_thumb_label": "Pokaż Etykietę",
+                "disabled": "Wyłączone",
+                "tooltip" : "Niedostępna",
+                "anddWarning": "Przed wysłaniem, proszę uzupełnić wszystkie dane",
+                "select_date_range": "Wybierz zakres daty",
+                "background_picture": "Wgraj zdjęcie"
+            }
         },
-        "add_collaboration": "Dodaj współpracę",
-        "collaboration_card": {
-          "details_button": "Szczegóły współpracy"
-        },
-        "add_new_collaboration": "Dodaj nową",
-        "pagination": {
-          "select_page": "Wybierz stronę",
-          "page_number": "Strona nr: {{ pageIndex }}"
-        }
-      },
       "pop_up_notice": {
         "edit": {
           "title": "Edycja współpracy",
@@ -498,7 +598,6 @@
         "select_date_range": "Wybierz zakres daty",
         "background_picture": "Wgraj zdjęcie"
       }
-    }
   },
   "address": {
     "title": "Zarządzaj Adresami",

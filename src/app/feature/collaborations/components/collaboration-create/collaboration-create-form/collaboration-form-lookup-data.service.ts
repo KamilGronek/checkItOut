@@ -30,19 +30,19 @@ import { ContentTypes, Platforms } from 'app/feature/collaborations/services/col
 })
 export class LookingUpDataService {
   editNewCollaborationFormGroup: UntypedFormGroup;
-  private contentTypeSubject = new BehaviorSubject<ContentTypes[]>([]);
+
   private getPlatformSubject = new BehaviorSubject<Platforms[]>([]);
   private cityListSubject = new BehaviorSubject<{ value: string; label: string }[]>([]);
+
   private compensationTypeSubject = new BehaviorSubject<{ value: string; label: string }[]>([]);
   private destroy$ = new Subject<void>();
   private formGroup: FormGroup | null = null;
 
-  contentTypes$ = this.contentTypeSubject.asObservable();
   platformList$ = this.getPlatformSubject.asObservable();
   cityList$ = this.cityListSubject.asObservable();
   compensationList$ = this.compensationTypeSubject.asObservable();
 
-  userListSubject = new BehaviorSubject<{ value: number; label: string }[]>([]);
+  userListSubject = new BehaviorSubject<{ value: string; label: number }[]>([]);
   userList$ = this.userListSubject.asObservable();
 
   companyListSubject = new BehaviorSubject<{ value: string; label: string }[]>([]);
@@ -50,6 +50,8 @@ export class LookingUpDataService {
 
   serviceTypeSubject = new BehaviorSubject<{ value: number; label: string }[]>([]);
   serviceType$ = this.serviceTypeSubject.asObservable();
+
+  contentTypesContent = [];
 
   constructor(
     private fb: FormBuilder,
@@ -69,7 +71,7 @@ export class LookingUpDataService {
               this.translocoService
                 .selectTranslate(
                   `user.collaborations.compensationType.${
-                    compensation === 'Gotówka' ? 'cash' : 'barter'
+                    compensation === 'CASH' ? 'cash' : 'barter'
                   }`
                 )
                 .pipe(map(label => ({ value: compensation, label })))
@@ -114,12 +116,12 @@ export class LookingUpDataService {
   getUserCompany() {
     this._collaborationService.getUser().subscribe({
       next: (response: User) => {
-        const filteredUsers = response.content
-          .filter(company => company.company)
-          .map(company => ({
-            value: company.id,
-            label: company.company.name
-          }));
+        const filteredUsers = response.content.map(user => ({
+          value: user.profilePicture,
+          label: user.id
+        }));
+        console.log('filteredUsers;', filteredUsers);
+
         this.userListSubject.next(filteredUsers);
       },
       error: error => {
@@ -128,42 +130,42 @@ export class LookingUpDataService {
     });
   }
 
-  getCompany() {
-    this._collaborationService.getCompany().subscribe({
-      next: (response: any) => {
-        const mappedCompany = response.content.map(company => ({
-          value: company.name,
-          label: company.imageUrl
-        }));
-        this.companyListSubject.next(mappedCompany);
-
-        console.log('mappedCompany', mappedCompany);
-      },
-      error: error => {
-        console.error('Error fetching user list:', error);
-      }
-    });
-  }
-
   getServiceTypeList() {
-    this._collaborationService.getServiceTypeList().subscribe({
-      next: (response: ServiceTypeCollaboration) => {
-        const serviceTyps = response.content.map(serviceType => ({
-          value: serviceType.id,
-          label: serviceType.name
-        }));
+    this._collaborationService
+      .getServiceTypeList()
+      .pipe(
+        switchMap((response: ServiceTypeCollaboration) =>
+          combineLatest(
+            response.content.map(serviceType =>
+              this.translocoService
+                .selectTranslate(`user.collaborations.service-types.${serviceType.name}`)
+                .pipe(map(label => ({ value: serviceType.id, label })))
+            )
+          )
+        ),
+        takeUntil(this.destroy$),
+        catchError(error => {
+          console.error('Translation error:', error);
+          return of([]);
+        })
+      )
+      .subscribe(serviceTyps => {
         this.serviceTypeSubject.next(serviceTyps);
-      },
-      error: error => {
-        console.error('Error fetching user list:', error);
-      }
-    });
+      });
   }
+
+  private contentTypeSubject = new BehaviorSubject<ContentTypes[]>([]);
+  public contentTypes$ = this.contentTypeSubject.asObservable();
 
   getContentType(): void {
     this._collaborationService.getCollaborationContentType().subscribe({
       next: response => {
-        this.contentTypeSubject.next(response.content);
+        this.contentTypesContent = response.content.map(contentType => ({
+          name: contentType.name,
+          id: contentType.id,
+          active: false
+        }));
+        this.contentTypeSubject.next(this.contentTypesContent);
       },
       error: error => {
         console.error('Error fetching content type:', error);
@@ -174,16 +176,15 @@ export class LookingUpDataService {
   getPlatform(): void {
     this._collaborationService.getCollaborationPlatform().subscribe({
       next: response => {
-        const platforms = response.content.map((platform: any) => {
-          return {
-            ...platform,
-            isDisplay: platform.active
-          };
-        });
-
-        console.log('platforms');
+        const platforms = response.content.map((platform: any) => ({
+          ...platform,
+          isDisplay: platform.active
+        }));
 
         this.getPlatformSubject.next(platforms);
+
+        console.log('platforms:', platforms);
+
         this.initializePlatformToggle(platforms);
       },
       error: error => {
@@ -210,20 +211,28 @@ export class LookingUpDataService {
       item.active = !item.active;
     } else if (type === 'platforms') {
       item.isDisplay = !item.isDisplay;
+      console.log(' item.isDisplay:', item.isDisplay);
+
+      this.contentTypesContent.map(contentType => {
+        contentType.active = item.isDisplay;
+      });
+
+      let platformCurrentValues = this.getCurrentValues(type);
+
+      if (type === 'platforms' && item.isDisplay) {
+        if (!platformCurrentValues.includes(item.id)) {
+          platformCurrentValues.push(item.id);
+        }
+
+        console.log('platformCurrentValues:', platformCurrentValues);
+      } else {
+        platformCurrentValues = platformCurrentValues.filter((id: string) => id !== item.id);
+      }
+
+      console.log(`Updated ${type}:`, platformCurrentValues);
+
+      this.updateFormValue(type, platformCurrentValues);
     }
-
-    let currentValues = this.getCurrentValues(type);
-
-    if ((type === 'platforms' && item.isDisplay) || (type === 'contentTypes' && item.active)) {
-      currentValues.push(item.id);
-
-      console.log('currentValues:', currentValues);
-    } else {
-      currentValues = currentValues.filter((id: string) => id !== item.id);
-    }
-    console.log(`Updated ${type}:`, currentValues);
-
-    this.updateFormValue(type, currentValues);
   }
 
   private updateFormValue(type: 'contentTypes' | 'platforms', values: any[]): void {
@@ -240,13 +249,26 @@ export class LookingUpDataService {
     return this.formGroup?.get(type)?.value || [];
   }
 
-  getTooltipText(platform: any): string {
-    if (!platform.active) {
-      return `${platform.name} - ${this.translocoService.translate(
-        'user.collaborations.details.tooltip'
-      )}`;
+  itemPlatform = '';
+
+  getTooltipText(type: 'contentTypes' | 'platforms', item: any) {
+    if (type === 'platforms') {
+      if (!item.active) {
+        return `${item.name} - ${this.translocoService.translate(
+          'user.collaborations.details.tooltip'
+        )}`;
+      }
+
+      this.itemPlatform = item.name;
+
+      return this.itemPlatform;
     }
-    return platform.name;
+
+    const allActive = this.contentTypesContent.some(contentItem => contentItem.active);
+
+    if (allActive) {
+      return this.itemPlatform, this.itemPlatform;
+    }
   }
 
   ngOnDestroy(): void {

@@ -65,9 +65,14 @@
   justify-content: center;
   align-items: center;
   border-radius: 30px;
-  cursor: pointer;
+  /* cursor: not-allowed; */
   background-color: #e0e0e0 ;
   transform: scale(0.95); 
+  pointer-events: auto;
+}
+
+.content[matTooltip] {
+  pointer-events: none;
 }
 
 .mat-chip {
@@ -127,12 +132,12 @@ img:hover {
   display: none !important;
 }
 
-/* ::ng-deep .relative.w-fit {
+::ng-deep app-input.profil-pic .relative.w-full {
   pointer-events: none !important;
-} */
+}
 
+::ng-deep app-input.profil-pic p.text-sm.text-gray-500 {
 
-::ng-deep app-input p.text-sm.text-gray-500 {
   display: none !important;
 }
 

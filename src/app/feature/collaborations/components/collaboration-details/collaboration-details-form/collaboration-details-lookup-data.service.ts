@@ -121,7 +121,7 @@ export class LookingUpEditDataService {
               this.translocoService
                 .selectTranslate(
                   `user.collaborations.compensationType.${
-                    compensation === 'Gotówka' ? 'cash' : 'barter'
+                    compensation === 'CASH' ? 'cash' : 'barter'
                   }`
                 )
                 .pipe(map(label => ({ value: compensation, label })))
