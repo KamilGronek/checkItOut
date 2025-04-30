@@ -6,23 +6,36 @@ import { AdminTicketsListComponent } from 'app/feature/support/components/ticket
 import { AdminTicketDetailComponent } from 'app/feature/support/components/tickets/admin-ticket-detail/admin-ticket-detail.component';
 import { SupportComponent } from './support.component';
 import { FaqsComponent } from './faqs/faqs.component';
+import { LayoutResolver } from 'app/core/resolvers/layout.resolver';
 
 export default [
   {
     path: '',
     pathMatch: 'full',
-    component: SupportComponent
+    component: SupportComponent,
+    // Explicitly re-resolve the layout for this route
+    resolve: {
+      layout: LayoutResolver
+    }
   },
 
   // FAQ route
   {
     path: 'faqs',
-    component: FaqsComponent
+    component: FaqsComponent,
+    // Explicitly re-resolve the layout for this route
+    resolve: {
+      layout: LayoutResolver
+    }
   },
 
   // Ticket routes
   {
     path: 'tickets',
+    // Explicitly re-resolve the layout for the parent tickets route
+    resolve: {
+      layout: LayoutResolver
+    },
     children: [
       {
         path: 'create',
@@ -46,6 +59,10 @@ export default [
     path: 'admin/tickets',
     canActivate: [AuthGuard],
     canActivateChild: [AuthGuard],
+    // For admin routes, we'll use the auth resolver to ensure proper layout
+    resolve: {
+      layout: () => 'classy' // Admin routes should always use classy layout
+    },
     children: [
       {
         path: '',

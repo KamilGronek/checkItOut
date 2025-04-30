@@ -12,6 +12,12 @@ export const LayoutResolver: ResolveFn<string> = (route, state) => {
     return of(route.data['layout']);
   }
 
+  // Special handling for support routes
+  if (state.url.startsWith('/support')) {
+    // For support routes, we'll check auth status and use appropriate layout
+    return authService.check().pipe(map(authenticated => (authenticated ? 'classy' : 'empty')));
+  }
+
   // Otherwise determine layout based on authentication status
   return authService.check().pipe(map(authenticated => (authenticated ? 'classy' : 'empty')));
 };
