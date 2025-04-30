@@ -1,0 +1,144 @@
+<div [ngClass]="'w-full ' + customClass">
+  <!-- Label -->
+  <div class="mb-2 font-medium">
+    <ng-content></ng-content>
+    <span *ngIf="control?.hasError('required')">*</span>
+  </div>
+
+  <!-- Hidden file input -->
+  <input
+    type="file"
+    [id]="id"
+    [accept]="acceptedFileTypes"
+    [multiple]="multiple"
+    (change)="onFileSelected($event)"
+    class="hidden"
+    #fileInput
+  />
+
+  <!-- Initial placeholder for both single and multiple files when empty -->
+  <div
+    *ngIf="
+      (!selectedFile && !selectedFiles.length) ||
+      (!multiple && !selectedFile) ||
+      (multiple && !selectedFiles.length)
+    "
+    class="border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer bg-gray-50 w-full p-6 rounded-md h-32"
+    (click)="fileInput.click()"
+  >
+    <mat-icon class="text-gray-400 text-4xl mb-2">{{
+      multiple ? 'folder_open' : 'upload_file'
+    }}</mat-icon>
+    <p class="text-sm text-gray-500">Click to select {{ multiple ? 'files' : 'a file' }}</p>
+    <p class="text-xs text-gray-400 mt-1">
+      Max size: {{ fileService.getFormattedFileSize(maxFileSize) }}
+    </p>
+  </div>
+
+  <!-- Single file preview -->
+  <div *ngIf="!multiple && selectedFile" class="relative mt-2">
+    <!-- File info card -->
+    <div class="border rounded-md p-4 bg-gray-50 flex items-center justify-between relative">
+      <div class="flex items-center grow-0">
+        <mat-icon class="text-gray-500 mr-3">{{ getFileIcon(selectedFile) }}</mat-icon>
+        <div>
+          <p class="font-medium break-all">{{ selectedFile.name }}</p>
+          <p class="text-xs text-gray-500">{{ getFormattedFileSize(selectedFile) }}</p>
+        </div>
+      </div>
+
+      <div class="flex">
+        <!-- Remove button - always visible -->
+        <button
+          mat-icon-button
+          color="warn"
+          type="button"
+          [disabled]="isUploading"
+          (click)="removeFile(); $event.stopPropagation()"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+
+      <!-- Overlay for loading state -->
+      <div
+        *ngIf="isUploading"
+        class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center rounded-md"
+      >
+        <mat-progress-spinner
+          mode="indeterminate"
+          diameter="40"
+          color="accent"
+        ></mat-progress-spinner>
+      </div>
+    </div>
+  </div>
+
+  <!-- Multiple files display -->
+  <div *ngIf="multiple && selectedFiles.length > 0" class="mt-2">
+    <!-- List of selected files -->
+    <div class="border rounded-md divide-y">
+      <div
+        *ngFor="let file of selectedFiles; let i = index"
+        class="p-4 flex items-center justify-between bg-gray-50 relative"
+      >
+        <div class="flex items-center">
+          <mat-icon class="text-gray-500 mr-3">{{ getFileIcon(file) }}</mat-icon>
+          <div>
+            <div class="font-medium break-all">{{ file.name }}</div>
+            <div class="text-xs text-gray-500">{{ getFormattedFileSize(file) }}</div>
+          </div>
+        </div>
+
+        <button
+          mat-icon-button
+          color="warn"
+          type="button"
+          [disabled]="isUploadingFile(file)"
+          (click)="removeFile(file, $event)"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+
+        <!-- Individual file loading overlay -->
+        <div
+          *ngIf="isUploadingFile(file)"
+          class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center"
+        >
+          <mat-progress-spinner
+            mode="indeterminate"
+            diameter="32"
+            color="accent"
+          ></mat-progress-spinner>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add more files button (for multiple mode) -->
+  <button
+    *ngIf="multiple && selectedFiles.length > 0"
+    mat-stroked-button
+    color="primary"
+    class="w-full border-2 border-dashed border-gray-300 rounded-md flex items-center justify-center"
+    [disabled]="isUploading"
+    (click)="fileInput.click()"
+  >
+    <mat-icon class="mr-2">add</mat-icon>
+    Add More Files
+  </button>
+
+  <!-- Hint Text -->
+  <div *ngIf="hint" class="text-gray-600 text-sm mt-2">{{ hint }}</div>
+
+  <!-- Error Handling -->
+  <div *ngIf="control?.invalid && control?.touched" class="text-red-500 text-sm mt-1">
+    <div *ngIf="control?.hasError('required')">This field is required</div>
+    <div *ngIf="control?.hasError('invalidFileType')">
+      Invalid file type. Please select an allowed file type.
+    </div>
+    <div *ngIf="control?.hasError('fileTooLarge')">
+      File is too large. Maximum size is {{ fileService.getFormattedFileSize(maxFileSize) }}.
+    </div>
+  </div>
+</div>

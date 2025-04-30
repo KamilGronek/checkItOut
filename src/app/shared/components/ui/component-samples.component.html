@@ -1,341 +1,438 @@
 <div class="w-full flex flex-col divide-y-2 p-4">
-<!--  BUTTONS  -->
-    <div class="py-8">
-        <h2 class="text-xl font-semibold">Button Variants</h2>
-        <div class="flex gap-4 flex-wrap">
-            <div class="flex flex-col">
-                <span>Flat:</span>
-                <app-button tooltip="Flat button" variant="flat" color="primary">Flat Button</app-button>
-            </div>
+  <!--  BUTTONS  -->
+  <div class="py-8">
+    <h2 class="text-xl font-semibold">Button Variants</h2>
+    <div class="flex gap-4 flex-wrap">
+      <div class="flex flex-col">
+        <span>Flat:</span>
+        <app-button tooltip="Flat button" variant="flat" color="primary">Flat Button</app-button>
+      </div>
 
-            <div class="flex flex-col">
-                <span>Stroked:</span>
-                <app-button tooltip="Stroked button" variant="stroked" color="accent">Stroked Button</app-button>
-            </div>
+      <div class="flex flex-col">
+        <span>Stroked:</span>
+        <app-button tooltip="Stroked button" variant="stroked" color="accent"
+          >Stroked Button</app-button
+        >
+      </div>
 
-            <div class="flex flex-col">
-                <span>Raised:</span>
-                <app-button tooltip="Raised button" variant="raised" color="warn">Raised Button</app-button>
-            </div>
+      <div class="flex flex-col">
+        <span>Raised:</span>
+        <app-button tooltip="Raised button" variant="raised" color="warn">Raised Button</app-button>
+      </div>
 
-            <div class="flex flex-col">
-                <span>Icon:</span>
-                <app-button tooltip="Icon button" variant="icon" color="accent" icon="edit"></app-button>
-            </div>
+      <div class="flex flex-col">
+        <span>Icon:</span>
+        <app-button tooltip="Icon button" variant="icon" color="accent" icon="edit"></app-button>
+      </div>
 
-            <div class="flex flex-col">
-                <span>Text:</span>
-                <app-button tooltip="Text button" variant="text" color="primary">Text Button</app-button>
-            </div>
+      <div class="flex flex-col">
+        <span>Text:</span>
+        <app-button tooltip="Text button" variant="text" color="primary">Text Button</app-button>
+      </div>
 
-            <div class="flex flex-col">
-                <span>Text with icon:</span>
-                <app-button tooltip="Text with icon button" variant="text" color="primary" icon="home">Text and Icon Button</app-button>
-            </div>
+      <div class="flex flex-col">
+        <span>Text with icon:</span>
+        <app-button tooltip="Text with icon button" variant="text" color="primary" icon="home"
+          >Text and Icon Button</app-button
+        >
+      </div>
 
-            <div class="flex flex-col">
-                <span>Loading:</span>
-                <app-button tooltip="Loading button" variant="raised" color="primary" [loading]="true">Loading...</app-button>
-            </div>
-        </div>
+      <div class="flex flex-col">
+        <span>Loading:</span>
+        <app-button tooltip="Loading button" variant="raised" color="primary" [loading]="true"
+          >Loading...</app-button
+        >
+      </div>
     </div>
-<!--  CARDS  -->
-    <div class="py-8">
-        <h2 class="text-xl font-semibold">Card Variants</h2>
-        <p class="font-bold">Image,Header and Footer sections are optional</p>
-        <div class="grid grid-cols-4 gap-4 ">
-            <div>
-                <span>Flippable Card:</span><br>
-                <app-card tooltip="Click to show details" [tooltipShowDelay]="300" [flippable]="true">
-                    <div card-header>Flippable Card Header</div>
-                    <div>Main content goes here.</div>
-                    <div card-footer>Footer content</div>
-                    <div card-back>
-                        <p>Back side content</p>
-                        <p>Back side content</p>
-                        <p>Back side content</p>
-                        <p>Back side content</p>
-                        <p>Back side content</p>
-                        <p>Back side content</p>
-                        <p>Back side content</p>
-                        <p>Back side content</p>
-                        <p>Back side content</p>
-                        <p>Back side content</p>
-                        <p>Back side content</p>
-                        <p>Back side content</p>
-                        <p>Back side content</p>
-                        <p>Back side content</p>
-                        <p>Back side content</p>
-                        <p>Back side content</p>
-                        <p>Back side content</p>
-                    </div>
-                </app-card>
-            </div>
+  </div>
+  <!--  CARDS  -->
+  <div class="py-8">
+    <h2 class="text-xl font-semibold">Card Variants</h2>
+    <p class="font-bold">Image,Header and Footer sections are optional</p>
+    <div class="grid grid-cols-4 gap-4">
+      <div>
+        <span>Flippable Card:</span><br />
+        <app-card tooltip="Click to show details" [tooltipShowDelay]="300" [flippable]="true">
+          <div card-header>Flippable Card Header</div>
+          <div>Main content goes here.</div>
+          <div card-footer>Footer content</div>
+          <div card-back>
+            <p>Back side content</p>
+            <p>Back side content</p>
+            <p>Back side content</p>
+            <p>Back side content</p>
+            <p>Back side content</p>
+            <p>Back side content</p>
+            <p>Back side content</p>
+            <p>Back side content</p>
+            <p>Back side content</p>
+            <p>Back side content</p>
+            <p>Back side content</p>
+            <p>Back side content</p>
+            <p>Back side content</p>
+            <p>Back side content</p>
+            <p>Back side content</p>
+            <p>Back side content</p>
+            <p>Back side content</p>
+          </div>
+        </app-card>
+      </div>
 
-            <div>
-                <span>Non-Flippable Card:</span><br>
-                <app-card>
-                    <div card-header>Non-Flippable Card Header</div>
-                    <div>Main content goes here.</div>
-                    <div card-footer>Footer content</div>
-                </app-card>
-            </div>
+      <div>
+        <span>Non-Flippable Card:</span><br />
+        <app-card>
+          <div card-header>Non-Flippable Card Header</div>
+          <div>Main content goes here.</div>
+          <div card-footer>Footer content</div>
+        </app-card>
+      </div>
 
-            <div>
-                <span>Card with Image:</span><br>
-                <app-card
-                    imgSrc="https://letsenhance.io/static/a31ab775f44858f1d1b80ee51738f4f3/11499/EnhanceAfter.jpg"
-                    imgAlt="Placeholder Image">
-                    <div card-header>Card with Image Header</div>
-                    <div>Main content goes here.</div>
-                    <div card-footer>Footer content</div>
-                </app-card>
-            </div>
+      <div>
+        <span>Card with Image:</span><br />
+        <app-card
+          imgSrc="https://letsenhance.io/static/a31ab775f44858f1d1b80ee51738f4f3/11499/EnhanceAfter.jpg"
+          imgAlt="Placeholder Image"
+        >
+          <div card-header>Card with Image Header</div>
+          <div>Main content goes here.</div>
+          <div card-footer>Footer content</div>
+        </app-card>
+      </div>
 
-            <div>
-                <span>Card with click event:</span><br>
-                <app-card
-                    (click)="handleCardClick()"
-                    imgSrc="https://helpx.adobe.com/content/dam/help/en/photoshop/using/convert-color-image-black-white/jcr_content/main-pars/before_and_after/image-before/Landscape-Color.jpg"
-                    imgAlt="Placeholder Image">
-                    <div card-header>Card with Image Header</div>
-                    <div>Main content goes here.</div>
-                    <div card-footer>Footer content</div>
-                </app-card>
-            </div>
-        </div>
+      <div>
+        <span>Card with click event:</span><br />
+        <app-card
+          (click)="handleCardClick()"
+          imgSrc="https://helpx.adobe.com/content/dam/help/en/photoshop/using/convert-color-image-black-white/jcr_content/main-pars/before_and_after/image-before/Landscape-Color.jpg"
+          imgAlt="Placeholder Image"
+        >
+          <div card-header>Card with Image Header</div>
+          <div>Main content goes here.</div>
+          <div card-footer>Footer content</div>
+        </app-card>
+      </div>
     </div>
-<!--  INPUTS  -->
-    <div class="py-8">
-        <h2 class="text-xl font-semibold">Input Variants (to fix: invisible placeholders)</h2>
-        <div class="flex gap-4 flex-wrap">
-            <div class="flex flex-col w-64">
-                <span>Image input</span>
-                <app-input
-                    type="image"
-                    [control]="imageControl"
-                    storagePath="sample-images"
-                    acceptedFileTypes="image/jpeg,image/png,image/gif"
-                    (imageUploaded)="onImageUpload()"
-                >Profile picture</app-input>
-            </div><div class="flex flex-col w-64">
-                <span>Rounded Image input</span>
-                <app-input
-                    type="image"
-                    [control]="imageControl"
-                    [rounded]="true"
-                    storagePath="sample-images"
-                    acceptedFileTypes="image/jpeg,image/png,image/gif"
-                    (imageUploaded)="onImageUpload()"
-                >Profile picture</app-input>
-            </div>
-            <div class="flex flex-col w-64">
-                <span>Date range input</span>
-                <app-input
-                    type="daterange"
-                    [startControl]="startDateControl"
-                    [endControl]="endDateControl"
-                    [minDate]="minDate"
-                    [maxDate]="maxDate"
-                    placeholder="date">
-                    Select Date Range
-                </app-input>
-            </div>
-            <div class="flex flex-col w-64">
-                <span>Single date input</span>
-                <app-input
-                    type="datepicker"
-                    [control]="dateControl"
-                    [minDate]="minDate"
-                    [maxDate]="maxDate"
-                    [hint]="'Select a date between ' + (minDate | date) + ' and ' + (maxDate | date)"
-                    placeholder="Select a date">
-                    Event Date
-                </app-input>
-            </div>
-            <div class="flex flex-col w-64">
-                <span>Textarea input</span>
-                <app-input
-                    type="textarea"
-                    hint="This a textarea component"
-                    placeholder="Enter a description..."
-                    rows="5"
-                    maxLength="600"
-                    [control]="textAreaControl"
-
-                >Textarea input</app-input>
-            </div>
-            <div class="flex flex-col w-64">
-                <span>Text Input:</span>
-                <app-input
-                    type="text"
-                    [control]="textControl"
-                    placeholder="Enter username"
-                    hint="Enter your username">
-                    Username
-                </app-input>
-            </div>
-
-            <div class="flex flex-col w-64">
-                <span>Password Input:</span>
-                <app-input
-                    type="password"
-                    [control]="passwordControl"
-                    placeholder="Enter password">
-                    Password
-                </app-input>
-            </div>
-
-            <div class="flex flex-col w-64">
-                <span>Email Input:</span>
-                <app-input
-                    type="email"
-                    [control]="emailControl"
-                    placeholder="Enter email"
-                    hint="We'll never share your email">
-                    Email
-                </app-input>
-            </div>
-
-            <div class="flex flex-col w-64">
-                <span>Input with Icon:</span>
-                <app-input
-                    type="search"
-                    [control]="searchControl"
-                    placeholder="Search..."
-                    prefixIcon="search">
-                    Search
-                </app-input>
-            </div>
-
-            <div class="flex flex-col">
-                <span>Checkbox Input:</span>
-                <app-input
-                    hint="This a checkbox component"
-                    label="Subscribe to newsletter"
-                    type="checkbox"
-                    [control]="checkboxControl">
-                    Subscribe to newsletter
-                </app-input>
-            </div>
+  </div>
+  <!--  INPUTS  -->
+  <div class="py-8">
+    <h2 class="text-xl font-semibold">Input Variants</h2>
+    <div class="flex gap-4 flex-wrap">
+      <div class="flex flex-col w-64">
+        <span>Single Image input (can be rounded)</span>
+        <app-input
+          type="image"
+          [control]="imageControl"
+          storagePath="sample-images"
+          acceptedFileTypes="image/jpeg,image/png,image/gif"
+          (imageUploaded)="onImageUpload()"
+          >Profile picture</app-input
+        >
+        <div *ngIf="imageControl.value" class="mt-2 text-sm text-gray-600">
+          File: {{ imageControl.value.fileName }}<br />
+          Size: {{ formatFileSize(imageControl.value.fileSize) }}<br />
+          Type: {{ imageControl.value.contentType }}
         </div>
-    </div>
-    <!--  LINKS  -->
-    <div class="py-8">
-        <h2 class="text-xl font-semibold">Link Variants</h2>
-        <div class="flex gap-8 flex-wrap">
-            <div class="flex flex-col">
-                <h3 class="font-medium mb-2">Default Links</h3>
-                <div class="flex flex-col gap-2">
-                    <app-link routerLink="/home" variant="default" color="primary">Primary Link</app-link>
-                    <app-link routerLink="/about" variant="default" color="accent">Accent Link</app-link>
-                    <app-link routerLink="/delete" variant="default" color="warn">Warning Link</app-link>
-                    <app-link routerLink="/info" variant="default" color="neutral">Neutral Link</app-link>
-                </div>
-            </div>
+      </div>
 
-            <div class="flex flex-col">
-                <h3 class="font-medium mb-2">Underlined Links</h3>
-                <div class="flex flex-col gap-2">
-                    <app-link routerLink="/home" variant="underlined" color="primary">Primary Underlined</app-link>
-                    <app-link routerLink="/about" variant="underlined" color="accent">Accent Underlined</app-link>
-                    <app-link routerLink="/delete" variant="underlined" color="warn">Warning Underlined</app-link>
-                    <app-link routerLink="/info" variant="underlined" color="neutral">Neutral Underlined</app-link>
-                </div>
-            </div>
-
-            <div class="flex flex-col">
-                <h3 class="font-medium mb-2">Button-style Links</h3>
-                <div class="flex flex-col gap-2">
-                    <app-link routerLink="/home" variant="button" color="primary">Primary Button</app-link>
-                    <app-link routerLink="/about" variant="button" color="accent">Accent Button</app-link>
-                    <app-link routerLink="/delete" variant="button" color="warn">Warning Button</app-link>
-                    <app-link routerLink="/info" variant="button" color="neutral">Neutral Button</app-link>
-                </div>
-            </div>
-
-            <div class="flex flex-col">
-                <h3 class="font-medium mb-2">Subtle Links</h3>
-                <div class="flex flex-col gap-2">
-                    <app-link routerLink="/home" variant="subtle" color="primary">Primary Subtle</app-link>
-                    <app-link routerLink="/about" variant="subtle" color="accent">Accent Subtle</app-link>
-                    <app-link routerLink="/delete" variant="subtle" color="warn">Warning Subtle</app-link>
-                    <app-link routerLink="/info" variant="subtle" color="neutral">Neutral Subtle</app-link>
-                </div>
-            </div>
-
-            <div class="flex flex-col">
-                <h3 class="font-medium mb-2">Icon Links</h3>
-                <div class="flex flex-col gap-2">
-                    <app-link routerLink="/home" variant="default" color="primary" icon="home">Home Link</app-link>
-                    <app-link routerLink="/settings" variant="default" color="accent" icon="settings">Settings Link</app-link>
-                    <app-link routerLink="/notify" variant="default" color="warn" icon="notifications">Notifications Link</app-link>
-                    <app-link routerLink="/user" variant="default" color="neutral" icon="person">User Link</app-link>
-                </div>
-            </div>
-
-            <div class="flex flex-col">
-                <h3 class="font-medium mb-2">Icon-only Links</h3>
-                <div class="flex gap-4">
-                    <app-link routerLink="/home" variant="icon" color="primary" icon="home"></app-link>
-                    <app-link routerLink="/settings" variant="icon" color="accent" icon="settings"></app-link>
-                    <app-link routerLink="/notify" variant="icon" color="warn" icon="notifications"></app-link>
-                    <app-link routerLink="/user" variant="icon" color="neutral" icon="person"></app-link>
-                </div>
-            </div>
-
-            <div class="flex flex-col">
-                <h3 class="font-medium mb-2">External Links</h3>
-                <div class="flex flex-col gap-2">
-                    <app-link href="https://angular.io" target="_blank" variant="default" color="primary" icon="open_in_new">Angular Website</app-link>
-                    <app-link href="https://material.angular.io" target="_blank" variant="button" color="accent">Angular Material</app-link>
-                    <app-link href="https://tailwindcss.com" target="_blank" variant="underlined" color="warn">Tailwind CSS</app-link>
-                </div>
-            </div>
+      <div class="flex flex-col w-64">
+        <span>Multiple Images input</span>
+        <app-input
+          type="image"
+          [control]="multipleImagesControl"
+          [multiple]="true"
+          storagePath="sample-images"
+          acceptedFileTypes="image/jpeg,image/png,image/gif"
+          (imageUploaded)="onMultipleImagesUpload($event)"
+          >Gallery Images</app-input
+        >
+        <div *ngIf="multipleImagesControl.value?.length" class="mt-2 text-sm text-gray-600">
+          Files uploaded: {{ multipleImagesControl.value.length }}
         </div>
-    </div>
-    <!--  SELECTS  -->
-    <div class="py-8">
-        <h2 class="text-xl font-semibold">Select Variants</h2>
-        <div class="flex gap-4 flex-wrap">
-            <div class="flex flex-col w-64">
-                <span>Basic Select:</span>
-                <app-select
-                    label="Choose an option"
-                    [control]="selectControl"
-                    [options]="selectOptions">
-                </app-select>
-            </div>
+      </div>
 
-            <div class="flex flex-col w-64">
-                <span>Select with Default Value:</span>
-                <app-select
-                    label="Preselected option"
-                    [control]="selectControlSelected"
-                    [options]="selectOptions">
-                </app-select>
-            </div>
+      <div class="flex flex-col w-64">
+        <span>Single File input</span>
+        <app-input
+          type="file"
+          [control]="fileControl"
+          storagePath="sample-files"
+          acceptedFileTypes="application/pdf,image/*,text/plain"
+          (fileUploaded)="onFileUpload()"
+        >
+          Upload Document
+        </app-input>
+        <div *ngIf="fileControl.value" class="mt-2 text-sm text-gray-600">
+          File: {{ fileControl.value.fileName }}<br />
+          Size: {{ formatFileSize(fileControl.value.fileSize) }}<br />
+          Type: {{ fileControl.value.contentType }}
         </div>
-    </div>
-    <!--  TABLES  -->
-    <div class="py-8">
-        <h2 class="text-xl font-semibold">Table Component (related to do: create reusable filter popup)</h2>
-        <div class="flex gap-4 flex-wrap">
-            <div class="w-full">
-                <app-table
-                    title="Periodic Elements"
-                    [columnsToDisplay]="tableColumns"
-                    [data]="tableData"
-                    [expandableTemplate]="expandableRowTemplate">
-                </app-table>
+      </div>
 
-                <ng-template #expandableRowTemplate let-element>
-                    <div class="p-4 bg-gray-50">
-                        <h3 class="font-medium">Details for {{ element.name }}</h3>
-                        <p>{{ element.description }}</p>
-                    </div>
-                </ng-template>
-            </div>
+      <div class="flex flex-col w-64">
+        <span>Multiple Files input</span>
+        <app-input
+          type="file"
+          [control]="multipleFilesControl"
+          [multiple]="true"
+          storagePath="sample-files"
+          acceptedFileTypes="application/pdf,image/*,text/plain"
+          (fileUploaded)="onMultipleFilesUpload($event)"
+        >
+          Upload Multiple Documents
+        </app-input>
+        <div *ngIf="multipleFilesControl.value?.length" class="mt-2 text-sm text-gray-600">
+          Files uploaded: {{ multipleFilesControl.value.length }}
         </div>
+      </div>
+
+      <div class="flex flex-col w-64">
+        <span>Date range input</span>
+        <app-input
+          type="daterange"
+          [startControl]="startDateControl"
+          [endControl]="endDateControl"
+          [minDate]="minDate"
+          [maxDate]="maxDate"
+          placeholder="date"
+        >
+          Select Date Range
+        </app-input>
+      </div>
+      <div class="flex flex-col w-64">
+        <span>Single date input</span>
+        <app-input
+          type="datepicker"
+          [control]="dateControl"
+          [minDate]="minDate"
+          [maxDate]="maxDate"
+          [hint]="'Select a date between ' + (minDate | date) + ' and ' + (maxDate | date)"
+          placeholder="Select a date"
+        >
+          Event Date
+        </app-input>
+      </div>
+      <div class="flex flex-col w-64">
+        <span>Textarea input</span>
+        <app-input
+          type="textarea"
+          hint="This a textarea component"
+          placeholder="Enter a description..."
+          rows="5"
+          maxLength="600"
+          [control]="textAreaControl"
+        >
+          Textarea input
+        </app-input>
+      </div>
+      <div class="flex flex-col w-64">
+        <span>Text Input:</span>
+        <app-input
+          type="text"
+          [control]="textControl"
+          placeholder="Enter username"
+          hint="Enter your username"
+        >
+          Username
+        </app-input>
+      </div>
+
+      <div class="flex flex-col w-64">
+        <span>Password Input:</span>
+        <app-input type="password" [control]="passwordControl" placeholder="Enter password">
+          Password
+        </app-input>
+      </div>
+
+      <div class="flex flex-col w-64">
+        <span>Email Input:</span>
+        <app-input
+          type="email"
+          [control]="emailControl"
+          placeholder="Enter email"
+          hint="We'll never share your email"
+        >
+          Email
+        </app-input>
+      </div>
+
+      <div class="flex flex-col w-64">
+        <span>Input with Icon:</span>
+        <app-input
+          type="search"
+          [control]="searchControl"
+          placeholder="Search..."
+          prefixIcon="search"
+        >
+          Search
+        </app-input>
+      </div>
+
+      <div class="flex flex-col">
+        <span>Checkbox Input:</span>
+        <app-input
+          hint="This a checkbox component"
+          label="Subscribe to newsletter"
+          type="checkbox"
+          [control]="checkboxControl"
+        >
+          Subscribe to newsletter
+        </app-input>
+      </div>
     </div>
+  </div>
+  <!--  LINKS  -->
+  <div class="py-8">
+    <h2 class="text-xl font-semibold">Link Variants</h2>
+    <div class="flex gap-8 flex-wrap">
+      <div class="flex flex-col">
+        <h3 class="font-medium mb-2">Default Links</h3>
+        <div class="flex flex-col gap-2">
+          <app-link routerLink="/home" variant="default" color="primary">Primary Link</app-link>
+          <app-link routerLink="/about" variant="default" color="accent">Accent Link</app-link>
+          <app-link routerLink="/delete" variant="default" color="warn">Warning Link</app-link>
+          <app-link routerLink="/info" variant="default" color="neutral">Neutral Link</app-link>
+        </div>
+      </div>
+
+      <div class="flex flex-col">
+        <h3 class="font-medium mb-2">Underlined Links</h3>
+        <div class="flex flex-col gap-2">
+          <app-link routerLink="/home" variant="underlined" color="primary"
+            >Primary Underlined</app-link
+          >
+          <app-link routerLink="/about" variant="underlined" color="accent"
+            >Accent Underlined</app-link
+          >
+          <app-link routerLink="/delete" variant="underlined" color="warn"
+            >Warning Underlined</app-link
+          >
+          <app-link routerLink="/info" variant="underlined" color="neutral"
+            >Neutral Underlined</app-link
+          >
+        </div>
+      </div>
+
+      <div class="flex flex-col">
+        <h3 class="font-medium mb-2">Button-style Links</h3>
+        <div class="flex flex-col gap-2">
+          <app-link routerLink="/home" variant="button" color="primary">Primary Button</app-link>
+          <app-link routerLink="/about" variant="button" color="accent">Accent Button</app-link>
+          <app-link routerLink="/delete" variant="button" color="warn">Warning Button</app-link>
+          <app-link routerLink="/info" variant="button" color="neutral">Neutral Button</app-link>
+        </div>
+      </div>
+
+      <div class="flex flex-col">
+        <h3 class="font-medium mb-2">Subtle Links</h3>
+        <div class="flex flex-col gap-2">
+          <app-link routerLink="/home" variant="subtle" color="primary">Primary Subtle</app-link>
+          <app-link routerLink="/about" variant="subtle" color="accent">Accent Subtle</app-link>
+          <app-link routerLink="/delete" variant="subtle" color="warn">Warning Subtle</app-link>
+          <app-link routerLink="/info" variant="subtle" color="neutral">Neutral Subtle</app-link>
+        </div>
+      </div>
+
+      <div class="flex flex-col">
+        <h3 class="font-medium mb-2">Icon Links</h3>
+        <div class="flex flex-col gap-2">
+          <app-link routerLink="/home" variant="default" color="primary" icon="home"
+            >Home Link</app-link
+          >
+          <app-link routerLink="/settings" variant="default" color="accent" icon="settings"
+            >Settings Link</app-link
+          >
+          <app-link routerLink="/notify" variant="default" color="warn" icon="notifications"
+            >Notifications Link</app-link
+          >
+          <app-link routerLink="/user" variant="default" color="neutral" icon="person"
+            >User Link</app-link
+          >
+        </div>
+      </div>
+
+      <div class="flex flex-col">
+        <h3 class="font-medium mb-2">Icon-only Links</h3>
+        <div class="flex gap-4">
+          <app-link routerLink="/home" variant="icon" color="primary" icon="home"></app-link>
+          <app-link routerLink="/settings" variant="icon" color="accent" icon="settings"></app-link>
+          <app-link
+            routerLink="/notify"
+            variant="icon"
+            color="warn"
+            icon="notifications"
+          ></app-link>
+          <app-link routerLink="/user" variant="icon" color="neutral" icon="person"></app-link>
+        </div>
+      </div>
+
+      <div class="flex flex-col">
+        <h3 class="font-medium mb-2">External Links</h3>
+        <div class="flex flex-col gap-2">
+          <app-link
+            href="https://angular.io"
+            target="_blank"
+            variant="default"
+            color="primary"
+            icon="open_in_new"
+            >Angular Website</app-link
+          >
+          <app-link
+            href="https://material.angular.io"
+            target="_blank"
+            variant="button"
+            color="accent"
+            >Angular Material</app-link
+          >
+          <app-link href="https://tailwindcss.com" target="_blank" variant="underlined" color="warn"
+            >Tailwind CSS</app-link
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--  SELECTS  -->
+  <div class="py-8">
+    <h2 class="text-xl font-semibold">Select Variants</h2>
+    <div class="flex gap-4 flex-wrap">
+      <div class="flex flex-col w-64">
+        <span>Basic Select:</span>
+        <app-select label="Choose an option" [control]="selectControl" [options]="selectOptions">
+        </app-select>
+      </div>
+
+      <div class="flex flex-col w-64">
+        <span>Select with Default Value:</span>
+        <app-select
+          label="Preselected option"
+          [control]="selectControlSelected"
+          [options]="selectOptions"
+        >
+        </app-select>
+      </div>
+    </div>
+  </div>
+  <!--  TABLES  -->
+  <div class="py-8">
+    <h2 class="text-xl font-semibold">
+      Table Component (related to do: create reusable filter popup)
+    </h2>
+    <div class="flex gap-4 flex-wrap">
+      <div class="w-full">
+        <app-table
+          title="Periodic Elements"
+          [columnsToDisplay]="tableColumns"
+          [data]="tableData"
+          [expandableTemplate]="expandableRowTemplate"
+        >
+        </app-table>
+
+        <ng-template #expandableRowTemplate let-element>
+          <div class="p-4 bg-gray-50">
+            <h3 class="font-medium">Details for {{ element.name }}</h3>
+            <p>{{ element.description }}</p>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
 </div>

@@ -1,0 +1,165 @@
+<div [ngClass]="'w-full ' + customClass">
+  <!-- Label -->
+  <div class="mb-2 font-medium">
+    <ng-content></ng-content>
+    <span *ngIf="control?.hasError('required')">*</span>
+  </div>
+
+  <!-- Hidden file input -->
+  <input
+    type="file"
+    [id]="id"
+    [accept]="acceptedFileTypes"
+    [multiple]="multiple"
+    (change)="onFileSelected($event)"
+    class="hidden"
+    #fileInput
+  />
+
+  <!-- Single Image Mode -->
+  <ng-container *ngIf="!multiple">
+    <!-- Placeholder when no image is selected -->
+    <div
+      *ngIf="selectedFiles.length === 0"
+      class="border-2 border-dashed border-gray-300 flex items-center justify-center cursor-pointer p-3 bg-gray-50 min-h-32 aspect-square"
+      [ngStyle]="{ height: imageHeight }"
+      [ngClass]="{ 'rounded-full': rounded, 'rounded-md': !rounded }"
+      (click)="openFileSelector()"
+    >
+      <div class="text-center">
+        <mat-icon class="text-gray-400 text-3xl mb-2">photo_camera</mat-icon>
+        <p *ngIf="!rounded" class="text-sm text-gray-500 text-wrap">Click to select an image</p>
+        <p class="text-xs text-gray-400 mt-1">
+          Max size: {{ fileService.getFormattedFileSize(maxFileSize) }}
+        </p>
+      </div>
+    </div>
+
+    <!-- Single image display -->
+    <div *ngIf="selectedFiles.length > 0" class="relative">
+      <div
+        class="border overflow-hidden cursor-pointer flex items-center min-h-32 justify-center aspect-square"
+        [ngStyle]="{ height: imageHeight }"
+        [ngClass]="{ 'rounded-full': rounded, 'rounded-md': !rounded }"
+        (click)="openFileSelector()"
+      >
+        <img
+          [src]="getFileUrl(selectedFiles[0].name)"
+          class="w-full h-full"
+          [ngClass]="{
+            'object-contain': objectFit === 'contain',
+            'object-cover': objectFit === 'cover' || rounded
+          }"
+          alt="Selected image"
+        />
+
+        <!-- Loading overlay -->
+        <div
+          *ngIf="isFileUploading(selectedFiles[0].name)"
+          class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center"
+          [ngClass]="{ 'rounded-full': rounded, 'rounded-md': !rounded }"
+        >
+          <mat-spinner diameter="40" color="accent"></mat-spinner>
+        </div>
+      </div>
+
+      <!-- Remove button -->
+      <button
+        mat-mini-fab
+        color="warn"
+        type="button"
+        [disabled]="isFileUploading(selectedFiles[0].name)"
+        (click)="removeFile(selectedFiles[0].name, $event)"
+        class="absolute top-0 right-0 -translate-y-1/3 translate-x-1/3 scale-75"
+        matTooltip="Remove image"
+      >
+        <mat-icon class="icon-size-5">delete</mat-icon>
+      </button>
+    </div>
+  </ng-container>
+
+  <!-- Multiple Image Mode -->
+  <ng-container *ngIf="multiple">
+    <!-- Placeholder when no images are selected -->
+    <div
+      *ngIf="selectedFiles.length === 0"
+      class="border-2 border-dashed border-gray-300 flex items-center justify-center cursor-pointer bg-gray-50 rounded-md p-6 min-h-32"
+      (click)="openFileSelector()"
+    >
+      <div class="text-center">
+        <mat-icon class="text-gray-400 text-3xl mb-2">photo_library</mat-icon>
+        <p class="text-sm text-gray-500">Click to select images</p>
+        <p class="text-xs text-gray-400 mt-1">
+          Max size: {{ fileService.getFormattedFileSize(maxFileSize) }}
+        </p>
+      </div>
+    </div>
+
+    <!-- Grid of selected images -->
+    <div *ngIf="selectedFiles.length > 0" class="mt-2">
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div *ngFor="let file of selectedFiles" class="relative group">
+          <div
+            class="border rounded-md overflow-hidden aspect-square flex items-center justify-center"
+          >
+            <img
+              *ngIf="getFileUrl(file.name)"
+              [src]="getFileUrl(file.name)"
+              class="w-full h-full"
+              [ngClass]="{
+                'object-contain': objectFit === 'contain',
+                'object-cover': objectFit === 'cover'
+              }"
+              alt="Image preview"
+            />
+
+            <!-- Loading overlay -->
+            <div
+              *ngIf="isFileUploading(file.name)"
+              class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center"
+            >
+              <mat-spinner diameter="32" color="accent"></mat-spinner>
+            </div>
+          </div>
+
+          <!-- Remove button (appears on hover) -->
+          <button
+            mat-mini-fab
+            color="warn"
+            type="button"
+            [disabled]="isFileUploading(file.name)"
+            (click)="removeFile(file.name, $event)"
+            class="absolute top-0 right-0 -translate-y-1/3 translate-x-1/3 scale-75 opacity-0 group-hover:opacity-100 transition-opacity"
+            matTooltip="Remove image"
+          >
+            <mat-icon class="icon-size-5">delete</mat-icon>
+          </button>
+        </div>
+
+        <!-- Add more button as a card -->
+        <div
+          class="border-2 border-dashed border-gray-300 rounded-md flex items-center justify-center cursor-pointer bg-gray-50 aspect-square"
+          (click)="openFileSelector()"
+        >
+          <div class="text-center p-2">
+            <mat-icon class="text-gray-400 text-3xl">add_photo_alternate</mat-icon>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- Hint Text -->
+  <div *ngIf="hint" class="text-gray-600 text-sm mt-2">{{ hint }}</div>
+
+  <!-- Error Handling -->
+  <div *ngIf="control?.invalid && control?.touched" class="text-red-500 text-sm mt-1">
+    <div *ngIf="control?.hasError('required')">This field is required</div>
+    <div *ngIf="control?.hasError('invalidFileType')">
+      Invalid file type. Please select an image file.
+    </div>
+    <div *ngIf="control?.hasError('fileTooLarge')">
+      Image is too large. Maximum size is {{ fileService.getFormattedFileSize(maxFileSize) }}.
+    </div>
+  </div>
+</div>

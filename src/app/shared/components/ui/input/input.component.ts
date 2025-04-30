@@ -14,38 +14,31 @@ import {
 } from '@angular/common';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MatInputType, OtherInputType } from 'app/shared/components/ui/input/input.types';
-import { ImageService } from 'app/core/services/image/image.service'; // Update with correct path
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { FileInputComponent } from '../file-input/file-input.component';
+import { ImageInputComponent } from '../image-input/image-input.component';
+import { FileInfo } from 'app/core/services/file/file.types';
 
 /**
  * A versatile input component that supports multiple input types including:
  * - Standard text-based inputs (text, email, password, etc.)
  * - Textareas for multi-line input
  * - Checkboxes for boolean selection
- * - Image upload with preview and storage capabilities
- * - Single date picker with validation
- * - Date range picker with start/end validation
- *
- * This component wraps Angular Material form components and adds additional functionality.
+ * - File uploads (via FileInputComponent)
+ * - Image uploads (via ImageInputComponent) with support for multiple images
+ * - Date pickers with validation
+ * - Date range pickers with start/end validation
  *
  * @example
  * <!-- Basic text input -->
  * <app-input type="text" [control]="myFormControl">Label Text</app-input>
  *
  * @example
- * <!-- Password input with hint -->
- * <app-input type="password" [control]="passwordControl" hint="Must be at least 8 characters">Password</app-input>
- *
- * @example
- * <!-- Date range picker -->
- * <app-input type="daterange" [startControl]="startDateControl" [endControl]="endDateControl">Date Range</app-input>
- *
- * @example
- * <!-- Image upload -->
- * <app-input type="image" [control]="imageControl" storagePath="profile-images" [rounded]="true">Profile Image</app-input>
+ * <!-- Multiple image upload -->
+ * <app-input type="image" [control]="imagesControl" [multiple]="true">Upload Images</app-input>
  */
 
 @Component({
@@ -67,7 +60,9 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatTooltip,
     NgTemplateOutlet,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    FileInputComponent,
+    ImageInputComponent
   ],
   templateUrl: './input.component.html'
 })
@@ -147,18 +142,24 @@ export class InputComponent implements AfterContentInit {
   @Input() autosize: boolean = false;
 
   /**
-   * The storage path to use when uploading images.
-   * Only applies when type is 'image'.
+   * The storage path to use when uploading files.
+   * Only applies when type is 'image' or 'file'.
    * @default 'default'
    */
   @Input() storagePath: string = 'default';
 
   /**
-   * File types that can be selected for image upload.
-   * Only applies when type is 'image'.
-   * @default 'image/*'
+   * Root directory for file storage.
+   * Default is 'images' for image type and 'files' for file type.
    */
-  @Input() acceptedFileTypes: string = 'image/*';
+  @Input() storageRoot?: string;
+
+  /**
+   * File types that can be selected for file/image upload.
+   * Only applies when type is 'image' or 'file'.
+   * @default 'image/*' for image type, '*;/*' for file type
+   */
+  @Input() acceptedFileTypes: string = '*/*';
 
   /**
    * Whether the image preview should have rounded corners (false) or be circular (true).
@@ -166,6 +167,13 @@ export class InputComponent implements AfterContentInit {
    * @default false
    */
   @Input() rounded: boolean = false;
+
+  /**
+   * Whether multiple files can be selected.
+   * Only applies when type is 'file' or 'image'.
+   * @default false
+   */
+  @Input() multiple: boolean = false;
 
   /**
    * The minimum allowable date for date pickers.
@@ -217,6 +225,13 @@ export class InputComponent implements AfterContentInit {
   @Input() endControl?: FormControl;
 
   /**
+   * Maximum file size in bytes (5MB)
+   * Applies to file and image uploads
+   * @default 5MB
+   */
+  @Input() maxFileSize: number = 5 * 1024 * 1024;
+
+  /**
    * Event emitted when the input value changes.
    * Emitted for all input types when their value is modified.
    */
@@ -230,15 +245,20 @@ export class InputComponent implements AfterContentInit {
 
   /**
    * Event emitted when an image is successfully uploaded.
-   * The event payload is the URL of the uploaded image.
-   * Only applies when type is 'image'.
+   * Now returns an array of FileInfo objects (even for single uploads).
    */
-  @Output() imageUploaded = new EventEmitter<string>();
+  @Output() imageUploaded = new EventEmitter<FileInfo[]>();
 
   /**
-   * Event emitted when an image upload fails.
+   * Event emitted when a file is successfully uploaded.
+   * Now returns an array of FileInfo objects (even for single uploads).
+   */
+  @Output() fileUploaded = new EventEmitter<FileInfo[]>();
+
+  /**
+   * Event emitted when a file upload fails.
    * The event payload is the error message.
-   * Only applies when type is 'image'.
+   * Only applies when type is 'file' or 'image'.
    */
   @Output() uploadError = new EventEmitter<string>();
 
@@ -263,50 +283,28 @@ export class InputComponent implements AfterContentInit {
   inputType: string = null;
 
   /**
-   * The currently selected file when using image upload.
-   * Null when no file is selected or after an upload is complete.
+   * Creates a new InputComponent
    */
-  selectedFile: File | null = null;
-
-  /**
-   * Whether an image is currently being uploaded.
-   * Used to display a loading spinner and disable controls during upload.
-   */
-  isUploading: boolean = false;
-
-  /**
-   * URL for the image preview when a file is selected but not yet uploaded.
-   * Created using URL.createObjectURL and cleaned up when no longer needed.
-   */
-  previewUrl: string | null = null;
-
-  /**
-   * Creates a new InputComponent with required dependencies.
-   *
-   * @param imageService Service for handling image uploads
-   */
-  constructor(private imageService: ImageService) {}
+  constructor() {}
 
   /**
    * Initializes the component after content is initialized.
-   * Sets the initial input type and configures image preview if an image URL is already present.
+   * Sets the initial input type and configures accepted file types and default root paths.
    */
   ngAfterContentInit(): void {
     this.inputType = this.type;
 
-    // Check if we already have an image URL in the control value
-    if (
-      this.type === 'image' &&
-      this.control?.value &&
-      typeof this.control.value === 'string' &&
-      this.control.value.trim() !== ''
-    ) {
-      // If we have a URL but no preview, it means we're initializing with an existing image URL
-      if (
-        !this.previewUrl &&
-        (this.control.value.startsWith('http') || this.control.value.startsWith('blob'))
-      ) {
-        // No need to create a preview, the control.value will be used directly
+    // Set appropriate accepted file types
+    if (this.type === 'image' && this.acceptedFileTypes === '*/*') {
+      this.acceptedFileTypes = 'image/*';
+    }
+
+    // Set default storage roots if not specified
+    if (!this.storageRoot) {
+      if (this.type === 'image') {
+        this.storageRoot = 'images';
+      } else if (this.type === 'file') {
+        this.storageRoot = 'files';
       }
     }
   }
@@ -402,12 +400,6 @@ export class InputComponent implements AfterContentInit {
     if (this.control?.hasError('maxlength')) {
       return `Cannot exceed ${this.control.errors?.['maxlength'].requiredLength} characters`;
     }
-    if (this.control?.hasError('invalidFileType')) {
-      return 'Invalid file type. Please select an image.';
-    }
-    if (this.control?.hasError('fileTooLarge')) {
-      return 'File is too large. Maximum size is 5MB.';
-    }
     if (this.control?.hasError('matDatepickerMin')) {
       return `Date cannot be before ${this.minDate?.toLocaleDateString()}`;
     }
@@ -476,117 +468,28 @@ export class InputComponent implements AfterContentInit {
   }
 
   /**
-   * Handles file selection for image uploads.
-   * Validates the file type and size, creates a preview, and updates the form control.
-   *
-   * @param event The file input change event
+   * Handler for the fileUploaded event from FileInputComponent
+   * Re-emits the event to parent components
    */
-  onFileSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-
-    if (input.files && input.files.length > 0) {
-      this.selectedFile = input.files[0];
-
-      // Check if file is an image
-      if (!this.selectedFile.type.startsWith('image/')) {
-        this.control.setErrors({ invalidFileType: true });
-        this.selectedFile = null;
-        return;
-      }
-
-      const maxSizeInBytes = 5 * 1024 * 1024; // 5MB
-      if (this.selectedFile.size > maxSizeInBytes) {
-        this.control.setErrors({ fileTooLarge: true });
-        this.selectedFile = null;
-        return;
-      }
-
-      // Create preview URL
-      this.createImagePreview();
-
-      // Update form control value with the file name (we'll replace with URL after upload)
-      this.control.setValue(this.selectedFile.name);
-      this.change.emit();
-    }
-  }
-
-  /**
-   * Creates a preview URL for the selected image file.
-   * Uses URL.createObjectURL to generate a temporary local URL.
-   */
-  createImagePreview(): void {
-    if (!this.selectedFile) {
-      return;
-    }
-
-    // Revoke previous URL to prevent memory leaks
-    if (this.previewUrl) {
-      URL.revokeObjectURL(this.previewUrl);
-    }
-
-    this.previewUrl = URL.createObjectURL(this.selectedFile);
-  }
-
-  /**
-   * Uploads the selected image to the storage service.
-   * Updates the form control with the resulting download URL on success.
-   * Emits events to indicate upload status.
-   */
-  async uploadImage(): Promise<void> {
-    if (!this.selectedFile || this.isUploading) {
-      return;
-    }
-
-    this.isUploading = true;
-
-    try {
-      const downloadUrl = await this.imageService.uploadImage(this.selectedFile, this.storagePath);
-
-      // Update form control with the download URL
-      this.control.setValue(downloadUrl);
-      if (this.imageUploaded.observed) {
-        this.imageUploaded.emit(downloadUrl);
-      }
-
-      // Clean up temporary preview
-      if (this.previewUrl) {
-        URL.revokeObjectURL(this.previewUrl);
-        this.previewUrl = null;
-      }
-
-      // Reset selected file after successful upload since we now have the URL
-      this.selectedFile = null;
-    } catch (error) {
-      console.error('Upload failed:', error);
-      if (this.uploadError.observed) {
-        this.uploadError.emit(error.message || 'Upload failed');
-      }
-    } finally {
-      this.isUploading = false;
-      console.log(this.isUploading);
-    }
-  }
-
-  /**
-   * Removes the selected or uploaded image.
-   * Cleans up resources and resets the form control.
-   */
-  removeImage(): void {
-    // First, reset the selected file
-    this.selectedFile = null;
-
-    // Clean up any preview URL
-    if (this.previewUrl) {
-      URL.revokeObjectURL(this.previewUrl);
-      this.previewUrl = null;
-    }
-
-    // Finally, clear the form control value
-    this.control.setValue('');
-    this.control.markAsPristine();
-    this.control.markAsUntouched();
+  onFileUploaded(fileInfos: FileInfo[]): void {
+    this.fileUploaded.emit(fileInfos);
     this.change.emit();
   }
 
-  protected readonly FormControl = FormControl;
+  /**
+   * Handler for the imageUploaded event from ImageInputComponent
+   * Re-emits the event to parent components
+   */
+  onImageUploaded(fileInfos: FileInfo[]): void {
+    this.imageUploaded.emit(fileInfos);
+    this.change.emit();
+  }
+
+  /**
+   * Handler for the uploadError event from FileInputComponent or ImageInputComponent
+   * Re-emits the error to parent components
+   */
+  onUploadError(error: string): void {
+    this.uploadError.emit(error);
+  }
 }

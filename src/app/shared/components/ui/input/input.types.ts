@@ -16,18 +16,18 @@
  * - time: Time input (browser native)
  */
 type MatInputType =
-    | 'text'
-    | 'password'
-    | 'email'
-    | 'number'
-    | 'tel'
-    | 'url'
-    | 'search'
-    | 'date'
-    | 'datetime-local'
-    | 'month'
-    | 'week'
-    | 'time';
+  | 'text'
+  | 'password'
+  | 'email'
+  | 'number'
+  | 'tel'
+  | 'url'
+  | 'search'
+  | 'date'
+  | 'datetime-local'
+  | 'month'
+  | 'week'
+  | 'time';
 
 /**
  * Custom input types that extend beyond standard HTML input types.
@@ -36,10 +36,10 @@ type MatInputType =
  * - checkbox: Boolean selection via checkbox
  * - textarea: Multi-line text input
  * - image: Image upload with preview and storage
+ * - file: File upload with preview (if image) and storage
  * - datepicker: Material Design date picker
  * - daterange: Material Design date range picker
  */
-type OtherInputType = 'checkbox' | 'textarea' | 'image' | 'datepicker' | 'daterange';
-
+type OtherInputType = 'checkbox' | 'textarea' | 'image' | 'file' | 'datepicker' | 'daterange';
 
 export { MatInputType, OtherInputType };

@@ -1,14 +1,16 @@
 <div class="flex items-center justify-center lg:justify-end h-full">
-  <div class="max-w-80">
+  <div class="grow max-w-80">
     <!-- Logo -->
-    <div class="w-12">
+    <div class="w-12" *ngIf="!isProcessing">
       <img src="assets/images/logo/logo.svg" />
     </div>
 
     <!-- Loading state -->
-    <div *ngIf="isProcessing" class="mt-8 flex flex-col items-center">
-      <mat-spinner [diameter]="40"></mat-spinner>
-      <p class="mt-4 text-xl">{{ 'auth.social.processing' | transloco }}</p>
+    <div *ngIf="isProcessing" class="mt-8 flex flex-col gap-6 items-center">
+      <div class="w-12">
+        <img src="assets/images/logo/logo.svg" />
+      </div>
+      <mat-spinner [diameter]="80"></mat-spinner>
     </div>
 
     <!-- Error state -->

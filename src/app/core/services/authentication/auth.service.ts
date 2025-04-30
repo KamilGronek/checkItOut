@@ -121,15 +121,20 @@ export class AuthService {
     }
   }
 
-  getRole() {
-    const decodedToken = this.getDecodedToken();
-    let dataTokenRole = decodedToken?.custom_claims?.[0] ?? null;
-
-    if (dataTokenRole == null) {
-      dataTokenRole = 'unauthorized';
+  getRole(): string {
+    // First check if user is even authenticated
+    if (!this._authenticated && (!this.accessToken || AuthUtils.isTokenExpired(this.accessToken))) {
+      return 'unauthorized';
     }
 
-    return dataTokenRole;
+    // Get the role from UserService
+    let user = this._userService.getCurrentUser();
+    if (!user) {
+      return 'unauthorized';
+    } else {
+      // Return the role from user object
+      return user.userType || 'unauthorized';
+    }
   }
 
   getUserFromToken(): User {

@@ -1,0 +1,272 @@
+<div class="flex flex-col flex-auto min-w-0 p-6 md:p-8">
+  <div class="-ml-4">
+    <a mat-button [routerLink]="['/support/tickets/create']" [color]="'primary'">
+      <mat-icon [svgIcon]="'heroicons_outline:arrow-long-left'"></mat-icon>
+      <span class="ml-2">New ticket</span>
+    </a>
+  </div>
+  <div class="mt-2 text-4xl font-extrabold leading-tight tracking-tight sm:text-7xl">
+    Ticket Status
+  </div>
+  <div class="text-secondary mt-2">
+    Check the status of your support ticket and add additional information if needed.
+  </div>
+
+  <!-- Error message -->
+  <div *ngIf="showError" class="mt-6">
+    <fuse-alert [appearance]="'outline'" [type]="'error'" [showIcon]="true">
+      {{ errorMessage }}
+    </fuse-alert>
+  </div>
+
+  <!-- Ticket lookup form -->
+  <div *ngIf="showLookupForm" class="mt-8">
+    <app-card>
+      <div class="p-6">
+        <h2 class="text-xl font-semibold mb-6">Look Up Your Ticket</h2>
+        <form [formGroup]="lookupForm" (ngSubmit)="lookupTicket()">
+          <div class="grid grid-cols-1 gap-6">
+            <app-input
+              type="text"
+              [control]="lookupForm.controls.reference"
+              prefixIcon="tag"
+              placeholder="Enter your ticket reference number"
+              hint="The reference number provided when you created the ticket"
+            >
+              Ticket Reference
+            </app-input>
+
+            <app-input
+              type="email"
+              [control]="lookupForm.controls.email"
+              prefixIcon="email"
+              placeholder="Enter the email address used for the ticket"
+              hint="The email must match the one used to create the ticket"
+            >
+              Email Address
+            </app-input>
+
+            <div class="flex justify-end mt-4">
+              <app-button
+                variant="flat"
+                color="primary"
+                type="submit"
+                icon="search"
+                [disabled]="isLoading"
+                [loading]="isLoading"
+              >
+                Look Up Ticket
+              </app-button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </app-card>
+  </div>
+
+  <!-- Ticket details -->
+  <div *ngIf="ticket" class="mt-8">
+    <div class="grid grid-cols-1 lg:flex md:items-start gap-6">
+      <!-- Ticket information -->
+      <div class="flex-1 flex flex-col gap-6">
+        <app-card>
+          <div class="p-6">
+            <div class="flex justify-between items-start">
+              <div>
+                <h2 class="text-xl font-semibold">{{ ticket.subject }}</h2>
+                <div class="mt-1 flex items-center gap-3">
+                  <span
+                    class="px-2 py-1 text-xs font-medium rounded-full"
+                    [ngClass]="getStatusColorClass(ticket.status)"
+                  >
+                    {{ ticket.statusDisplay }}
+                  </span>
+                  <span class="text-gray-500 text-sm">{{ ticket.categoryDisplay }}</span>
+                </div>
+              </div>
+              <app-button variant="text" (click)="backToLookup()" icon="arrow_back">
+                Back
+              </app-button>
+            </div>
+
+            <mat-divider class="my-4"></mat-divider>
+
+            <!-- Ticket details -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+              <div>
+                <div class="text-sm text-gray-500">Reference Number</div>
+                <div class="font-mono">{{ ticket.ticketReference }}</div>
+              </div>
+              <div>
+                <div class="text-sm text-gray-500">Created</div>
+                <div>{{ ticket.createdTime | date : 'medium' }}</div>
+              </div>
+              <div>
+                <div class="text-sm text-gray-500">Last Updated</div>
+                <div>{{ ticket.lastUpdateTime | date : 'medium' }}</div>
+              </div>
+              <div *ngIf="ticket.resolvedTime">
+                <div class="text-sm text-gray-500">Resolved</div>
+                <div>{{ ticket.resolvedTime | date : 'medium' }}</div>
+              </div>
+              <div>
+                <div class="text-sm text-gray-500">Contact Email</div>
+                <div>{{ ticket.contactEmail }}</div>
+              </div>
+              <div *ngIf="ticket.adminAssignee">
+                <div class="text-sm text-gray-500">Assigned To</div>
+                <div>{{ ticket.adminAssignee }}</div>
+              </div>
+            </div>
+
+            <!-- Ticket description -->
+            <div>
+              <div class="text-sm text-gray-500 mb-2">Description</div>
+              <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-md whitespace-pre-wrap">
+                {{ ticket.description }}
+              </div>
+            </div>
+
+            <!-- Ticket attachments -->
+            <div *ngIf="ticket.attachments && ticket.attachments.length > 0" class="mt-6">
+              <div class="text-sm text-gray-500 mb-2">Attachments</div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <a
+                  *ngFor="let attachment of ticket.attachments"
+                  [href]="attachment.downloadUrl"
+                  target="_blank"
+                  class="flex items-center p-3 border rounded-md hover:bg-gray-50 dark:hover:bg-gray-800"
+                >
+                  <mat-icon class="mr-3 text-gray-500">{{
+                    getAttachmentIcon(attachment.contentType)
+                  }}</mat-icon>
+                  <div class="flex-1 min-w-0">
+                    <div class="font-medium truncate">{{ attachment.fileName }}</div>
+                    <div class="text-xs text-gray-500">
+                      {{ getFormattedFileSize(attachment.fileSize) }}
+                    </div>
+                  </div>
+                  <mat-icon class="text-gray-400">download</mat-icon>
+                </a>
+              </div>
+            </div>
+          </div>
+        </app-card>
+
+        <!-- Response form -->
+        <app-card *ngIf="!isTicketClosed()">
+          <div class="p-6">
+            <h3 class="text-lg font-medium mb-4">Add Response</h3>
+            <form [formGroup]="responseForm" (ngSubmit)="submitResponse()">
+              <app-input
+                type="textarea"
+                [control]="responseForm.controls.content"
+                placeholder="Provide additional information or respond to agent questions..."
+                [rows]="5"
+                [maxLength]="5000"
+                hint="Max 5000 characters"
+              >
+                Your Response
+              </app-input>
+
+              <!-- File attachments -->
+              <div class="mt-6">
+                <app-input
+                  type="file"
+                  [control]="responseForm.controls.attachments"
+                  [multiple]="true"
+                  [storagePath]="ticketResponseAttachmentPath"
+                  acceptedFileTypes="image/jpeg,image/png,image/gif,application/pdf,text/plain,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                  [hint]="'Max file size: 5MB. Supported formats: Images, PDF, TXT, DOC, DOCX'"
+                  (fileUploaded)="onResponseFilesUploaded($event)"
+                >
+                  Attachments
+                </app-input>
+              </div>
+
+              <div class="mt-6 flex justify-end">
+                <app-button
+                  variant="flat"
+                  color="primary"
+                  type="submit"
+                  icon="send"
+                  [disabled]="isSubmitting || responseForm.invalid"
+                  [loading]="isSubmitting"
+                >
+                  <span>Submit Response</span>
+                </app-button>
+              </div>
+            </form>
+          </div>
+        </app-card>
+      </div>
+
+      <app-card class="lg:max-w-1/3">
+        <div class="p-6">
+          <h3 class="text-lg font-medium mb-4">Conversation History</h3>
+
+          <div
+            *ngIf="!ticket.responses || ticket.responses.length === 0"
+            class="py-4 text-center text-gray-500"
+          >
+            No responses yet. We'll respond to your ticket as soon as possible.
+          </div>
+
+          <div *ngFor="let response of ticket.responses" class="mb-6 last:mb-0">
+            <div class="flex items-start mb-2">
+              <div class="flex-1">
+                <div class="font-medium">
+                  {{ response.fromAdmin ? response.adminName || 'Support Agent' : 'You' }}
+                </div>
+                <div class="text-xs text-gray-500">
+                  {{ response.createdTime | date : 'medium' }}
+                </div>
+              </div>
+              <div
+                class="rounded-full w-6 h-6 flex items-center justify-center text-white"
+                [ngClass]="response.fromAdmin ? 'bg-primary-600' : 'bg-gray-600'"
+              >
+                <mat-icon class="icon-size-5">{{
+                  response.fromAdmin ? 'support_agent' : 'person'
+                }}</mat-icon>
+              </div>
+            </div>
+
+            <div
+              class="p-3 rounded-md whitespace-pre-wrap"
+              [ngClass]="
+                response.fromAdmin
+                  ? 'bg-primary-50 dark:bg-primary-900'
+                  : 'bg-gray-50 dark:bg-gray-800'
+              "
+            >
+              {{ response.content }}
+            </div>
+
+            <!-- Response attachments -->
+            <div *ngIf="response.attachments && response.attachments.length > 0" class="mt-2 pl-2">
+              <div *ngFor="let attachment of response.attachments" class="mt-1">
+                <a
+                  [href]="attachment.downloadUrl"
+                  target="_blank"
+                  class="flex items-center p-2 rounded-md hover:bg-gray-50 dark:hover:bg-gray-800 text-sm"
+                >
+                  <mat-icon class="mr-2 text-gray-500 icon-size-5">{{
+                    getAttachmentIcon(attachment.contentType)
+                  }}</mat-icon>
+                  <div class="flex-1 min-w-0">
+                    <div class="truncate">{{ attachment.fileName }}</div>
+                    <div class="text-xs text-gray-500">
+                      {{ getFormattedFileSize(attachment.fileSize) }}
+                    </div>
+                  </div>
+                  <mat-icon class="text-gray-400 icon-size-5">download</mat-icon>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </app-card>
+    </div>
+  </div>
+</div>

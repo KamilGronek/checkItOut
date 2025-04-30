@@ -1,0 +1,165 @@
+<div class="flex flex-col flex-auto min-w-0 p-6 md:p-8">
+  <div class="text-3xl font-bold tracking-tight leading-tight mb-2">Support Tickets</div>
+  <div class="text-secondary mb-6">Manage and respond to customer support tickets.</div>
+
+  <!-- Filters -->
+  <app-card class="mb-8">
+    <div class="p-6">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-4">
+        <h2 class="text-xl font-semibold">Filters</h2>
+        <app-button
+          variant="stroked"
+          (click)="clearFilters()"
+          [disabled]="isLoading"
+          icon="feather:filter"
+        >
+          Clear Filters
+        </app-button>
+      </div>
+
+      <form [formGroup]="filterForm" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <app-input
+          type="text"
+          [control]="filterForm.controls.searchQuery"
+          prefixIcon="search"
+          placeholder="Search in tickets..."
+        >
+          Search
+        </app-input>
+
+        <app-select label="Status" [control]="filterForm.controls.status" [options]="statusOptions">
+        </app-select>
+
+        <app-select
+          label="Category"
+          [control]="filterForm.controls.category"
+          [options]="categoryOptions"
+        >
+        </app-select>
+      </form>
+    </div>
+  </app-card>
+
+  <!-- Loading spinner -->
+  <div *ngIf="isLoading" class="flex justify-center my-12">
+    <mat-spinner [diameter]="40"></mat-spinner>
+  </div>
+
+  <!-- Tickets table with scrollable wrapper -->
+  <div *ngIf="!isLoading && ticketsData">
+    <div class="bg-card shadow rounded-lg overflow-hidden">
+      <!-- Empty state -->
+      <div *ngIf="ticketsData.content.length === 0" class="p-8 text-center">
+        <div class="mb-4">
+          <mat-icon class="text-gray-400 icon-size-14">support</mat-icon>
+        </div>
+        <h3 class="text-xl font-medium mb-2">No tickets found</h3>
+        <p class="text-gray-500 max-w-md mx-auto">
+          No support tickets match your current filters. Try adjusting your search criteria or clear
+          filters to see all tickets.
+        </p>
+      </div>
+
+      <!-- Scrollable wrapper for table -->
+      <div *ngIf="ticketsData.content.length > 0" class="overflow-x-auto">
+        <table mat-table matSort [dataSource]="ticketsData.content" class="w-full min-w-full">
+          <!-- Reference Column -->
+          <ng-container matColumnDef="reference">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="whitespace-nowrap">
+              Reference
+            </th>
+            <td mat-cell *matCellDef="let ticket" class="font-mono text-xs">
+              {{ ticket.ticketReference }}
+            </td>
+          </ng-container>
+
+          <!-- Subject Column -->
+          <ng-container matColumnDef="subject">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Subject</th>
+            <td mat-cell *matCellDef="let ticket" class="max-w-xs truncate">
+              {{ ticket.subject }}
+            </td>
+          </ng-container>
+
+          <!-- Category Column -->
+          <ng-container matColumnDef="category">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Category</th>
+            <td mat-cell *matCellDef="let ticket" class="whitespace-nowrap">
+              <span
+                class="px-2 py-1 text-xs font-medium rounded-full"
+                [ngClass]="getCategoryColorClass(ticket.category)"
+              >
+                {{ ticket.categoryDisplay }}
+              </span>
+            </td>
+          </ng-container>
+
+          <!-- Status Column -->
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+            <td mat-cell *matCellDef="let ticket" class="whitespace-nowrap">
+              <span
+                class="px-2 py-1 text-xs font-medium rounded-full"
+                [ngClass]="getStatusColorClass(ticket.status)"
+              >
+                {{ ticket.statusDisplay }}
+              </span>
+            </td>
+          </ng-container>
+
+          <!-- Created Date Column -->
+          <ng-container matColumnDef="created">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Created</th>
+            <td mat-cell *matCellDef="let ticket" class="whitespace-nowrap">
+              {{ ticket.createdTime | date : 'MMM dd, yyyy' }}
+            </td>
+          </ng-container>
+
+          <!-- Last Updated Column -->
+          <ng-container matColumnDef="updated">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Updated</th>
+            <td mat-cell *matCellDef="let ticket" class="whitespace-nowrap">
+              {{ ticket.lastUpdateTime | date : 'MMM dd, yyyy' }}
+            </td>
+          </ng-container>
+
+          <!-- Actions Column -->
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let ticket">
+              <div class="flex gap-2">
+                <app-button
+                  variant="icon"
+                  color="primary"
+                  (click)="viewTicket(ticket)"
+                  tooltip="View Ticket"
+                  icon="visibility"
+                >
+                </app-button>
+              </div>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr
+            mat-row
+            *matRowDef="let ticket; columns: displayedColumns"
+            class="cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800"
+            (click)="viewTicket(ticket)"
+          ></tr>
+        </table>
+      </div>
+
+      <!-- Paginator -->
+      <mat-paginator
+        *ngIf="ticketsData.content.length > 0"
+        [length]="ticketsData.totalElements"
+        [pageSize]="pageSize"
+        [pageIndex]="pageIndex"
+        [pageSizeOptions]="pageSizeOptions"
+        (page)="onPageChange($event)"
+      >
+      </mat-paginator>
+    </div>
+  </div>
+</div>

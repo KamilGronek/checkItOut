@@ -1,26 +1,21 @@
-import {inject} from '@angular/core';
-import {CanActivateChildFn, CanActivateFn, Router} from '@angular/router';
-import {AuthService} from 'app/core/services/authentication/auth.service';
-import {of, switchMap} from 'rxjs';
+import { inject } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
+import { map, catchError, of } from 'rxjs';
+import { AuthService } from 'app/core/services/authentication/auth.service';
 
-export const NoAuthGuard: CanActivateFn | CanActivateChildFn = (
-    route,
-    state
-) => {
-    const router: Router = inject(Router);
+export const NoAuthGuard: CanActivateFn = (route, state) => {
+  const router = inject(Router);
+  const authService = inject(AuthService);
 
-    // Check the authentication status
-    return inject(AuthService)
-        .check()
-        .pipe(
-            switchMap((authenticated) => {
-                // If the user is authenticated...
-                if (authenticated) {
-                    return of(router.parseUrl(''));
-                }
-
-                // Allow the access
-                return of(true);
-            })
-        );
+  return authService.check().pipe(
+    map(authenticated => {
+      if (authenticated) {
+        // Redirect authenticated users to collaborations
+        router.navigate(['/collaborations/list']);
+        return false;
+      }
+      return true;
+    }),
+    catchError(() => of(true)) // Allow access on error (assumes not authenticated)
+  );
 };

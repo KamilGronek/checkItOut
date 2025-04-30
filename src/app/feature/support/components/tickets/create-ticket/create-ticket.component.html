@@ -1,0 +1,147 @@
+<div class="flex min-w-0 flex-auto flex-col">
+  <!-- Main -->
+  <div class="flex flex-auto flex-col items-center p-6 sm:p-10">
+    <div class="flex w-full flex-col">
+      <div class="-ml-4 flex items-center justify-between">
+        <a mat-button [routerLink]="['/support']" [color]="'primary'">
+          <mat-icon [svgIcon]="'heroicons_outline:arrow-long-left'"></mat-icon>
+          <span class="ml-2">Help Center</span>
+        </a>
+        <a mat-button [routerLink]="['/support/tickets/status']" [color]="'primary'">
+          <mat-icon [svgIcon]="'search'"></mat-icon>
+          <span class="ml-2">Find ticket</span>
+        </a>
+      </div>
+      <div class="mt-2 text-4xl font-extrabold leading-tight tracking-tight sm:text-7xl">
+        Contact support
+      </div>
+
+      <!-- Success message after ticket creation -->
+      <div *ngIf="ticketCreated">
+        <app-card
+          customClass="bg-green-50 dark:bg-green-900 border-green-200 dark:border-green-700"
+        >
+          <div class="p-4">
+            <div class="flex items-center">
+              <mat-icon class="text-green-500 mr-4 icon-size-7">check_circle</mat-icon>
+              <div class="flex-1">
+                <h3 class="text-xl font-semibold text-green-800 dark:text-green-200">
+                  Ticket Created Successfully
+                </h3>
+                <p class="mt-1 text-green-700 dark:text-green-300">
+                  Your support ticket has been created with reference number:
+                </p>
+                <div
+                  class="mt-2 p-3 bg-white dark:bg-gray-800 border border-green-300 dark:border-green-800 rounded-md"
+                >
+                  <code class="font-mono text-lg font-bold">{{ ticketReference }}</code>
+                </div>
+                <p class="mt-4 text-green-700 dark:text-green-300">
+                  Please save this reference number to check your ticket status later. We'll also
+                  send a confirmation to your email address.
+                </p>
+              </div>
+            </div>
+
+            <div class="mt-6 flex flex-col sm:flex-row gap-3 justify-end">
+              <app-button variant="stroked" (click)="createNewTicket()">
+                Create Another Ticket
+              </app-button>
+              <app-button variant="flat" color="primary" (click)="goToTicketStatus()">
+                View Ticket Status
+              </app-button>
+            </div>
+          </div>
+        </app-card>
+      </div>
+
+      <!-- Error message -->
+      <div *ngIf="showError" class="mt-6">
+        <fuse-alert [appearance]="'outline'" [type]="'error'" [showIcon]="true">
+          {{ errorMessage }}
+        </fuse-alert>
+      </div>
+
+      <!-- Ticket creation form -->
+      <div
+        *ngIf="!ticketCreated"
+        class="bg-card mt-8 rounded-2xl p-6 pb-7 shadow sm:mt-12 sm:p-10 sm:pb-7"
+      >
+        <form [formGroup]="ticketForm" (ngSubmit)="submitTicket()">
+          <div class="grid grid-cols-1 gap-6">
+            <!-- Email -->
+            <app-input
+              type="email"
+              [control]="ticketForm.controls.contactEmail"
+              prefixIcon="email"
+              placeholder="your@email.com"
+              hint="We'll use this email to contact you about your ticket"
+            >
+              Contact Email
+            </app-input>
+
+            <!-- Subject -->
+            <app-input
+              type="text"
+              [control]="ticketForm.controls.subject"
+              prefixIcon="subject"
+              placeholder="Brief description of your issue"
+              hint="Max 255 characters"
+            >
+              Subject
+            </app-input>
+
+            <!-- Category -->
+            <app-select
+              label="Ticket Category"
+              [control]="ticketForm.controls.category"
+              [options]="ticketCategories"
+            >
+            </app-select>
+
+            <!-- Description -->
+            <app-input
+              type="textarea"
+              [control]="ticketForm.controls.description"
+              placeholder="Please provide detailed information about your issue..."
+              [rows]="8"
+              [maxLength]="5000"
+              hint="Max 5000 characters. Please be as detailed as possible."
+            >
+              Description
+            </app-input>
+
+            <!-- File attachments -->
+            <div class="mt-6">
+              <app-input
+                type="file"
+                [control]="ticketForm.controls.attachments"
+                [multiple]="true"
+                [storagePath]="ticketAttachmentPath"
+                acceptedFileTypes="image/jpeg,image/png,image/gif,application/pdf,text/plain,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                [hint]="'Max file size: 5MB. Supported formats: Images, PDF, TXT, DOC, DOCX'"
+                (fileUploaded)="onFilesUploaded($event)"
+              >
+                Attachments
+              </app-input>
+            </div>
+
+            <!-- Submit button -->
+            <div class="flex justify-end mt-4">
+              <app-button
+                variant="flat"
+                color="primary"
+                type="submit"
+                icon="send"
+                [disabled]="isSubmitting || ticketForm.invalid"
+                [loading]="isSubmitting"
+              >
+                Submit Ticket
+              </app-button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

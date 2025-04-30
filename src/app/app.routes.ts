@@ -1,103 +1,107 @@
-import {Route} from '@angular/router';
-import {AuthGuard} from 'app/core/guards/auth.guard';
-import {NoAuthGuard} from 'app/core/guards/no-auth.guard';
-import {RoleGuard} from './core/guards/role.guard';
-import {LayoutComponent} from 'app/shared/components/layout/layout.component';
-import {AuthResolver} from 'app/core/resolvers/auth.resolver';
-import {ComponentSamplesComponent} from "./shared/components/ui/component-samples.component";
-import {AuthSignOutComponent} from "./feature/authentication/components/sign-out/sign-out.component";
-import {LandingPageComponent} from "./feature/landing-page/landing-page.component";
-
-// @formatter:off
-/* eslint-disable max-len */
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
+// src/app/app.routes.ts
+import { Route } from '@angular/router';
+import { AuthGuard } from 'app/core/guards/auth.guard';
+import { NoAuthGuard } from 'app/core/guards/no-auth.guard';
+import { LayoutComponent } from 'app/shared/components/layout/layout.component';
+import { AuthResolver } from 'app/core/resolvers/auth.resolver';
+import { ComponentSamplesComponent } from './shared/components/ui/component-samples.component';
+import { LandingPageComponent } from './feature/landing-page/landing-page.component';
+import { LayoutResolver } from 'app/core/resolvers/layout.resolver';
 
 export const appRoutes: Route[] = [
-    // Redirect empty path to '/example'
+  // Auth routes
+  {
+    path: 'auth',
+    component: LayoutComponent,
+    data: {
+      layout: 'with-banner'
+    },
+    loadChildren: () => import('app/feature/authentication/components/authentication.routes')
+  },
 
-    { path: '', pathMatch: 'full', redirectTo: 'home' },
-
-    // Routes available for everyone from everywhere
-    {
+  // Public routes
+  {
+    path: '',
+    component: LayoutComponent,
+    canActivate: [NoAuthGuard], // Only for non-authenticated users
+    resolve: {
+      layout: LayoutResolver
+    },
+    children: [
+      {
         path: '',
-        component: LayoutComponent,
-        data: {
-            layout: 'empty',
-        },
-        children: [
-            {
-                path: 'ui-component-samples',
-                component: ComponentSamplesComponent,
-            },
-            {
-                path: 'landing-page',
-                component: LandingPageComponent,
-            },
-        ],
-    },
+        component: LandingPageComponent
+      }
+    ]
+  },
 
-    // Auth routes for all users
-    {
-        path: 'auth',
-        component: LayoutComponent,
-        data: {
-            layout: 'with-banner',
-        },
-        loadChildren: () =>
-            import(
-                'app/feature/authentication/components/authentication.routes'
-                ),
+  // Support routes (accessible to all with dynamic layout)
+  {
+    path: 'support',
+    component: LayoutComponent,
+    resolve: {
+      layout: LayoutResolver
     },
+    loadChildren: () => import('app/feature/support/components/support.routes')
+  },
 
-    // Routes for all
-    {
+  // UI component samples
+  {
+    path: 'ui-component-samples',
+    component: LayoutComponent,
+    resolve: {
+      layout: LayoutResolver
+    },
+    children: [
+      {
+        path: '',
+        component: ComponentSamplesComponent
+      }
+    ]
+  },
+
+  // Authenticated routes
+  {
+    path: '',
+    canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
+    component: LayoutComponent,
+    resolve: {
+      userData: AuthResolver,
+      layout: () => 'classy'
+    },
+    children: [
+      {
         path: 'home',
-        canActivate: [RoleGuard],
-        canActivateChild: [RoleGuard],
-        component: LayoutComponent,
-        data: {
-            layout: 'empty',
-        },
-    },
+        redirectTo: 'collaborations/list',
+        pathMatch: 'full'
+      },
+      {
+        path: 'admin',
+        loadChildren: () => import('app/feature/admin/components/admin.routes')
+      },
+      {
+        path: 'influencers',
+        loadChildren: () => import('app/feature/influencers/components/influencers.routes')
+      },
+      {
+        path: 'companies',
+        loadChildren: () => import('app/feature/companies/components/companies.routes')
+      },
+      {
+        path: 'collaborations',
+        loadChildren: () => import('app/feature/collaborations/components/collaborations.routes')
+      },
+      {
+        path: 'user',
+        loadChildren: () => import('app/feature/users/components/users.routes')
+      }
+    ]
+  },
 
-    // Auth routes for authenticated users
-    {
-        path: '',
-        canActivate: [AuthGuard],
-        canActivateChild: [AuthGuard],
-        component: LayoutComponent,
-        resolve: {
-            // initialData: initialDataResolver,
-            userData: AuthResolver,
-        },
-        children: [
-            {
-                path: 'admin',
-                loadChildren: () =>
-                    import('app/feature/admin/components/admin.routes'),
-            },
-            {
-                path: 'influencers',
-                loadChildren: () =>
-                    import('app/feature/influencers/components/influencers.routes'),
-            },
-            {
-                path: 'companies',
-                loadChildren: () =>
-                    import('app/feature/companies/components/companies.routes'),
-            },
-            {
-                path: 'collaborations',
-                loadChildren: () =>
-                    import('app/feature/collaborations/components/collaborations.routes'),
-            },
-            {
-                path: 'user',
-                loadChildren: () =>
-                    import('app/feature/users/components/users.routes'),
-            },
-        ],
-    },
+  // Fallback
+  {
+    path: '**',
+    redirectTo: ''
+  }
 ];
-
-//========================================================

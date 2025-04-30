@@ -30,12 +30,13 @@ import { SnackbarService } from 'app/core/services/custom-snackbar/custom-snackb
 import { Subject, takeUntil } from 'rxjs';
 import { TranslocoPipe } from '@ngneat/transloco';
 import { NgIf, NgClass } from '@angular/common';
+import { FileInfo } from 'app/core/services/file/file.types';
 
 type PersonalInfoForm = {
   firstName: FormControl<string | null>;
   lastName: FormControl<string | null>;
   email: FormControl<string | null>;
-  profilePicture: FormControl<string | null>;
+  profilePicture: FormControl<FileInfo | null>;
   phoneNumber: FormControl<string | null>;
   name: FormControl<string | null>;
 };
@@ -81,7 +82,7 @@ export class SettingsAccountComponent implements OnInit, OnDestroy {
       firstName: this._formBuilder.control('', [Validators.required, Validators.minLength(2)]),
       lastName: this._formBuilder.control('', [Validators.required, Validators.minLength(2)]),
       email: this._formBuilder.control('', [Validators.required, Validators.email]),
-      profilePicture: this._formBuilder.control(''),
+      profilePicture: this._formBuilder.control(null),
       phoneNumber: this._formBuilder.control(''),
       name: this._formBuilder.control('')
     });
@@ -124,14 +125,22 @@ export class SettingsAccountComponent implements OnInit, OnDestroy {
   }
 
   initAccountForm(user: User): void {
+    console.log(user);
     this.accountForm.patchValue({
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
-      profilePicture: user.profilePicture || null,
+      profilePicture: {
+        fileName: 'Profile picture',
+        contentType: 'image/jpeg',
+        fileUrl: user.profilePicture || '',
+        fileSize: 0,
+        uploadedAt: Date.now()
+      },
       phoneNumber: user.phoneNumber || '',
       name: user.name || ''
     });
+    console.log(this.accountForm.value);
     this._changeDetectorRef.markForCheck();
   }
 
@@ -152,7 +161,7 @@ export class SettingsAccountComponent implements OnInit, OnDestroy {
       firstName: this.accountForm.get('firstName').value,
       lastName: this.accountForm.get('lastName').value,
       email: this.accountForm.get('email').value,
-      profilePicture: this.accountForm.get('profilePicture').value || null,
+      profilePicture: this.accountForm.get('profilePicture').value.fileUrl || null,
       phoneNumber: this.accountForm.get('phoneNumber').value || null,
       name: this.accountForm.get('name').value || null
     };

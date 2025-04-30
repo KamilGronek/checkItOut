@@ -15,8 +15,9 @@
     </div>
 
     <!-- Profile picture section -->
-    <div class="mt-8 flex gap-8 flex-col items-center sm:flex-row sm:items-start">
+    <div class="mt-8 flex gap-8 flex-col items-center justify-center sm:flex-row">
       <app-input
+        class="w-32"
         type="image"
         [control]="accountForm.controls.profilePicture"
         [rounded]="true"

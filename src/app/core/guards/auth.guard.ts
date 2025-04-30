@@ -1,31 +1,27 @@
-import {inject} from '@angular/core';
-import {CanActivateChildFn, CanActivateFn, Router} from '@angular/router';
-import {of, switchMap} from 'rxjs';
-import {AuthService} from 'app/core/services/authentication/auth.service';
+import { inject } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
+import { map, catchError, of } from 'rxjs';
+import { AuthService } from 'app/core/services/authentication/auth.service';
 
-export const AuthGuard: CanActivateFn | CanActivateChildFn = (route, state) => {
-    const router: Router = inject(Router);
+export const AuthGuard: CanActivateFn = (route, state) => {
+  const router = inject(Router);
+  const authService = inject(AuthService);
 
-    // Check the authentication status
-    return inject(AuthService)
-        .check()
-        .pipe(
-            switchMap((authenticated) => {
-                // If the user is not authenticated...
-                if (!authenticated) {
-                    // Redirect to the sign-in page with a redirectUrl param
-                    const redirectURL =
-                        state.url === '/auth/sign-out'
-                            ? ''
-                            : `redirectURL=${state.url}`;
-                    const urlTree = router.parseUrl(`/auth/sign-in?${redirectURL}`);
-
-                    return of(urlTree);
-                }
-                // Allow the access
-                return of(true);
-            })
-        );
+  return authService.check().pipe(
+    map(authenticated => {
+      if (!authenticated) {
+        // Store the attempted URL for redirecting
+        const redirectUrl = state.url === '/auth/sign-out' ? '' : state.url;
+        router.navigate(['/auth/sign-in'], {
+          queryParams: { redirectUrl }
+        });
+        return false;
+      }
+      return true;
+    }),
+    catchError(() => {
+      router.navigate(['/auth/sign-in']);
+      return of(false);
+    })
+  );
 };
-
-//===========================================================================
