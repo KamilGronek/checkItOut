@@ -10,7 +10,7 @@ import {
 } from './collaboration.types';
 import { AuthService } from 'app/core/services/authentication/auth.service';
 import { environment } from 'environments/environment';
-import { ViewType } from '@fuse/components/stepper/stepper';
+import { ViewType } from '../components/stepper/stepper';
 
 @Injectable({
   providedIn: 'root'

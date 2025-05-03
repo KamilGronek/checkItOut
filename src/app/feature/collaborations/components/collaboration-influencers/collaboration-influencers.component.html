@@ -8,7 +8,29 @@
             Aktywne współprace
         </div>
     </div>
-    <app-collaboration-ratings/>
-    <app-collaboration-companies [viewType]="ViewType.COMPANY"></app-collaboration-companies>
-    <app-collaboration-registrations/>
+
+    <!-- Tab Navigation -->
+    <mat-tab-group class="light pt-4">
+
+
+        <!-- Companies Tab -->
+        <mat-tab label="Współprace w toku" class="light">
+            <div class="p-4 light">
+                <app-collaboration-companies [viewType]="ViewType.COMPANY"></app-collaboration-companies>
+            </div>
+        </mat-tab>
+
+        <!-- Influencers Tab -->
+        <mat-tab label="Zgłoszenia" class="light">
+            <div class="p-4 light">
+                <app-collaboration-registrations></app-collaboration-registrations>
+            </div>
+        </mat-tab>
+
+        <mat-tab label="Oceny współprac" class="light">
+            <div class="p-4 light">
+                <app-collaboration-ratings></app-collaboration-ratings>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
 </div>

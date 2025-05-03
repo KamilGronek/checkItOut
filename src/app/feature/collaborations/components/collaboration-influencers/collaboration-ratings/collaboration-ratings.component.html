@@ -1,30 +1,47 @@
-<div class="border-b px-6 py-8 sm:flex-row sm:items-center md:px-8">
-    <div class="flex w-full justify-between items-center">
-        <div class="text-2xl font-extrabold tracking-tight p-8">
-            Oceny podjętych współprac
-        </div>
+<div class="px-6 py-4 sm:flex-row sm:items-center light md:px-8">
+    <!-- Search Form on the left side -->
+    <div class="flex w-full items-center mb-4 pb-5">
+        <mat-form-field
+            class="w-full sm:mt-0 sm:w-72"
+            [subscriptSizing]="'dynamic'"
+        >
+            <mat-icon
+                matPrefix
+                class="icon-size-5"
+                [svgIcon]="'heroicons_solid:magnifying-glass'"
+            ></mat-icon>
+            <input
+                matInput
+                placeholder="Wyszukaj"
+                #searchInput
+                [(ngModel)]="searchText"
+                name="searchText"
+                (input)="filterOpportunities()"
+            />
+        </mat-form-field>
+
+        <!-- Spacer -->
+        <div class="flex-grow"></div>
     </div>
 
     <!-- Jeśli są influencerzy -->
     <div *ngIf="collaborations.length > 0; else noCollaborations">
-        <app-carousel
-            #rateCarousel
-            [items]="collaborations"
-            [showCarousel]="showCarousel"
-            [responsiveOptions]="responsiveOptions"
-        >
-            <ng-template #itemTemplate let-collab>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-4">
+            <div *ngFor="let collab of displayedCollaborations"
+                 style="height: 466px">
                 <fuse-card
                     class="filter-info flex"
                     [flippable]="true"
                     #fuseCard
+                    style="width: 300px;
+                    height: 300px;"
                 >
                     <!-- FRONT -->
                     <ng-container fuseCardFront>
                         <div
-                            class="flex w-full max-w-40 flex-col items-center p-8 pb-6 min-w-30"
+                            class="flex w-full flex-col items-center min-w-30"
                         >
-                            <div>
+                            <div class="mt-6">
                                 <img
                                     [src]="collab.influencerAvatarUrl"
                                     alt="Card cover image"
@@ -35,107 +52,115 @@
                                 class="mt-4 text-center text-2xl font-semibold"
                             >
                                 {{ collab.influencerFirstName }}
+                            </div>
+                            <div
+                                class="text-center text-2xl font-semibold"
+                            >
                                 {{ collab.influencerLastName }}
                             </div>
-                            <div
-                                class="text-secondary mt-1 text-center leading-tight"
-                            >
-                                {{ collab.partnershipOpportunityTitle }}
+
+                            <div class=" text-center self-center justify-self-center leading-tight text-lg w-3/4 mt-3">
+                                    Czy wszystko bylo w porządku?
                             </div>
 
-                            <hr class="mt-4 w-full border-t mb-4" />
-                            <div
-                                class="flex justify-between items-center text-3xl w-full pointer-events-auto"
-                            >
-                                <button
-                                    [disabled]="
-                                        collab.rateStatus === 'POSITIVE'
-                                    "
-                                    [ngClass]="{
-                                        'transform transition-transform duration-300 hover:scale-125':
-                                            collab.rateStatus !== 'POSITIVE',
-                                        'cursor-not-allowed opacity-50':
-                                            collab.rateStatus === 'POSITIVE'
-                                    }"
-                                    (click)="
-                                        fuseCard.face = 'back';
-                                        setRateStatus(
-                                            'POSITIVE',
-                                            collab.appliedOpportunityId
-                                        )
-                                    "
+                            <div class="flex w-full items-center divide-x border-t">
+                                <a
+                                    class="flex flex-auto items-center justify-center py-3 ratingNo"
+                                    [ngClass]="{'selected-no': collab.selectedRating === 'NEGATIVE'}"
+                                    (click)="setRateStatusAndFlip('NEGATIVE', collab.id, fuseCard); $event.preventDefault()"
                                 >
-                                    👍
-                                </button>
-
-                                <button
-                                    [disabled]="
-                                        collab.rateStatus === 'NEGATIVE'
-                                    "
-                                    [ngClass]="{
-                                        'transform transition-transform duration-300 hover:scale-125':
-                                            collab.rateStatus !== 'NEGATIVE',
-                                        'cursor-not-allowed opacity-50':
-                                            collab.rateStatus === 'NEGATIVE'
-                                    }"
-                                    (click)="
-                                        fuseCard.face = 'back';
-                                        setRateStatus(
-                                            'NEGATIVE',
-                                            collab.appliedOpportunityId
-                                        )
-                                    "
+                                    <mat-icon
+                                        class="text-red-700 icon-size-5"
+                                        [svgIcon]="'heroicons_outline:hand-thumb-down'"
+                                    ></mat-icon>
+                                    <span class="ml-2">Nie</span>
+                                </a>
+                                <a
+                                    class="flex flex-auto items-center justify-center py-3 ratingYes"
+                                    [ngClass]="{'selected-yes': collab.selectedRating === 'POSITIVE'}"
+                                    (click)="setRateStatusAndFlip('POSITIVE', collab.id, fuseCard); $event.preventDefault()"
                                 >
-                                    👎
-                                </button>
+                                    <mat-icon
+                                        class="text-green-700 icon-size-5"
+                                        [svgIcon]="'heroicons_outline:hand-thumb-up'"
+                                    ></mat-icon>
+                                    <span class="ml-2">Tak</span>
+                                </a>
                             </div>
                         </div>
                     </ng-container>
 
                     <!-- BACK -->
                     <ng-container fuseCardBack>
-                        <div class="flex flex-col flex-auto px-8 py-6 pt-3">
-                            <div class="mb-2 -mx-3">
-                                <button
-                                    mat-icon-button
-                                    [color]="'primary'"
-                                    (click)="fuseCard.face = 'front'"
-                                >
-                                    <mat-icon
-                                        class="icon-size-5"
-                                        [svgIcon]="
-                                            'heroicons_outline:arrow-left'
-                                        "
-                                    ></mat-icon>
-                                </button>
-                            </div>
+                        <div class="flex items-center mb-2 px-6 pt-4">
+                            <button
+                                mat-icon-button
+                                class="back-button"
+                                (click)="fuseCard.face = 'front'">
+                                <mat-icon class="icon-size-5" [svgIcon]="'heroicons_outline:arrow-left'"></mat-icon>
+                            </button>
+                            <h2 class="status-title text-lg font-medium">
+                                Potwierdź wybór
+                            </h2>
+                        </div>
+                        <div class="mb-6 px-6 flex justify-center mt-8 flex items-center">
+                            <mat-icon
+                                class="text-center opacity-30 icon-size-16"
+                                [svgIcon]="selectedRate?.rateStatus === 'POSITIVE' ? 'heroicons_outline:face-smile' : 'heroicons_outline:face-frown'"
+                                [ngClass]="selectedRate?.rateStatus === 'POSITIVE' ? 'text-green-500' : 'text-red-500'">
+                            </mat-icon>
                         </div>
                         <div class="mt-auto text-center">
-                            <p class="text-xl mb-4">
-                                Czy na pewno chcesz dodać opinię?
+                            <p class="text-lg mb-4">
+                                Czy na pewno chcesz {{ selectedRate?.rateStatus === 'POSITIVE' ? 'pozytywnie' : 'negatywnie' }} ocenić współpracę?
                             </p>
-                            <div class="flex justify-around items-center mb-4">
+                            <div class="flex w-full items-center divide-x border-t">
                                 <button
-                                    class="bg-green-400 rounded-lg text-white px-4 py-2"
-                                    (click)="confirmRateStatus()"
+                                    class="flex flex-auto items-center justify-center py-3 bg-pastel-red hover-darken"
+                                    (click)="fuseCard.face = 'front';"
                                 >
-                                    TAK
+                                    <mat-icon
+                                        class="text-red-700 icon-size-5"
+                                        [svgIcon]="'heroicons_solid:x-mark'"
+                                    ></mat-icon>
+                                    <span class="ml-2">Nie</span>
                                 </button>
                                 <button
-                                    class="bg-red-400 rounded-lg text-white px-4 py-2"
-                                    (click)="
-                                        fuseCard.face = 'front';
-                                        resetRateStatus()
-                                    "
+                                    class="flex flex-auto items-center justify-center py-3 bg-pastel-green hover-darken"
+                                    (click)="confirmRateStatus(); fuseCard.face = 'front';"
                                 >
-                                    NIE
+                                    <mat-icon
+                                        class="text-green-700 icon-size-5"
+                                        [svgIcon]="'heroicons_solid:check'"
+                                    ></mat-icon>
+                                    <span class="ml-2">Tak</span>
                                 </button>
                             </div>
                         </div>
                     </ng-container>
                 </fuse-card>
-            </ng-template>
-        </app-carousel>
+            </div>
+        </div>
+
+        <!-- Paginator - positioned under cards and aligned to the left -->
+        <div class="flex items-center justify-start mt-6 mb-10">
+            <mat-paginator
+                class="demo-paginator"
+                (page)="handlePageEvent($event)"
+                [length]="filteredCollaborations.length"
+                [pageSize]="pageSize"
+                [disabled]="false"
+                [showFirstLastButtons]="true"
+                [pageSizeOptions]="[4, 8, 12]"
+                [hidePageSize]="false"
+                [pageIndex]="pageIndex"
+                aria-label="Wybierz stronę"
+            >
+            </mat-paginator>
+            <label class="h-full flex items-center text-sm ml-2">
+                Strona {{ pageIndex + 1 }}
+            </label>
+        </div>
     </div>
 
     <!-- Jeśli brak influencerów -->

@@ -1,181 +1,115 @@
-<div class="border-b px-6 py-8 sm:flex-row sm:items-center md:px-8">
-    <div class="flex w-full justify-between items-center">
-        <div class="text-2xl font-extrabold tracking-tight p-8">
-            Zgłoszenia współpracy
-        </div>
-        <div
-            class="mr-12"
-            *ngIf="collaborations.length > 0; else noCollabFilter"
+<div class="collaboration-registrations-container px-6 light sm:py-4" appCardScroll>
+    <!-- Header Section -->
+    <div class="flex w-full items-center mb-4 pb-5">
+        <!-- Search Form on the left side -->
+        <mat-form-field
+            class="mt-4 w-full sm:mt-0 sm:w-72"
+            [subscriptSizing]="'dynamic'"
         >
-            <button
-                class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300"
-                (click)="toggleFilters()"
-            >
-                {{ showFilters ? 'Schowaj filtry' : 'Rozwiń filtry' }}
-            </button>
-        </div>
+            <mat-icon
+                matPrefix
+                class="icon-size-5"
+                [svgIcon]="'heroicons_solid:magnifying-glass'"
+            ></mat-icon>
+            <input
+                matInput
+                placeholder="Wyszukaj"
+                #searchInput
+                [(ngModel)]="searchText"
+                name="searchText"
+                (input)="filterOpportunities()"
+            />
+        </mat-form-field>
+
+        <!-- Spacer -->
+        <div class="flex-grow"></div>
+
         <ng-template #noCollabFilter></ng-template>
     </div>
-    <!-- Sekcja filtrów (pokazuje się po kliknięciu) -->
-    <div
-        *ngIf="showFilters"
-        class="mt-4 bg-gray-100 p-4 rounded-lg shadow-md mb-8"
-    >
-        <div class="flex justify-evenly">
-            <mat-form-field appearance="fill" class="w-1/4 max-h-12">
-                <mat-label>Minimalna ilość obserwujących</mat-label>
-                <input
-                    matInput
-                    type="number"
-                    min="0"
-                    step="1000"
-                    placeholder="Wprowadź minimalną wartość"
-                    [(ngModel)]="followersMin"
-                />
-            </mat-form-field>
 
-            <mat-form-field appearance="fill" class="w-1/4 max-h-12">
-                <mat-label>Maksymalna ilość obserwujących</mat-label>
-                <input
-                    matInput
-                    type="number"
-                    min="0"
-                    step="1000"
-                    placeholder="Wprowadź maksymalną wartość"
-                    [(ngModel)]="followersMax"
-                />
-            </mat-form-field>
 
-            <mat-form-field appearance="fill" class="w-1/4 max-h-12">
-                <mat-label
-                    >Minimalna ilość polubień zakończonych współprac</mat-label
-                >
-                <input
-                    matInput
-                    type="number"
-                    min="0"
-                    step="1000"
-                    placeholder="Wprowadź minimalną wartość"
-                    [(ngModel)]="minPositiveRates"
-                />
-            </mat-form-field>
-        </div>
-        <div class="flex justify-center mt-12">
-            <button
-                class="mt-3 w-1/4 bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300"
-                (click)="filterInfluencers()"
-            >
-                Filtruj
-            </button>
-        </div>
-    </div>
-
-    <!-- Jeśli są influencerzy -->
+    <!-- Collaborations Grid -->
     <div *ngIf="collaborations.length > 0; else noCollaborations">
-        <app-carousel
-            *ngIf="showCarousel"
-            #registercarousel
-            [items]="collaborations"
-            [showCarousel]="showCarousel"
-        >
-            <ng-template #itemTemplate let-collab>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-4">
+            <div *ngFor="let collab of pagedCollaborations">
                 <fuse-card
-                    class="filter-info flex"
+                    class="collaboration-card filter-info"
                     [flippable]="true"
                     #fuseCard
+                    style="width: 100%; height: 466px;"
                 >
                     <!-- FRONT -->
                     <ng-container fuseCardFront>
-                        <div
-                            class="flex w-full max-w-80 flex-col items-center p-8 pb-6 min-w-60"
-                        >
-                            <div>
+                        <div class="flex w-full flex-col items-center justify-between text-center h-full text-base">
+                            <div class="absolute right-0 flex flex-col mt-11 mr-4" style="z-index: 999">
+                                <div class="flex items-center mb-3">
+                                    <mat-icon svgIcon="heroicons_solid:user"></mat-icon>
+                                    <div class="ml-1">12453</div>
+                                </div>
+                                <div class="flex items-center">
+                                    <mat-icon svgIcon="heroicons_outline:hand-thumb-up"></mat-icon>
+                                    <div class="ml-1">143</div>
+                                </div>
+                            </div>
+                            <div class="profile-image-container mx-auto mt-6">
                                 <img
-                                    [src]="collab.influencerAvatarUrl"
-                                    alt="Card cover image"
-                                    class="h-32 w-32 rounded-full"
-                                />
+                                    src="https://picsum.photos/200/300"
+                                    alt="Profile image"
+                                    class="h-32 w-32 rounded-full" />
                             </div>
 
-                            <div
-                                class="mt-8 text-center text-2xl font-semibold"
-                            >
-                                {{ collab.influencerFirstName }}
-                                {{ collab.influencerLastName }}
-                            </div>
-                            <div
-                                class="text-secondary mt-1 text-center leading-tight text-lg"
-                            >
-                                {{ collab.partnershipOpportunityTitle }}
-                            </div>
-                            <hr class="mb-0 mt-2 w-full border-t" />
-
-                            <div
-                                class="my-4 flex w-full items-center justify-around px-2 text-lg"
-                            >
-                                <div class="text-center">
-                                    <p class="text-blue-600 font-bold">
-                                        {{ collab.positiveRatesAmount }}
-                                    </p>
-                                    <p class="font-semibold">
-                                        👍 Likes
-                                    </p>
-                                </div>
-
-                                <div class="flex flex-col items-center">
-                                    <span class="font-bold">{{
-                                        collab.followersAmount
-                                    }}</span>
-                                    <span
-                                        class="font-medium"
-                                        >FOLLOWERS</span
-                                    >
-                                </div>
-                                <div class="flex flex-col items-center">
-                                    <span class="font-bold">{{
-                                        collab.instagramId
-                                    }}</span>
-                                    <span
-                                        class="text-secondary font-medium"
-                                    >
-                                        <img
-                                            style="width: 30px; height: 30px"
-                                            src="assets/icons/instagram_black.svg"
-                                            alt="Instagram"
-                                        />
-                                    </span>
-                                </div>
-                            </div>
-
-                            <div class="flex justify-end pointer-events-auto">
-                                <button
-                                    (click)="fuseCard.face = 'back'"
-                                    class="bg-blue-500 hover:bg-blue-600 text-white text-md font-semibold py-2 px-4 rounded-lg transition duration-300"
+                            <!-- Collaboration Info -->
+                            <div class="flex flex-col flex-1 w-full">
+                                <div
+                                    class="mt-2 text-center text-2xl font-semibold"
                                 >
-                                    Czytaj więcej
-                                </button>
+                                    Marek
+                                    Mazowiecki
+                                </div>
+                                <div class="place-self-center flex text-center leading-tight text-base">
+                                    <mat-icon svgIcon="heroicons_outline:map-pin"></mat-icon>
+                                    <div class="ml-1 self-center">Ostrowiec Swietokrzyski</div>
+                                </div>
+                                <div class="place-self-center flex text-center leading-tight text-base">
+                                    <mat-icon svgIcon="heroicons_outline:envelope"></mat-icon>
+                                    <div class="ml-1 self-center">norbert.marchewka44&#64;gmail.com</div>
+                                </div>
+                                <div class="place-self-center flex text-center leading-tight text-base">
+                                    <mat-icon svgIcon="feather:instagram"></mat-icon>
+                                    <div class="self-center ml-1">joloBolo</div>
+                                </div>
+                                <hr class="mb-0 mt-3 w-6/8 border-t" />
+                                <div class="flex-1 flex items-center justify-center">
+                                    <div class="text-center px-4 mt-0 text-lg">
+                                        Pomoge Ci stworzyć promocje Twojego lokalu na najwyższym poziomie
+                                    </div>
+                                </div>
                             </div>
 
-                            <div
-                                class="flex justify-evenly items-center w-full pointer-events-auto mt-6"
-                            >
+                            <!-- Yes/No Buttons with card flipping functionality -->
+                            <div class="flex w-full items-center divide-x border-t">
                                 <button
-                                    class="bg-green-400 rounded-lg text-white px-4 py-2"
-                                    (click)="
-                                        fuseCard.face = 'back';
-                                        acceptShow = true
-                                    "
+                                    class="flex flex-auto items-center justify-center py-3 bg-pastel-red hover-darken"
+                                    (click)="fuseCard.face = 'back';
+                                    acceptShow = false"
                                 >
-                                    Akceptuj
+
+                                    <mat-icon
+                                        class="text-red-700 icon-size-5"
+                                        [svgIcon]="'heroicons_solid:x-mark'"
+                                    ></mat-icon>
+                                    <span class="ml-2">Nie</span>
                                 </button>
                                 <button
-                                    class="bg-red-400 rounded-lg text-white px-4 py-2"
-                                    (click)="
-                                        fuseCard.face = 'back';
-                                        acceptShow = false
-                                    "
+                                    class="flex flex-auto items-center justify-center py-3 bg-pastel-green hover-darken"
+                                    (click)="fuseCard.face = 'back';
+                                    acceptShow = true"
                                 >
-                                    Odrzuć
+                                    <mat-icon
+                                        class="text-green-700 icon-size-5"
+                                        [svgIcon]="'heroicons_solid:check'"
+                                    ></mat-icon>
+                                    <span class="ml-2">Tak</span>
                                 </button>
                             </div>
                         </div>
@@ -183,95 +117,94 @@
 
                     <!-- BACK -->
                     <ng-container fuseCardBack>
-                        <div class="flex flex-col flex-auto px-8 py-6 pt-3">
-                            <div class="mb-2 -mx-3">
+                        <div class="flex flex-col flex-auto pb-6 pt-4 h-full">
+                            <!-- Back Button and Title in same row -->
+                            <div class="flex items-center mb-2 px-6">
                                 <button
                                     mat-icon-button
-                                    [color]="'primary'"
-                                    (click)="
-                                        fuseCard.face = 'front';
-                                        acceptShow = null
-                                    "
-                                >
-                                    <mat-icon
-                                        class="icon-size-5"
-                                        [svgIcon]="
-                                            'heroicons_outline:arrow-left'
-                                        "
-                                    ></mat-icon>
+                                    class="back-button"
+                                    (click)="fuseCard.face = 'front'">
+                                    <mat-icon class="icon-size-5" [svgIcon]="'heroicons_outline:arrow-left'"></mat-icon>
                                 </button>
-
-                                <div class="flex items-center">
-                                    <span
-                                        class="text-secondary text-sm font-medium"
-                                    >
-                                        <img
-                                            style="width: 30px; height: 30px"
-                                            src="assets/icons/mail.svg"
-                                            alt="Mail"
-                                        />
-                                    </span>
-                                    <span class="font-bold"
-                                        >: {{ collab.email }}</span
-                                    >
-                                </div>
-
-                                <div class="mt-4">
-                                    <label
-                                        class="block text-sm font-medium text-gray-700"
-                                        >Notka zamieszczona przez
-                                        influencera:</label
-                                    >
-                                    <p
-                                        class="text-gray-900 bg-gray-100 p-3 rounded-lg mt-1"
-                                    >
-                                        {{ collab.appliedOpportunityNote }}
-                                    </p>
-                                </div>
+                                <h2 class="status-title text-lg font-medium">
+                                     Potwierdź wybór
+                                </h2>
                             </div>
 
-                            <div
-                                class="mt-auto text-center"
-                                *ngIf="acceptShow !== null"
-                            >
-                                <p class="text-2xl mb-4">
-                                    Czy na pewno chcesz
-                                    {{
-                                        acceptShow
-                                            ? 'zaakceptować'
-                                            : 'odrzucić'
-                                    }}?
+                            <!-- Confirmation Dialog -->
+                            <div class="flex flex-col justify-between items-center h-full text-base">
+                                <div class="mb-6 px-6 mt-10">
+                                    <mat-icon
+                                        class="text-center opacity-30 icon-size-48"
+                                        [svgIcon]="acceptShow ? 'heroicons_outline:check-circle' : 'heroicons_outline:x-circle'"
+                                        [ngClass]="acceptShow ? 'text-green-500' : 'text-red-500'">
+                                    </mat-icon>
+                                </div>
+                                <p class="text-xl mb-8 text-center px-6 mt-5 text-base">
+                                    Czy na pewno chcesz {{ acceptShow ? 'zaakceptować' : 'odrzucić' }}
+                                    współpracę z <span class="font-semibold">Marek Mazowiecki</span>?
                                 </p>
-                                <div class="flex justify-around items-center">
+                                <div class="flex w-full items-center divide-x border-t">
                                     <button
-                                        class="bg-green-400 rounded-lg text-white px-4 py-2"
-                                        (click)="
-                                            changeOpportunityStatus(
-                                                collab.id
-                                            )
-                                        "
+                                        class="flex flex-auto items-center justify-center py-3 bg-pastel-red hover-darken"
+                                        (click)="fuseCard.face = 'front';"
                                     >
-                                        TAK
+                                        <mat-icon
+                                            class="text-red-700 icon-size-5"
+                                            [svgIcon]="'heroicons_solid:x-mark'"
+                                        ></mat-icon>
+                                        <span class="ml-2">Nie</span>
                                     </button>
                                     <button
-                                        class="bg-red-400 rounded-lg text-white px-4 py-2"
-                                        (click)="fuseCard.face = 'front'"
+                                        class="flex flex-auto items-center justify-center py-3 bg-pastel-green hover-darken"
+                                        (click)="fuseCard.face = 'front';"
                                     >
-                                        NIE
+                                        <mat-icon
+                                            class="text-green-700 icon-size-5"
+                                            [svgIcon]="'heroicons_solid:check'"
+                                        ></mat-icon>
+                                        <span class="ml-2">Tak</span>
                                     </button>
                                 </div>
                             </div>
                         </div>
                     </ng-container>
                 </fuse-card>
-            </ng-template>
-        </app-carousel>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="flex mb-10 items-center text-sm">
+            <mat-paginator
+                style="margin-left: 0;"
+                class="demo-paginator light"
+                (page)="handlePageEvent($event)"
+                [length]="length"
+                [pageSize]="pageSize"
+                [disabled]="disabled"
+                [showFirstLastButtons]="showFirstLastButtons"
+                [pageSizeOptions]="showPageSizeOptions ? pageSizeOptions : []"
+                [hidePageSize]="hidePageSize"
+                [pageIndex]="pageIndex"
+                aria-label="Select page"
+            >
+            </mat-paginator>
+            <label>Strona {{ pageIndex + 1 }}</label>
+        </div>
+
+        <style>
+            ::ng-deep .mat-mdc-paginator-container {
+                padding-left: 0 !important;
+            }
+            ::ng-deep .mat-mdc-paginator-page-size {
+                margin-left: 0 !important;
+            }
+        </style>
     </div>
 
     <ng-template #noCollaborations>
-        <p>
-            Nie znaleziono żadnych influencerów oczekujących na akceptacje o
-            podanych filtrach.
-        </p>
+        <div class="flex flex-col items-center justify-center p-8">
+            <p class="text-xl text-gray-500">Nie znaleziono żadnych influencerów oczekujących na akceptacje o podanych filtrach.</p>
+        </div>
     </ng-template>
 </div>

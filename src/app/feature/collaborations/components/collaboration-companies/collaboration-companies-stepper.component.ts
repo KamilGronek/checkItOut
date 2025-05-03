@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { StepperComponent, Step } from '@fuse/components/stepper/stepper';
+import { StepperComponent, Step } from '../stepper/stepper';
 import jsonData from './statuses.json';
 
 @Component({
@@ -7,6 +7,7 @@ import jsonData from './statuses.json';
     standalone: true,
     imports: [StepperComponent],
     template: `<app-stepper [steps]="stepsData" [currentStep]="currentStep"></app-stepper>`,
+    styleUrls: ['./collaboration-companies-stepper.component.scss']
 })
 export class CollaborationCompaniesStepperComponent {
     @Input() currentStatus: string;

@@ -1,0 +1,28 @@
+:host {
+  display: block;
+  max-height: 60vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch; /* For smooth scrolling on iOS */
+  padding-bottom: 0; /* Reduced from 10px to 0 */
+
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* Add a smaller, subtle fade effect at the bottom to indicate scrollability */
+:host::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 15px; /* Reduced from 30px to 15px */
+  background: linear-gradient(to top, rgba(255,255,255,0.8), transparent);
+  pointer-events: none;
+}

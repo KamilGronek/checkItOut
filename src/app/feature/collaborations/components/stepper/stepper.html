@@ -1,8 +1,8 @@
-<div class="px-8">
+<div>
     <ol>
         <li
             *ngFor="let step of displaySteps; let i = index; let last = last"
-            class="group relative py-4"
+            class="group relative py-2"
         >
             <!-- Linia łącząca kroki – nie wyświetlamy jej dla ostatniego kroku -->
             <div
@@ -22,7 +22,7 @@
                 <div
                     class="bg-card flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full ring-2 ring-inset"
                     [ngClass]="{
-                        'ring-primary bg-primary text-white':
+                        'ring-primary-200 bg-primary-200 text-white':
                             step.statusNumber < currentStep?.statusNumber,
                         'ring-primary bg-white text-white font-semibold':
                             step.statusNumber === currentStep?.statusNumber &&

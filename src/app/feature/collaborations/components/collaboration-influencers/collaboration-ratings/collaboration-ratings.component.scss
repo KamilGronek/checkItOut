@@ -1,3 +1,38 @@
 :host ::ng-deep .p-carousel-item {
     max-width: 170px;
 }
+
+.ratingYes:hover, .selected-yes {
+    background-color: #c8e6c9; /* Green for hover and selected */
+}
+
+.ratingNo:hover, .selected-no {
+    background-color: #f5c6cb; /* Red for hover and selected */
+}
+
+/* Adding a transition for smoother effect */
+.ratingYes, .ratingNo {
+    transition: background-color 0.2s ease;
+}
+
+/* Paginator styles */
+:host ::ng-deep .demo-paginator {
+    background: transparent;
+
+    .mat-mdc-paginator-container {
+        justify-content: flex-start;
+    }
+
+    .mat-mdc-paginator-range-label {
+        margin: 0 12px 0 8px;
+    }
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 600px) {
+    :host ::ng-deep .demo-paginator {
+        .mat-mdc-paginator-page-size {
+            margin-right: 8px;
+        }
+    }
+}

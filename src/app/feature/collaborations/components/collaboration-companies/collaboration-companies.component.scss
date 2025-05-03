@@ -1,0 +1,463 @@
+.collaboration-companies-container {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.legend {
+  margin: 24px 0;
+  padding: 16px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* PrimeNG Carousel padding override - IMPORTANT */
+:host ::ng-deep .p-carousel .p-carousel-items-container .p-carousel-items-content {
+  padding: 4px !important;
+}
+
+/* Alternative selectors for carousel padding - just to be safe */
+:host ::ng-deep .p-carousel-items-content {
+  padding: 4px !important;
+}
+
+/* Carousel navigation arrows styling - add space between arrows and cards */
+:host ::ng-deep {
+  .p-carousel-prev,
+  .p-carousel-next {
+    margin: 0 16px !important; /* Add horizontal margin to both arrows */
+  }
+
+  /* Ensure arrows are visible and properly positioned */
+  .p-carousel-prev {
+    left: -12px !important; /* Move left arrow a bit outward */
+  }
+
+  .p-carousel-next {
+    right: -12px !important; /* Move right arrow a bit outward */
+  }
+
+  /* Make sure z-index is higher than cards */
+  .p-carousel-prev,
+  .p-carousel-next {
+    z-index: 10 !important;
+  }
+}
+
+:host ::ng-deep {
+  .p-carousel-items-content {
+    padding: 4px !important;
+  }
+}
+
+/* Global override for p-carousel-items-content */
+::ng-deep .p-carousel-items-content {
+  padding: 4px !important;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin: 8px 0;
+}
+
+.circle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  margin-right: 12px;
+}
+
+.status-accepted {
+  background-color: rgba(76, 175, 80, 0.8);
+}
+
+.status-rejected {
+  background-color: rgba(244, 67, 54, 0.8);
+}
+
+.status-done {
+  background-color: rgba(33, 150, 243, 0.8);
+}
+
+.status-pending {
+  background-color: rgba(255, 193, 7, 0.8);
+}
+
+.profile-image-container {
+  position: relative;
+  border-radius: 50%;
+  padding: 4px;
+}
+
+.top-button-container {
+  display: none; /* Remove this container completely */
+}
+
+.back-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #4f46e5 !important;
+    width: 32px;
+    height: 32px;
+
+    mat-icon {
+        font-size: 18px;
+        height: 18px;
+        width: 18px;
+    }
+}
+
+.back-arrow-button {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 999;
+  width: 32px;
+  height: 32px;
+  color: #4f46e5 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  mat-icon {
+    font-size: 18px;
+    height: 18px;
+    width: 18px;
+  }
+}
+
+.collaboration-card {
+  width: 100%;
+  max-width: 360px;
+  min-height: 445px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Enhanced Card Flip Animation */
+:host ::ng-deep {
+  fuse-card {
+    perspective: 1000px;
+    transform-style: preserve-3d;
+
+    .fuse-card-faces {
+      transition: transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
+    }
+
+    .fuse-card-back {
+      transform: rotateY(180deg);
+      backface-visibility: hidden;
+    }
+
+    .fuse-card-front {
+      backface-visibility: hidden;
+    }
+
+    &.flipped {
+      .fuse-card-faces {
+        transform: rotateY(180deg);
+      }
+    }
+  }
+}
+
+/* Fix for missing borders in fuseCardFront and fuseCardBack */
+:host ::ng-deep {
+  fuse-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    /* Target the front face */
+    [fusecardfrontcontent], [fusecardfront] {
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      text-align: center;
+      height: 100%;
+    }
+
+    /* Ensure the ng-container and its children are full height */
+    [fusecardfrontcontent] > ng-component,
+    [fusecardfront] > ng-component {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Ensure card faces have proper styling */
+    .fuse-card-front,
+    .fuse-card-back {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Ensure content in front face is properly distributed */
+    .fuse-card-front {
+      justify-content: space-between;
+      align-items: center;
+      text-align: center;
+      height: 100%;
+
+      & > div {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        padding-bottom: 0 !important; /* Ensure no padding at the bottom */
+      }
+    }
+
+    /* Remove any bottom margin from the email/call buttons */
+    .flex.w-full.items-center.divide-x.border-t {
+      margin-bottom: 0 !important;
+      margin-top: auto;
+    }
+  }
+}
+
+/* Mobile scroll improvements */
+:host ::ng-deep {
+  .fuse-card-back {
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    max-height: 80vh !important;
+    padding-bottom: 0 !important; /* Remove bottom padding */
+
+    /* Smaller indicator to show scrollability */
+    &::after {
+      content: '';
+      display: none;
+      width: 20px; /* Reduced from 30px */
+      height: 3px; /* Reduced from 5px */
+      background-color: #e0e0e0;
+      border-radius: 3px;
+      margin: 5px auto 0; /* Reduced top and bottom margins */
+      opacity: 0.5; /* Reduced from 0.7 */
+    }
+
+    /* Also adjust content padding */
+    & > div {
+      padding-bottom: 0 !important;
+    }
+  }
+}
+
+/* Mobile optimization media query */
+@media (max-width: 768px) {
+  :host ::ng-deep {
+    .fuse-card-back {
+      /* Remove bottom padding completely for mobile */
+      padding-bottom: 0 !important;
+
+      /* Maximize usable content space by adjusting content padding */
+      & > div {
+        padding: 8px 8px 0 8px !important;
+      }
+    }
+  }
+}
+
+/* Stepper container with compact spacing */
+.stepper-container {
+  padding-bottom: 0;
+  margin-bottom: 0;
+
+  app-collaboration-companies-stepper {
+    display: block;
+    margin-bottom: 0;
+  }
+}
+
+/* Animated scroll hint styling */
+.scroll-hint {
+  animation: fadeInOut 2s infinite;
+  font-style: italic;
+  margin: 0;
+  padding: 0;
+  display: none; /* Hidden by default (desktop) */
+}
+
+/* Back button styling - fixed position */
+.back-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4f46e5 !important;
+  width: 32px;
+  height: 32px;
+
+  mat-icon {
+    font-size: 18px;
+    height: 18px;
+    width: 18px;
+  }
+}
+
+/* Status title styling */
+.status-title {
+  color: rgb(30, 41, 59) !important;
+  margin-left: 8px;
+}
+
+/* Mobile-specific hint style */
+.mobile-hint {
+  display: none; /* Hidden on desktop */
+}
+
+/* Show mobile hint only on mobile devices */
+@media screen and (max-width: 768px) {
+  .mobile-hint {
+    display: block !important; /* Force display on mobile */
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+}
+
+@keyframes fadeInOut {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+/* Improve Email/Call buttons display */
+.hover\:bg-hover:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.text-hint {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.icon-size-5 {
+  width: 20px;
+  height: 20px;
+}
+
+.icon-size-10 {
+  width: 64px;
+  height: 64px;
+}
+
+.icon-size-48 {
+  width: 120px !important;
+  height: 120px !important;
+  font-size: 120px !important;
+}
+
+/* Pastel colors for Email and Call buttons - exact match from screenshot */
+.bg-pastel-green {
+  background-color: #e8f4e9; /* Light mint green from screenshot */
+  color: #1b5e20; /* Darker green for text */
+}
+
+.bg-pastel-red {
+  background-color: #fbe4e7; /* Light pink from screenshot */
+  color: #b71c1c; /* Darker red for text */
+}
+
+.text-green-700 {
+  color: rgba(21, 94, 32, 0.8); /* Specific color for email icon */
+}
+
+.text-red-700 {
+  color: rgba(183, 28, 28, 0.8); /* Specific color for call icon */
+}
+
+/* Adjusted padding for buttons to match screenshot */
+.bg-pastel-green, .bg-pastel-red {
+  padding-top: 0.75rem;    /* 12px */
+  padding-bottom: 0.75rem; /* 12px */
+  font-size: 14px;
+}
+
+/* Hover effect with darker color */
+.hover-darken {
+  transition: background-color 0.2s ease;
+}
+
+.bg-pastel-green.hover-darken:hover {
+  background-color: #c8e6c9; /* Darker green on hover */
+}
+
+.bg-pastel-red.hover-darken:hover {
+  background-color: #f5c6cb; /* Darker red on hover */
+}
+
+/* Ensure the icon and text are properly aligned */
+.bg-pastel-green .icon-size-5,
+.bg-pastel-red .icon-size-5 {
+  margin-top: -2px;
+}
+
+/* Confirmation dialog styling */
+.text-green-500 {
+  color: #10b981;
+}
+
+.text-red-500 {
+  color: #ef4444;
+}
+
+.text-blue-500 {
+  color: #4860EE;
+}
+
+/* Additional styling for the confirmation dialog */
+.text-gray-800 {
+  color: #1f2937;
+}
+
+.text-gray-600 {
+  color: #4b5563;
+}
+
+/* Support card styling */
+.support-card {
+  border-radius: 16px !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05) !important;
+  overflow: hidden !important;
+  background-color: white !important;
+}
+
+/* Button styling for support-style UI */
+.bg-indigo-600 {
+  background-color: #4860EE !important;
+  color: white !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+  border-radius: 50px !important;
+  padding: 8px 16px !important;
+  margin: 0 8px !important;
+}
+
+.bg-indigo-600:hover {
+  background-color: #3D4ECA !important;
+}
+
+.bg-gray-100 {
+  background-color: #f3f4f6 !important;
+  color: #374151 !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+  border-radius: 50px !important;
+  padding: 8px 16px !important;
+  margin: 0 8px !important;
+}
+
+.bg-gray-100:hover {
+  background-color: #e5e7eb !important;
+}
+
+/* Transition effects for buttons */
+button.transition-colors {
+  transition: background-color 0.3s ease;
+}
