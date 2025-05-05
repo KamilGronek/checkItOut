@@ -1,365 +1,570 @@
-<app-header/>
+<!-- Main Container -->
+<div class="landing-page" [attr.data-lang]="currentLang">
+    <!-- Header -->
+    <header [ngClass]="{'scrolled': isScrolled}">
+        <div class="container">
+            <nav>
+                <a routerLink="/" class="logo">
+                    Check It Out
+                </a>
+                <div class="nav-links" [ngClass]="{'active': isMenuOpen}">
+                    <a routerLink="/" fragment="how-it-works" (click)="closeMenu()" *ngIf="currentLang === 'pl'">Jak to działa</a>
+                    <a routerLink="/" fragment="how-it-works" (click)="closeMenu()" *ngIf="currentLang === 'en'">How it works</a>
 
+                    <a routerLink="/" fragment="testimonials" (click)="closeMenu()" *ngIf="currentLang === 'pl'">Opinie</a>
+                    <a routerLink="/" fragment="testimonials" (click)="closeMenu()" *ngIf="currentLang === 'en'">Testimonials</a>
 
-<div class="relative flex min-w-0 flex-auto flex-col overflow-hidden">
-    <!-- Header & Cards -->
-    <div
-        class="relative overflow-hidden px-6 pb-12 pt-16 sm:px-16 sm:pb-24 sm:pt-16"
-    >
-        <!-- Background -->
-        <!-- prettier-ignore -->
-        <svg class="-z-1 absolute inset-0"
-             viewBox="0 0 960 540" width="100%" height="100%" preserveAspectRatio="xMidYMax slice"
-             xmlns="http://www.w3.org/2000/svg">
-            <g class="opacity-40 text-gray-200 dark:text-gray-800" fill="none" stroke="currentColor"
-               stroke-width="100">
-                <circle r="234" cx="196" cy="23"></circle>
-                <circle r="234" cx="790" cy="491"></circle>
-            </g>
-        </svg>
-        <!-- Header -->
-        <div class="flex flex-col items-center">
-            <div
-                class="mt-1 text-center text-4xl font-extrabold leading-tight tracking-tight sm:text-7xl"
-            >
-                Marki i twórcy, w końcu po tej samej stronie.
-            </div>
-            <h4 class="mt-4 text-2xl">Jestem:</h4>
-            <div
-                class="mt-2 flex items-center overflow-hidden rounded-full bg-gray-200 p-0.5 dark:bg-gray-700"
-            >
-                <button
-                    class="px-6"
-                    [ngClass]="{
-                        'bg-card pointer-events-none shadow': yearlyBilling,
-                        'bg-transparent': !yearlyBilling,
-                    }"
-                    mat-flat-button
-                    (click)="yearlyBilling = true"
-                    disableRipple
-                >
-                    Firmą
+                    <a routerLink="/" fragment="faq" (click)="closeMenu()" *ngIf="currentLang === 'pl'">FAQ</a>
+                    <a routerLink="/" fragment="faq" (click)="closeMenu()" *ngIf="currentLang === 'en'">FAQ</a>
+
+                    <a routerLink="/" (click)="closeMenu()" *ngIf="currentLang === 'pl'">Zespół</a>
+                    <a routerLink="/" (click)="closeMenu()" *ngIf="currentLang === 'en'">Team</a>
+
+                    <a routerLink="/" (click)="closeMenu()" *ngIf="currentLang === 'pl'">Kontakt</a>
+                    <a routerLink="/" (click)="closeMenu()" *ngIf="currentLang === 'en'">Contact</a>
+
+                    <div class="mobile-buttons">
+                        <a routerLink="/login" class="btn btn-outline-primary mr-1" *ngIf="currentLang === 'pl'">Zaloguj się</a>
+                        <a routerLink="/login" class="btn btn-outline-primary mr-1" *ngIf="currentLang === 'en'">Log in</a>
+                        <a routerLink="/register" class="btn btn-primary" *ngIf="currentLang === 'pl'">Zarejestruj się</a>
+                        <a routerLink="/register" class="btn btn-primary" *ngIf="currentLang === 'en'">Sign up</a>
+                    </div>
+                </div>
+
+                <div class="lang-switcher">
+                    <button class="lang-switcher-btn" (click)="toggleLangDropdown($event)">
+                        <img *ngIf="currentLang === 'pl'" src="assets/images/flags/PL.svg" alt="Polish flag" class="flag-icon" style="margin-right: 4px;">
+                        <img *ngIf="currentLang === 'en'" src="assets/images/flags/UK.png" alt="English flag" class="flag-icon" style="margin-right: 4px;">
+                        <span>{{ currentLang.toUpperCase() }}</span>
+                    </button>
+                    <div class="lang-dropdown" [ngClass]="{'active': isLangDropdownOpen}">
+                        <div class="lang-option" [ngClass]="{'active': currentLang === 'pl'}" (click)="switchLanguage('pl')">
+                            <img src="assets/images/flags/PL2.png" alt="Polish flag" class="flag-icon">
+                            <span>Polski</span>
+                        </div>
+                        <div class="lang-option" [ngClass]="{'active': currentLang === 'en'}" (click)="switchLanguage('en')">
+                            <img src="assets/images/flags/UK.png" alt="English flag" class="flag-icon">
+                            <span>English</span>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="menu-toggle" aria-label="Menu" (click)="toggleMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
                 </button>
-                <button
-                    class="px-6"
-                    [ngClass]="{
-                        'bg-card pointer-events-none shadow': !yearlyBilling,
-                        'bg-transparent': yearlyBilling,
-                    }"
-                    mat-flat-button
-                    (click)="yearlyBilling = false"
-                    disableRipple
-                >
-                    Influencerem
-                </button>
-            </div>
+            </nav>
         </div>
-        <!-- Cards -->
-        <div class="mt-6 flex justify-center sm:mt-10">
-            <div class="w-full max-w-sm md:max-w-7xl">
-                <div
-                    class="grid grid-cols-1 gap-y-6 md:grid-cols-2 md:gap-x-6 lg:grid-cols-3 lg:gap-x-0 lg:gap-y-0"
-                >
-                    <!-- Card 1 -->
-                    <fuse-card
-                        class="max-w-sm flex-col items-center p-8 text-center sm:px-10 sm:py-12 md:max-w-none lg:my-16 lg:rounded-none lg:rounded-l-2xl"
-                    >
-                        <div
-                            class="text-4xl font-bold leading-tight tracking-tight"
-                        >
-                            Oszczędność czasu i zasobów
-                        </div>
-                        <!-- Features -->
-                        <div class="mt-8 space-y-2">
-                            <div>Listy dopasowanych influencerów</div>
-                            <div>Gotowe briefy i umowy</div>
-                            <div>Automatyczny monitoring kampanii</div>
-                            <div>Pełna obsługa kampanii przez platformę</div>
+    </header>
 
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <div class="hero-text">
+                        <div class="hero-badge" *ngIf="currentLang === 'pl'">Platforma dla influencer marketingu</div>
+                        <div class="hero-badge" *ngIf="currentLang === 'en'">Influencer Marketing Platform</div>
+
+                        <h1 *ngIf="currentLang === 'pl'">Lokalne firmy i twórcy internetowi, w końcu po tej samej stronie.</h1>
+                        <h1 *ngIf="currentLang === 'en'">Brands and creators, finally on the same side.</h1>
+
+                        <p *ngIf="currentLang === 'pl'">Łączymy małe przedsiębiorstwa i influencerów w skutecznych kampaniach marketingowych, zapewniając transparentność, zaufanie i mierzalne rezultaty.</p>
+                        <p *ngIf="currentLang === 'en'">We connect brands and influencers in effective marketing campaigns, ensuring transparency, trust, and measurable results for all parties.</p>
+
+                        <div class="hero-cta">
+                            <a routerLink="/register" class="btn btn-primary" *ngIf="currentLang === 'pl'">Dołącz za darmo</a>
+                            <a routerLink="/register" class="btn btn-primary" *ngIf="currentLang === 'en'">Join for free</a>
+
+                            <a routerLink="/" fragment="how-it-works" class="btn btn-outline" *ngIf="currentLang === 'pl'">Zobacz jak to działa</a>
+                            <a routerLink="/" fragment="how-it-works" class="btn btn-outline" *ngIf="currentLang === 'en'">See how it works</a>
                         </div>
-                    </fuse-card>
-                    <!-- Card 2 -->
-                    <fuse-card
-                        class="relative max-w-sm flex-col items-center p-8 text-center sm:px-10 sm:py-12 md:max-w-none lg:z-99 lg:overflow-visible lg:pb-28 lg:shadow-2xl"
-                    >
-                        <!-- Price -->
-                        <div class="flex items-baseline whitespace-nowrap">
-                            <div
-                                class="text-6xl font-semibold leading-tight tracking-tight"
-                            >
-                                <p class="line-through">80PLN</p>
-                                <p class="text-4xl text-gray-800">FREE</p>
+                    </div>
+                    <div class="hero-image">
+                        <div class="image-container">
+                            <img src="assets/images/person-business-connection.svg" alt="Check It Out Platform Interface">
+                            <div class="floating-card card-1">
+                                <div class="card-header">
+                                    <div class="profile-pic"><img src="assets/images/kasia.png" alt="kasia"></div>
+                                    <div class="user-info">
+                                        <p class="name">Kasia</p>
+                                        <p class="followers" *ngIf="currentLang === 'pl'">12 000 obserwujących</p>
+                                        <p class="followers" *ngIf="currentLang === 'en'">12 000 followers</p>
+                                    </div>
+                                </div>
+                                <div class="card-progress">
+                                    <div class="progress-label">
+                                        <span *ngIf="currentLang === 'pl'">Kampania w toku</span>
+                                        <span *ngIf="currentLang === 'en'">Campaign in progress</span>
+                                        <span>75%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress" [style.width.%]="75"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="floating-card card-2">
+                                <div class="stats-icon">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M18 20V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                        <path d="M12 20V4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                        <path d="M6 20V14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    </svg>
+                                </div>
+                                <div class="stats-info">
+                                    <p class="stats-label">Instagram, TikTok</p>
+                                    <p class="stats-value" *ngIf="currentLang === 'pl'">+ 5000 wyświetleń</p>
+                                    <p class="stats-value" *ngIf="currentLang === 'en'">+ 5000 views</p>
+                                </div>
                             </div>
                         </div>
-                        <div
-                            class="mt-8 text-4xl font-extrabold leading-tight tracking-tight"
-                        >
-                            Skuteczniejsza współpraca
-                        </div>
-<!--                        &lt;!&ndash; Price details &ndash;&gt;-->
-<!--                        <div class="text-secondary mt-2 flex flex-col">-->
-<!--                            @if (yearlyBilling) {-->
-<!--                            <div>billed yearly</div>-->
-<!--                            <div><b>$15.00</b> billed monthly</div>-->
-<!--                            }-->
-<!--                            @if (!yearlyBilling) {-->
-<!--                            <div>billed monthly</div>-->
-<!--                            <div><b>$12.00</b> billed yearly</div>-->
-<!--                            }-->
-<!--                        </div>-->
-                        <!-- Features -->
-                        <div class="mt-8 space-y-2">
-                            <div>Weryfikacja influencerów</div>
-                            <div>Oceny i rekomendacje twórców
-                            </div>
-                            <div>Ochrona przed fałszywymi kontami</div>
-                            <div>Raport z wyników kampanii
-                            </div>
-                        </div>
-                    </fuse-card>
-                    <!-- Card 3 -->
-                    <fuse-card
-                        class="max-w-sm flex-col items-center p-8 text-center sm:px-10 sm:py-12 md:max-w-none lg:my-16 lg:rounded-none lg:rounded-r-2xl"
-                    >
-                        <div
-                            class="text-4xl font-bold leading-tight tracking-tight"
-                        >
-                            Skuteczniejsza współpraca
-                        </div>
-                        <ul class="mt-8 list-disc list-inside pl-4 text-xl text-gray-600 space-y-2 text-left">
-                            <li>Dopasowanie do celów marki i grupy docelowej</li>
-                            <li>Rekomendacje modelu współpracy</li>
-                            <li>Transparentne rozliczenia i monitoring wydajności</li>
-                        </ul>
-                    </fuse-card>
+                    </div>
                 </div>
             </div>
-        </div>
+            <div class="shape-divider">
+                <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                    <path d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z" class="shape-fill"></path>
+                </svg>
+            </div>
+        </section>
 
+        <!-- Benefits Section -->
+        <section class="benefits" id="benefits">
+            <div class="container">
+                <div class="section-title">
+                    <div class="section-subtitle" *ngIf="currentLang === 'pl'">Korzyści</div>
+                    <div class="section-subtitle" *ngIf="currentLang === 'en'">Benefits</div>
 
-        <div class="py-8 sm:py-36">
-            <!-- Sekcja krok po kroku (steps) -->
-            <div class="max-w-6xl mx-auto py-12 px-4">
-                <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">
-                    Jak to działa?
-                </h2>
-                <div class="grid md:grid-cols-3 gap-8">
-                    <div
-                        *ngFor="let step of steps"
-                        class="bg-white rounded-lg shadow-lg p-6 text-center flex flex-col items-center"
-                    >
-                        <div class="text-2xl font-bold mb-2 text-gray-700">{{ step.title }}</div>
-                        <p class="text-gray-600 mb-4">{{ step.description }}</p>
-                        <div class="mt-auto">
-                            <!-- Możesz tu dodać np. ikonkę lub inny element graficzny -->
-                            <svg class="w-10 h-10 text-blue-500 mx-auto" fill="none" stroke="currentColor"
-                                 stroke-width="2"
-                                 viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                      d="M13 16h-1v-4h-1m2 4v-4m1-10h-4m10 10c0-3.866-3.582-7-8-7S3 8.134 3 12s3.582 7 8 7 8-3.134 8-7z"/>
+                    <h2 *ngIf="currentLang === 'pl'">Jak możemy Ci pomóc?</h2>
+                    <h2 *ngIf="currentLang === 'en'">How can we help you?</h2>
+
+                    <p *ngIf="currentLang === 'pl'">Oferujemy rozwiązania, które ułatwiają współpracę między firmami i influencerami</p>
+                    <p *ngIf="currentLang === 'en'">We offer solutions that facilitate collaboration between brands and influencers</p>
+                </div>
+
+                <div class="benefits-cards">
+                    <div *ngFor="let benefit of benefitsList" class="benefit-card slide-up" [ngClass]="{'appear': isInViewport}">
+                        <div class="benefit-icon" [innerHTML]="benefit.icon | safeHtml"></div>
+                        <h3 *ngIf="currentLang === 'pl'">{{ benefit.title.pl }}</h3>
+                        <h3 *ngIf="currentLang === 'en'">{{ benefit.title.en }}</h3>
+
+                        <ul *ngIf="currentLang === 'pl'">
+                            <li *ngFor="let item of benefit.list.pl"><span>{{ item }}</span></li>
+                        </ul>
+                        <ul *ngIf="currentLang === 'en'">
+                            <li *ngFor="let item of benefit.list.en"><span>{{ item }}</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How it works Section -->
+        <section class="how-it-works" id="how-it-works">
+            <div class="container">
+                <div class="section-title">
+                    <div class="section-subtitle" *ngIf="currentLang === 'pl'">Proces</div>
+                    <div class="section-subtitle" *ngIf="currentLang === 'en'">Process</div>
+
+                    <h2 *ngIf="currentLang === 'pl'">Jak to działa?</h2>
+                    <h2 *ngIf="currentLang === 'en'">How does it work?</h2>
+
+                    <p *ngIf="currentLang === 'pl'">Rozpoczęcie współpracy z Check It Out jest proste i intuicyjne</p>
+                    <p *ngIf="currentLang === 'en'">Starting collaboration with Check It Out is simple and intuitive</p>
+                </div>
+
+                <div class="tabs">
+                    <div class="tab-header">
+                        <button class="tab-button" [ngClass]="{'active': activeTab === 'influencers'}" (click)="setActiveTab('influencers')">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 15C15.3137 15 18 12.3137 18 9C18 5.68629 15.3137 3 12 3C8.68629 3 6 5.68629 6 9C6 12.3137 8.68629 15 12 15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                <path d="M2.90625 20.2491C3.82834 18.6531 5.1542 17.3278 6.75064 16.4064C8.34708 15.485 10.1579 15 12.0011 15C13.8444 15 15.6552 15.4851 17.2516 16.4066C18.8479 17.3281 20.1738 18.6534 21.0958 20.2494" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                            <span *ngIf="currentLang === 'pl'">Dla Influencerów</span>
+                            <span *ngIf="currentLang === 'en'">For Influencers</span>
+                        </button>
+
+                        <button class="tab-button" [ngClass]="{'active': activeTab === 'brands'}" (click)="setActiveTab('brands')">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M19 21V5C19 3.89543 18.1046 3 17 3H7C5.89543 3 5 3.89543 5 5V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                <path d="M1 21H23" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                <path d="M9 9H10V10H9V9Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                <path d="M14 9H15V10H14V9Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                <path d="M9 14H10V15H9V14Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                <path d="M14 14H15V15H14V14Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                            <span *ngIf="currentLang === 'pl'">Dla Firm</span>
+                            <span *ngIf="currentLang === 'en'">For Brands</span>
+                        </button>
+                    </div>
+
+                    <div class="tab-content">
+                        <!-- Tab content for Influencers -->
+                        <div class="tab-pane" [ngClass]="{'active': activeTab === 'influencers'}" id="tab-influencers">
+                            <div class="steps">
+                                <div *ngFor="let step of influencerSteps; let i = index" class="step slide-up" [ngClass]="{'appear': isInViewport}">
+                                    <div class="step-header">
+                                        <div class="step-number">{{ i + 1 }}</div>
+                                        <h3 *ngIf="currentLang === 'pl'">{{ step.title.pl }}</h3>
+                                        <h3 *ngIf="currentLang === 'en'">{{ step.title.en }}</h3>
+                                    </div>
+
+                                    <div class="step-image" [innerHTML]="step.icon | safeHtml"></div>
+                                    <br>
+                                    <p *ngIf="currentLang === 'pl'">{{ step.description.pl }}</p>
+                                    <p *ngIf="currentLang === 'en'">{{ step.description.en }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tab content for Brands -->
+                        <div class="tab-pane" [ngClass]="{'active': activeTab === 'brands'}" id="tab-brands">
+                            <div class="steps">
+                                <div *ngFor="let step of brandSteps; let i = index" class="step slide-up" [ngClass]="{'appear': isInViewport}">
+                                    <div class="step-header">
+                                        <div class="step-number">{{ i + 1 }}</div>
+                                        <h3 *ngIf="currentLang === 'pl'">{{ step.title.pl }}</h3>
+                                        <h3 *ngIf="currentLang === 'en'">{{ step.title.en }}</h3>
+                                    </div>
+
+                                    <div class="step-image" [innerHTML]="step.icon | safeHtml"></div>
+                                    <br>
+                                    <p *ngIf="currentLang === 'pl'">{{ step.description.pl }}</p>
+                                    <p *ngIf="currentLang === 'en'">{{ step.description.en }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="stats">
+            <div class="container">
+                <div class="stats-container">
+                    <div *ngFor="let stat of statsList" class="stat-item slide-up" [ngClass]="{'appear': isInViewport}">
+                        <div class="stat-value">{{ stat.value }}</div>
+                        <div class="stat-label" *ngIf="currentLang === 'pl'">{{ stat.label.pl }}</div>
+                        <div class="stat-label" *ngIf="currentLang === 'en'">{{ stat.label.en }}</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features" id="features">
+            <div class="container">
+                <div class="section-title">
+                    <div class="section-subtitle" *ngIf="currentLang === 'pl'">Funkcjonalności</div>
+                    <div class="section-subtitle" *ngIf="currentLang === 'en'">Features</div>
+
+                    <h2 *ngIf="currentLang === 'pl'">Wszystko, czego potrzebujesz do efektywnej współpracy</h2>
+                    <h2 *ngIf="currentLang === 'en'">Everything you need for effective collaboration</h2>
+
+                    <p *ngIf="currentLang === 'pl'">Platformę wyposażyliśmy w narzędzia, które ułatwiają zarządzanie kampaniami i zwiększają skuteczność współpracy</p>
+                    <p *ngIf="currentLang === 'en'">We've equipped the platform with tools that facilitate campaign management and increase collaboration effectiveness</p>
+                </div>
+
+                <div class="features-grid">
+                    <!-- Search Feature -->
+                    <div class="feature-card slide-up" [ngClass]="{'appear': isInViewport}">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                <path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                <path d="M11 7V11H15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </svg>
+                        </div>
+                        <h3 *ngIf="currentLang === 'pl'">Wyszukiwanie i filtrowanie</h3>
+                        <h3 *ngIf="currentLang === 'en'">Search and filtering</h3>
+                        <p *ngIf="currentLang === 'pl'">Zaawansowane filtry pozwalające znaleźć idealnych partnerów do współpracy według lokalizacji, kategorii, zasięgów czy budżetu.</p>
+                        <p *ngIf="currentLang === 'en'">Advanced filters to find ideal collaboration partners by location, category, reach or budget.</p>
+                    </div>
+
+                    <!-- Analytics Feature -->
+                    <div class="feature-card slide-up" [ngClass]="{'appear': isInViewport}">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10 21H3V14H10V21Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                <path d="M21 21H14V14H21V21Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                <path d="M21 10H14V3H21V10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                <path d="M10 10H3V3H10V10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                             </svg>
                         </div>
+                        <h3 *ngIf="currentLang === 'pl'">Analityka kampanii</h3>
+                        <h3 *ngIf="currentLang === 'en'">Campaign analytics</h3>
+                        <p *ngIf="currentLang === 'pl'">Szczegółowe raporty i statystyki dla każdej kampanii, umożliwiające ocenę skuteczności współpracy i ROI.</p>
+                        <p *ngIf="currentLang === 'en'">Detailed reports and statistics for each campaign, enabling effectiveness assessment and ROI evaluation.</p>
                     </div>
-                </div>
-            </div>
 
-            <!-- Sekcja wartości/dlaczego warto? -->
-            <div class="py-12 px-4 ">
-                <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-8">
-                    <div class="flex flex-col items-center text-center">
-                        <div class="text-4xl font-extrabold text-blue-500 mb-2">+10000</div>
-                        <p class="text-gray-700">zweryfikowanych influencerów</p>
+                    <!-- Contract Automation Feature -->
+                    <div class="feature-card slide-up" [ngClass]="{'appear': isInViewport}">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <!-- Document base -->
+                                <path d="M6 3H14L18 7V21H6V3Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                <!-- Document fold corner -->
+                                <path d="M14 3V7H18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                <!-- Text lines with more space after the last line -->
+                                <path d="M9 11H15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                <path d="M9 14H15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                <path d="M9 17H15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </div>
+                        <h3 *ngIf="currentLang === 'pl'">Automatyzacja umów</h3>
+                        <h3 *ngIf="currentLang === 'en'">Contract automation</h3>
+                        <p *ngIf="currentLang === 'pl'">Automatyczne generowanie profesjonalnych umów o współpracy z możliwością dostosowania do indywidualnych potrzeb.</p>
+                        <p *ngIf="currentLang === 'en'">Automatic generation of professional collaboration agreements with customization options for individual needs.</p>
                     </div>
-                    <div class="flex flex-col items-center text-center">
-                        <div class="text-4xl font-extrabold text-blue-500 mb-2">93%</div>
-                        <p class="text-gray-700"> kampanii zakończonych pełną realizacją briefu</p>
-                    </div>
-                    <div class="flex flex-col items-center text-center">
-                        <div class="text-4xl font-extrabold text-blue-500 mb-2">4.75/5</div>
-                        <p class="text-gray-700">Średnia ocena twórców</p>
-                    </div>
+                </div>
+
+                <div class="features-cta">
+                    <a routerLink="/features" class="btn btn-primary" *ngIf="currentLang === 'pl'">Zobacz wszystkie funkcje</a>
+                    <a routerLink="/features" class="btn btn-primary" *ngIf="currentLang === 'en'">See all features</a>
                 </div>
             </div>
-        </div>
-        <!-- Features -->
-        <div
-            class="flex flex-col items-center bg-white px-6 py-10 sm:px-16 sm:pb-20 sm:pt-18"
-        >
-            <div class="w-full max-w-7xl">
-                <div>
-                    <div
-                        class="text-4xl font-extrabold leading-tight tracking-tight"
-                    >
-                        Everything you need to build efficiently
-                    </div>
-                    <div class="text-secondary mt-2 max-w-xl text-xl">
-                        Start building your app using our tools, be efficient, spend
-                        less time with details more time with your business
-                    </div>
+        </section>
+
+        <!-- Dashboard Preview Section -->
+        <section class="dashboard-preview">
+            <div class="container">
+                <div class="section-title">
+                    <div class="section-subtitle" *ngIf="currentLang === 'pl'">Podgląd</div>
+                    <div class="section-subtitle" *ngIf="currentLang === 'en'">Preview</div>
+
+                    <h2 *ngIf="currentLang === 'pl'">Tak wygląda u nas</h2>
+                    <h2 *ngIf="currentLang === 'en'">How it looks</h2>
+
+                    <p *ngIf="currentLang === 'pl'">Intuicyjny panel współprac zapewniający pełną kontrolę nad kampaniami</p>
+                    <p *ngIf="currentLang === 'en'">Intuitive collaboration panel providing full control over campaigns</p>
                 </div>
-                <!-- Features grid -->
-                <div
-                    class="mt-12 grid w-full grid-cols-1 gap-x-6 gap-y-12 sm:mt-16 sm:grid-cols-2 lg:grid-cols-3 lg:gap-16"
-                >
-                    <div>
-                    <span
-                        class="flex h-12 w-12 items-center justify-center rounded bg-primary"
-                    >
-                        <mat-icon
-                            class="text-white"
-                            [svgIcon]="'heroicons_outline:pencil-square'"
-                        ></mat-icon>
-                    </span>
-                        <div class="mt-4 text-xl font-medium">
-                            Create and Edit Projects
+
+                <div class="dashboard-preview-wrapper">
+                    <div class="dashboard-preview-container">
+                        <!-- Brand Card -->
+                        <div class="collaboration-card slide-up" [ngClass]="{'appear': isInViewport}">
+                            <div class="card-header">
+                                <div class="profile-image" [innerHTML]="brandSvg | safeHtml"></div>
+                                <div class="badge" *ngIf="currentLang === 'pl'">Firma</div>
+                                <div class="badge" *ngIf="currentLang === 'en'">Brand</div>
+                            </div>
+                            <h4 class="profile-name">Pizza Station Bemowo</h4>
+                            <p class="collab-type" *ngIf="currentLang === 'pl'">Restauracja</p>
+                            <p class="collab-type" *ngIf="currentLang === 'en'">Restaurant</p>
+
+                            <button class="btn btn-outline" *ngIf="currentLang === 'pl'">Szczegóły kampanii</button>
+                            <button class="btn btn-outline" *ngIf="currentLang === 'en'">Campaign details</button>
+
+                            <div class="collab-requirements">
+                                <p *ngIf="currentLang === 'pl'">Informacje o współpracy:</p>
+                                <p *ngIf="currentLang === 'en'">Collaboration info:</p>
+
+                                <ul *ngIf="currentLang === 'pl'">
+                                    <li>Min. 10k obserwujących</li>
+                                    <li>Tematyka: jedzenie, styl życia</li>
+                                    <li>Lokalizacja: Warszawa, Polska</li>
+                                    <li>Wynagrodzenie: Barter o wartości 200 PLN</li>
+                                </ul>
+
+                                <ul *ngIf="currentLang === 'en'">
+                                    <li>Min. 10k followers</li>
+                                    <li>Theme: food, lifestyle</li>
+                                    <li>Location: Warsaw, Poland</li>
+                                    <li>Compensation: Barter ($50 value)</li>
+                                </ul>
+                            </div>
                         </div>
-                        <div class="text-secondary mt-2 leading-6">
-                            Create and edit projects, upload images via drag drop,
-                            add categories, add custom fields, create interactive
-                            forms and more.
+
+                        <!-- Progress Tracker -->
+                        <div class="progress-tracker slide-up" [ngClass]="{'appear': isInViewport}">
+                            <div class="progress-tracker-header">
+                                <h3 *ngIf="currentLang === 'pl'">Proces współpracy</h3>
+                                <h3 *ngIf="currentLang === 'en'">Collaboration process</h3>
+                            </div>
+
+                            <div class="progress-tracker-steps">
+                                <div *ngFor="let step of progressSteps; let i = index"
+                                     class="progress-tracker-step"
+                                     [ngClass]="{'active': step.active, 'completed': step.completed}">
+                                    <div class="step-number">{{ i + 1 }}</div>
+                                    <div class="step-content">
+                                        <h5 *ngIf="currentLang === 'pl'">{{ step.title.pl }}</h5>
+                                        <h5 *ngIf="currentLang === 'en'">{{ step.title.en }}</h5>
+                                        <p *ngIf="currentLang === 'pl'">{{ step.description.pl }}</p>
+                                        <p *ngIf="currentLang === 'en'">{{ step.description.en }}</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div>
-                    <span
-                        class="flex h-12 w-12 items-center justify-center rounded bg-primary"
-                    >
-                        <mat-icon
-                            class="text-white"
-                            [svgIcon]="'heroicons_outline:funnel'"
-                        ></mat-icon>
-                    </span>
-                        <div class="mt-4 text-xl font-medium">
-                            Search and Filter
-                        </div>
-                        <div class="text-secondary mt-2 leading-6">
-                            Search and filter within the projects, categories and
-                            custom fields. Save search and filter details for easy
-                            access.
-                        </div>
-                    </div>
-                    <div>
-                    <span
-                        class="flex h-12 w-12 items-center justify-center rounded bg-primary"
-                    >
-                        <mat-icon
-                            class="text-white"
-                            [svgIcon]="'heroicons_outline:arrow-path'"
-                        ></mat-icon>
-                    </span>
-                        <div class="mt-4 text-xl font-medium">
-                            Real Time Updates
-                        </div>
-                        <div class="text-secondary mt-2 leading-6">
-                            Real time updates that doesn't require page reload. Lean
-                            back and watch the changes happen in real time.
-                        </div>
-                    </div>
-                    <div>
-                    <span
-                        class="flex h-12 w-12 items-center justify-center rounded bg-primary"
-                    >
-                        <mat-icon
-                            class="text-white"
-                            [svgIcon]="'heroicons_outline:tag'"
-                        ></mat-icon>
-                    </span>
-                        <div class="mt-4 text-xl font-medium">Meta Information</div>
-                        <div class="text-secondary mt-2 leading-6">
-                            Add and remove meta information to custom fields to
-                            differentiate them in reports and analytics results, use
-                            them for detailed reports.
-                        </div>
-                    </div>
-                    <div>
-                    <span
-                        class="flex h-12 w-12 items-center justify-center rounded bg-primary"
-                    >
-                        <mat-icon
-                            class="text-white"
-                            [svgIcon]="'heroicons_outline:document-text'"
-                        ></mat-icon>
-                    </span>
-                        <div class="mt-4 text-xl font-medium">
-                            Pre-rendered Results
-                        </div>
-                        <div class="text-secondary mt-2 leading-6">
-                            Pre-render results to make reports and analytics more
-                            accessible by screen readers and other accessibility
-                            tools.
-                        </div>
-                    </div>
-                    <div>
-                    <span
-                        class="flex h-12 w-12 items-center justify-center rounded bg-primary"
-                    >
-                        <mat-icon
-                            class="text-white"
-                            [svgIcon]="'heroicons_outline:chart-bar-square'"
-                        ></mat-icon>
-                    </span>
-                        <div class="mt-4 text-xl font-medium">Simple Analytics</div>
-                        <div class="text-secondary mt-2 leading-6">
-                            Simple analytics with no unnecessary data flow or
-                            weight. More readable results with less data
-                            consumption.
+
+                        <!-- Influencer Card -->
+                        <div class="collaboration-card slide-up" [ngClass]="{'appear': isInViewport}">
+                            <div class="card-header">
+                                <div class="profile-image" [innerHTML]="influencerSvg | safeHtml"></div>
+                                <div class="badge influencer" *ngIf="currentLang === 'pl'">Influencer</div>
+                                <div class="badge influencer" *ngIf="currentLang === 'en'">Influencer</div>
+                            </div>
+                            <h4 class="profile-name">Kasia</h4>
+                            <p class="collab-type" *ngIf="currentLang === 'pl'">Styl życia, Warszawa</p>
+                            <p class="collab-type" *ngIf="currentLang === 'en'">Life style, Warsaw (POL)</p>
+
+                            <button class="btn btn-outline" *ngIf="currentLang === 'pl'">Zobacz profil</button>
+                            <button class="btn btn-outline" *ngIf="currentLang === 'en'">View profile</button>
+
+                            <div class="stats-grid">
+                                <div class="stat-box">
+                                    <span class="stat-number">12 000</span>
+                                    <span class="stat-label" *ngIf="currentLang === 'pl'">Obserwujący</span>
+                                    <span class="stat-label" *ngIf="currentLang === 'en'">Followers</span>
+                                </div>
+                                <div class="stat-box">
+                                    <span class="stat-number">4.2 / 5</span>
+                                    <span class="stat-label" *ngIf="currentLang === 'pl'">Ocena</span>
+                                    <span class="stat-label" *ngIf="currentLang === 'en'">Rating</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <!-- CTA -->
-        <div
-            class="bg-primary-600 px-6 py-10 text-on-primary-600 sm:px-16 sm:py-12"
-        >
-            <div
-                class="mx-auto flex w-full max-w-7xl flex-col items-center text-center"
-            >
-                <div
-                    class="text-3xl font-extrabold leading-6 sm:text-4xl sm:text-5xl sm:leading-10"
-                >
-                    Boost your productivity.
+        <!-- Testimonials Section -->
+        <section class="testimonials" id="testimonials">
+            <div class="container">
+                <div class="section-title">
+                    <div class="section-subtitle" *ngIf="currentLang === 'pl'">Opinie</div>
+                    <div class="section-subtitle" *ngIf="currentLang === 'en'">Testimonials</div>
+
+                    <h2 *ngIf="currentLang === 'pl'">Co mówią nasi użytkownicy</h2>
+                    <h2 *ngIf="currentLang === 'en'">What our users say</h2>
+
+                    <p *ngIf="currentLang === 'pl'">Opinie osób, które zaufały platformie Check It Out</p>
+                    <p *ngIf="currentLang === 'en'">Feedback from people who trusted the Check It Out platform</p>
                 </div>
-                <div
-                    class="mt-2 text-3xl font-extrabold leading-6 text-black text-opacity-70 sm:text-4xl sm:text-5xl sm:leading-10"
-                >
-                    Start using Fuse today.
+
+                <div class="testimonials-slider">
+                    <div *ngFor="let testimonial of testimonialsList" class="testimonial-card slide-up" [ngClass]="{'appear': isInViewport}">
+                        <div class="testimonial-card-quote">
+                            <p *ngIf="currentLang === 'pl'">{{ testimonial.quote.pl }}</p>
+                            <p *ngIf="currentLang === 'en'">{{ testimonial.quote.en }}</p>
+                        </div>
+                        <div class="testimonial-card-author">
+                            <div class="author-info">
+                                <h4>{{ testimonial.author }}</h4>
+                                <p *ngIf="currentLang === 'pl'">{{ testimonial.position.pl }}</p>
+                                <p *ngIf="currentLang === 'en'">{{ testimonial.position.en }}</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <button
-                    mat-flat-button
-                    class="fuse-mat-button-large mt-8 bg-white px-12 text-primary-800"
-                >
-                    <span class="text-lg">Sign up for free</span>
-                </button>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="faq" id="faq">
+            <div class="container">
+                <div class="section-title">
+                    <div class="section-subtitle" *ngIf="currentLang === 'pl'">Pytania</div>
+                    <div class="section-subtitle" *ngIf="currentLang === 'en'">Questions</div>
+
+                    <h2 *ngIf="currentLang === 'pl'">Najczęściej zadawane pytania</h2>
+                    <h2 *ngIf="currentLang === 'en'">Frequently Asked Questions</h2>
+
+                    <p *ngIf="currentLang === 'pl'">Odpowiedzi na najczęściej zadawane pytania</p>
+                    <p *ngIf="currentLang === 'en'">Answers to the most commonly asked questions</p>
+                </div>
+
+                <div class="faq-container">
+                    <div *ngFor="let faq of faqList; let i = index" class="faq-item" [ngClass]="{'active': faq.isOpen}">
+                        <div class="faq-question" (click)="toggleFaq(i)">
+                            <h3 *ngIf="currentLang === 'pl'">{{ faq.question.pl }}</h3>
+                            <h3 *ngIf="currentLang === 'en'">{{ faq.question.en }}</h3>
+                            <div class="faq-icon">
+                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 5V19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    <path d="M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="faq-answer">
+                            <p *ngIf="currentLang === 'pl'">{{ faq.answer.pl }}</p>
+                            <p *ngIf="currentLang === 'en'">{{ faq.answer.en }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-cta">
+                    <p *ngIf="currentLang === 'pl'">Nie znalazłeś odpowiedzi na swoje pytanie?</p>
+                    <p *ngIf="currentLang === 'en'">Couldn't find an answer to your question?</p>
+
+                    <a routerLink="/contact" class="btn btn-outline" *ngIf="currentLang === 'pl'">Skontaktuj się z nami</a>
+                    <a routerLink="/contact" class="btn btn-outline" *ngIf="currentLang === 'en'">Contact us</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta">
+            <div class="container">
+                <div class="cta-content">
+                    <h2 *ngIf="currentLang === 'pl'">Zacznij korzystać</h2>
+                    <h2 *ngIf="currentLang === 'en'">Get started</h2>
+
+                    <p *ngIf="currentLang === 'pl'">Dołącz do tysięcy marek i influencerów, którzy współpracują na platformie Check It Out</p>
+                    <p *ngIf="currentLang === 'en'">Join thousands of brands and influencers who collaborate on the Check It Out platform</p>
+
+                    <div class="cta-buttons">
+                        <a routerLink="/register" class="btn btn-primary" *ngIf="currentLang === 'pl'">Zarejestruj się za darmo</a>
+                        <a routerLink="/register" class="btn btn-primary" *ngIf="currentLang === 'en'">Sign up for free</a>
+
+                        <a routerLink="/demo" class="btn btn-outline" *ngIf="currentLang === 'pl'">Umów prezentację</a>
+                        <a routerLink="/demo" class="btn btn-outline" *ngIf="currentLang === 'en'">Schedule a demo</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-bottom">
+            <div class="container">
+                <div class="footer-copyright">
+                    <p *ngIf="currentLang === 'pl'">© 2025 Check It Out. Wszelkie prawa zastrzeżone.</p>
+                    <p *ngIf="currentLang === 'en'">© 2025 Check It Out. All rights reserved.</p>
+                </div>
+                <div class="footer-legal">
+                    <a routerLink="/privacy" *ngIf="currentLang === 'pl'">Polityka prywatności</a>
+                    <a routerLink="/privacy" *ngIf="currentLang === 'en'">Privacy policy</a>
+
+                    <a routerLink="/terms" *ngIf="currentLang === 'pl'">Warunki korzystania</a>
+                    <a routerLink="/terms" *ngIf="currentLang === 'en'">Terms of use</a>
+
+                    <a routerLink="/cookies" *ngIf="currentLang === 'pl'">Polityka cookies</a>
+                    <a routerLink="/cookies" *ngIf="currentLang === 'en'">Cookie policy</a>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="component-spacer"></div>
+    </footer>
 
-    <div class="landing-container">
+    <!-- Cookie Consent Banner -->
+    <div class="cookie-banner" *ngIf="!cookiesAccepted">
+        <div class="cookie-text">
+            <h4 *ngIf="currentLang === 'pl'">Używamy cookies</h4>
+            <h4 *ngIf="currentLang === 'en'">We use cookies</h4>
 
-        <app-collaboration/>
-
-        <div class="component-spacer"></div>
-
-        <!--SEKCJA PYTAŃ-->
-        <div class="faq-container">
-            <h2 class="faq-title">Frequently Asked Questions</h2>
-
-            <!-- Angular Material Accordion -->
-            <mat-accordion>
-                <mat-expansion-panel *ngFor="let faq of faqs">
-                    <mat-expansion-panel-header>
-                        <mat-panel-title>
-                            {{ faq.question }}
-                        </mat-panel-title>
-                    </mat-expansion-panel-header>
-                    <p class="faq-answer">{{ faq.answer }}</p>
-                </mat-expansion-panel>
-            </mat-accordion>
+            <p *ngIf="currentLang === 'pl'">Ta strona używa plików cookie, aby zapewnić najlepsze doświadczenia. Korzystając z naszej witryny, zgadzasz się na użycie plików cookie zgodnie z naszą polityką prywatności.</p>
+            <p *ngIf="currentLang === 'en'">This site uses cookies to ensure the best experience. By using our website, you agree to the use of cookies in accordance with our privacy policy.</p>
         </div>
+        <div class="cookie-actions">
+            <button class="btn btn-outline-primary btn-sm" *ngIf="currentLang === 'pl'" routerLink="/cookies">Ustawienia</button>
+            <button class="btn btn-outline-primary btn-sm" *ngIf="currentLang === 'en'" routerLink="/cookies">Settings</button>
 
-        <div class="component-spacer"></div>
+            <button class="btn btn-primary btn-sm" *ngIf="currentLang === 'pl'" (click)="acceptCookies()">Akceptuję</button>
+            <button class="btn btn-primary btn-sm" *ngIf="currentLang === 'en'" (click)="acceptCookies()">Accept</button>
+        </div>
     </div>
 </div>
-<app-footer/>
