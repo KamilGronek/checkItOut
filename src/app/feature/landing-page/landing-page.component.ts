@@ -1,30 +1,23 @@
-import { Component, HostListener, OnInit, Pipe, PipeTransform } from '@angular/core';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { Component, HostListener, OnInit, OnDestroy } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-
-@Pipe({
-    name: 'safeHtml',
-    standalone: true
-})
-export class SafeHtmlPipe implements PipeTransform {
-    constructor(private sanitizer: DomSanitizer) {}
-
-    transform(value: string): SafeHtml {
-        return this.sanitizer.bypassSecurityTrustHtml(value);
-    }
-}
+import { SharedComponentsModule } from 'app/shared/components/shared-components.module';
+import { TranslocoService } from '@ngneat/transloco';
+import { SafeHtmlPipe } from 'app/shared/pipes/safe-html.pipe';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-landing-page',
     templateUrl: './landing-page.component.html',
     styleUrls: ['./landing-page.component.scss'],
-    imports: [CommonModule, RouterModule, SafeHtmlPipe],
+    imports: [CommonModule, RouterModule, SafeHtmlPipe, SharedComponentsModule],
     standalone: true
 })
-export class LandingPageComponent implements OnInit {
-    currentLang = 'pl';
-    currentLangFlag = 'assets/images/flags/poland.png';
+export class LandingPageComponent implements OnInit, OnDestroy {
+    currentLang = 'en';
+    currentLangFlag = 'assets/images/flags/uk.png';
+    private langSubscription: Subscription;
     isScrolled = false;
     isMenuOpen = false;
     isLangDropdownOpen = false;
@@ -560,14 +553,18 @@ export class LandingPageComponent implements OnInit {
         }
     ];
 
-    constructor(private route: ActivatedRoute, private sanitizer: DomSanitizer) {}
+    constructor(
+        private route: ActivatedRoute,
+        private sanitizer: DomSanitizer,
+        private translocoService: TranslocoService
+    ) {}
 
     ngOnInit(): void {
-        // Check for stored language preference
-        const savedLang = localStorage.getItem('preferred-language');
-        if (savedLang) {
-            this.switchLanguage(savedLang);
-        }
+        // Subscribe to language changes directly from TranslocoService
+        this.langSubscription = this.translocoService.langChanges$.subscribe(lang => {
+            this.currentLang = lang;
+            this.updateLanguageFlag(lang);
+        });
 
         // Check for cookie consent
         this.cookiesAccepted = localStorage.getItem('cookiesAccepted') === 'true';
@@ -613,17 +610,24 @@ export class LandingPageComponent implements OnInit {
         }
     }
 
-    switchLanguage(lang: string): void {
-        this.currentLang = lang;
-        localStorage.setItem('preferred-language', lang);
-
+    updateLanguageFlag(lang: string): void {
         if (lang === 'pl') {
             this.currentLangFlag = 'assets/images/flags/poland.png';
         } else if (lang === 'en') {
             this.currentLangFlag = 'assets/images/flags/uk.png';
         }
+    }
 
+    switchLanguage(lang: string): void {
+        this.translocoService.setActiveLang(lang);
+        localStorage.setItem('preferredLanguage', lang);
         this.isLangDropdownOpen = false;
+    }
+
+    ngOnDestroy(): void {
+        if (this.langSubscription) {
+            this.langSubscription.unsubscribe();
+        }
     }
 
     toggleLangDropdown(event: Event): void {

@@ -1,62 +1,7 @@
 <!-- Main Container -->
 <div class="landing-page" [attr.data-lang]="currentLang">
     <!-- Header -->
-    <header [ngClass]="{'scrolled': isScrolled}">
-        <div class="container">
-            <nav>
-                <a routerLink="/" class="logo">
-                    Check It Out
-                </a>
-                <div class="nav-links" [ngClass]="{'active': isMenuOpen}">
-                    <a routerLink="/" fragment="how-it-works" (click)="closeMenu()" *ngIf="currentLang === 'pl'">Jak to działa</a>
-                    <a routerLink="/" fragment="how-it-works" (click)="closeMenu()" *ngIf="currentLang === 'en'">How it works</a>
-
-                    <a routerLink="/" fragment="testimonials" (click)="closeMenu()" *ngIf="currentLang === 'pl'">Opinie</a>
-                    <a routerLink="/" fragment="testimonials" (click)="closeMenu()" *ngIf="currentLang === 'en'">Testimonials</a>
-
-                    <a routerLink="/" fragment="faq" (click)="closeMenu()" *ngIf="currentLang === 'pl'">FAQ</a>
-                    <a routerLink="/" fragment="faq" (click)="closeMenu()" *ngIf="currentLang === 'en'">FAQ</a>
-
-                    <a routerLink="/" (click)="closeMenu()" *ngIf="currentLang === 'pl'">Zespół</a>
-                    <a routerLink="/" (click)="closeMenu()" *ngIf="currentLang === 'en'">Team</a>
-
-                    <a routerLink="/" (click)="closeMenu()" *ngIf="currentLang === 'pl'">Kontakt</a>
-                    <a routerLink="/" (click)="closeMenu()" *ngIf="currentLang === 'en'">Contact</a>
-
-                    <div class="mobile-buttons">
-                        <a routerLink="/login" class="btn btn-outline-primary mr-1" *ngIf="currentLang === 'pl'">Zaloguj się</a>
-                        <a routerLink="/login" class="btn btn-outline-primary mr-1" *ngIf="currentLang === 'en'">Log in</a>
-                        <a routerLink="/register" class="btn btn-primary" *ngIf="currentLang === 'pl'">Zarejestruj się</a>
-                        <a routerLink="/register" class="btn btn-primary" *ngIf="currentLang === 'en'">Sign up</a>
-                    </div>
-                </div>
-
-                <div class="lang-switcher">
-                    <button class="lang-switcher-btn" (click)="toggleLangDropdown($event)">
-                        <img *ngIf="currentLang === 'pl'" src="assets/images/flags/PL.svg" alt="Polish flag" class="flag-icon" style="margin-right: 4px;">
-                        <img *ngIf="currentLang === 'en'" src="assets/images/flags/UK.png" alt="English flag" class="flag-icon" style="margin-right: 4px;">
-                        <span>{{ currentLang.toUpperCase() }}</span>
-                    </button>
-                    <div class="lang-dropdown" [ngClass]="{'active': isLangDropdownOpen}">
-                        <div class="lang-option" [ngClass]="{'active': currentLang === 'pl'}" (click)="switchLanguage('pl')">
-                            <img src="assets/images/flags/PL2.png" alt="Polish flag" class="flag-icon">
-                            <span>Polski</span>
-                        </div>
-                        <div class="lang-option" [ngClass]="{'active': currentLang === 'en'}" (click)="switchLanguage('en')">
-                            <img src="assets/images/flags/UK.png" alt="English flag" class="flag-icon">
-                            <span>English</span>
-                        </div>
-                    </div>
-                </div>
-
-                <button class="menu-toggle" aria-label="Menu" (click)="toggleMenu()">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
-            </nav>
-        </div>
-    </header>
+    <app-header></app-header>
 
     <main>
         <!-- Hero Section -->
@@ -74,8 +19,8 @@
                         <p *ngIf="currentLang === 'en'">We connect brands and influencers in effective marketing campaigns, ensuring transparency, trust, and measurable results for all parties.</p>
 
                         <div class="hero-cta">
-                            <a routerLink="/register" class="btn btn-primary" *ngIf="currentLang === 'pl'">Dołącz za darmo</a>
-                            <a routerLink="/register" class="btn btn-primary" *ngIf="currentLang === 'en'">Join for free</a>
+                            <a routerLink="/auth/sign-up" class="btn btn-primary" *ngIf="currentLang === 'pl'">Dołącz za darmo</a>
+                            <a routerLink="/auth/sign-up" class="btn btn-primary" *ngIf="currentLang === 'en'">Join for free</a>
 
                             <a routerLink="/" fragment="how-it-works" class="btn btn-outline" *ngIf="currentLang === 'pl'">Zobacz jak to działa</a>
                             <a routerLink="/" fragment="how-it-works" class="btn btn-outline" *ngIf="currentLang === 'en'">See how it works</a>
@@ -83,10 +28,10 @@
                     </div>
                     <div class="hero-image">
                         <div class="image-container">
-                            <img src="assets/images/person-business-connection.svg" alt="Check It Out Platform Interface">
+                            <img src="assets/images/landing/person-business-connection.svg" alt="Check It Out Platform Interface">
                             <div class="floating-card card-1">
                                 <div class="card-header">
-                                    <div class="profile-pic"><img src="assets/images/kasia.png" alt="kasia"></div>
+                                    <div class="profile-pic"><img src="assets/images/avatars/kasia.png" alt="kasia"></div>
                                     <div class="user-info">
                                         <p class="name">Kasia</p>
                                         <p class="followers" *ngIf="currentLang === 'pl'">12 000 obserwujących</p>
@@ -489,7 +434,7 @@
                                 </svg>
                             </div>
                         </div>
-                        <div class="faq-answer">
+                        <div class="faq-answer" id="contact">
                             <p *ngIf="currentLang === 'pl'">{{ faq.answer.pl }}</p>
                             <p *ngIf="currentLang === 'en'">{{ faq.answer.en }}</p>
                         </div>
@@ -530,8 +475,8 @@
                     <p *ngIf="currentLang === 'en'">Join thousands of brands and influencers who collaborate on the Check It Out platform</p>
 
                     <div class="cta-buttons">
-                        <a routerLink="/register" class="btn btn-primary" *ngIf="currentLang === 'pl'">Zarejestruj się za darmo</a>
-                        <a routerLink="/register" class="btn btn-primary" *ngIf="currentLang === 'en'">Sign up for free</a>
+                        <a routerLink="/auth/sign-up" class="btn btn-primary" *ngIf="currentLang === 'pl'">Zarejestruj się za darmo</a>
+                        <a routerLink="/auth/sign-up" class="btn btn-primary" *ngIf="currentLang === 'en'">Sign up for free</a>
 
                         <a routerLink="/demo" class="btn btn-outline" *ngIf="currentLang === 'pl'">Umów prezentację</a>
                         <a routerLink="/demo" class="btn btn-outline" *ngIf="currentLang === 'en'">Schedule a demo</a>

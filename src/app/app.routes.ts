@@ -35,6 +35,16 @@ export const appRoutes: Route[] = [
     ]
   },
 
+  // Routes accessible to all users (both authenticated and non-authenticated)
+  {
+    path: 'team',
+    component: LayoutComponent,
+    resolve: {
+      layout: LayoutResolver
+    },
+    loadChildren: () => import('app/feature/team/team.module').then(m => m.TeamModule)
+  },
+
   // Support routes (accessible to all with dynamic layout)
   {
     path: 'support',

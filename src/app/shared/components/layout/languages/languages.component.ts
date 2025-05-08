@@ -11,7 +11,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatMenuModule} from '@angular/material/menu';
 import {FuseNavigationService, FuseVerticalNavigationComponent,} from '@fuse/components/navigation';
 import {AvailableLangs, TranslocoModule, TranslocoService,} from '@ngneat/transloco';
-import {take} from 'rxjs';
+import {Subscription, take} from 'rxjs';
 
 @Component({
     selector: 'languages',
@@ -32,6 +32,7 @@ export class LanguagesComponent implements OnInit, OnDestroy {
     availableLangs: AvailableLangs;
     activeLang: string;
     flagCodes: any;
+    private _langSubscription: Subscription;
 
     /**
      * Constructor
@@ -55,12 +56,15 @@ export class LanguagesComponent implements OnInit, OnDestroy {
         this.availableLangs = this._translocoService.getAvailableLangs();
 
         // Subscribe to language changes
-        this._translocoService.langChanges$.subscribe((activeLang) => {
+        this._langSubscription = this._translocoService.langChanges$.subscribe((activeLang) => {
             // Get the active lang
             this.activeLang = activeLang;
 
             // Update the navigation
             this._updateNavigation(activeLang);
+
+            // Trigger change detection
+            this._changeDetectorRef.markForCheck();
         });
 
         // Set the country iso codes for languages for flags
@@ -68,12 +72,24 @@ export class LanguagesComponent implements OnInit, OnDestroy {
             en: 'us',
             pl: 'pl',
         };
+
+        // Get initial language
+        const savedLanguage = localStorage.getItem('preferredLanguage');
+        if (savedLanguage && (savedLanguage === 'en' || savedLanguage === 'pl')) {
+            this.activeLang = savedLanguage;
+            this._translocoService.setActiveLang(savedLanguage);
+        } else {
+            this.activeLang = this._translocoService.getActiveLang();
+        }
     }
 
     /**
      * On destroy
      */
     ngOnDestroy(): void {
+        if (this._langSubscription) {
+            this._langSubscription.unsubscribe();
+        }
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -86,8 +102,13 @@ export class LanguagesComponent implements OnInit, OnDestroy {
      * @param lang
      */
     setActiveLang(lang: string): void {
-        // Set the active lang
-        this._translocoService.setActiveLang(lang);
+        if (lang && (lang === 'en' || lang === 'pl')) {
+            // Set the active language in TranslocoService
+            this._translocoService.setActiveLang(lang);
+
+            // Save language preference to localStorage
+            localStorage.setItem('preferredLanguage', lang);
+        }
     }
 
     /**

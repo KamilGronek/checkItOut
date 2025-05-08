@@ -77,7 +77,13 @@ export const appConfig: ApplicationConfig = {
             provide: APP_INITIALIZER,
             useFactory: () => {
                 const translocoService = inject(TranslocoService);
-                const defaultLang = translocoService.getDefaultLang();
+
+                // Check if there's a saved language preference
+                const savedLang = localStorage.getItem('preferredLanguage');
+                const defaultLang = savedLang && (savedLang === 'en' || savedLang === 'pl')
+                    ? savedLang
+                    : translocoService.getDefaultLang();
+
                 translocoService.setActiveLang(defaultLang);
 
                 return () => firstValueFrom(translocoService.load(defaultLang));

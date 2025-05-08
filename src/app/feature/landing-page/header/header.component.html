@@ -13,7 +13,8 @@
                     {{ link.name }}
                 </a>
             </nav>
-            <app-link routerLink="/login" variant="button" color="accent">Zaloguj</app-link>
+            <app-link routerLink="/auth/sign-in" variant="button" color="accent" class="mr-2">Zaloguj</app-link>
+            <app-link routerLink="/auth/sign-up" variant="button" color="primary">Zarejestruj</app-link>
             <!-- Mobile Menu Button -->
             <div class="md:hidden">
                 <button (click)="toggleMenu()"
