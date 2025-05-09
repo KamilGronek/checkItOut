@@ -200,6 +200,7 @@
         "fill_account_type": "Przed wysłaniem, proszę info o rodzaju konta",
         "confirmation": "Influencer zatwierdzony"
       },
+      "snackbarServiceText": "Edycja danych użytkownika zakończona powodzeniem",
       "no_products": "Brak produktów!"
     },
     "companies": {

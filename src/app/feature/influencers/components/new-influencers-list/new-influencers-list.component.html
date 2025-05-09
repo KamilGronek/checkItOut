@@ -8,7 +8,9 @@
                     [title]="'admin.new_influencers.title' | transloco"
                     [columnsToDisplay]="tableColumns"
                     [data]="dataSource"
-                    [expandableTemplate]="userEditForm">
+                    [expandableTemplate]="expandableRowTemplate"
+                    (rowToggled)="onUserRowToggled($event)">
+                    >
                 </app-table>
                 <div class="flex items-center">
                     <mat-paginator
@@ -38,76 +40,26 @@
                     </label>
                 </div>
             </div>
-            <ng-template #userEditForm let-user>
+            <ng-template #expandableRowTemplate let-user>
                 <form
-                    class="grid grid-cols-4 overflow-hidden pb-3 influFormEdit"
+                    class="grid md:grid-cols-3 sm:grid-cols-2  overflow-hidden pb-3 influFormEdit"
                     [formGroup]="editUserFormGroup"
                 >
-                    <mat-form-field class="pl-0">
-                        <mat-label>{{
-                                "admin.new_influencers.edit_form.city" | transloco
-                            }}
-                        </mat-label>
-                        <input matInput [formControlName]="'city'"/>
-                    </mat-form-field>
-                    <mat-form-field>
-                        <mat-label>
-                            {{
-                                "admin.new_influencers.edit_form.followers"
-                                    | transloco
-                            }}
-                        </mat-label>
-                        <input
-                            matInput
-                            type="number"
-                            [formControlName]="'followersAmount'"
-                        />
-                    </mat-form-field>
-                    <mat-form-field>
-                        <mat-label>
-                            {{
-                                "admin.new_influencers.edit_form.account_type"
-                                    | transloco
-                            }}
-                        </mat-label>
-                        <mat-select
-                            [formControlName]="'instagramAccountType'"
-                            [(value)]="selectedTypeAccount"
-                            (selectionChange)="onTypeAccountChange($event)"
-                        >
-                            <mat-option
-                                *ngFor="let account of typeAccountOptions"
-                                [value]="account"
-                            >
-                                {{ account }}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                    <mat-form-field>
-                        <mat-label>
-                            {{
-                                "admin.new_influencers.edit_form.status"
-                                    | transloco
-                            }}
-                        </mat-label>
-                        <mat-select
-                            [formControlName]="'accountStatus'"
-                            [(value)]="selectedStatus"
-                            (selectionChange)="onStatusChange($event)"
-                        >
-                            <mat-option
-                                *ngFor="let status of typeStatus"
-                                [value]="status"
-                            >
-                                {{ status }}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
+                    <app-select
+                        [label]="'admin.new_influencers.edit_form.account_type' | transloco"
+                        [control]="typeControl"
+                        [options]="typeList$ | async"
+                    >
+                    </app-select>
+                    <app-select
+                        [label]="'admin.new_influencers.edit_form.status' | transloco"
+                        [control]="statusControl"
+                        [options]="statusList$ | async"
+                    >
+                    </app-select>
                     <div class="info-button pl-0">
-                        <form [formGroup]="editUserFormGroup">
                             <mat-form-field
                                 appearance="outline"
-                                class="text-area pl-0"
                             >
                                 <mat-label
                                 ><b>
@@ -128,19 +80,18 @@
                                 >
                                 </textarea>
                             </mat-form-field>
-                        </form>
-                        <button
+                         <button
                             mat-button
                             type="submit"
                             class="justify-self-center self-center"
                             [color]="'primary'"
-                            (click)="sendToInluencer(getExpandedUser().id)"
+                            (click)="sendToInfluencer(user.id)"
                         >
                             {{
                                 "admin.new_influencers.edit_form.submit"
                                     | transloco
                             }}
-                        </button>
+                        </button> 
                     </div>
                 </form>
                 <p class="textWarning" *ngIf="updatedNoteInfo">

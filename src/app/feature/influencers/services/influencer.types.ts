@@ -1,12 +1,12 @@
 export interface Influencer {
-  id: number | undefined;
+  id: number;
   firstName: string;
   lastName: string;
   instagramId: string;
   apiKey: string;
   email: string;
   city: string;
-  followersAmount: string;
+  followersAmount: number;
   instagramAccountType: string;
   accountStatus: string;
   messageToAdmin: string;

@@ -200,6 +200,7 @@
         "fill_account_type": "Please provide account type information before submitting",
         "confirmation": "Influencer approved"
       },
+      "snackbarServiceText": "Editing user data completed successfully",
       "no_products": "There are no products!"
     },
     "companies": {
