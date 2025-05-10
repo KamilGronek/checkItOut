@@ -51,7 +51,14 @@ export class LookingUpDataService {
   serviceTypeSubject = new BehaviorSubject<{ value: number; label: string }[]>([]);
   serviceType$ = this.serviceTypeSubject.asObservable();
 
+  private contentTypeSubject = new BehaviorSubject<ContentTypes[]>([]);
+  public contentTypes$ = this.contentTypeSubject.asObservable();
+
+  currencyListSubject = new BehaviorSubject<{ value: number; label: string }[]>([]);
+  currency$ = this.currencyListSubject.asObservable();
+
   contentTypesContent = [];
+  contentCurrency = [];
 
   constructor(
     private fb: FormBuilder,
@@ -113,6 +120,23 @@ export class LookingUpDataService {
       });
   }
 
+  getCurrency(): void {
+    this._collaborationService.getCurrency().subscribe({
+      next: response => {
+        const contentCurrency = response.content.map(currency => ({
+          value: currency.id,
+          label: currency.isoCode
+        }));
+        console.log('contentCurrency;', contentCurrency);
+
+        this.currencyListSubject.next(contentCurrency);
+      },
+      error: error => {
+        console.error('Error fetching content type:', error);
+      }
+    });
+  }
+
   getUserCompany() {
     this._collaborationService.getUser().subscribe({
       next: (response: User) => {
@@ -153,9 +177,6 @@ export class LookingUpDataService {
         this.serviceTypeSubject.next(serviceTyps);
       });
   }
-
-  private contentTypeSubject = new BehaviorSubject<ContentTypes[]>([]);
-  public contentTypes$ = this.contentTypeSubject.asObservable();
 
   getContentType(): void {
     this._collaborationService.getCollaborationContentType().subscribe({

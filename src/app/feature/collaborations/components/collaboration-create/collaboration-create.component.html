@@ -11,7 +11,7 @@
     </app-input>
     <div class="bg-card mx-auto flex w-full max-w-5xl flex-0 flex-col items-center px-8 lg:h-18 lg:flex-row">
       <form [formGroup]="editNewCollaborationFormGroup">
-        <div class="flex flex-col  mb-10">
+        <div class="flex flex-col mb-10">
           <app-input
               class="profil-pic"
               type="image"
@@ -185,8 +185,8 @@
             <div *ngIf="showResultCash">
               <app-categorized-select
                 [label]="'user.collaborations.details.compensation_result' | transloco"
-                [control]="selectCurrenciesControl"
-                [options]="currencies"
+                [control]="selectCurrenciesCashControl"
+                [options]="currency$ |async"
                 >
               </app-categorized-select>
             </div>
@@ -213,7 +213,7 @@
           <form [formGroup]="editNewCollaborationFormGroup">
             <p *ngIf="warning" [ngStyle]="{ color: 'red' }">
               {{
-                "user.collaborations.details.anddWarning"
+                "user.collaborations.details.addWarning"
                     | transloco
               }}
             </p>

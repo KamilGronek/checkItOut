@@ -228,16 +228,17 @@ export class CollaborationCreateComponent implements OnInit {
 
   companyList$ = this._lookingUpDataService.companyList$;
 
+  currency$ = this._lookingUpDataService.currency$;
+
   profilImageControl = new FormControl('', [Validators.required]);
   imageControl = new FormControl('', [Validators.required]);
 
-  selectCurrenciesControl = new FormControl('PLN', [Validators.required]);
+  selectCurrenciesCashControl = new FormControl('', [Validators.required]);
   selectCurrenciesBarter = new FormControl('', [Validators.required]);
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
 
   imageUrl: string | null = null;
-  // imageSrc: string = 'assets/detale_kampanii_v4_files/cover.jpg';
 
   selectedFile: File | null = null;
 
@@ -314,16 +315,8 @@ export class CollaborationCreateComponent implements OnInit {
     this._lookingUpDataService.getCityList();
     this._lookingUpDataService.getCompensationType();
     this._lookingUpDataService.getUserCompany();
-    // this._lookingUpDataService.getCompany();
+    this._lookingUpDataService.getCurrency();
   }
-
-  //=====================================
-
-  currencies = [
-    { label: 'PLN', value: 'PLN', symbol: 'zł' },
-    { label: 'EUR', value: 'EUR', symbol: '€' },
-    { label: 'USD', value: 'USD', symbol: '$' }
-  ];
 
   categoryControl = new FormControl('');
   categoryOptions: string[] = [];
@@ -343,6 +336,11 @@ export class CollaborationCreateComponent implements OnInit {
       case 'CASH':
         this.showResultCash = true;
         this.showResultBarter = false;
+
+        if (!this.selectCurrenciesCashControl.value) {
+          this.selectCurrenciesCashControl.setValue('PLN');
+        }
+
         break;
       case 'BARTER':
         this.showResultCash = false;
@@ -355,6 +353,8 @@ export class CollaborationCreateComponent implements OnInit {
   idUser: number = 0;
 
   getProfilPhoto() {
+    console.log('this.companyControl.valueChanges:', this.companyControl.valueChanges);
+
     combineLatest([this.userList$, this.companyControl.valueChanges])
       .pipe(distinctUntilChanged())
       .subscribe(([userList, selectedImage]) => {
@@ -362,12 +362,18 @@ export class CollaborationCreateComponent implements OnInit {
 
         const selectedUser = userList.find(user => user.value === selectedImage);
 
+        console.log('profilImageControl:', this.profilImageControl);
+
         if (!selectedUser) {
           this.profilImageControl.setValue(null);
           return;
         }
+
         this.idUser = selectedUser.label;
+        const imageUrl = selectedUser.value;
+
         this.profilImageControl.reset();
+
         setTimeout(() => {
           this.profilImageControl.setValue(selectedUser.value);
         });
@@ -407,6 +413,7 @@ export class CollaborationCreateComponent implements OnInit {
     const collaboration: Collaboration = this.editNewCollaborationFormGroup.getRawValue();
 
     console.log('this.companyControl.value:', this.companyControl.value);
+    console.log('collaboration:', collaboration);
 
     const currentTime = this._collaborationCalendarService.setCurrentTime();
 
@@ -428,7 +435,8 @@ export class CollaborationCreateComponent implements OnInit {
     collaboration.title = this.textAreaControlTitle.value;
     collaboration.company = this.idUser;
     collaboration.serviceType = Number(this.serviceTypeControl.value);
-
+    collaboration.currency = this.selectCurrenciesCashControl.value;
+    collaboration.compensationDescription = this.selectCurrenciesBarter.value;
     collaboration.platforms = this.editNewCollaborationFormGroup.get('platforms')?.value || [];
 
     const contentTypes = await firstValueFrom(this._lookingUpDataService.contentTypes$);
