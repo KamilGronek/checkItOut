@@ -498,7 +498,7 @@
                 "show_thumb_label": "Show Thumb Label",
                 "disabled": "Disabled",
                 "tooltip" : "Unavailable",
-                "anddWarning": "Before sending, please fill in all details",
+                "addWarning": "Before sending, please fill in all details",
                 "select_date_range": "Select Date Range",
                 "background_picture": "Upload photo"
             }
@@ -596,7 +596,7 @@
         "show_thumb_label": "Show Thumb Label",
         "disabled": "Disabled",
         "tooltip": "Unavailable",
-        "anddWarning": "Before sending, please fill in all details",
+        "addWarning": "Before sending, please fill in all details",
         "select_date_range": "Select Date Range",
         "background_picture": "Upload photo"
       }

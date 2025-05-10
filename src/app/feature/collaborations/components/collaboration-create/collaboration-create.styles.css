@@ -127,6 +127,10 @@ img:hover {
   opacity: 0.8;
 }
 
+.background-pic  {
+   
+}
+
 
 ::ng-deep app-input .mat-mdc-button-touch-target {
   display: none !important;

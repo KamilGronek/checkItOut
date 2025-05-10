@@ -11,6 +11,7 @@ import {
 import { AuthService } from 'app/core/services/authentication/auth.service';
 import { environment } from 'environments/environment';
 import { ViewType } from '../components/stepper/stepper';
+import { CurrencyResponse } from 'app/feature/influencers/services/influencer.types';
 
 @Injectable({
   providedIn: 'root'
@@ -163,5 +164,9 @@ export class CollaborationService {
         return collab;
       }
     });
+  }
+
+  getCurrency(): Observable<CurrencyResponse> {
+    return this.http.get<CurrencyResponse>(this.mainApiUrl + '/currency/paged');
   }
 }

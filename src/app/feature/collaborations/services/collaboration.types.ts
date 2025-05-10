@@ -26,9 +26,10 @@ export interface Collaboration {
   compensationType: string;
   compensationAmountMin: number;
   compensationAmountMax: number;
-  compensationDescription: null;
+  compensationDescription: string;
   platforms: Platforms[];
   contentTypes: number[];
+  currency: string;
   company: CompanyCollaboration | number;
   serviceType: ServiceTypeCollaboration | number;
   startDate: string;

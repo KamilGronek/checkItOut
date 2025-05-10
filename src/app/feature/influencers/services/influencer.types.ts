@@ -55,6 +55,24 @@ export interface CityResponse {
   };
 }
 
+export interface CurrencyResponse {
+  content: Currency[];
+  page: {
+    size: number;
+    number: number;
+    totalElements: number;
+    totalPages: number;
+  };
+}
+
+export interface Currency {
+  id: number;
+  name: string;
+  isoCode: string;
+  sign: string;
+  countryCode: string;
+}
+
 export interface City {
   id: number;
   name: string;
