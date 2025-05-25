@@ -1,0 +1,60 @@
+name: PROD CI/CD
+
+on:
+    push:
+        branches: [ "prod" ]
+    workflow_dispatch:
+
+jobs:
+    build-and-deploy:
+        runs-on: ubuntu-latest
+        steps:
+            # 1) Check out the source code from prod branch
+            -   name: Check out repository
+                uses: actions/checkout@v3
+                with:
+                    ref: prod  # Explicitly checkout prod branch
+                    fetch-depth: 0  # Fetch full history for better git operations
+
+                # 2) Set up Node (so we can run Angular builds)
+            -   name: Use Node.js
+                uses: actions/setup-node@v3
+                with:
+                    node-version: 23  # or 18, depending on your project
+
+            # 3) Install dependencies (npm ci is faster & safer for CI)
+            -   name: Install dependencies
+                run: npm ci --legacy-peer-deps
+
+            # 4) Build the Angular app
+            -   name: Build Angular
+                run: |
+                    npm run build -- --configuration production
+
+            -   name: Delete files from remote
+                env:
+                    HOST: ${{ secrets.OVH_HOST }}
+                    USERNAME: ${{ secrets.UBUNTU_USERNAME }}
+                    PASSWORD: ${{ secrets.UBUNTU_PASSWORD }}
+                run: |
+                    sshpass -p "$PASSWORD" ssh -o StrictHostKeyChecking=no "$USERNAME@$HOST" "
+                    sudo rm -rf /var/www/checkitout.app/*"
+
+            -   name: Deploy with SCP
+                uses: appleboy/scp-action@v0.1.2
+                with:
+                    host: ${{ secrets.OVH_HOST }}    # e.g., "my-server.com" or IP
+                    username: ${{ secrets.UBUNTU_USERNAME }} # e.g., "ubuntu", "root"
+                    key: ${{ secrets.OVH_SSH_KEY }}         # The private key you stored
+                    source: "dist/fuse/*"              # Local files or directories
+                    target: "/var/www/checkitout.app/"
+
+            -   name: Copy files and Restart Nginx
+                env:
+                    HOST: ${{ secrets.OVH_HOST }}
+                    USERNAME: ${{ secrets.UBUNTU_USERNAME }}
+                    PASSWORD: ${{ secrets.UBUNTU_PASSWORD }}
+                run: |
+                    sshpass -p "$PASSWORD" ssh -o StrictHostKeyChecking=no "$USERNAME@$HOST" "
+                    sudo cp -r /var/www/checkitout.app/dist/fuse/* /var/www/checkitout.app/ &&
+                    sudo systemctl reload nginx"
