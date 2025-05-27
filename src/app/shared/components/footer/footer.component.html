@@ -1,0 +1,83 @@
+<footer class="bg-slate-800 text-white py-6 w-full">
+  <div
+    class="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center space-y-6 md:space-y-0"
+  >
+    <!-- Branding -->
+    <div class="text-center md:text-left">
+      <a routerLink="/">
+        <img
+          src="assets/logos/svg/logo_horizontal_monochrome.svg"
+          alt="Checkitout Logo"
+          class="h-12"
+        />
+      </a>
+      <p class="mt-1 text-xs text-slate-400">{{ 'footer.tagline' | transloco }}</p>
+    </div>
+
+    <!-- Navigation -->
+    <div class="text-center">
+      <ul class="flex flex-wrap justify-center gap-4 text-sm">
+        <li>
+          <a href="#" class="hover:text-yellow-400 transition-colors duration-300">{{
+            'footer.nav.about' | transloco
+          }}</a>
+        </li>
+        <li>
+          <a
+            routerLink="/"
+            fragment="faq"
+            class="hover:text-yellow-400 transition-colors duration-300"
+            >{{ 'footer.nav.faq' | transloco }}</a
+          >
+        </li>
+        <li>
+          <a routerLink="/cookies" class="hover:text-yellow-400 transition-colors duration-300">{{
+            'footer.links.cookies' | transloco
+          }}</a>
+        </li>
+        <li>
+          <a routerLink="/privacy" class="hover:text-yellow-400 transition-colors duration-300">{{
+            'footer.links.privacy' | transloco
+          }}</a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Social Media -->
+    <div class="text-center">
+      <ul class="flex justify-center space-x-3">
+        <li>
+          <a
+            href="https://www.linkedin.com/company/checkitoutapp/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <mat-icon
+              [svgIcon]="'feather:linkedin'"
+              class="w-6 h-6 hover:text-yellow-400 transition-colors duration-300"
+            ></mat-icon>
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://www.instagram.com/checkitout.official/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <mat-icon
+              [svgIcon]="'feather:instagram'"
+              class="w-6 h-6 hover:text-yellow-400 transition-colors duration-300"
+            ></mat-icon>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Bottom bar -->
+  <div
+    class="max-w-7xl mx-auto px-6 lg:px-8 mt-6 border-t border-slate-600 pt-3 text-center text-xs text-slate-400"
+  >
+    {{ 'footer.copyright' | transloco }}
+  </div>
+</footer>

@@ -2,16 +2,16 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { SafeHtmlPipe } from 'app/shared/pipes/safe-html.pipe';
-import { SharedComponentsModule } from 'app/shared/components/shared-components.module';
 import { TranslocoService } from '@ngneat/transloco';
 import { Subscription } from 'rxjs';
+import { HeaderComponent } from '../../shared/components/header/header.component';
 
 @Component({
   selector: 'app-team',
   templateUrl: './team.component.html',
   styleUrls: ['./team.component.scss'],
   standalone: true,
-  imports: [CommonModule, RouterModule, SafeHtmlPipe, SharedComponentsModule]
+  imports: [CommonModule, RouterModule, SafeHtmlPipe, HeaderComponent]
 })
 export class TeamComponent implements OnInit, OnDestroy {
   currentLang = 'en';
@@ -41,7 +41,7 @@ export class TeamComponent implements OnInit, OnDestroy {
         pl: 'Współzałożyciel, Backend Developer'
       },
       bio: {
-        en: 'Building robust server-side architecture that powers our platform\'s functionality and performance.',
+        en: "Building robust server-side architecture that powers our platform's functionality and performance.",
         pl: 'Buduje solidną architekturę serwerową, która napędza funkcjonalność i wydajność naszej platformy.'
       },
       initials: 'JS',
@@ -137,10 +137,9 @@ export class TeamComponent implements OnInit, OnDestroy {
         pl: 'Angel Investor'
       },
       bio: {
-        en: 'I support growth by providing access to my network and hands-on guidance tailored to each team member\'s unique challenges. My focus is on long-term value creation — I invest not just in idea, but above all in the people behind it, offering mentorship and the resources needed to turn vision into tangible results.',
+        en: "I support growth by providing access to my network and hands-on guidance tailored to each team member's unique challenges. My focus is on long-term value creation — I invest not just in idea, but above all in the people behind it, offering mentorship and the resources needed to turn vision into tangible results.",
         pl: 'Współpracuję z założycielami we wczesnej fazie rozwoju, wspierając ich wzrost poprzez dostęp do mojego networku oraz praktyczne wsparcie dostosowane do ich indywidualnych wyzwań. Skupiam się na długoterminowym budowaniu wartości — inwestuję nie tylko w pomysł, ale przede wszystkim w ludzi, oferując mentoring i zasoby potrzebne do przełożenia wizji na realne wyniki.'
       },
-      photoUrl: './assets/images/avatars/adam-sobczyk.jpg',
       initials: 'AS',
       socialLinks: {
         linkedin: 'https://www.linkedin.com/in/adam-sobczyk-pwr/'
@@ -148,9 +147,7 @@ export class TeamComponent implements OnInit, OnDestroy {
     }
   ];
 
-  constructor(
-    private translocoService: TranslocoService
-  ) { }
+  constructor(private translocoService: TranslocoService) {}
 
   ngOnInit(): void {
     // Subscribe to language changes directly from TranslocoService

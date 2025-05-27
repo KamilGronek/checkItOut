@@ -20,6 +20,328 @@
     "en": "English",
     "pl": "Polish"
   },
+  "landing": {
+    "hero": {
+      "badge": "Influencer Marketing Platform",
+      "title": "Brands and creators, finally on the same side.",
+      "description": "We connect brands and influencers in effective marketing campaigns, ensuring transparency, trust, and measurable results for all parties.",
+      "cta": {
+        "primary": "Join for free",
+        "secondary": "See how it works"
+      },
+      "floating_card": {
+        "campaign_progress": "Campaign in progress",
+        "followers": "followers",
+        "views": "+ 5000 views"
+      }
+    },
+    "benefits": {
+      "subtitle": "Benefits",
+      "title": "How can we help you?",
+      "description": "We offer solutions that facilitate collaboration between brands and influencers",
+      "cards": {
+        "time_money": {
+          "title": "Save time and resources",
+          "items": [
+            "Lists of matched influencers",
+            "Ready-to-use briefs and contracts",
+            "Automatic campaign monitoring",
+            "Full campaign management via platform"
+          ]
+        },
+        "effective_collaboration": {
+          "title": "More effective collaboration",
+          "items": [
+            "Influencer verification",
+            "Creator ratings and recommendations",
+            "Protection against fake accounts",
+            "Campaign results reports"
+          ]
+        },
+        "better_targeting": {
+          "title": "Better targeting",
+          "items": [
+            "Matching brand goals and target audience",
+            "Collaboration model recommendations",
+            "Transparent settlements and performance monitoring"
+          ]
+        }
+      }
+    },
+    "how_it_works": {
+      "subtitle": "Process",
+      "title": "How does it work?",
+      "description": "Starting collaboration with Check It Out is simple and intuitive",
+      "tabs": {
+        "influencers": "For Influencers",
+        "brands": "For Brands"
+      },
+      "influencer_steps": [
+        {
+          "title": "Sign up",
+          "description": "Create an influencer account in seconds and showcase your profile to brands."
+        },
+        {
+          "title": "Complete profile",
+          "description": "Add your stats, social media links and collaboration preferences."
+        },
+        {
+          "title": "Receive offers",
+          "description": "We'll match you with the best company collaborations."
+        },
+        {
+          "title": "Negotiate terms",
+          "description": "Set collaboration details directly through the platform."
+        }
+      ],
+      "brand_steps": [
+        {
+          "title": "Create company account",
+          "description": "Register your brand and gain access to a database of verified influencers."
+        },
+        {
+          "title": "Create a campaign",
+          "description": "Define goals, budget and requirements for your marketing campaign."
+        },
+        {
+          "title": "Select influencers",
+          "description": "Browse recommended influencers or search by specific criteria."
+        },
+        {
+          "title": "Track results",
+          "description": "Monitor campaign progress and analyze collaboration effects in real-time."
+        }
+      ]
+    },
+    "stats": [
+      {
+        "value": "1 000+",
+        "label": "verified influencers"
+      },
+      {
+        "value": "93%",
+        "label": "campaigns completed with full brief execution"
+      },
+      {
+        "value": "4.2 / 5",
+        "label": "average rating"
+      },
+      {
+        "value": "100+",
+        "label": "active brands on the platform"
+      }
+    ],
+    "features": {
+      "subtitle": "Features",
+      "title": "Everything you need for effective collaboration",
+      "description": "We've equipped the platform with tools that facilitate campaign management and increase collaboration effectiveness",
+      "cards": [
+        {
+          "title": "Search and filtering",
+          "description": "Advanced filters to find ideal collaboration partners by location, category, reach or budget."
+        },
+        {
+          "title": "Campaign analytics",
+          "description": "Detailed reports and statistics for each campaign, enabling effectiveness assessment and ROI evaluation."
+        },
+        {
+          "title": "Contract automation",
+          "description": "Automatic generation of professional collaboration agreements with customization options for individual needs."
+        }
+      ],
+      "cta": "See all features"
+    },
+    "dashboard_preview": {
+      "subtitle": "Preview",
+      "title": "How it looks",
+      "description": "Intuitive collaboration panel providing full control over campaigns",
+      "cards": {
+        "brand": {
+          "badge": "Brand",
+          "type": "Restaurant",
+          "button": "Campaign details",
+          "requirements": {
+            "title": "Collaboration info:",
+            "items": [
+              "Min. 10k followers",
+              "Theme: food, lifestyle",
+              "Location: Warsaw, Poland",
+              "Compensation: Barter ($50 value)"
+            ]
+          }
+        },
+        "influencer": {
+          "badge": "Influencer",
+          "type": "Life style, Warsaw (POL)",
+          "button": "View profile",
+          "stats": {
+            "followers": "Followers",
+            "rating": "Rating"
+          }
+        },
+        "progress": {
+          "title": "Collaboration process",
+          "steps": [
+            {
+              "title": "Application",
+              "description": "Application has been sent"
+            },
+            {
+              "title": "Brand acceptance",
+              "description": "Brand has accepted your application"
+            },
+            {
+              "title": "Influencer acceptance",
+              "description": "Influencer has accepted your application"
+            },
+            {
+              "title": "Content approval",
+              "description": "Approval of materials for publication"
+            },
+            {
+              "title": "Payment in progress",
+              "description": "Waiting for payment approval"
+            },
+            {
+              "title": "Completion",
+              "description": "Collaboration has been successfully completed"
+            }
+          ]
+        }
+      }
+    },
+    "testimonials": {
+      "subtitle": "Testimonials",
+      "title": "What our users say",
+      "description": "Feedback from people who trusted the Check It Out platform",
+      "quotes": [
+        {
+          "text": "Thanks to Check It Out, we found trustworthy influencers who truly fit our business. The collaboration process is transparent and secure.",
+          "author": "ESCOBARBER",
+          "position": "Barber shop, Krakow"
+        },
+        {
+          "text": "The platform helped us find the perfect influencers for our campaign, saving us time and boosting recognition among our clients",
+          "author": "Nowa Prowincja",
+          "position": "Coffee house, Krakow"
+        },
+        {
+          "text": "Check It Out is the best platform for influencers I've worked with. Everything here is clear and simple.",
+          "author": "Trattoria da Antonio",
+          "position": "Restaurant, Warsaw"
+        }
+      ]
+    },
+    "faq": {
+      "subtitle": "Questions",
+      "title": "Frequently Asked Questions",
+      "description": "Answers to the most commonly asked questions",
+      "questions": [
+        {
+          "question": "How much does it cost?",
+          "answer": "Creating an account on the Check It Out platform is completely free for both brands and influencers. Currently, collaboration announcements are free of charge, but starting in 2026, we will charge companies a fee of 80 PLN (net) per listing."
+        },
+        {
+          "question": "How can I register?",
+          "answer": "Registration on the Check It Out platform is simple. Just click the \"Sign up\" button in the top right corner of the page, choose the account type (business or influencer), and then fill out the registration form. After data verification, you can use all the platform's features."
+        },
+        {
+          "question": "How do influencers settle payments with companies?",
+          "answer": "Payments are made according to the terms outlined in the specific listing. Check It Out does not mediate payments; however, our platform monitors whether both parties have fulfilled the previously agreed terms. In the event of reported fraud, the affected party can rely on full support from the Check It Out team."
+        },
+        {
+          "question": "How does the collaboration system work? As an influencer, do I have access to all offers?",
+          "answer": "As an influencer, you have access to all offers for which your account meets the requirements (e.g., location, number of followers)."
+        },
+        {
+          "question": "Does submitting an application for collaboration automatically mean its acceptance?",
+          "answer": "No, your application must be accepted by the company that posted it. The company has the option to review your profile, statistics, and previous collaborations, and then decides whether to accept your application. After the company accepts your application, you must also confirm the terms of the collaboration."
+        }
+      ],
+      "cta": {
+        "text": "Still have questions or want to be notified when we launch?",
+        "contact": "Get Launch Updates",
+        "seeMore": "See all FAQs"
+      }
+    },
+    "cta": {
+      "title": "Get started",
+      "description": "Join thousands of brands and influencers who collaborate on the Check It Out platform",
+      "buttons": {
+        "primary": "Sign up for free",
+        "secondary": "Schedule a demo"
+      }
+    },
+    "contact": {
+      "modal": {
+        "title": "Get notified when we launch!",
+        "description": "Be the first to know when Check It Out is available. We'll send you an email when we're ready to go live.",
+        "userType": {
+          "label": "I am a...",
+          "company": "Company",
+          "companyDesc": "Looking for influencers",
+          "influencer": "Influencer",
+          "influencerDesc": "Looking for partnerships"
+        },
+        "companyName": "Company Name",
+        "companyNamePlaceholder": "Enter your company name",
+        "nickname": "Influencer Nickname",
+        "nicknamePlaceholder": "Enter your nickname/handle",
+        "email": "Email Address",
+        "emailPlaceholder": "Enter your email address",
+        "validation": {
+          "nameRequired": "Name is required",
+          "emailRequired": "Email is required",
+          "emailInvalid": "Please enter a valid email address"
+        },
+        "cancel": "Cancel",
+        "submit": "Notify Me",
+        "submitting": "Submitting...",
+        "success": {
+          "title": "Thank you!",
+          "message": "We've added you to our launch list. You'll be among the first to know when Check It Out is available!",
+          "close": "Close"
+        }
+      }
+    },
+    "cookies": {
+      "title": "We use cookies",
+      "description": "This site uses cookies to ensure the best experience. By using our website, you agree to the use of cookies in accordance with our privacy policy.",
+      "buttons": {
+        "settings": "Settings",
+        "accept": "Accept"
+      }
+    }
+  },
+  "header": {
+    "nav": {
+      "how_it_works": "How it works",
+      "testimonials": "Testimonials",
+      "faq": "FAQ",
+      "team": "Team",
+      "contact": "Contact"
+    },
+    "auth": {
+      "sign_in": "Log in",
+      "sign_up": "Sign up",
+      "sign_in_after_release": "Log in available after app release",
+      "sign_up_after_release": "Sign up available after app release"
+    }
+  },
+  "footer": {
+    "tagline": "Platform connecting companies with influencers.",
+    "nav": {
+      "about": "About us",
+      "faq": "FAQ",
+      "contact": "Contact"
+    },
+    "copyright": "© 2025 Check It Out. All rights reserved.",
+    "links": {
+      "privacy": "Privacy policy",
+      "terms": "Terms of use",
+      "cookies": "Cookie policy"
+    }
+  },
   "auth": {
     "social": {
       "processing": "Processing your authentication...",
@@ -386,123 +708,23 @@
         "cancel": "Cancel"
       }
     },
-        "collaborations": {
-            "all": {
-                "title": "Available Collaborations",
-                "filter": {
-                    "column": "Column:",
-                    "value": "Value:"
-                },
-                "add_collaboration": "Add Collaboration",
-                "collaboration_card": {
-                    "details_button": "Collaboration Details"
-                },
-                "add_new_collaboration": "Add new",
-                "pagination": {
-                    "select_page": "Select page",
-                    "page_number": "Page number: {{ pageIndex }}"
-                }
-            },
-            "pop_up_notice":{
-                "edit" : {
-                    "title": "Collaboration edit",
-                    "message": "Collaboration has been successfully edited"
-                },
-                "confirm" : {
-                    "title": "You have added a new collaboration",
-                    "message": "The new collaboration is visible on the main page"
-                },
-                "remove" : {
-                    "title": "Delete item",
-                    "message": "Are you sure you want to delete the items?"
-                }
-            },
-            "cities": {
-                "Warszawa": "Warsaw",
-                "Kraków": "Cracow",
-                "Wrocław": "Wroclaw",
-                "Gdańsk": "Gdansk"
-            },
-            "compensationType":{
-                "cash": "Cash",
-                "barter": "Barter (Gift)"
-            },
-            "service-types": {
-                "Restauracja": "Restaurant",
-                "Kawiarnia": "Coffeehouse",
-                "Sklep odzieżowy": "Clothing store",
-                "Studio urody": "Beauty studio",
-                "Salon fryzjerski": "Hairdresser",
-                "Siłownia i fitness": "Gym and fitness",
-                "Park rozrywki": "Amusement park",
-                "Hotel i spa": "Hotel and spa",
-                "Usługi cateringowe": "Catering services",
-                "Sklep z kosmetykami": "Cosmetics store",
-                "Studio fotograficzne": "Photographic studio",
-                "Agencja marketingowa": "Marketing agency",
-                "Studio tatuażu": "Tattoo studio",
-                "Klub muzyczny":  "Music club",
-                "Sklep z biżuterią": "Jewelry store"
-            },
-            "months": {
-                "january": "Styczeń",
-                "february": "Luty",
-                "march": "Marzec",
-                "april": "Kwiecień",
-                "may": "Maj",
-                "june": "Czerwiec",
-                "july": "Lipiec",
-                "august": "Sierpień",
-                "september": "Wrzesień",
-                "october": "Październik",
-                "november": "Listopad",
-                "december": "Grudzień"
-            },
-            "details": {
-                "description": "Description",
-                "description_placeholder": "Add description of collaboration...",
-                "name": "Collaboration Details",
-                "title_placeholder": "Enter the name of the order",
-                "start_date": "Start Date",
-                "end_date": "End Date",
-                "date_not_set": "Not set",
-                "clear_button": "Clear",
-                "pick_button": "Pick",
-                "return_button": "Return",
-                "delete_button": "Delete",
-                "cancel_button":"Cancel",
-                "save_button": "Save",
-                "edit_button": "Edit",
-                "requirements": "Requirements",
-                "requirements_placeholder": "Enter collaboration requirements here...",
-                "compensation_type": "Compensation",
-                "compensation_result": "Results",
-                "barter_subscrition": "Barter subscription",
-                "compensation_placeholder": "Enter compensation details here...",
-                "campaign_details": "Campaign Details",
-                "campaign_details_placeholder": "Describe the new campaign details...",
-                "company_details": "Company Details",
-                "slider_configuration": "Slider Configuration",
-                "result": "Result",
-                "city": "City",
-                "user": "User",
-                "service_type": "Service Type",
-                "value": "Value",
-                "followers_count": "Followers Amount",
-                "content_type": "Content Type",
-                "platform": "Platform",
-                "min_value": "Min Value",
-                "max_value": "Max Value",
-                "step_size": "Step Size",
-                "show_ticks": "Show Ticks",
-                "show_thumb_label": "Show Thumb Label",
-                "disabled": "Disabled",
-                "tooltip" : "Unavailable",
-                "addWarning": "Before sending, please fill in all details",
-                "select_date_range": "Select Date Range",
-                "background_picture": "Upload photo"
-            }
+    "collaborations": {
+      "all": {
+        "title": "Available Collaborations",
+        "filter": {
+          "column": "Column:",
+          "value": "Value:"
         },
+        "add_collaboration": "Add Collaboration",
+        "collaboration_card": {
+          "details_button": "Collaboration Details"
+        },
+        "add_new_collaboration": "Add new",
+        "pagination": {
+          "select_page": "Select page",
+          "page_number": "Page number: {{ pageIndex }}"
+        }
+      },
       "pop_up_notice": {
         "edit": {
           "title": "Collaboration edit",
@@ -575,7 +797,9 @@
         "edit_button": "Edit",
         "requirements": "Requirements",
         "requirements_placeholder": "Enter collaboration requirements here...",
-        "compensationType": "Compensation",
+        "compensation_type": "Compensation",
+        "compensation_result": "Results",
+        "barter_subscrition": "Barter subscription",
         "compensation_placeholder": "Enter compensation details here...",
         "campaign_details": "Campaign Details",
         "campaign_details_placeholder": "Describe the new campaign details...",
@@ -583,7 +807,7 @@
         "slider_configuration": "Slider Configuration",
         "result": "Result",
         "city": "City",
-        "company": "Company",
+        "user": "User",
         "service_type": "Service Type",
         "value": "Value",
         "followers_count": "Followers Amount",
@@ -600,6 +824,104 @@
         "select_date_range": "Select Date Range",
         "background_picture": "Upload photo"
       }
+    },
+    "pop_up_notice": {
+      "edit": {
+        "title": "Collaboration edit",
+        "message": "Collaboration has been successfully edited"
+      },
+      "confirm": {
+        "title": "You have added a new collaboration",
+        "message": "The new collaboration is visible on the main page"
+      },
+      "remove": {
+        "title": "Delete item",
+        "message": "Are you sure you want to delete the items?"
+      }
+    },
+    "cities": {
+      "Warszawa": "Warsaw",
+      "Kraków": "Cracow",
+      "Wrocław": "Wroclaw",
+      "Gdańsk": "Gdansk"
+    },
+    "compensationType": {
+      "cash": "Cash",
+      "barter": "Barter (Gift)"
+    },
+    "service-types": {
+      "Restauracja": "Restaurant",
+      "Kawiarnia": "Coffeehouse",
+      "Sklep odzieżowy": "Clothing store",
+      "Studio urody": "Beauty studio",
+      "Salon fryzjerski": "Hairdresser",
+      "Siłownia i fitness": "Gym and fitness",
+      "Park rozrywki": "Amusement park",
+      "Hotel i spa": "Hotel and spa",
+      "Usługi cateringowe": "Catering services",
+      "Sklep z kosmetykami": "Cosmetics store",
+      "Studio fotograficzne": "Photographic studio",
+      "Agencja marketingowa": "Marketing agency",
+      "Studio tatuażu": "Tattoo studio",
+      "Klub muzyczny": "Music club",
+      "Sklep z biżuterią": "Jewelry store"
+    },
+    "months": {
+      "january": "Styczeń",
+      "february": "Luty",
+      "march": "Marzec",
+      "april": "Kwiecień",
+      "may": "Maj",
+      "june": "Czerwiec",
+      "july": "Lipiec",
+      "august": "Sierpień",
+      "september": "Wrzesień",
+      "october": "Październik",
+      "november": "Listopad",
+      "december": "Grudzień"
+    },
+    "details": {
+      "description": "Description",
+      "description_placeholder": "Add description of collaboration...",
+      "name": "Collaboration Details",
+      "title_placeholder": "Enter the name of the order",
+      "start_date": "Start Date",
+      "end_date": "End Date",
+      "date_not_set": "Not set",
+      "clear_button": "Clear",
+      "pick_button": "Pick",
+      "return_button": "Return",
+      "delete_button": "Delete",
+      "cancel_button": "Cancel",
+      "save_button": "Save",
+      "edit_button": "Edit",
+      "requirements": "Requirements",
+      "requirements_placeholder": "Enter collaboration requirements here...",
+      "compensationType": "Compensation",
+      "compensation_placeholder": "Enter compensation details here...",
+      "campaign_details": "Campaign Details",
+      "campaign_details_placeholder": "Describe the new campaign details...",
+      "company_details": "Company Details",
+      "slider_configuration": "Slider Configuration",
+      "result": "Result",
+      "city": "City",
+      "company": "Company",
+      "service_type": "Service Type",
+      "value": "Value",
+      "followers_count": "Followers Amount",
+      "content_type": "Content Type",
+      "platform": "Platform",
+      "min_value": "Min Value",
+      "max_value": "Max Value",
+      "step_size": "Step Size",
+      "show_ticks": "Show Ticks",
+      "show_thumb_label": "Show Thumb Label",
+      "disabled": "Disabled",
+      "tooltip": "Unavailable",
+      "addWarning": "Before sending, please fill in all details",
+      "select_date_range": "Select Date Range",
+      "background_picture": "Upload photo"
+    }
   },
   "address": {
     "title": "Manage Your Addresses",

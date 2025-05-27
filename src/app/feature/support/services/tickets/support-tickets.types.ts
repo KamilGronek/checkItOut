@@ -8,7 +8,9 @@ export enum TicketCategory {
   FEATURE_REQUEST = 'FEATURE_REQUEST',
   PARTNERSHIP_ISSUE = 'PARTNERSHIP_ISSUE',
   CONTENT_MODERATION = 'CONTENT_MODERATION',
-  GENERAL_INQUIRY = 'GENERAL_INQUIRY'
+  GENERAL_INQUIRY = 'GENERAL_INQUIRY',
+  EARLY_ACCESS_INTEREST = 'EARLY_ACCESS_INTEREST',
+  OTHER = 'OTHER'
 }
 
 /**
@@ -122,6 +124,16 @@ export interface ResponseAttachmentDtoOut {
   fileSize: number;
   uploadTime: string;
   downloadUrl: string;
+}
+
+/**
+ * Contact form data interface
+ * Used for both influencer and company contact forms
+ */
+export interface ContactFormData {
+  name: string;
+  email: string;
+  userType: 'company' | 'influencer';
 }
 
 /**
