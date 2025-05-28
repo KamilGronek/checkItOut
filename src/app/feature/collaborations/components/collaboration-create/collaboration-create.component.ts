@@ -231,8 +231,6 @@ export class CollaborationCreateComponent implements OnInit {
 
   currency$ = this._lookingUpDataService.currency$;
 
-  currency$ = this._lookingUpDataService.currency$;
-
   profilImageControl = new FormControl('', [Validators.required]);
   imageControl = new FormControl('', [Validators.required]);
 

@@ -150,23 +150,6 @@ export class LookingUpDataService {
       });
   }
 
-  getCurrency(): void {
-    this._collaborationService.getCurrency().subscribe({
-      next: response => {
-        const contentCurrency = response.content.map(currency => ({
-          value: currency.id,
-          label: currency.isoCode
-        }));
-        console.log('contentCurrency;', contentCurrency);
-
-        this.currencyListSubject.next(contentCurrency);
-      },
-      error: error => {
-        console.error('Error fetching content type:', error);
-      }
-    });
-  }
-
   getUserCompany() {
     this._collaborationService.getUser().subscribe({
       next: (response: User) => {
