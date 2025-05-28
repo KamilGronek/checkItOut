@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable, catchError, map, of, tap } from 'rxjs';
 import { environment } from 'environments/environment';
 import {
   AdminTicketResponseDtoIn,
+  ContactFormData,
   PaginatedTicketResponse,
   ResponseAttachmentDtoIn,
   SupportTicketDtoIn,
@@ -55,7 +56,9 @@ export class SupportTicketService {
       { label: 'Feature Request', value: TicketCategory.FEATURE_REQUEST },
       { label: 'Partnership Issue', value: TicketCategory.PARTNERSHIP_ISSUE },
       { label: 'Content Moderation', value: TicketCategory.CONTENT_MODERATION },
-      { label: 'General Inquiry', value: TicketCategory.GENERAL_INQUIRY }
+      { label: 'General Inquiry', value: TicketCategory.GENERAL_INQUIRY },
+      { label: 'Early Access Interest', value: TicketCategory.EARLY_ACCESS_INTEREST },
+      { label: 'Other', value: TicketCategory.OTHER }
     ];
   }
 
@@ -87,6 +90,20 @@ export class SupportTicketService {
         return of(null);
       })
     );
+  }
+
+  /**
+   * Submit contact form as support ticket
+   */
+  submitContactForm(contactData: ContactFormData): Observable<SupportTicketDtoOut> {
+    const ticket: SupportTicketDtoIn = {
+      contactEmail: contactData.email,
+      subject: `Early Access Interest - ${contactData.name}`,
+      description: `New interested user: ${contactData.name} (${contactData.userType}) wants to be notified when the app launches.`,
+      category: TicketCategory.EARLY_ACCESS_INTEREST
+    };
+
+    return this.createTicket(ticket);
   }
 
   /**

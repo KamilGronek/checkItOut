@@ -20,6 +20,328 @@
     "en": "Angielski",
     "pl": "Polski"
   },
+  "landing": {
+    "hero": {
+      "badge": "Platforma dla influencer marketingu",
+      "title": "Lokalne firmy i twórcy internetowi, w końcu po tej samej stronie.",
+      "description": "Łączymy małe przedsiębiorstwa i influencerów w skutecznych kampaniach marketingowych, zapewniając transparentność, zaufanie i mierzalne rezultaty.",
+      "cta": {
+        "primary": "Dołącz za darmo",
+        "secondary": "Zobacz jak to działa"
+      },
+      "floating_card": {
+        "campaign_progress": "Kampania w toku",
+        "followers": "obserwujących",
+        "views": "+ 5000 wyświetleń"
+      }
+    },
+    "benefits": {
+      "subtitle": "Korzyści",
+      "title": "Jak możemy Ci pomóc?",
+      "description": "Oferujemy rozwiązania, które ułatwiają współpracę między firmami i influencerami",
+      "cards": {
+        "time_money": {
+          "title": "Oszczędność czasu i pieniędzy",
+          "items": [
+            "Listy dopasowanych influencerów",
+            "Gotowe briefy i umowy",
+            "Automatyczny monitoring kampanii",
+            "Pełna obsługa kampanii przez platformę"
+          ]
+        },
+        "effective_collaboration": {
+          "title": "Skuteczniejsza współpraca",
+          "items": [
+            "Weryfikacja influencerów",
+            "Oceny i rekomendacje twórców",
+            "Ochrona przed fałszywymi kontami",
+            "Raport z wyników kampanii"
+          ]
+        },
+        "better_targeting": {
+          "title": "Lepsze targetowanie",
+          "items": [
+            "Dopasowanie do celów marki i grupy docelowej",
+            "Rekomendacje modelu współpracy",
+            "Transparentne rozliczenia i monitoring wydajności"
+          ]
+        }
+      }
+    },
+    "how_it_works": {
+      "subtitle": "Proces",
+      "title": "Jak to działa?",
+      "description": "Rozpoczęcie współpracy z Check It Out jest proste i intuicyjne",
+      "tabs": {
+        "influencers": "Dla Influencerów",
+        "brands": "Dla Firm"
+      },
+      "influencer_steps": [
+        {
+          "title": "Zarejestruj się",
+          "description": "Załóż konto influencera w kilka sekund i pokaż markom swój profil."
+        },
+        {
+          "title": "Wypełnij profil",
+          "description": "Dodaj swoje statystyki, linki do social mediów i preferencje dotyczące współprac."
+        },
+        {
+          "title": "Otrzymuj oferty",
+          "description": "Dopasujemy dla Ciebie najlepsze współprace z firmami."
+        },
+        {
+          "title": "Negocjuj warunki",
+          "description": "Ustal szczegóły współpracy bezpośrednio przez platformę."
+        }
+      ],
+      "brand_steps": [
+        {
+          "title": "Załóż konto firmy",
+          "description": "Zarejestruj swoją firmę i uzyskaj dostęp do bazy zweryfikowanych influencerów."
+        },
+        {
+          "title": "Stwórz kampanię",
+          "description": "Określ cele, budżet i wymagania dla twojej kampanii marketingowej."
+        },
+        {
+          "title": "Wybierz influencerów",
+          "description": "Przeglądaj rekomendowanych influencerów lub wyszukuj według określonych kryteriów."
+        },
+        {
+          "title": "Śledź wyniki",
+          "description": "Monitoruj przebieg kampanii i analizuj efekty współpracy w czasie rzeczywistym."
+        }
+      ]
+    },
+    "stats": [
+      {
+        "value": "1 000+",
+        "label": "zweryfikowanych influencerów"
+      },
+      {
+        "value": "93%",
+        "label": "kampanii zakończonych pełną realizacją briefu"
+      },
+      {
+        "value": "4.2 / 5",
+        "label": "średnia ocena"
+      },
+      {
+        "value": "100+",
+        "label": "aktywnych firm na platformie"
+      }
+    ],
+    "features": {
+      "subtitle": "Funkcjonalności",
+      "title": "Wszystko, czego potrzebujesz do efektywnej współpracy",
+      "description": "Platformę wyposażyliśmy w narzędzia, które ułatwiają zarządzanie kampaniami i zwiększają skuteczność współpracy",
+      "cards": [
+        {
+          "title": "Wyszukiwanie i filtrowanie",
+          "description": "Zaawansowane filtry pozwalające znaleźć idealnych partnerów do współpracy według lokalizacji, kategorii, zasięgów czy budżetu."
+        },
+        {
+          "title": "Analityka kampanii",
+          "description": "Szczegółowe raporty i statystyki dla każdej kampanii, umożliwiające ocenę skuteczności współpracy i ROI."
+        },
+        {
+          "title": "Automatyzacja umów",
+          "description": "Automatyczne generowanie profesjonalnych umów o współpracy z możliwością dostosowania do indywidualnych potrzeb."
+        }
+      ],
+      "cta": "Zobacz wszystkie funkcje"
+    },
+    "dashboard_preview": {
+      "subtitle": "Podgląd",
+      "title": "Tak wygląda u nas",
+      "description": "Intuicyjny panel współprac zapewniający pełną kontrolę nad kampaniami",
+      "cards": {
+        "brand": {
+          "badge": "Firma",
+          "type": "Restauracja",
+          "button": "Szczegóły kampanii",
+          "requirements": {
+            "title": "Informacje o współpracy:",
+            "items": [
+              "Min. 10k obserwujących",
+              "Tematyka: jedzenie, styl życia",
+              "Lokalizacja: Warszawa, Polska",
+              "Wynagrodzenie: Barter o wartości 200 PLN"
+            ]
+          }
+        },
+        "influencer": {
+          "badge": "Influencer",
+          "type": "Styl życia, Warszawa",
+          "button": "Zobacz profil",
+          "stats": {
+            "followers": "Obserwujący",
+            "rating": "Ocena"
+          }
+        },
+        "progress": {
+          "title": "Proces współpracy",
+          "steps": [
+            {
+              "title": "Aplikacja",
+              "description": "Zgłoszenie zostało wysłane"
+            },
+            {
+              "title": "Akceptacja firmy",
+              "description": "Firma zaakceptowała Twoją aplikację"
+            },
+            {
+              "title": "Akceptacja influencera",
+              "description": "Influencer zaakceptował Twoją aplikację"
+            },
+            {
+              "title": "Akceptacja treści",
+              "description": "Zatwierdzenie materiałów do publikacji"
+            },
+            {
+              "title": "Płatność w toku",
+              "description": "Oczekiwanie na potwierdzenie płatności"
+            },
+            {
+              "title": "Zakończenie",
+              "description": "Współpraca została zakończona pomyślnie"
+            }
+          ]
+        }
+      }
+    },
+    "testimonials": {
+      "subtitle": "Opinie",
+      "title": "Co mówią nasi użytkownicy",
+      "description": "Opinie osób, które zaufały platformie Check It Out",
+      "quotes": [
+        {
+          "text": "Dzięki Check It Out znaleźliśmy wiarygodnych influencerów, którzy naprawdę pasują do naszego biznesu. Proces współpracy jest przejrzysty i bezpieczny.",
+          "author": "ESCOBARBER",
+          "position": "Barber shop, Kraków"
+        },
+        {
+          "text": "Platforma pomogła nam znaleźć idealnych influencerów do naszej kampanii. Oszczędziliśmy mnóstwo czasu i zwiększyliśmy rozpoznawalność wśród klientów.",
+          "author": "Nowa Prowincja",
+          "position": "Kawiarnia, Kraków"
+        },
+        {
+          "text": "Check It Out to najlepsza platforma dla influencerów, z jaką pracowałam. Wszystko jest tutaj jasne i proste.",
+          "author": "Trattoria da Antonio",
+          "position": "Restauracja, Warszawa"
+        }
+      ]
+    },
+    "faq": {
+      "subtitle": "Pytania",
+      "title": "Najczęściej zadawane pytania",
+      "description": "Odpowiedzi na najczęściej zadawane pytania",
+      "questions": [
+        {
+          "question": "Ile to kosztuje?",
+          "answer": "Założenie konta na platformie Check It Out jest całkowicie bezpłatne zarówno dla marek, jak i dla influencerów. Na razie ogłoszenia są bezpłatne, jednak od 2026 roku będziemy pobierać opłatę od firm za wystawione ogłoszenia w wysokości 80 zł netto za ogłoszenie."
+        },
+        {
+          "question": "W jaki sposób mogę się zarejestrować?",
+          "answer": "Rejestracja na platformie Check It Out jest prosta. Wystarczy kliknąć przycisk \"Zarejestruj się\" w prawym górnym rogu strony, wybrać typ konta (firma lub influencer), a następnie wypełnić formularz rejestracyjny. Po weryfikacji danych możesz korzystać z pełni funkcjonalności platformy."
+        },
+        {
+          "question": "W jaki sposób influencer rozlicza się z firmami?",
+          "answer": "Płatności odbywają się zgodnie z zasadami określonymi w danym ogłoszeniu. Check It Out nie pośredniczy w płatnościach, jednak nasza platforma monitoruje, czy strony wywiązały się z wcześniej zawartej umowy. W przypadku zgłoszonego oszustwa poszkodowana strona może liczyć na pełne wsparcie zespołu Check It Out."
+        },
+        {
+          "question": "Jak działa system współprac? Czy jako influencer mam dostęp do wszystkich ofert?",
+          "answer": "Jako influencer masz dostęp do wszystkich ofert, dla których Twoje konto spełnia określone wymagania (np. lokalizacja, liczba obserwujących)."
+        },
+        {
+          "question": "Czy zgłoszenie aplikacji do współpracy oznacza automatyczne jej przyjęcie?",
+          "answer": "Nie, Twoje zgłoszenie musi zostać zaakceptowane przez firmę, która je wystawia. Firma ma możliwość przejrzenia Twojego profilu, statystyk oraz wcześniejszych współprac, a następnie decyduje o akceptacji Twojej kandydatury. Po akceptacji przez firmę, Ty również musisz zatwierdzić warunki współpracy."
+        }
+      ],
+      "cta": {
+        "text": "Nadal masz pytania lub chcesz być powiadomiony o starcie?",
+        "contact": "Informacje o Starcie",
+        "seeMore": "Zobacz wszystkie FAQ"
+      }
+    },
+    "cta": {
+      "title": "Zacznij korzystać",
+      "description": "Dołącz do tysięcy marek i influencerów, którzy współpracują na platformie Check It Out",
+      "buttons": {
+        "primary": "Zarejestruj się za darmo",
+        "secondary": "Umów prezentację"
+      }
+    },
+    "contact": {
+      "modal": {
+        "title": "Dowiedz się o starcie!",
+        "description": "Bądź pierwszą osobą, która dowie się kiedy Check It Out będzie dostępne. Wyślemy Ci email gdy będziemy gotowi do startu.",
+        "userType": {
+          "label": "Jestem...",
+          "company": "Firmą",
+          "companyDesc": "Szukam influencerów",
+          "influencer": "Influencerem",
+          "influencerDesc": "Szukam współprac"
+        },
+        "companyName": "Nazwa Firmy",
+        "companyNamePlaceholder": "Wprowadź nazwę firmy",
+        "nickname": "Nick Influencera",
+        "nicknamePlaceholder": "Wprowadź swój nick/pseudonim",
+        "email": "Adres Email",
+        "emailPlaceholder": "Wprowadź swój adres email",
+        "validation": {
+          "nameRequired": "Nazwa jest wymagana",
+          "emailRequired": "Email jest wymagany",
+          "emailInvalid": "Proszę wprowadzić prawidłowy adres email"
+        },
+        "cancel": "Anuluj",
+        "submit": "Powiadom Mnie",
+        "submitting": "Wysyłanie...",
+        "success": {
+          "title": "Dziękujemy!",
+          "message": "Dodaliśmy Cię do naszej listy startowej. Będziesz wśród pierwszych, którzy dowiedzą się o starcie Check It Out!",
+          "close": "Zamknij"
+        }
+      }
+    },
+    "cookies": {
+      "title": "Używamy cookies",
+      "description": "Ta strona używa plików cookie, aby zapewnić najlepsze doświadczenia. Korzystając z naszej witryny, zgadzasz się na użycie plików cookie zgodnie z naszą polityką prywatności.",
+      "buttons": {
+        "settings": "Ustawienia",
+        "accept": "Akceptuję"
+      }
+    }
+  },
+  "header": {
+    "nav": {
+      "how_it_works": "Jak to działa",
+      "testimonials": "Opinie",
+      "faq": "FAQ",
+      "team": "Zespół",
+      "contact": "Kontakt"
+    },
+    "auth": {
+      "sign_in": "Zaloguj się",
+      "sign_up": "Zarejestruj się",
+      "sign_in_after_release": "Logowanie dostępne po premierze aplikacji",
+      "sign_up_after_release": "Rejestracja dostępna po premierze aplikacji"
+    }
+  },
+  "footer": {
+    "tagline": "Platforma łącząca firmy z influencerami.",
+    "nav": {
+      "about": "O nas",
+      "faq": "FAQ",
+      "contact": "Kontakt"
+    },
+    "copyright": "© 2025 Check It Out. Wszelkie prawa zastrzeżone.",
+    "links": {
+      "privacy": "Polityka prywatności",
+      "terms": "Warunki korzystania",
+      "cookies": "Polityka cookies"
+    }
+  },
   "auth": {
     "social": {
       "processing": "Przetwarzanie uwierzytelniania...",

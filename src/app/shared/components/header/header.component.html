@@ -1,73 +1,275 @@
-<header [ngClass]="{'scrolled': isScrolled}">
-    <div class="container">
-        <nav>
-            <!-- Logo - Stays visible on all screen sizes -->
-            <a routerLink="/" class="logo">
-                Check It Out
-            </a>
+<header
+  class="bg-white fixed top-0 left-0 right-0 z-50 transition-all duration-300 shadow-sm"
+  [ngClass]="{ 'py-3 shadow-lg': isScrolled, 'py-5': !isScrolled }"
+>
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <nav class="flex justify-between items-center">
+      <!-- Logo -->
+      <a routerLink="/">
+        <img src="assets/logos/svg/logo_horizontal.svg" alt="Checkitout Logo" class="h-12" />
+      </a>
 
-            <!-- Desktop Navigation Links -->
-            <div class="nav-links" [ngClass]="{'active': isMenuOpen}">
-                <a routerLink="/" fragment="how-it-works" (click)="closeMenu()" *ngIf="currentLang === 'pl'">Jak to działa</a>
-                <a routerLink="/" fragment="how-it-works" (click)="closeMenu()" *ngIf="currentLang === 'en'">How it works</a>
+      <!-- Desktop Navigation Links -->
+      <div class="hidden lg:flex items-center gap-10">
+        <a
+          routerLink="/"
+          fragment="how-it-works"
+          (click)="closeMenu()"
+          class="text-slate-800 font-medium no-underline relative text-lg transition-all duration-300 hover:text-blue-600 after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-blue-600 after:transition-all after:duration-300 hover:after:w-full"
+        >
+          {{ 'header.nav.how_it_works' | transloco }}
+        </a>
 
-                <a routerLink="/" fragment="testimonials" (click)="closeMenu()" *ngIf="currentLang === 'pl'">Opinie</a>
-                <a routerLink="/" fragment="testimonials" (click)="closeMenu()" *ngIf="currentLang === 'en'">Testimonials</a>
+        <a
+          routerLink="/"
+          fragment="testimonials"
+          (click)="closeMenu()"
+          class="hidden text-slate-800 font-medium no-underline relative text-lg transition-all duration-300 hover:text-blue-600 after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-blue-600 after:transition-all after:duration-300 hover:after:w-full"
+        >
+          {{ 'header.nav.testimonials' | transloco }}
+        </a>
 
-                <a routerLink="/" fragment="faq" (click)="closeMenu()" *ngIf="currentLang === 'pl'">FAQ</a>
-                <a routerLink="/" fragment="faq" (click)="closeMenu()" *ngIf="currentLang === 'en'">FAQ</a>
+        <a
+          routerLink="/"
+          fragment="faq"
+          (click)="closeMenu()"
+          class="text-slate-800 font-medium no-underline relative text-lg transition-all duration-300 hover:text-blue-600 after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-blue-600 after:transition-all after:duration-300 hover:after:w-full"
+        >
+          {{ 'header.nav.faq' | transloco }}
+        </a>
 
-                <a routerLink="/team" (click)="closeMenu()" *ngIf="currentLang === 'pl'">Zespół</a>
-                <a routerLink="/team" (click)="closeMenu()" *ngIf="currentLang === 'en'">Team</a>
+        <a
+          routerLink="/team"
+          (click)="closeMenu()"
+          class="text-slate-800 font-medium no-underline relative text-lg transition-all duration-300 hover:text-blue-600 after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-blue-600 after:transition-all after:duration-300 hover:after:w-full"
+        >
+          {{ 'header.nav.team' | transloco }}
+        </a>
 
-                <a routerLink="/" fragment="contact" (click)="closeMenu()" *ngIf="currentLang === 'pl'">Kontakt</a>
-                <a routerLink="/" fragment="contact" (click)="closeMenu()" *ngIf="currentLang === 'en'">Contact</a>
+        <a
+          routerLink="/"
+          fragment="contact"
+          (click)="closeMenu()"
+          class="text-slate-800 font-medium no-underline relative text-lg transition-all duration-300 hover:text-blue-600 after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-blue-600 after:transition-all after:duration-300 hover:after:w-full"
+        >
+          {{ 'header.nav.contact' | transloco }}
+        </a>
+      </div>
 
-                <!-- Mobile-only buttons -->
-                <div class="mobile-buttons">
-                    <a routerLink="/auth/sign-in" class="btn btn-outline-primary" *ngIf="currentLang === 'pl'">Zaloguj się</a>
-                    <a routerLink="/auth/sign-in" class="btn btn-outline-primary" *ngIf="currentLang === 'en'">Log in</a>
-                    <a routerLink="/auth/sign-up" class="btn btn-primary" *ngIf="currentLang === 'pl'">Zarejestruj się</a>
-                    <a routerLink="/auth/sign-up" class="btn btn-primary" *ngIf="currentLang === 'en'">Sign up</a>
-                </div>
+      <div class="hidden lg:flex">
+        <!-- Desktop Auth Buttons -->
+        <div class="hidden lg:flex items-center gap-3">
+          <!-- routerLink="/auth/sign-in" -->
+          <a
+            #tooltip="matTooltip"
+            matTooltip="{{ 'header.auth.sign_in_after_release' | transloco }}"
+            class="bg-transparent border-2 border-gray-600 text-gray-600 hover:bg-blue-50 px-6 py-3 rounded-lg font-semibold no-underline transition-all duration-300 transform hover:-translate-y-1"
+          >
+            {{ 'header.auth.sign_in' | transloco }}
+          </a>
+          <!-- routerLink="/auth/sign-up" -->
+          <a
+            #tooltip="matTooltip"
+            matTooltip="{{ 'header.auth.sign_up_after_release' | transloco }}"
+            class="bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-semibold no-underline transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl"
+          >
+            {{ 'header.auth.sign_up' | transloco }}
+          </a>
+        </div>
+
+        <!-- Language Switcher Desktop-->
+        <div class="hidden lg:block relative ml-3">
+          <button
+            class="flex items-center gap-2 bg-transparent border-none text-slate-800 font-medium cursor-pointer px-6 py-3 rounded-lg transition-all duration-300 hover:bg-blue-50 hover:text-blue-600"
+            (click)="toggleLangDropdown($event)"
+          >
+            <img
+              [src]="getCurrentFlag()"
+              [alt]="getCurrentLang() + ' flag'"
+              class="w-5 h-4 object-cover rounded-sm"
+            />
+            <span class="hidden lg:inline">{{ getCurrentLang().toUpperCase() }}</span>
+          </button>
+
+          <div
+            class="absolute top-full right-0 bg-white rounded-lg shadow-lg w-36 py-2 z-50 transition-all duration-300"
+            [ngClass]="{
+              'opacity-100 visible': isLangDropdownOpen,
+              'opacity-0 invisible': !isLangDropdownOpen
+            }"
+          >
+            <div
+              class="flex items-center gap-2 px-4 py-3 transition-all duration-300 cursor-pointer hover:bg-blue-50"
+              [ngClass]="{ 'text-blue-600 font-semibold bg-blue-50': getCurrentLang() === 'pl' }"
+              (click)="switchLanguage('pl')"
+            >
+              <img
+                src="assets/images/flags/PL2.png"
+                alt="Polish flag"
+                class="w-5 h-4 object-cover rounded-sm"
+              />
+              <span>Polski</span>
             </div>
-
-            <!-- Desktop-only buttons -->
-            <div class="desktop-buttons">
-                <a routerLink="/auth/sign-in" class="btn btn-outline-primary mr-1" *ngIf="currentLang === 'pl'">Zaloguj się</a>
-                <a routerLink="/auth/sign-in" class="btn btn-outline-primary mr-1" *ngIf="currentLang === 'en'">Log in</a>
-                <a routerLink="/auth/sign-up" class="btn btn-primary" *ngIf="currentLang === 'pl'">Zarejestruj się</a>
-                <a routerLink="/auth/sign-up" class="btn btn-primary" *ngIf="currentLang === 'en'">Sign up</a>
+            <div
+              class="flex items-center gap-2 px-4 py-3 transition-all duration-300 cursor-pointer hover:bg-blue-50"
+              [ngClass]="{ 'text-blue-600 font-semibold bg-blue-50': getCurrentLang() === 'en' }"
+              (click)="switchLanguage('en')"
+            >
+              <img
+                src="assets/images/flags/UK.png"
+                alt="English flag"
+                class="w-5 h-4 object-cover rounded-sm"
+              />
+              <span>English</span>
             </div>
+          </div>
+        </div>
+      </div>
 
-            <!-- Language Switcher -->
-            <div class="lang-switcher">
-                <button class="lang-switcher-btn" (click)="toggleLangDropdown($event)">
-                    <img *ngIf="currentLang === 'pl'" src="assets/images/flags/PL2.png" alt="Polish flag" class="flag-icon">
-                    <img *ngIf="currentLang === 'en'" src="assets/images/flags/UK.png" alt="English flag" class="flag-icon">
-                    <span>{{ currentLang.toUpperCase() }}</span>
-                </button>
-                <div class="lang-dropdown" [ngClass]="{'active': isLangDropdownOpen}">
-                    <div class="lang-option" [ngClass]="{'active': currentLang === 'pl'}" (click)="switchLanguage('pl')">
-                        <img src="assets/images/flags/PL2.png" alt="Polish flag" class="flag-icon">
-                        <span>Polski</span>
-                    </div>
-                    <div class="lang-option" [ngClass]="{'active': currentLang === 'en'}" (click)="switchLanguage('en')">
-                        <img src="assets/images/flags/UK.png" alt="English flag" class="flag-icon">
-                        <span>English</span>
-                    </div>
-                </div>
+      <!-- Mobile Menu Toggle -->
+      <button
+        class="lg:hidden flex flex-col justify-between w-8 h-6 bg-transparent border-none cursor-pointer p-0 z-50 transition-all duration-300"
+        aria-label="Menu"
+        (click)="toggleMenu()"
+      >
+        <span
+          class="block w-full h-0.5 bg-slate-800 rounded-sm transition-all duration-300"
+          [ngClass]="{ 'rotate-45 translate-y-2.5 bg-blue-600': isMenuOpen }"
+        ></span>
+        <span
+          class="block w-full h-0.5 bg-slate-800 rounded-sm transition-all duration-300"
+          [ngClass]="{ 'opacity-0': isMenuOpen }"
+        ></span>
+        <span
+          class="block w-full h-0.5 bg-slate-800 rounded-sm transition-all duration-300"
+          [ngClass]="{ '-rotate-45 -translate-y-2.5 bg-blue-600': isMenuOpen }"
+        ></span>
+      </button>
+
+      <!-- Mobile Navigation -->
+      <div
+        class="fixed top-0 right-0 w-72 h-full bg-white flex-col pt-24 pb-8 px-8 gap-6 transition-all duration-300 shadow-2xl z-40 lg:hidden"
+        [ngClass]="{ 'flex right-0': isMenuOpen, 'hidden -right-72': !isMenuOpen }"
+      >
+        <a
+          routerLink="/"
+          fragment="how-it-works"
+          (click)="closeMenu()"
+          class="text-slate-800 font-medium no-underline text-lg transition-colors duration-300 hover:text-blue-600"
+        >
+          {{ 'header.nav.how_it_works' | transloco }}
+        </a>
+
+        <a
+          routerLink="/"
+          fragment="testimonials"
+          (click)="closeMenu()"
+          class="hidden text-slate-800 font-medium no-underline text-lg transition-colors duration-300 hover:text-blue-600"
+        >
+          {{ 'header.nav.testimonials' | transloco }}
+        </a>
+
+        <a
+          routerLink="/"
+          fragment="faq"
+          (click)="closeMenu()"
+          class="text-slate-800 font-medium no-underline text-lg transition-colors duration-300 hover:text-blue-600"
+        >
+          {{ 'header.nav.faq' | transloco }}
+        </a>
+
+        <a
+          routerLink="/team"
+          (click)="closeMenu()"
+          class="text-slate-800 font-medium no-underline text-lg transition-colors duration-300 hover:text-blue-600"
+        >
+          {{ 'header.nav.team' | transloco }}
+        </a>
+
+        <a
+          routerLink="/"
+          fragment="contact"
+          (click)="closeMenu()"
+          class="text-slate-800 font-medium no-underline text-lg transition-colors duration-300 hover:text-blue-600"
+        >
+          {{ 'header.nav.contact' | transloco }}
+        </a>
+
+        <!-- Mobile Auth Buttons -->
+        <div class="flex flex-col gap-4 mt-4 w-full">
+          <!-- routerLink="/auth/sign-in" -->
+          <a
+            #tooltip="matTooltip"
+            matTooltip="{{ 'header.auth.sign_in_after_release' | transloco }}"
+            class="bg-transparent border-2 border-gray-600 text-gray-600 hover:bg-blue-50 px-6 py-3 rounded-lg font-semibold no-underline transition-all duration-300 text-center"
+          >
+            {{ 'header.auth.sign_in' | transloco }}
+          </a>
+          <!-- routerLink="/auth/sign-up" -->
+          <a
+            #tooltip="matTooltip"
+            matTooltip="{{ 'header.auth.sign_up_after_release' | transloco }}"
+            class="bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-semibold no-underline transition-all duration-300 text-center"
+          >
+            {{ 'header.auth.sign_up' | transloco }}
+          </a>
+        </div>
+
+        <!-- Language Switcher -->
+        <div class="relative self-end mt-auto">
+          <button
+            class="flex items-center gap-2 bg-gray-100 border-none text-slate-800 font-medium cursor-pointer px-6 py-3 rounded-lg transition-all duration-300 hover:bg-blue-50 hover:text-blue-600"
+            (click)="toggleLangDropdown($event)"
+          >
+            <img
+              [src]="getCurrentFlag()"
+              [alt]="getCurrentLang() + ' flag'"
+              class="w-5 h-4 object-cover rounded-sm"
+            />
+            <span class="inline">{{ getCurrentLang().toUpperCase() }}</span>
+          </button>
+
+          <div
+            class="absolute bottom-full -translate-y-3 right-0 bg-white rounded-lg shadow-lg w-36 z-50 transition-all duration-300 overflow-hidden"
+            [ngClass]="{
+              'opacity-100 visible': isLangDropdownOpen,
+              'opacity-0 invisible': !isLangDropdownOpen
+            }"
+          >
+            <div
+              class="flex items-center gap-2 px-4 py-3 transition-all duration-300 cursor-pointer hover:bg-blue-50"
+              [ngClass]="{ 'text-blue-600 font-semibold bg-blue-50': getCurrentLang() === 'pl' }"
+              (click)="switchLanguage('pl')"
+            >
+              <img
+                src="assets/images/flags/PL2.png"
+                alt="Polish flag"
+                class="w-5 h-4 object-cover rounded-sm"
+              />
+              <span>Polski</span>
             </div>
+            <div
+              class="flex items-center gap-2 px-4 py-3 transition-all duration-300 cursor-pointer hover:bg-blue-50"
+              [ngClass]="{ 'text-blue-600 font-semibold bg-blue-50': getCurrentLang() === 'en' }"
+              (click)="switchLanguage('en')"
+            >
+              <img
+                src="assets/images/flags/UK.png"
+                alt="English flag"
+                class="w-5 h-4 object-cover rounded-sm"
+              />
+              <span>English</span>
+            </div>
+          </div>
+        </div>
+      </div>
 
-            <!-- Mobile Menu Toggle Button -->
-            <button class="menu-toggle" [ngClass]="{'active': isMenuOpen}" aria-label="Menu" (click)="toggleMenu()">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-        </nav>
-    </div>
-
-    <!-- Overlay for mobile menu -->
-    <div class="menu-overlay" [ngClass]="{'active': isMenuOpen}" (click)="closeMenu()"></div>
+      <!-- Mobile Menu Overlay -->
+      <div
+        class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-30 transition-opacity duration-300 lg:hidden"
+        [ngClass]="{ 'opacity-100 visible': isMenuOpen, 'opacity-0 invisible': !isMenuOpen }"
+        (click)="closeMenu()"
+      ></div>
+    </nav>
+  </div>
 </header>

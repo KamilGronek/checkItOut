@@ -1,528 +1,1002 @@
 <!-- Main Container -->
-<div class="landing-page" [attr.data-lang]="currentLang">
-    <!-- Header -->
-    <app-header></app-header>
+<div
+  class="min-h-screen m-0 p-0 font-sans text-slate-800 bg-white leading-relaxed overflow-x-hidden"
+>
+  <!-- Header -->
+  <app-header></app-header>
 
-    <main>
-        <!-- Hero Section -->
-        <section class="hero">
-            <div class="container">
-                <div class="hero-content">
-                    <div class="hero-text">
-                        <div class="hero-badge" *ngIf="currentLang === 'pl'">Platforma dla influencer marketingu</div>
-                        <div class="hero-badge" *ngIf="currentLang === 'en'">Influencer Marketing Platform</div>
-
-                        <h1 *ngIf="currentLang === 'pl'">Lokalne firmy i twórcy internetowi, w końcu po tej samej stronie.</h1>
-                        <h1 *ngIf="currentLang === 'en'">Brands and creators, finally on the same side.</h1>
-
-                        <p *ngIf="currentLang === 'pl'">Łączymy małe przedsiębiorstwa i influencerów w skutecznych kampaniach marketingowych, zapewniając transparentność, zaufanie i mierzalne rezultaty.</p>
-                        <p *ngIf="currentLang === 'en'">We connect brands and influencers in effective marketing campaigns, ensuring transparency, trust, and measurable results for all parties.</p>
-
-                        <div class="hero-cta">
-                            <a routerLink="/auth/sign-up" class="btn btn-primary" *ngIf="currentLang === 'pl'">Dołącz za darmo</a>
-                            <a routerLink="/auth/sign-up" class="btn btn-primary" *ngIf="currentLang === 'en'">Join for free</a>
-
-                            <a routerLink="/" fragment="how-it-works" class="btn btn-outline" *ngIf="currentLang === 'pl'">Zobacz jak to działa</a>
-                            <a routerLink="/" fragment="how-it-works" class="btn btn-outline" *ngIf="currentLang === 'en'">See how it works</a>
-                        </div>
-                    </div>
-                    <div class="hero-image">
-                        <div class="image-container">
-                            <img src="assets/images/landing/person-business-connection.svg" alt="Check It Out Platform Interface">
-                            <div class="floating-card card-1">
-                                <div class="card-header">
-                                    <div class="profile-pic"><img src="assets/images/avatars/kasia.png" alt="kasia"></div>
-                                    <div class="user-info">
-                                        <p class="name">Kasia</p>
-                                        <p class="followers" *ngIf="currentLang === 'pl'">12 000 obserwujących</p>
-                                        <p class="followers" *ngIf="currentLang === 'en'">12 000 followers</p>
-                                    </div>
-                                </div>
-                                <div class="card-progress">
-                                    <div class="progress-label">
-                                        <span *ngIf="currentLang === 'pl'">Kampania w toku</span>
-                                        <span *ngIf="currentLang === 'en'">Campaign in progress</span>
-                                        <span>75%</span>
-                                    </div>
-                                    <div class="progress-bar">
-                                        <div class="progress" [style.width.%]="75"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="floating-card card-2">
-                                <div class="stats-icon">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M18 20V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                                        <path d="M12 20V4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                                        <path d="M6 20V14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                                    </svg>
-                                </div>
-                                <div class="stats-info">
-                                    <p class="stats-label">Instagram, TikTok</p>
-                                    <p class="stats-value" *ngIf="currentLang === 'pl'">+ 5000 wyświetleń</p>
-                                    <p class="stats-value" *ngIf="currentLang === 'en'">+ 5000 views</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+  <main>
+    <!-- Hero Section -->
+    <section
+      class="pt-36 pb-32 bg-gradient-to-br from-slate-50 to-blue-50 relative overflow-hidden"
+    >
+      <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <div class="flex flex-col lg:flex-row items-center gap-24 md:gap-16">
+          <div class="flex-1 text-center lg:text-left">
+            <div
+              class="inline-block bg-blue-50 text-blue-600 px-4 py-2 rounded-full font-semibold text-sm mb-6"
+            >
+              {{ 'landing.hero.badge' | transloco }}
             </div>
-            <div class="shape-divider">
-                <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
-                    <path d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z" class="shape-fill"></path>
+
+            <h1
+              class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-6 bg-gradient-to-r from-slate-800 to-blue-600 bg-clip-text text-transparent"
+            >
+              {{ 'landing.hero.title' | transloco }}
+            </h1>
+
+            <p class="text-xl text-slate-600 mb-10 leading-relaxed max-w-4xl lg:max-w-none">
+              {{ 'landing.hero.description' | transloco }}
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+              <!-- routerLink="/auth/sign-up" -->
+              <a
+                #tooltip="matTooltip"
+                matTooltip="{{ 'header.auth.sign_up_after_release' | transloco }}"
+                class="bg-gray-600 hover:bg-gray-700 text-white px-7 py-4 rounded-lg font-semibold text-lg transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl"
+              >
+                {{ 'landing.hero.cta.primary' | transloco }}
+              </a>
+              <a
+                routerLink="/"
+                fragment="benefits"
+                class="bg-transparent border-2 border-blue-600 text-blue-600 hover:bg-blue-50 px-7 py-4 rounded-lg font-semibold text-lg transition-all duration-300 transform hover:-translate-y-1"
+              >
+                {{ 'landing.hero.cta.secondary' | transloco }}
+              </a>
+            </div>
+          </div>
+
+          <div class="flex-1 relative z-99">
+            <div class="relative flex justify-center p-5 drop-shadow-2xl">
+              <img
+                src="assets/images/landing/person-business-connection.svg"
+                alt="Check It Out Platform Interface"
+                class="w-full h-auto rounded-xl transform hover:scale-105 transition-transform duration-300 shadow-2xl"
+              />
+
+              <!-- Floating Cards -->
+              <div
+                class="absolute -bottom-20 md:-left-32 lg:-left-12 w-60 bg-white rounded-xl p-4 shadow-xl z-99 md:animate-bounce"
+              >
+                <div class="flex items-center gap-3 mb-4">
+                  <div
+                    class="w-10 h-10 rounded-full bg-slate-200 bg-cover"
+                    style="background-image: url('assets/images/avatars/kasia.png')"
+                  ></div>
+                  <div class="text-left">
+                    <p class="font-semibold text-slate-800 text-sm">Kasia</p>
+                    <p class="text-slate-500 text-xs whitespace-nowrap">
+                      12 000 {{ 'landing.hero.floating_card.followers' | transloco }}
+                    </p>
+                  </div>
+                </div>
+                <div class="w-full">
+                  <div class="flex justify-between text-xs mb-2">
+                    <span>{{ 'landing.hero.floating_card.campaign_progress' | transloco }}</span>
+                    <span>75%</span>
+                  </div>
+                  <div class="h-2 w-full bg-slate-200 rounded-full overflow-hidden">
+                    <div class="h-full bg-blue-600 rounded-full" style="width: 75%"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="absolute -top-10 md:-right-20 lg:-right-12 w-56 bg-white rounded-xl p-4 shadow-xl flex items-center gap-4 z-10 animate-pulse"
+              >
+                <div
+                  class="flex items-center justify-center w-10 h-10 rounded-lg bg-blue-50 text-blue-600 flex-shrink-0"
+                >
+                  <mat-icon [svgIcon]="'feather:trending-up'"></mat-icon>
+                </div>
+                <div class="text-left">
+                  <p class="text-xs text-slate-500">Instagram, TikTok</p>
+                  <p class="text-sm font-semibold text-slate-800 whitespace-nowrap">
+                    {{ 'landing.hero.floating_card.views' | transloco }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Shape Divider -->
+      <div class="absolute bottom-0 left-0 w-full leading-none">
+        <svg
+          data-name="Layer 1"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 1200 120"
+          preserveAspectRatio="none"
+          class="relative block w-full h-28 fill-white"
+        >
+          <path
+            d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z"
+          ></path>
+        </svg>
+      </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="py-24 bg-white" id="benefits">
+      <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <div class="text-center max-w-4xl mx-auto mb-16">
+          <div
+            class="inline-block bg-blue-50 text-blue-600 px-4 py-2 rounded-full font-semibold text-sm mb-4"
+          >
+            {{ 'landing.benefits.subtitle' | transloco }}
+          </div>
+          <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-800 mb-4">
+            {{ 'landing.benefits.title' | transloco }}
+          </h2>
+          <p class="text-xl text-slate-500">
+            {{ 'landing.benefits.description' | transloco }}
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div
+            class="bg-white rounded-xl p-8 shadow-lg border border-slate-200 transition-all duration-300 hover:-translate-y-3 hover:shadow-xl hover:border-blue-600 group h-full flex flex-col"
+          >
+            <div
+              class="w-16 h-16 rounded-xl bg-blue-50 group-hover:bg-blue-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-all duration-300"
+            >
+              <mat-icon
+                svgIcon="heroicons_outline:clock"
+                class="w-8 h-8 text-blue-600 group-hover:text-white transition-all duration-300"
+              ></mat-icon>
+            </div>
+            <h3 class="text-xl font-bold text-slate-800 mb-6">
+              {{ 'landing.benefits.cards.time_money.title' | transloco }}
+            </h3>
+            <ul class="space-y-3 flex-grow">
+              <li
+                *ngFor="let item of 'landing.benefits.cards.time_money.items' | transloco"
+                class="relative pl-7 text-slate-600"
+              >
+                <span class="absolute left-0 top-2 w-4 h-4 bg-blue-50 rounded-full"></span>
+                <span class="absolute left-1.5 top-3.5 w-1.5 h-1.5 bg-blue-600 rounded-full"></span>
+                {{ item }}
+              </li>
+            </ul>
+          </div>
+
+          <div
+            class="bg-white rounded-xl p-8 shadow-lg border border-slate-200 transition-all duration-300 hover:-translate-y-3 hover:shadow-xl hover:border-blue-600 group h-full flex flex-col"
+          >
+            <div
+              class="w-16 h-16 rounded-xl bg-blue-50 group-hover:bg-blue-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-all duration-300"
+            >
+              <mat-icon
+                svgIcon="heroicons_outline:user-group"
+                class="w-8 h-8 text-blue-600 group-hover:text-white transition-all duration-300"
+              ></mat-icon>
+            </div>
+            <h3 class="text-xl font-bold text-slate-800 mb-6">
+              {{ 'landing.benefits.cards.effective_collaboration.title' | transloco }}
+            </h3>
+            <ul class="space-y-3 flex-grow">
+              <li
+                *ngFor="
+                  let item of 'landing.benefits.cards.effective_collaboration.items' | transloco
+                "
+                class="relative pl-7 text-slate-600"
+              >
+                <span class="absolute left-0 top-2 w-4 h-4 bg-blue-50 rounded-full"></span>
+                <span class="absolute left-1.5 top-3.5 w-1.5 h-1.5 bg-blue-600 rounded-full"></span>
+                {{ item }}
+              </li>
+            </ul>
+          </div>
+
+          <div
+            class="bg-white rounded-xl p-8 shadow-lg border border-slate-200 transition-all duration-300 hover:-translate-y-3 hover:shadow-xl hover:border-blue-600 group h-full flex flex-col"
+          >
+            <div
+              class="w-16 h-16 rounded-xl bg-blue-50 group-hover:bg-blue-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-all duration-300"
+            >
+              <mat-icon
+                svgIcon="mat_outline:location_on"
+                class="w-8 h-8 text-blue-600 group-hover:text-white transition-all duration-300"
+              ></mat-icon>
+            </div>
+            <h3 class="text-xl font-bold text-slate-800 mb-6">
+              {{ 'landing.benefits.cards.better_targeting.title' | transloco }}
+            </h3>
+            <ul class="space-y-3 flex-grow">
+              <li
+                *ngFor="let item of 'landing.benefits.cards.better_targeting.items' | transloco"
+                class="relative pl-7 text-slate-600"
+              >
+                <span class="absolute left-0 top-2 w-4 h-4 bg-blue-50 rounded-full"></span>
+                <span class="absolute left-1.5 top-3.5 w-1.5 h-1.5 bg-blue-600 rounded-full"></span>
+                {{ item }}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How it works Section -->
+    <section class="py-28 bg-slate-50 relative overflow-hidden" id="how-it-works">
+      <div class="absolute w-96 h-96 bg-blue-100 rounded-full opacity-30 -top-48 -left-48"></div>
+      <div
+        class="absolute w-96 h-96 bg-blue-100 rounded-full opacity-30 -bottom-48 -right-48"
+      ></div>
+
+      <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+        <div class="text-center max-w-4xl mx-auto mb-16">
+          <div
+            class="inline-block bg-blue-50 text-blue-600 px-4 py-2 rounded-full font-semibold text-sm mb-4"
+          >
+            {{ 'landing.how_it_works.subtitle' | transloco }}
+          </div>
+          <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-800 mb-4">
+            {{ 'landing.how_it_works.title' | transloco }}
+          </h2>
+          <p class="text-xl text-slate-500">
+            {{ 'landing.how_it_works.description' | transloco }}
+          </p>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+          <div class="flex justify-center bg-blue-50 p-4 gap-8">
+            <button
+              class="flex items-center gap-3 px-6 py-3 rounded-lg font-semibold text-slate-800 transition-all duration-300 hover:text-blue-600"
+              [ngClass]="{ 'bg-white text-blue-600 shadow-lg': activeTab === 'influencers' }"
+              (click)="setActiveTab('influencers')"
+            >
+              <mat-icon [svgIcon]="'feather:user'"></mat-icon>
+              {{ 'landing.how_it_works.tabs.influencers' | transloco }}
+            </button>
+
+            <button
+              class="flex items-center gap-3 px-6 py-3 rounded-lg font-semibold text-slate-800 transition-all duration-300 hover:text-blue-600"
+              [ngClass]="{ 'bg-white text-blue-600 shadow-lg': activeTab === 'brands' }"
+              (click)="setActiveTab('brands')"
+            >
+              <mat-icon [svgIcon]="'heroicons_outline:building-office'"></mat-icon>
+              {{ 'landing.how_it_works.tabs.brands' | transloco }}
+            </button>
+          </div>
+
+          <div class="p-12">
+            <!-- Influencers Tab -->
+            <div
+              *ngIf="activeTab === 'influencers'"
+              class="opacity-100 transition-opacity duration-500"
+            >
+              <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
+                <div
+                  *ngFor="
+                    let step of 'landing.how_it_works.influencer_steps' | transloco;
+                    let i = index
+                  "
+                  class="flex flex-col relative group"
+                >
+                  <div
+                    class="absolute top-8 right-0 w-4/5 h-0.5 bg-gradient-to-r from-blue-200 to-transparent hidden xl:block"
+                    [ngClass]="{ hidden: i === 3 }"
+                  ></div>
+
+                  <div class="flex items-center gap-4 mb-4 relative z-10">
+                    <div
+                      class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-600 text-white font-bold text-lg flex-shrink-0"
+                    >
+                      {{ i + 1 }}
+                    </div>
+                    <h3 class="text-lg font-semibold text-slate-800">
+                      {{ step.title }}
+                    </h3>
+                  </div>
+
+                  <!-- Updated container with larger size -->
+                  <div
+                    class="rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:-translate-y-2 hover:shadow-xl mb-6 bg-blue-50 p-6 flex items-center justify-center h-48"
+                  >
+                    <!-- Larger SVG container with max-width -->
+                    <div class="w-full max-w-[120px] h-auto">
+                      <ng-container [ngSwitch]="i">
+                        <!-- Sign up SVG -->
+                        <img
+                          *ngSwitchCase="0"
+                          src="assets/icons/landing_page/sign_up.svg"
+                          alt="Sign up"
+                          class="w-full h-full"
+                        />
+
+                        <!-- Complete profile SVG -->
+                        <img
+                          *ngSwitchCase="1"
+                          src="assets/icons/landing_page/complete_profile.svg"
+                          alt="Complete profile"
+                          class="w-full h-full"
+                        />
+
+                        <!-- Receive offers SVG -->
+                        <img
+                          *ngSwitchCase="2"
+                          src="assets/icons/landing_page/receive_offers.svg"
+                          alt="Receive offers"
+                          class="w-full h-full"
+                        />
+
+                        <!-- Negotiate terms SVG -->
+                        <img
+                          *ngSwitchCase="3"
+                          src="assets/icons/landing_page/negotiate_terms.svg"
+                          alt="Negotiate terms"
+                          class="w-full h-full"
+                        />
+                      </ng-container>
+                    </div>
+                  </div>
+
+                  <p class="text-slate-600 text-sm leading-relaxed">
+                    {{ step.description }}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Brands Tab -->
+            <div *ngIf="activeTab === 'brands'" class="opacity-100 transition-opacity duration-500">
+              <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
+                <div
+                  *ngFor="let step of 'landing.how_it_works.brand_steps' | transloco; let i = index"
+                  class="flex flex-col relative group"
+                >
+                  <div
+                    class="absolute top-8 right-0 w-4/5 h-0.5 bg-gradient-to-r from-blue-200 to-transparent hidden xl:block"
+                    [ngClass]="{ hidden: i === 3 }"
+                  ></div>
+
+                  <div class="flex items-center gap-4 mb-4 relative z-10">
+                    <div
+                      class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-600 text-white font-bold text-lg flex-shrink-0"
+                    >
+                      {{ i + 1 }}
+                    </div>
+                    <h3 class="text-lg font-semibold text-slate-800">
+                      {{ step.title }}
+                    </h3>
+                  </div>
+
+                  <!-- Updated container with larger size -->
+                  <div
+                    class="rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:-translate-y-2 hover:shadow-xl mb-6 bg-slate-100 p-6 flex items-center justify-center h-48"
+                  >
+                    <!-- Larger SVG container with max-width -->
+                    <div class="w-full max-w-[120px] h-auto">
+                      <ng-container [ngSwitch]="i">
+                        <!-- Create company account SVG -->
+                        <img
+                          *ngSwitchCase="0"
+                          src="assets/icons/landing_page/create_company.svg"
+                          alt="Create company account"
+                          class="w-full h-full"
+                        />
+
+                        <!-- Create a campaign SVG -->
+                        <img
+                          *ngSwitchCase="1"
+                          src="assets/icons/landing_page/create_campaign.svg"
+                          alt="Create a campaign"
+                          class="w-full h-full"
+                        />
+
+                        <!-- Select influencers SVG -->
+                        <img
+                          *ngSwitchCase="2"
+                          src="assets/icons/landing_page/select_influencers.svg"
+                          alt="Select influencers"
+                          class="w-full h-full"
+                        />
+
+                        <!-- Track results SVG -->
+                        <img
+                          *ngSwitchCase="3"
+                          src="assets/icons/landing_page/track_results.svg"
+                          alt="Track results"
+                          class="w-full h-full"
+                        />
+                      </ng-container>
+                    </div>
+                  </div>
+
+                  <p class="text-slate-600 text-sm leading-relaxed">
+                    {{ step.description }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-20 bg-white relative hidden">
+      <div
+        class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-200 to-transparent"
+      ></div>
+      <div
+        class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-200 to-transparent"
+      ></div>
+
+      <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+          <div
+            *ngFor="let stat of 'landing.stats' | transloco"
+            class="text-center transition-all duration-300 hover:-translate-y-2 hover:bg-blue-50 p-8 rounded-xl"
+          >
+            <div
+              class="text-4xl lg:text-5xl font-bold bg-gradient-to-br from-blue-600 to-blue-700 bg-clip-text text-transparent leading-tight mb-4"
+            >
+              {{ stat.value }}
+            </div>
+            <div class="text-lg text-slate-500 leading-relaxed">
+              {{ stat.label }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-28 bg-gradient-to-b from-white to-blue-50 relative" id="features">
+      <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <div class="text-center max-w-4xl mx-auto mb-16">
+          <div
+            class="inline-block bg-blue-50 text-blue-600 px-4 py-2 rounded-full font-semibold text-sm mb-4"
+          >
+            {{ 'landing.features.subtitle' | transloco }}
+          </div>
+          <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-800 mb-4">
+            {{ 'landing.features.title' | transloco }}
+          </h2>
+          <p class="text-xl text-slate-500">
+            {{ 'landing.features.description' | transloco }}
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mb-16">
+          <div
+            *ngFor="let feature of 'landing.features.cards' | transloco; let i = index"
+            class="bg-white rounded-xl p-10 shadow-lg border border-slate-200 transition-all duration-300 hover:-translate-y-3 hover:shadow-xl hover:border-blue-600 group h-full flex flex-col"
+          >
+            <div
+              class="w-16 h-16 rounded-xl bg-blue-50 group-hover:bg-blue-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-all duration-300"
+            >
+              <mat-icon
+                *ngIf="i === 0"
+                svgIcon="feather:search"
+                class="w-8 h-8 text-blue-600 group-hover:text-white transition-all duration-300"
+              ></mat-icon>
+              <mat-icon
+                *ngIf="i === 1"
+                svgIcon="mat_outline:analytics"
+                class="w-8 h-8 text-blue-600 group-hover:text-white transition-all duration-300"
+              ></mat-icon>
+              <mat-icon
+                *ngIf="i === 2"
+                svgIcon="heroicons_outline:document-text"
+                class="w-8 h-8 text-blue-600 group-hover:text-white transition-all duration-300"
+              ></mat-icon>
+            </div>
+            <h3 class="text-xl font-bold text-slate-800 mb-4">
+              {{ feature.title }}
+            </h3>
+            <p class="text-slate-600 leading-relaxed text-sm flex-grow">
+              {{ feature.description }}
+            </p>
+          </div>
+        </div>
+
+        <!-- <div class="text-center">
+          <a
+            routerLink="/features"
+            class="bg-blue-600 hover:bg-blue-700 text-white px-7 py-4 rounded-lg font-semibold text-lg transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl"
+          >
+            {{ 'landing.features.cta' | transloco }}
+          </a>
+        </div> -->
+      </div>
+    </section>
+
+    <!-- Dashboard Preview Section -->
+    <section class="py-28 bg-gradient-to-br from-slate-50 to-blue-50 relative overflow-hidden">
+      <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <div class="text-center max-w-4xl mx-auto mb-16">
+          <div
+            class="inline-block bg-blue-50 text-blue-600 px-4 py-2 rounded-full font-semibold text-sm mb-4"
+          >
+            {{ 'landing.dashboard_preview.subtitle' | transloco }}
+          </div>
+          <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-800 mb-4">
+            {{ 'landing.dashboard_preview.title' | transloco }}
+          </h2>
+          <p class="text-xl text-slate-500">
+            {{ 'landing.dashboard_preview.description' | transloco }}
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 relative z-10">
+          <!-- Brand Card -->
+          <div
+            class="bg-white rounded-xl p-8 shadow-lg flex flex-col text-center transition-all duration-300 hover:-translate-y-3 hover:shadow-xl hover:border-blue-600 border border-slate-200 h-full group"
+          >
+            <div class="relative mb-6">
+              <div
+                class="w-24 h-24 border-4 border-blue-600 rounded-full overflow-hidden mx-auto bg-slate-200 transition-all duration-300 group-hover:scale-105 group-hover:shadow-lg flex items-center justify-center"
+              >
+                <mat-icon
+                  [svgIcon]="'heroicons_outline:building-office'"
+                  class="w-12 h-12 text-slate-600"
+                ></mat-icon>
+              </div>
+              <div
+                class="absolute top-0 right-1/4 bg-blue-600 text-white text-xs font-semibold px-3 py-1.5 rounded-full transform -translate-y-1/2"
+              >
+                {{ 'landing.dashboard_preview.cards.brand.badge' | transloco }}
+              </div>
+            </div>
+
+            <h4 class="text-slate-800 text-2xl font-bold mb-3">Pizza Station Bemowo</h4>
+            <p class="text-blue-600 font-semibold mb-2 text-lg">
+              {{ 'landing.dashboard_preview.cards.brand.type' | transloco }}
+            </p>
+
+            <button
+              class="bg-transparent border-2 border-blue-600 text-blue-600 hover:bg-blue-50 px-6 py-3 rounded-lg font-semibold transition-all duration-300 mb-6"
+            >
+              {{ 'landing.dashboard_preview.cards.brand.button' | transloco }}
+            </button>
+
+            <div class="bg-blue-50 p-4 rounded-lg text-left flex-grow">
+              <p class="text-blue-700 font-semibold mb-3">
+                {{ 'landing.dashboard_preview.cards.brand.requirements.title' | transloco }}
+              </p>
+              <ul class="space-y-2">
+                <li
+                  *ngFor="
+                    let item of 'landing.dashboard_preview.cards.brand.requirements.items'
+                      | transloco
+                  "
+                  class="relative pl-5 text-slate-700 text-sm"
+                >
+                  <span
+                    class="absolute left-0 top-2.5 w-1.5 h-1.5 bg-slate-400 rounded-full"
+                  ></span>
+                  {{ item }}
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Progress Tracker -->
+          <div
+            class="bg-white rounded-xl p-8 shadow-lg flex flex-col border border-slate-200 h-full relative z-10"
+          >
+            <div class="flex justify-between items-center mb-8 pb-4 border-b border-slate-200">
+              <h3 class="text-xl font-bold text-slate-800">
+                {{ 'landing.dashboard_preview.cards.progress.title' | transloco }}
+              </h3>
+            </div>
+
+            <div class="flex flex-col space-y-0">
+              <div
+                *ngFor="
+                  let step of 'landing.dashboard_preview.cards.progress.steps' | transloco;
+                  let i = index
+                "
+                class="flex py-4 relative"
+              >
+                <div
+                  class="absolute top-0 left-5 h-full w-0.5 bg-slate-200 z-10"
+                  [ngClass]="{ 'bg-blue-600': i < 2, 'h-1/2': i === 0, 'top-1/2': i === 5 }"
+                ></div>
+
+                <div
+                  class="w-10 h-10 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center font-bold relative z-20 mr-5 flex-shrink-0 transition-all duration-300"
+                  [ngClass]="{ 'bg-blue-600 text-white shadow-lg': i < 3 }"
+                >
+                  {{ i + 1 }}
+                </div>
+
+                <div class="pt-1">
+                  <h5
+                    class="font-semibold text-slate-800 mb-1 text-lg transition-all duration-300"
+                    [ngClass]="{ 'text-blue-600': i < 3 }"
+                  >
+                    {{ step.title }}
+                  </h5>
+                  <p class="text-slate-600 text-sm">
+                    {{ step.description }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Influencer Card -->
+          <div
+            class="bg-white rounded-xl p-8 shadow-lg flex flex-col text-center transition-all duration-300 hover:-translate-y-3 hover:shadow-xl hover:border-blue-600 border border-slate-200 h-full group"
+          >
+            <div class="relative mb-6">
+              <div
+                class="w-24 h-24 border-4 border-blue-600 rounded-full overflow-hidden mx-auto bg-slate-200 transition-all duration-300 group-hover:scale-105 group-hover:shadow-lg flex items-center justify-center"
+              >
+                <mat-icon [svgIcon]="'feather:user'" class="w-12 h-12"></mat-icon>
+              </div>
+              <div
+                class="absolute top-0 right-1/4 bg-blue-600 text-white text-xs font-semibold px-3 py-1.5 rounded-full transform -translate-y-1/2"
+              >
+                {{ 'landing.dashboard_preview.cards.influencer.badge' | transloco }}
+              </div>
+            </div>
+
+            <h4 class="text-slate-800 text-2xl font-bold mb-3">Kasia</h4>
+            <p class="text-blue-600 font-semibold mb-2 text-lg">
+              {{ 'landing.dashboard_preview.cards.influencer.type' | transloco }}
+            </p>
+
+            <button
+              class="bg-transparent border-2 border-blue-600 text-blue-600 hover:bg-blue-50 px-6 py-3 rounded-lg font-semibold transition-all duration-300 mb-6"
+            >
+              {{ 'landing.dashboard_preview.cards.influencer.button' | transloco }}
+            </button>
+
+            <div class="flex flex-col space-y-4 flex-grow">
+              <div
+                class="bg-blue-50 p-4 rounded-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
+              >
+                <span class="text-xl font-bold text-blue-600 block">12 000</span>
+                <span class="text-sm text-slate-600">{{
+                  'landing.dashboard_preview.cards.influencer.stats.followers' | transloco
+                }}</span>
+              </div>
+              <div
+                class="bg-blue-50 p-4 rounded-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
+              >
+                <span class="text-xl font-bold text-blue-600 block">4.2 / 5</span>
+                <span class="text-sm text-slate-600">{{
+                  'landing.dashboard_preview.cards.influencer.stats.rating' | transloco
+                }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-28 bg-slate-50 relative hidden" id="testimonials">
+      <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <div class="text-center max-w-4xl mx-auto mb-16">
+          <div
+            class="inline-block bg-blue-50 text-blue-600 px-4 py-2 rounded-full font-semibold text-sm mb-4"
+          >
+            {{ 'landing.testimonials.subtitle' | transloco }}
+          </div>
+          <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-800 mb-4">
+            {{ 'landing.testimonials.title' | transloco }}
+          </h2>
+          <p class="text-xl text-slate-500">
+            {{ 'landing.testimonials.description' | transloco }}
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+          <div
+            *ngFor="let testimonial of 'landing.testimonials.quotes' | transloco"
+            class="bg-white rounded-xl p-10 shadow-lg border border-slate-200 transition-all duration-300 hover:-translate-y-3 hover:shadow-xl hover:border-blue-600 flex flex-col h-full"
+          >
+            <div class="flex-grow mb-8">
+              <p class="text-slate-700 leading-relaxed text-lg relative pl-6">
+                <span class="absolute -top-6 -left-2 text-5xl text-blue-100 font-serif">"</span>
+                {{ testimonial.text }}
+              </p>
+            </div>
+            <div class="flex items-center gap-4">
+              <div class="flex-grow">
+                <h4 class="text-lg font-semibold text-slate-800 mb-1">
+                  {{ testimonial.author }}
+                </h4>
+                <p class="text-sm text-slate-500">
+                  {{ testimonial.position }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-28 bg-white" id="faq">
+      <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <div class="text-center max-w-4xl mx-auto mb-16">
+          <div
+            class="inline-block bg-blue-50 text-blue-600 px-4 py-2 rounded-full font-semibold text-sm mb-4"
+          >
+            {{ 'landing.faq.subtitle' | transloco }}
+          </div>
+          <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-800 mb-4">
+            {{ 'landing.faq.title' | transloco }}
+          </h2>
+          <p class="text-xl text-slate-500">
+            {{ 'landing.faq.description' | transloco }}
+          </p>
+        </div>
+
+        <div class="max-w-4xl mx-auto mb-12">
+          <div
+            *ngFor="let faq of 'landing.faq.questions' | transloco; let i = index"
+            class="border-b border-slate-200 overflow-hidden"
+          >
+            <div
+              class="py-7 flex justify-between items-center cursor-pointer transition-all duration-300 hover:text-blue-600"
+              (click)="toggleFaq(i)"
+            >
+              <h3
+                class="text-lg font-semibold text-slate-800 transition-all duration-300"
+                [ngClass]="{ 'text-blue-600': openFaqIndex === i }"
+              >
+                {{ faq.question }}
+              </h3>
+              <div
+                class="text-blue-600 w-6 h-6 transition-transform duration-300 flex-shrink-0"
+                [ngClass]="{ 'rotate-45': openFaqIndex === i }"
+              >
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M12 5V19"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  ></path>
+                  <path
+                    d="M5 12H19"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  ></path>
                 </svg>
+              </div>
             </div>
-        </section>
-
-        <!-- Benefits Section -->
-        <section class="benefits" id="benefits">
-            <div class="container">
-                <div class="section-title">
-                    <div class="section-subtitle" *ngIf="currentLang === 'pl'">Korzyści</div>
-                    <div class="section-subtitle" *ngIf="currentLang === 'en'">Benefits</div>
-
-                    <h2 *ngIf="currentLang === 'pl'">Jak możemy Ci pomóc?</h2>
-                    <h2 *ngIf="currentLang === 'en'">How can we help you?</h2>
-
-                    <p *ngIf="currentLang === 'pl'">Oferujemy rozwiązania, które ułatwiają współpracę między firmami i influencerami</p>
-                    <p *ngIf="currentLang === 'en'">We offer solutions that facilitate collaboration between brands and influencers</p>
-                </div>
-
-                <div class="benefits-cards">
-                    <div *ngFor="let benefit of benefitsList" class="benefit-card slide-up" [ngClass]="{'appear': isInViewport}">
-                        <div class="benefit-icon" [innerHTML]="benefit.icon | safeHtml"></div>
-                        <h3 *ngIf="currentLang === 'pl'">{{ benefit.title.pl }}</h3>
-                        <h3 *ngIf="currentLang === 'en'">{{ benefit.title.en }}</h3>
-
-                        <ul *ngIf="currentLang === 'pl'">
-                            <li *ngFor="let item of benefit.list.pl"><span>{{ item }}</span></li>
-                        </ul>
-                        <ul *ngIf="currentLang === 'en'">
-                            <li *ngFor="let item of benefit.list.en"><span>{{ item }}</span></li>
-                        </ul>
-                    </div>
-                </div>
+            <div
+              class="transition-all duration-300 ease-in-out overflow-hidden"
+              [ngClass]="{ 'max-h-96 pb-7': openFaqIndex === i, 'max-h-0': openFaqIndex !== i }"
+            >
+              <p class="text-slate-600 leading-relaxed">
+                {{ faq.answer }}
+              </p>
             </div>
-        </section>
+          </div>
+        </div>
 
-        <!-- How it works Section -->
-        <section class="how-it-works" id="how-it-works">
-            <div class="container">
-                <div class="section-title">
-                    <div class="section-subtitle" *ngIf="currentLang === 'pl'">Proces</div>
-                    <div class="section-subtitle" *ngIf="currentLang === 'en'">Process</div>
+        <div class="text-center">
+          <p class="text-lg text-slate-500 mb-6">
+            {{ 'landing.faq.cta.text' | transloco }}
+          </p>
+          <!-- <a
+            routerLink="/contact"
+            class="bg-transparent border-2 border-blue-600 text-blue-600 hover:bg-blue-50 px-7 py-4 rounded-lg font-semibold text-lg transition-all duration-300 transform hover:-translate-y-1"
+          >
+            {{ 'landing.faq.cta.button' | transloco }}
+          </a> -->
+          <!-- Contact Us Button (opens modal) -->
+          <button
+            (click)="openContactModal()"
+            class="bg-blue-600 hover:bg-blue-700 text-white px-7 py-4 rounded-lg font-semibold text-lg transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl"
+          >
+            {{ 'landing.faq.cta.contact' | transloco }}
+          </button>
+        </div>
+      </div>
+    </section>
 
-                    <h2 *ngIf="currentLang === 'pl'">Jak to działa?</h2>
-                    <h2 *ngIf="currentLang === 'en'">How does it work?</h2>
+    <!-- FAQ Section that retrieves faqs from backend-->
+    <section class="hidden py-28 bg-white" id="faq">
+      <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <div class="text-center max-w-4xl mx-auto mb-16">
+          <div
+            class="inline-block bg-blue-50 text-blue-600 px-4 py-2 rounded-full font-semibold text-sm mb-4"
+          >
+            {{ 'landing.faq.subtitle' | transloco }}
+          </div>
+          <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-800 mb-4">
+            {{ 'landing.faq.title' | transloco }}
+          </h2>
+          <p class="text-xl text-slate-500">
+            {{ 'landing.faq.description' | transloco }}
+          </p>
+        </div>
 
-                    <p *ngIf="currentLang === 'pl'">Rozpoczęcie współpracy z Check It Out jest proste i intuicyjne</p>
-                    <p *ngIf="currentLang === 'en'">Starting collaboration with Check It Out is simple and intuitive</p>
-                </div>
-
-                <div class="tabs">
-                    <div class="tab-header">
-                        <button class="tab-button" [ngClass]="{'active': activeTab === 'influencers'}" (click)="setActiveTab('influencers')">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 15C15.3137 15 18 12.3137 18 9C18 5.68629 15.3137 3 12 3C8.68629 3 6 5.68629 6 9C6 12.3137 8.68629 15 12 15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                                <path d="M2.90625 20.2491C3.82834 18.6531 5.1542 17.3278 6.75064 16.4064C8.34708 15.485 10.1579 15 12.0011 15C13.8444 15 15.6552 15.4851 17.2516 16.4066C18.8479 17.3281 20.1738 18.6534 21.0958 20.2494" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                            </svg>
-                            <span *ngIf="currentLang === 'pl'">Dla Influencerów</span>
-                            <span *ngIf="currentLang === 'en'">For Influencers</span>
-                        </button>
-
-                        <button class="tab-button" [ngClass]="{'active': activeTab === 'brands'}" (click)="setActiveTab('brands')">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M19 21V5C19 3.89543 18.1046 3 17 3H7C5.89543 3 5 3.89543 5 5V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                                <path d="M1 21H23" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                                <path d="M9 9H10V10H9V9Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                                <path d="M14 9H15V10H14V9Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                                <path d="M9 14H10V15H9V14Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                                <path d="M14 14H15V15H14V14Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                            </svg>
-                            <span *ngIf="currentLang === 'pl'">Dla Firm</span>
-                            <span *ngIf="currentLang === 'en'">For Brands</span>
-                        </button>
-                    </div>
-
-                    <div class="tab-content">
-                        <!-- Tab content for Influencers -->
-                        <div class="tab-pane" [ngClass]="{'active': activeTab === 'influencers'}" id="tab-influencers">
-                            <div class="steps">
-                                <div *ngFor="let step of influencerSteps; let i = index" class="step slide-up" [ngClass]="{'appear': isInViewport}">
-                                    <div class="step-header">
-                                        <div class="step-number">{{ i + 1 }}</div>
-                                        <h3 *ngIf="currentLang === 'pl'">{{ step.title.pl }}</h3>
-                                        <h3 *ngIf="currentLang === 'en'">{{ step.title.en }}</h3>
-                                    </div>
-
-                                    <div class="step-image" [innerHTML]="step.icon | safeHtml"></div>
-                                    <br>
-                                    <p *ngIf="currentLang === 'pl'">{{ step.description.pl }}</p>
-                                    <p *ngIf="currentLang === 'en'">{{ step.description.en }}</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Tab content for Brands -->
-                        <div class="tab-pane" [ngClass]="{'active': activeTab === 'brands'}" id="tab-brands">
-                            <div class="steps">
-                                <div *ngFor="let step of brandSteps; let i = index" class="step slide-up" [ngClass]="{'appear': isInViewport}">
-                                    <div class="step-header">
-                                        <div class="step-number">{{ i + 1 }}</div>
-                                        <h3 *ngIf="currentLang === 'pl'">{{ step.title.pl }}</h3>
-                                        <h3 *ngIf="currentLang === 'en'">{{ step.title.en }}</h3>
-                                    </div>
-
-                                    <div class="step-image" [innerHTML]="step.icon | safeHtml"></div>
-                                    <br>
-                                    <p *ngIf="currentLang === 'pl'">{{ step.description.pl }}</p>
-                                    <p *ngIf="currentLang === 'en'">{{ step.description.en }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <!-- FAQ Items from API -->
+        <div class="max-w-4xl mx-auto mb-12" *ngIf="landingFaqs.length > 0">
+          <div
+            *ngFor="let faq of landingFaqs; let i = index"
+            class="border-b border-slate-200 overflow-hidden"
+          >
+            <div
+              class="py-7 flex justify-between items-center cursor-pointer transition-all duration-300 hover:text-blue-600"
+              (click)="toggleFaq(i)"
+            >
+              <h3
+                class="text-lg font-semibold text-slate-800 transition-all duration-300"
+                [ngClass]="{ 'text-blue-600': openFaqIndex === i }"
+              >
+                {{ faq.question }}
+              </h3>
+              <div
+                class="text-blue-600 w-6 h-6 transition-transform duration-300 flex-shrink-0"
+                [ngClass]="{ 'rotate-45': openFaqIndex === i }"
+              >
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M12 5V19"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  ></path>
+                  <path
+                    d="M5 12H19"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  ></path>
+                </svg>
+              </div>
             </div>
-        </section>
-
-        <!-- Stats Section -->
-        <section class="stats">
-            <div class="container">
-                <div class="stats-container">
-                    <div *ngFor="let stat of statsList" class="stat-item slide-up" [ngClass]="{'appear': isInViewport}">
-                        <div class="stat-value">{{ stat.value }}</div>
-                        <div class="stat-label" *ngIf="currentLang === 'pl'">{{ stat.label.pl }}</div>
-                        <div class="stat-label" *ngIf="currentLang === 'en'">{{ stat.label.en }}</div>
-                    </div>
-                </div>
+            <div
+              class="transition-all duration-300 ease-in-out overflow-hidden"
+              [ngClass]="{ 'max-h-96 pb-7': openFaqIndex === i, 'max-h-0': openFaqIndex !== i }"
+            >
+              <p class="text-slate-600 leading-relaxed" [innerHTML]="faq.answer"></p>
             </div>
-        </section>
+          </div>
+        </div>
 
-        <!-- Features Section -->
-        <section class="features" id="features">
-            <div class="container">
-                <div class="section-title">
-                    <div class="section-subtitle" *ngIf="currentLang === 'pl'">Funkcjonalności</div>
-                    <div class="section-subtitle" *ngIf="currentLang === 'en'">Features</div>
-
-                    <h2 *ngIf="currentLang === 'pl'">Wszystko, czego potrzebujesz do efektywnej współpracy</h2>
-                    <h2 *ngIf="currentLang === 'en'">Everything you need for effective collaboration</h2>
-
-                    <p *ngIf="currentLang === 'pl'">Platformę wyposażyliśmy w narzędzia, które ułatwiają zarządzanie kampaniami i zwiększają skuteczność współpracy</p>
-                    <p *ngIf="currentLang === 'en'">We've equipped the platform with tools that facilitate campaign management and increase collaboration effectiveness</p>
-                </div>
-
-                <div class="features-grid">
-                    <!-- Search Feature -->
-                    <div class="feature-card slide-up" [ngClass]="{'appear': isInViewport}">
-                        <div class="feature-icon">
-                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                <path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                <path d="M11 7V11H15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                        </svg>
-                        </div>
-                        <h3 *ngIf="currentLang === 'pl'">Wyszukiwanie i filtrowanie</h3>
-                        <h3 *ngIf="currentLang === 'en'">Search and filtering</h3>
-                        <p *ngIf="currentLang === 'pl'">Zaawansowane filtry pozwalające znaleźć idealnych partnerów do współpracy według lokalizacji, kategorii, zasięgów czy budżetu.</p>
-                        <p *ngIf="currentLang === 'en'">Advanced filters to find ideal collaboration partners by location, category, reach or budget.</p>
-                    </div>
-
-                    <!-- Analytics Feature -->
-                    <div class="feature-card slide-up" [ngClass]="{'appear': isInViewport}">
-                        <div class="feature-icon">
-                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M10 21H3V14H10V21Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                                <path d="M21 21H14V14H21V21Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                                <path d="M21 10H14V3H21V10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                                <path d="M10 10H3V3H10V10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                            </svg>
-                        </div>
-                        <h3 *ngIf="currentLang === 'pl'">Analityka kampanii</h3>
-                        <h3 *ngIf="currentLang === 'en'">Campaign analytics</h3>
-                        <p *ngIf="currentLang === 'pl'">Szczegółowe raporty i statystyki dla każdej kampanii, umożliwiające ocenę skuteczności współpracy i ROI.</p>
-                        <p *ngIf="currentLang === 'en'">Detailed reports and statistics for each campaign, enabling effectiveness assessment and ROI evaluation.</p>
-                    </div>
-
-                    <!-- Contract Automation Feature -->
-                    <div class="feature-card slide-up" [ngClass]="{'appear': isInViewport}">
-                        <div class="feature-icon">
-                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <!-- Document base -->
-                                <path d="M6 3H14L18 7V21H6V3Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                <!-- Document fold corner -->
-                                <path d="M14 3V7H18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                <!-- Text lines with more space after the last line -->
-                                <path d="M9 11H15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                <path d="M9 14H15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                <path d="M9 17H15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                            </svg>
-                        </div>
-                        <h3 *ngIf="currentLang === 'pl'">Automatyzacja umów</h3>
-                        <h3 *ngIf="currentLang === 'en'">Contract automation</h3>
-                        <p *ngIf="currentLang === 'pl'">Automatyczne generowanie profesjonalnych umów o współpracy z możliwością dostosowania do indywidualnych potrzeb.</p>
-                        <p *ngIf="currentLang === 'en'">Automatic generation of professional collaboration agreements with customization options for individual needs.</p>
-                    </div>
-                </div>
-
-                <div class="features-cta">
-                    <a routerLink="/features" class="btn btn-primary" *ngIf="currentLang === 'pl'">Zobacz wszystkie funkcje</a>
-                    <a routerLink="/features" class="btn btn-primary" *ngIf="currentLang === 'en'">See all features</a>
-                </div>
-            </div>
-        </section>
-
-        <!-- Dashboard Preview Section -->
-        <section class="dashboard-preview">
-            <div class="container">
-                <div class="section-title">
-                    <div class="section-subtitle" *ngIf="currentLang === 'pl'">Podgląd</div>
-                    <div class="section-subtitle" *ngIf="currentLang === 'en'">Preview</div>
-
-                    <h2 *ngIf="currentLang === 'pl'">Tak wygląda u nas</h2>
-                    <h2 *ngIf="currentLang === 'en'">How it looks</h2>
-
-                    <p *ngIf="currentLang === 'pl'">Intuicyjny panel współprac zapewniający pełną kontrolę nad kampaniami</p>
-                    <p *ngIf="currentLang === 'en'">Intuitive collaboration panel providing full control over campaigns</p>
-                </div>
-
-                <div class="dashboard-preview-wrapper">
-                    <div class="dashboard-preview-container">
-                        <!-- Brand Card -->
-                        <div class="collaboration-card slide-up" [ngClass]="{'appear': isInViewport}">
-                            <div class="card-header">
-                                <div class="profile-image" [innerHTML]="brandSvg | safeHtml"></div>
-                                <div class="badge" *ngIf="currentLang === 'pl'">Firma</div>
-                                <div class="badge" *ngIf="currentLang === 'en'">Brand</div>
-                            </div>
-                            <h4 class="profile-name">Pizza Station Bemowo</h4>
-                            <p class="collab-type" *ngIf="currentLang === 'pl'">Restauracja</p>
-                            <p class="collab-type" *ngIf="currentLang === 'en'">Restaurant</p>
-
-                            <button class="btn btn-outline" *ngIf="currentLang === 'pl'">Szczegóły kampanii</button>
-                            <button class="btn btn-outline" *ngIf="currentLang === 'en'">Campaign details</button>
-
-                            <div class="collab-requirements">
-                                <p *ngIf="currentLang === 'pl'">Informacje o współpracy:</p>
-                                <p *ngIf="currentLang === 'en'">Collaboration info:</p>
-
-                                <ul *ngIf="currentLang === 'pl'">
-                                    <li>Min. 10k obserwujących</li>
-                                    <li>Tematyka: jedzenie, styl życia</li>
-                                    <li>Lokalizacja: Warszawa, Polska</li>
-                                    <li>Wynagrodzenie: Barter o wartości 200 PLN</li>
-                                </ul>
-
-                                <ul *ngIf="currentLang === 'en'">
-                                    <li>Min. 10k followers</li>
-                                    <li>Theme: food, lifestyle</li>
-                                    <li>Location: Warsaw, Poland</li>
-                                    <li>Compensation: Barter ($50 value)</li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <!-- Progress Tracker -->
-                        <div class="progress-tracker slide-up" [ngClass]="{'appear': isInViewport}">
-                            <div class="progress-tracker-header">
-                                <h3 *ngIf="currentLang === 'pl'">Proces współpracy</h3>
-                                <h3 *ngIf="currentLang === 'en'">Collaboration process</h3>
-                            </div>
-
-                            <div class="progress-tracker-steps">
-                                <div *ngFor="let step of progressSteps; let i = index"
-                                     class="progress-tracker-step"
-                                     [ngClass]="{'active': step.active, 'completed': step.completed}">
-                                    <div class="step-number">{{ i + 1 }}</div>
-                                    <div class="step-content">
-                                        <h5 *ngIf="currentLang === 'pl'">{{ step.title.pl }}</h5>
-                                        <h5 *ngIf="currentLang === 'en'">{{ step.title.en }}</h5>
-                                        <p *ngIf="currentLang === 'pl'">{{ step.description.pl }}</p>
-                                        <p *ngIf="currentLang === 'en'">{{ step.description.en }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Influencer Card -->
-                        <div class="collaboration-card slide-up" [ngClass]="{'appear': isInViewport}">
-                            <div class="card-header">
-                                <div class="profile-image" [innerHTML]="influencerSvg | safeHtml"></div>
-                                <div class="badge influencer" *ngIf="currentLang === 'pl'">Influencer</div>
-                                <div class="badge influencer" *ngIf="currentLang === 'en'">Influencer</div>
-                            </div>
-                            <h4 class="profile-name">Kasia</h4>
-                            <p class="collab-type" *ngIf="currentLang === 'pl'">Styl życia, Warszawa</p>
-                            <p class="collab-type" *ngIf="currentLang === 'en'">Life style, Warsaw (POL)</p>
-
-                            <button class="btn btn-outline" *ngIf="currentLang === 'pl'">Zobacz profil</button>
-                            <button class="btn btn-outline" *ngIf="currentLang === 'en'">View profile</button>
-
-                            <div class="stats-grid">
-                                <div class="stat-box">
-                                    <span class="stat-number">12 000</span>
-                                    <span class="stat-label" *ngIf="currentLang === 'pl'">Obserwujący</span>
-                                    <span class="stat-label" *ngIf="currentLang === 'en'">Followers</span>
-                                </div>
-                                <div class="stat-box">
-                                    <span class="stat-number">4.2 / 5</span>
-                                    <span class="stat-label" *ngIf="currentLang === 'pl'">Ocena</span>
-                                    <span class="stat-label" *ngIf="currentLang === 'en'">Rating</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Testimonials Section -->
-        <section class="testimonials" id="testimonials">
-            <div class="container">
-                <div class="section-title">
-                    <div class="section-subtitle" *ngIf="currentLang === 'pl'">Opinie</div>
-                    <div class="section-subtitle" *ngIf="currentLang === 'en'">Testimonials</div>
-
-                    <h2 *ngIf="currentLang === 'pl'">Co mówią nasi użytkownicy</h2>
-                    <h2 *ngIf="currentLang === 'en'">What our users say</h2>
-
-                    <p *ngIf="currentLang === 'pl'">Opinie osób, które zaufały platformie Check It Out</p>
-                    <p *ngIf="currentLang === 'en'">Feedback from people who trusted the Check It Out platform</p>
-                </div>
-
-                <div class="testimonials-slider">
-                    <div *ngFor="let testimonial of testimonialsList" class="testimonial-card slide-up" [ngClass]="{'appear': isInViewport}">
-                        <div class="testimonial-card-quote">
-                            <p *ngIf="currentLang === 'pl'">{{ testimonial.quote.pl }}</p>
-                            <p *ngIf="currentLang === 'en'">{{ testimonial.quote.en }}</p>
-                        </div>
-                        <div class="testimonial-card-author">
-                            <div class="author-info">
-                                <h4>{{ testimonial.author }}</h4>
-                                <p *ngIf="currentLang === 'pl'">{{ testimonial.position.pl }}</p>
-                                <p *ngIf="currentLang === 'en'">{{ testimonial.position.en }}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- FAQ Section -->
-        <section class="faq" id="faq">
-            <div class="container">
-                <div class="section-title">
-                    <div class="section-subtitle" *ngIf="currentLang === 'pl'">Pytania</div>
-                    <div class="section-subtitle" *ngIf="currentLang === 'en'">Questions</div>
-
-                    <h2 *ngIf="currentLang === 'pl'">Najczęściej zadawane pytania</h2>
-                    <h2 *ngIf="currentLang === 'en'">Frequently Asked Questions</h2>
-
-                    <p *ngIf="currentLang === 'pl'">Odpowiedzi na najczęściej zadawane pytania</p>
-                    <p *ngIf="currentLang === 'en'">Answers to the most commonly asked questions</p>
-                </div>
-
-                <div class="faq-container">
-                    <div *ngFor="let faq of faqList; let i = index" class="faq-item" [ngClass]="{'active': faq.isOpen}">
-                        <div class="faq-question" (click)="toggleFaq(i)">
-                            <h3 *ngIf="currentLang === 'pl'">{{ faq.question.pl }}</h3>
-                            <h3 *ngIf="currentLang === 'en'">{{ faq.question.en }}</h3>
-                            <div class="faq-icon">
-                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M12 5V19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                                    <path d="M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="faq-answer" id="contact">
-                            <p *ngIf="currentLang === 'pl'">{{ faq.answer.pl }}</p>
-                            <p *ngIf="currentLang === 'en'">{{ faq.answer.en }}</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="faq-cta">
-                    <p *ngIf="currentLang === 'pl'">Nie znalazłeś odpowiedzi na swoje pytanie?</p>
-                    <p *ngIf="currentLang === 'en'">Couldn't find an answer to your question?</p>
-
-                    <a routerLink="/contact" class="btn btn-outline" *ngIf="currentLang === 'pl'">Skontaktuj się z nami</a>
-                    <a routerLink="/contact" class="btn btn-outline" *ngIf="currentLang === 'en'">Contact us</a>
-                </div>
-            </div>
-        </section>
+        <!-- Loading state for FAQs -->
+        <div *ngIf="isLoadingFaqs" class="max-w-4xl mx-auto mb-12">
+          <div class="animate-pulse space-y-4">
+            <div class="h-16 bg-slate-200 rounded"></div>
+            <div class="h-16 bg-slate-200 rounded"></div>
+            <div class="h-16 bg-slate-200 rounded"></div>
+          </div>
+        </div>
 
         <!-- CTA Section -->
-        <section class="cta">
-            <div class="container">
-                <!-- Video Embed -->
-                <div *ngIf="currentLang === 'pl'" class="video-wrapper cta-video-wrapper">
-                    <div style="padding:56.25% 0 0 0; position:relative;">
-                        <iframe src="https://player.vimeo.com/video/1081601628?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
-                            frameborder="0"
-                            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
-                            style="position:absolute;top:0;left:0;width:100%;height:100%;"
-                            title="Check It Out">
-                        </iframe>
-                    </div>
-                    <script src="https://player.vimeo.com/api/player.js"></script>
-                </div>
+        <div class="text-center">
+          <p class="text-lg text-slate-500 mb-6">
+            {{ 'landing.faq.cta.text' | transloco }}
+          </p>
 
-                <div class="cta-content">
-                    <h2 *ngIf="currentLang === 'pl'">Zacznij korzystać</h2>
-                    <h2 *ngIf="currentLang === 'en'">Get started</h2>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <!-- Contact Us Button (opens modal) -->
+            <button
+              (click)="openContactModal()"
+              class="bg-blue-600 hover:bg-blue-700 text-white px-7 py-4 rounded-lg font-semibold text-lg transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl"
+            >
+              {{ 'landing.faq.cta.contact' | transloco }}
+            </button>
 
-                    <p *ngIf="currentLang === 'pl'">Dołącz do tysięcy marek i influencerów, którzy współpracują na platformie Check It Out</p>
-                    <p *ngIf="currentLang === 'en'">Join thousands of brands and influencers who collaborate on the Check It Out platform</p>
-
-                    <div class="cta-buttons">
-                        <a routerLink="/auth/sign-up" class="btn btn-primary" *ngIf="currentLang === 'pl'">Zarejestruj się za darmo</a>
-                        <a routerLink="/auth/sign-up" class="btn btn-primary" *ngIf="currentLang === 'en'">Sign up for free</a>
-
-                        <a routerLink="/demo" class="btn btn-outline" *ngIf="currentLang === 'pl'">Umów prezentację</a>
-                        <a routerLink="/demo" class="btn btn-outline" *ngIf="currentLang === 'en'">Schedule a demo</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-bottom">
-            <div class="container">
-                <div class="footer-copyright">
-                    <p *ngIf="currentLang === 'pl'">© 2025 Check It Out. Wszelkie prawa zastrzeżone.</p>
-                    <p *ngIf="currentLang === 'en'">© 2025 Check It Out. All rights reserved.</p>
-                </div>
-                <div class="footer-legal">
-                    <a routerLink="/privacy" *ngIf="currentLang === 'pl'">Polityka prywatności</a>
-                    <a routerLink="/privacy" *ngIf="currentLang === 'en'">Privacy policy</a>
-
-                    <a routerLink="/terms" *ngIf="currentLang === 'pl'">Warunki korzystania</a>
-                    <a routerLink="/terms" *ngIf="currentLang === 'en'">Terms of use</a>
-
-                    <a routerLink="/cookies" *ngIf="currentLang === 'pl'">Polityka cookies</a>
-                    <a routerLink="/cookies" *ngIf="currentLang === 'en'">Cookie policy</a>
-                </div>
-            </div>
+            <!-- See More FAQs Button -->
+            <a
+              routerLink="/support"
+              class="bg-transparent border-2 border-blue-600 text-blue-600 hover:bg-blue-50 px-7 py-4 rounded-lg font-semibold text-lg transition-all duration-300 transform hover:-translate-y-1"
+            >
+              {{ 'landing.faq.cta.seeMore' | transloco }}
+            </a>
+          </div>
         </div>
-    </footer>
+      </div>
+    </section>
 
-    <!-- Cookie Consent Banner -->
-    <div class="cookie-banner" *ngIf="!cookiesAccepted">
-        <div class="cookie-text">
-            <h4 *ngIf="currentLang === 'pl'">Używamy cookies</h4>
-            <h4 *ngIf="currentLang === 'en'">We use cookies</h4>
+    <!-- CTA Section -->
+    <section class="py-28 bg-gradient-to-br from-blue-600 to-blue-700 relative overflow-hidden">
+      <div class="absolute -top-1/2 -left-1/2 w-full h-full opacity-10 z-10">
+        <div class="w-full h-full bg-gradient-radial from-white/20 to-transparent"></div>
+      </div>
 
-            <p *ngIf="currentLang === 'pl'">Ta strona używa plików cookie, aby zapewnić najlepsze doświadczenia. Korzystając z naszej witryny, zgadzasz się na użycie plików cookie zgodnie z naszą polityką prywatności.</p>
-            <p *ngIf="currentLang === 'en'">This site uses cookies to ensure the best experience. By using our website, you agree to the use of cookies in accordance with our privacy policy.</p>
+      <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-20">
+        <!-- Video Embed -->
+        <div
+          class="max-w-xl aspect-square mx-auto mb-16 rounded-xl overflow-hidden shadow-2xl border-4 border-white border-opacity-20 transform hover:-translate-y-3 transition-all duration-500"
+        >
+          <div class="relative" style="padding: 100% 0 0 0">
+            <iframe
+              src="https://player.vimeo.com/video/1081601628?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+              frameborder="0"
+              allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
+              class="absolute top-0 left-0 w-full h-full rounded-xl"
+              title="Check It Out"
+            >
+            </iframe>
+          </div>
         </div>
-        <div class="cookie-actions">
-            <button class="btn btn-outline-primary btn-sm" *ngIf="currentLang === 'pl'" routerLink="/cookies">Ustawienia</button>
-            <button class="btn btn-outline-primary btn-sm" *ngIf="currentLang === 'en'" routerLink="/cookies">Settings</button>
 
-            <button class="btn btn-primary btn-sm" *ngIf="currentLang === 'pl'" (click)="acceptCookies()">Akceptuję</button>
-            <button class="btn btn-primary btn-sm" *ngIf="currentLang === 'en'" (click)="acceptCookies()">Accept</button>
+        <div class="text-center max-w-4xl mx-auto relative z-20">
+          <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6">
+            {{ 'landing.cta.title' | transloco }}
+          </h2>
+          <p class="text-xl text-white text-opacity-80 mb-12">
+            {{ 'landing.cta.description' | transloco }}
+          </p>
+
+          <div class="flex flex-col sm:flex-row gap-6 justify-center">
+            <!-- routerLink="/auth/sign-up" -->
+            <a
+              #tooltip="matTooltip"
+              matTooltip="{{ 'header.auth.sign_up_after_release' | transloco }}"
+              class="bg-gray-300 text-gray-600 hover:bg-gray-400 px-7 py-4 rounded-lg font-semibold text-lg transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl"
+            >
+              {{ 'landing.cta.buttons.primary' | transloco }}
+            </a>
+            <!-- <a
+              routerLink="/demo"
+              class="bg-transparent border-2 border-white text-white hover:bg-white hover:bg-opacity-10 px-7 py-4 rounded-lg font-semibold text-lg transition-all duration-300 transform hover:-translate-y-1"
+            >
+              {{ 'landing.cta.buttons.secondary' | transloco }}
+            </a> -->
+            <button
+              id="contact"
+              (click)="openContactModal()"
+              class="bg-transparent border-2 border-white text-white hover:bg-white hover:bg-opacity-10 px-7 py-4 rounded-lg font-semibold text-lg transition-all duration-300 transform hover:-translate-y-1"
+            >
+              {{ 'landing.faq.cta.contact' | transloco }}
+            </button>
+          </div>
         </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <app-footer></app-footer>
+
+  <app-contact-form-modal [isOpen]="isContactModalOpen" (closeEvent)="closeContactModal()">
+  </app-contact-form-modal>
+
+  <!-- Cookie Consent Banner -->
+  <div class="hidden">
+    <div
+      *ngIf="!cookiesAccepted"
+      class="fixed bottom-8 left-1/2 transform -translate-x-1/2 max-w-6xl w-full mx-4 bg-white rounded-xl shadow-2xl p-6 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8 z-50 border border-slate-200"
+    >
+      <div class="flex-1">
+        <h4 class="text-lg font-semibold text-slate-800 mb-2">
+          {{ 'landing.cookies.title' | transloco }}
+        </h4>
+        <p class="text-sm text-slate-600">
+          {{ 'landing.cookies.description' | transloco }}
+        </p>
+      </div>
+      <div class="flex gap-4 w-full lg:w-auto">
+        <button
+          routerLink="/cookies"
+          class="bg-transparent border border-blue-600 text-blue-600 hover:bg-blue-50 px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-300 flex-1 lg:flex-none"
+        >
+          {{ 'landing.cookies.buttons.settings' | transloco }}
+        </button>
+        <button
+          (click)="acceptCookies()"
+          class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-300 flex-1 lg:flex-none"
+        >
+          {{ 'landing.cookies.buttons.accept' | transloco }}
+        </button>
+      </div>
     </div>
+  </div>
 </div>
+
+<script src="https://player.vimeo.com/api/player.js"></script>

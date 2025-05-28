@@ -231,6 +231,8 @@ export class CollaborationCreateComponent implements OnInit {
 
   currency$ = this._lookingUpDataService.currency$;
 
+  currency$ = this._lookingUpDataService.currency$;
+
   profilImageControl = new FormControl('', [Validators.required]);
   imageControl = new FormControl('', [Validators.required]);
 
@@ -318,6 +320,7 @@ export class CollaborationCreateComponent implements OnInit {
     this._lookingUpDataService.getCompensationType();
     this._lookingUpDataService.getUserCompany();
     this._lookingUpDataService.getCurrency();
+    this._lookingUpDataService.getCurrency();
   }
 
   //  zdjecie background
@@ -398,6 +401,10 @@ export class CollaborationCreateComponent implements OnInit {
       case 'CASH':
         this.showResultCash = true;
         this.showResultBarter = false;
+
+        if (!this.selectCurrenciesCashControl.value) {
+          this.selectCurrenciesCashControl.setValue('PLN');
+        }
 
         if (!this.selectCurrenciesCashControl.value) {
           this.selectCurrenciesCashControl.setValue('PLN');

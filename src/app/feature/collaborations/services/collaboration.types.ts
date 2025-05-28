@@ -27,6 +27,7 @@ export interface Collaboration {
   compensationAmountMin: number;
   compensationAmountMax: number;
   compensationDescription: string;
+  compensationDescription: string;
   platforms: Platforms[];
   address: Address | number;
   contentTypes: number[];
