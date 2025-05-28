@@ -24,7 +24,13 @@ import {
   catchError
 } from 'rxjs';
 import { filter, debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { ContentTypes, Platforms } from 'app/feature/collaborations/services/collaboration.types';
+import {
+  ContentTypes,
+  Platforms,
+  Currency
+} from 'app/feature/collaborations/services/collaboration.types';
+import { Address } from 'app/feature/users/services/user-addresses/user-addresses.types';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -42,7 +48,7 @@ export class LookingUpDataService {
   cityList$ = this.cityListSubject.asObservable();
   compensationList$ = this.compensationTypeSubject.asObservable();
 
-  userListSubject = new BehaviorSubject<{ value: string; label: number }[]>([]);
+  userListSubject = new BehaviorSubject<{ value: number; label: string; addresses: any }[]>([]);
   userList$ = this.userListSubject.asObservable();
 
   companyListSubject = new BehaviorSubject<{ value: string; label: string }[]>([]);
@@ -96,6 +102,30 @@ export class LookingUpDataService {
       });
   }
 
+  currencies: Currency[] = [];
+
+  getCurrency(): void {
+    this._collaborationService.getCurrency().subscribe({
+      next: response => {
+        const contentCurrency = response.content.map(currency => ({
+          value: currency.id,
+          label: currency.isoCode,
+          id: currency.id,
+          isoCode: currency.isoCode,
+          name: currency.name,
+          sign: currency.sign,
+          countryCode: currency.countryCode
+        }));
+        console.log('contentCurrency;', contentCurrency);
+
+        this.currencyListSubject.next(contentCurrency);
+      },
+      error: error => {
+        console.error('Error fetching content type:', error);
+      }
+    });
+  }
+
   getCityList(): void {
     this._influencerService
       .getInfluencerCityList()
@@ -120,29 +150,16 @@ export class LookingUpDataService {
       });
   }
 
-  getCurrency(): void {
-    this._collaborationService.getCurrency().subscribe({
-      next: response => {
-        const contentCurrency = response.content.map(currency => ({
-          value: currency.id,
-          label: currency.isoCode
-        }));
-        console.log('contentCurrency;', contentCurrency);
-
-        this.currencyListSubject.next(contentCurrency);
-      },
-      error: error => {
-        console.error('Error fetching content type:', error);
-      }
-    });
-  }
-
   getUserCompany() {
     this._collaborationService.getUser().subscribe({
       next: (response: User) => {
+        const res = response.content;
+        console.log('res;', res);
+
         const filteredUsers = response.content.map(user => ({
-          value: user.profilePicture,
-          label: user.id
+          value: user.id,
+          label: user.profilePicture,
+          addresses: user.addresses
         }));
         console.log('filteredUsers;', filteredUsers);
 

@@ -18,6 +18,7 @@ export class CollaborationFormService {
       compensationType: ['', [Validators.required]],
       compensationAmountMin: ['', [Validators.required]],
       compensationAmountMax: ['', [Validators.required]],
+      address: ['', [Validators.required]],
       company: ['', [Validators.required]],
       platforms: ['', [Validators.required]],
       contentTypes: ['', [Validators.required]],

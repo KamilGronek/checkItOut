@@ -21,6 +21,7 @@ export class CollaborationValidationService {
       'photos',
       'compensationAmountMin',
       'compensationAmountMax',
+      'address',
       'platforms',
       'contentTypes'
     ];

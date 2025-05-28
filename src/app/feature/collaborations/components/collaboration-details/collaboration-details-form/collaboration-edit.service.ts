@@ -25,7 +25,8 @@ export class CollaborationEditService {
     contentTypeSend: boolean,
     platformSend: boolean,
     resultMin: any,
-    resultMax: any
+    resultMax: any,
+    currencyId: any
   ): any {
     const formValues = formGroup.getRawValue();
 
@@ -54,6 +55,7 @@ export class CollaborationEditService {
       compensationType: AbstractControl;
       startDate: AbstractControl;
       endDate: AbstractControl;
+      currencyId: any;
     },
     card: { startDate: string; endDate: string }
   ): any {
@@ -78,7 +80,8 @@ export class CollaborationEditService {
         : card.startDate,
       endDate: formControls.endDate.value
         ? this.formatDate(new Date(formControls.endDate.value))
-        : card.endDate
+        : card.endDate,
+      currency: formControls.currencyId.id
     };
 
     return updatedObject;
@@ -118,5 +121,4 @@ export class CollaborationEditService {
 
     console.log(`Mapped active ${type}:`, activeIds);
   }
-
 }

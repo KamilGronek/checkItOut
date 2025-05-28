@@ -106,40 +106,42 @@
               </div>
             </div>
               <div *ngIf="isEditing; else editButton" class="flex flex-row mb-10">
-                <button 
-                  mat-button 
-                  color="warn" 
-                  (click)="openConfirmationDeleteDialog(collaboration.id)">
+                <app-button class="mr-5"
+                  tooltip="Raised button" 
+                  variant="raised" 
+                  color="warn"
+                  (click)="openConfirmationDeleteDialog(collaboration.id)"
+                  >
                   {{
                     "user.collaborations.details.delete_button"
                         | transloco
-                }}
-                </button>
-                <button mat-flat-button 
-                  type="button" 
-                  [color]="'primary'"
-                  (click)="saveCollaboration(collaboration.id, compensationAmount(compensationAmountMin), compensationAmount(compensationAmountMax))">
-                {{
+                  }}
+                </app-button>
+                <app-button 
+                  tooltip="Flat button" 
+                  variant="flat" 
+                  color="primary"
+                  (click)="saveCollaboration(collaboration.id, compensationAmount(compensationAmountMin), compensationAmount(compensationAmountMax))"
+                  >
+                  {{
                     "user.collaborations.details.save_button"
                         | transloco
-                }}
-                </button> 
+                  }}
+                </app-button>
               </div>
         </div>
-
         <ng-template #editButton class="absolute flex flex-row ml-10">
-            <button  
-              mat-stroked-button 
-              (click)="editCollaboration()">
-              <mat-icon 
-                class="icon-size-5" 
-                [svgIcon]="'heroicons_solid:pencil-square'">
-              </mat-icon>
-              <span class="ml-2"> {{
-                "user.collaborations.details.edit_button"
-                    | transloco
-            }}</span>
-            </button>
+          <app-button 
+            tooltip="Stroked button" 
+            variant="stroked" 
+            color="accent"
+            (click)="editCollaboration()"
+          >
+            {{
+              "user.collaborations.details.edit_button"
+                  | transloco
+            }}
+        </app-button>
         </ng-template>
       </div>
       <div class="mx-auto flex w-full max-w-5xl flex-auto justify-center p-6 sm:p-8">
@@ -242,7 +244,7 @@
                       *ngFor="let platform of collaboration.platforms" 
                       [matTooltip]="getTooltipText(platform)"
                       matTooltipClass="tooltip-html"
-                      class="mat-chip"
+                      class="mat-chip"ngSwitch=""
                       [ngClass]="{ 'active-chip': platform.active }" 
                       (click)="toggleChip('platforms', platform)"
                       [disabled]="disabled"
@@ -290,9 +292,32 @@
               <div class="mt-4 ng-tns-c2638821912-677 ng-star-inserted" [ngClass]="{ hidden: !isEditing }">
                 <app-select
                   [label]="'user.collaborations.details.compensation_type' | transloco"
-                  [control]="compensationTypeControl"
-                  [options]="compensationList$ |async">
-              </app-select>
+                  [control]="selectControlcompensationType"
+                  [options]="compensationList$ |async"
+                  (selectionChange)="switchResult($event)">
+                </app-select>
+                <div *ngIf="showResultCash">
+                  <app-select
+                    [label]="'user.collaborations.details.compensation_result' | transloco"
+                    [control]="selectCurrenciesCashControl"
+                    [options]="currency$ |async"
+                    >
+                  </app-select>
+                </div>
+                <div *ngIf="showResultBarter">
+                  <app-input
+                      type="text"
+                      [control]="selectCurrenciesBarter"
+                      [placeholder]="
+                      'user.collaborations.details.barter_subscrition'
+                        | transloco" 
+                      >
+                      {{
+                        "user.collaborations.details.compensation_result"
+                            | transloco
+                      }}
+                  </app-input>
+                </div>
               </div>
             <div class="mt-4 ng-tns-c2638821912-677 ng-star-inserted"
                 [ngClass]="{ hidden: isEditing }"
@@ -482,15 +507,15 @@
                   <div class="flex flex-row gap-2 mt-5"  
                         [ngClass]="{'disabled-chip':disabled}">
                     <button 
-                      *ngFor="let content of collaboration.contentTypes" 
-                      matTooltipClass="tooltip-html"
-                      class="content"
-                      [ngClass]="{ 'active-chip': content.active, 'disabled-chip': content.disabled }" 
-                      (click)="toggleChip('contentTypes', content)"
-                      [attr.type]="'button'"
-                      [disabled]="disabled"
-                      >
-                        {{content.name}}
+                        *ngFor="let content of collaboration.contentTypes" 
+                        matTooltipClass="tooltip-html"
+                        class="content"
+                        [ngClass]="{ 'active-chip': content.active, 'disabled-chip': content.disabled }" 
+                        (click)="toggleChip('contentTypes', content)"
+                        [attr.type]="'button'"
+                        [disabled]="disabled"
+                        >
+                          {{content.name}}
                     </button>
                   </div>
                 </div>
@@ -499,18 +524,41 @@
         </fuse-card>
         <fuse-card class="lg:hidden flex w-full w-120 flex-col p-8 mt-8 ng-tns-c2638821912-677 ng-star-inserted">
           <form  [formGroup]="editCollaborationFormGroup">
-            <div class="font-semibold leading-tight ng-tns-c2638821912-677 ng-star-inserted"  >
+              <div class="font-semibold leading-tight ng-tns-c2638821912-677 ng-star-inserted"  >
                 {{
                     "user.collaborations.details.compensation_type"
                         | transloco
                 }}
             </div>
           <div class="mt-4 ng-tns-c2638821912-677 ng-star-inserted" [ngClass]="{ hidden: !isEditing }">
-              <app-select
-              [label]="'user.collaborations.details.compensation_type' | transloco"
-              [control]="compensationTypeControl"
-              [options]="compensationList$ |async">
-              </app-select>
+            <app-select
+                  [label]="'user.collaborations.details.compensation_type' | transloco"
+                  [control]="selectControlcompensationType"
+                  [options]="compensationList$ |async"
+                  (selectionChange)="switchResult($event)">
+                </app-select>
+                <div *ngIf="showResultCash">
+                  <app-select
+                    [label]="'user.collaborations.details.compensation_result' | transloco"
+                    [control]="selectCurrenciesCashControl"
+                    [options]="currency$ |async"
+                    >
+                  </app-select>
+                </div>
+                <div *ngIf="showResultBarter">
+                  <app-input
+                      type="text"
+                      [control]="selectCurrenciesBarter"
+                      [placeholder]="
+                      'user.collaborations.details.barter_subscrition'
+                        | transloco" 
+                      >
+                      {{
+                        "user.collaborations.details.compensation_result"
+                            | transloco
+                      }}
+                  </app-input>
+                </div>
           </div>  
           <div class="mt-4 ng-tns-c2638821912-677 ng-star-inserted"
               [ngClass]="{ hidden: isEditing }"

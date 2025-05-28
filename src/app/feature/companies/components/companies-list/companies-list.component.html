@@ -8,7 +8,9 @@
                     [title]="'admin.companies.title' | transloco"
                     [columnsToDisplay]="tableColumns"
                     [data]="dataSource"
-                    [expandableTemplate]="influencerEditForm">
+                    [expandableTemplate]="influencerEditForm"
+                    (rowToggled)="onUserRowToggled($event)"
+                    >
                 </app-table>
                 <div class="flex items-center">
                     <mat-paginator
@@ -38,30 +40,17 @@
             </div>
             <ng-template #influencerEditForm let-company>
                 <form [formGroup]="editInfluencerFormGroup">
-                    <div class="flex flex-row">
-                        <div class="flex w-full flex-col lg:w-1/4">
-                            <div
-                                class="h-44 w-36 overflow-hidden rounded border self-start"
+                    <div class="grid grid-cols-1 xl:grid-cols-4 md:grid-cols-2 gap-4 w-full">
+
+                        <div class="flex flex-col min-w-[250px]">
+                            <app-input
+                                type="image"
+                                [control]="imageControl"
+                                storagePath="sample-images"
+                                acceptedFileTypes="image/jpeg,image/png,image/gif"
+                                (imageUploaded)="onImageUpload($event)"
                             >
-                                <img
-                                    *ngIf="
-                                        imageUrl[expandedInfluencer?.id];
-                                        else noImage
-                                    "
-                                    [src]="imageUrl[expandedInfluencer?.id]"
-                                    alt="Uploaded Image"
-                                    class="h-full w-full object-cover"
-                                />
-                                <ng-template #noImage>
-                                    <span
-                                        class="flex items-center justify-center h-full w-full text-lg font-semibold"
-                                    >{{
-                                            "admin.companies.edit_form.no_image"
-                                                | transloco
-                                        }}
-                                    </span>
-                                </ng-template>
-                            </div>
+                            </app-input>
                             <div class="mt-4 sm:mt-0">
                                 <button
                                     mat-flat-button
@@ -114,159 +103,143 @@
                                 />
                             </div>
                         </div>
-
-                        <div class="flex w-full flex-col sm:pl-5 lg:w-2/4">
-                            <mat-form-field class="pl-0">
-                                <mat-label>{{
-                                        "admin.companies.edit_form.company_name"
-                                            | transloco
-                                    }}
-                                </mat-label>
-                                <input
-                                    matInput
-                                    type="name"
-                                    [formControlName]="'name'"
-                                />
-                            </mat-form-field>
-                            <mat-form-field>
-                                <mat-label>{{
-                                        "admin.companies.edit_form.email"
-                                            | transloco
-                                    }}
-                                </mat-label>
-                                <input
-                                    matInput
-                                    type="email"
-                                    [formControlName]="'email'"
-                                />
-                            </mat-form-field>
-                            <mat-form-field>
-                                <mat-label>{{
-                                        "admin.companies.edit_form.address"
-                                            | transloco
-                                    }}
-                                </mat-label>
-                                <input
-                                    matInput
-                                    type="address"
-                                    [formControlName]="'address'"
-                                />
-                            </mat-form-field>
+                        <div class="flex flex-col min-w-[250px]">
+                            <app-input
+                                type="text"
+                                [control]="companyNameControl"
+                                [placeholder]="
+                                'user.company.details.nameCompany'
+                                    | transloco" 
+                            >
+                                {{
+                                    "user.company.details.nameCompany"
+                                        | transloco
+                                }}
+                            </app-input>
+                            <app-input
+                                type="text"
+                                [control]="emailControl"
+                                [placeholder]="
+                                'user.company.details.email'
+                                    | transloco" 
+                            >
+                                {{
+                                    "user.company.details.email"
+                                        | transloco
+                                }}
+                            </app-input>
+                            <app-input
+                                type="text"
+                                [control]="addressControl"
+                                [placeholder]="
+                                'user.company.details.address'
+                                    | transloco" 
+                            >
+                                {{
+                                    "user.company.details.address"
+                                        | transloco
+                                }}
+                            </app-input>
                         </div>
-                        <div class="flex w-full flex-col sm:pl-5 lg:w-2/4">
-                            <mat-form-field>
-                                <mat-label>{{
-                                        "admin.companies.edit_form.first_name"
-                                            | transloco
-                                    }}
-                                </mat-label>
-                                <input
-                                    matInput
-                                    type="firstName"
-                                    [formControlName]="'firstName'"
-                                />
-                            </mat-form-field>
-                            <mat-form-field>
-                                <mat-label>
-                                    {{
-                                        "admin.companies.edit_form.city"
-                                            | transloco
-                                    }}
-                                </mat-label>
-                                <input
-                                    matInput
-                                    type="city"
-                                    [formControlName]="'city'"
-                                />
-                            </mat-form-field>
+                        <div class="flex flex-col min-w-[250px]">
 
-                            <mat-form-field>
-                                <mat-label>{{
-                                        "admin.companies.edit_form.service_type"
-                                            | transloco
-                                    }}
-                                </mat-label>
-                                <mat-select formControlName="serviceType">
-                                    <mat-option
-                                        *ngFor="
-                                            let option of serviceTypeOptions
-                                        "
-                                        [value]="option.id"
-                                    >
-                                        {{ option.label }}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                        <div class="flex w-full flex-col sm:pl-5 lg:w-2/4">
-                            <mat-form-field>
-                                <mat-label>{{
-                                        "admin.companies.edit_form.last_name"
-                                            | transloco
-                                    }}
-                                </mat-label>
-                                <input
-                                    matInput
-                                    type="lastName"
-                                    [formControlName]="'lastName'"
-                                />
-                            </mat-form-field>
-                            <mat-form-field>
-                                <mat-label>{{
-                                        "admin.companies.edit_form.phone_number"
-                                            | transloco
-                                    }}
-                                </mat-label>
-                                <input
-                                    matInput
-                                    type="phoneNumber"
-                                    [formControlName]="'phoneNumber'"
-                                />
-                            </mat-form-field>
-                            <form [formGroup]="editInfluencerFormGroup">
-                                <mat-form-field
-                                    appearance="outline"
-                                    class="text-area pl-0"
+                            <app-input
+                                type="text"
+                                [control]="firstNameControl"
+                                [placeholder]="
+                                'user.company.details.firstName'
+                                    | transloco" 
+                            >
+                                {{
+                                    "user.company.details.firstName"
+                                        | transloco
+                                }}
+                            </app-input>
+                            <app-input
+                                type="text"
+                                [control]="cityControl"
+                                
+                                [placeholder]="
+                                'user.company.details.city'
+                                    | transloco" 
+                            >
+                                {{
+                                    "user.company.details.city"
+                                        | transloco
+                                }}
+                            </app-input>
+                            <app-select
+                                [label]="'admin.new_influencers.edit_form.status' | transloco"
+                                [control]="statusControl"
+                                [options]="statusList$ | async"
                                 >
-                                    <mat-label
-                                    ><b>{{
-                                            "admin.companies.edit_form.note"
-                                                | transloco
-                                        }}</b></mat-label
-                                    >
-                                    <textarea
-                                        matInput
-                                        formControlName="note"
-                                        placeholder="{{
-                                            'admin.companies.edit_form.note_placeholder'
-                                                | transloco
-                                        }}"
-                                    >
-                                    </textarea>
-                                </mat-form-field>
-                            </form>
+                            </app-select>
                         </div>
+                       <div class="flex flex-col min-w-[250px]">
+                            <app-input
+                                type="text"
+                                [control]="lastNameControl"
+                                [placeholder]="
+                                'user.company.details.lastName'
+                                    | transloco" 
+                            >
+                                {{
+                                    "user.company.details.lastName"
+                                        | transloco
+                                }}
+                            </app-input>
+                            <app-input
+                                type="text"
+                                [control]="phoneNumberControl"
+                                [placeholder]="
+                                'user.company.details.phoneNumber'
+                                    | transloco" 
+                            >
+                                {{
+                                    "user.company.details.phoneNumber"
+                                        | transloco
+                                }}
+                            </app-input>
+                            <div class="text-area pl-0">
+                                <app-input
+                                    type="textarea"
+                                    [control]="textAreaControlTitle"
+                                    [placeholder]="
+                                    'user.company.details.note'
+                                        | transloco"  
+                                
+                                    >  {{
+                                    "user.company.details.note"
+                                        | transloco
+                                    }}
+                                </app-input>
+                            </div>
+                        </div> 
                     </div>
-                    <div class="flex items-center justify-end mb-4">
-                        <button
-                            mat-button
-                            type="submit"
-                            class="justify-self-center self-center"
-                            [color]="'primary'"
-                            (click)="
-                                putOrPatchCompany(getExpandedInfluencer().id)
-                            "
-                        >
-                            {{ "admin.companies.edit_form.submit" | transloco }}
-                        </button>
-                        <button
-                            class="mr-2"
-                            mat-flat-button
-                            type="button"
-                            (click)="delete(getExpandedInfluencer().id)"
-                        >
-                            {{ "admin.companies.edit_form.delete" | transloco }}
-                        </button>
+                    <div class="flex w-full justify-center xl:justify-end mb-4">
+                        <app-button 
+                            tooltip="Flat button" 
+                            variant="flat" 
+                            type="submit" 
+                            color="primary"
+                            (click)="putOrPatchCompany(userId)"
+                            >
+                            {{
+                                "user.collaborations.details.save_button"
+                                    | transloco
+                            }}
+                        </app-button>
+                        <app-button class="ml-5"
+                            tooltip="Raised button" 
+                            variant="raised" 
+                            color="warn"
+                            (click)="delete(userId)"
+                            >
+                            {{
+                            "user.collaborations.details.delete_button"
+                                | transloco
+                            }}
+                        </app-button>
                     </div>
                 </form>
                 <p class="textWarning" *ngIf="updatedNoteInfo">
@@ -282,10 +255,6 @@
                         "admin.companies.messages.fill_account_type" | transloco
                     }}
                 </p>
-
-                <p class="textConfirm" *ngIf="confirmEditionInfo">
-                    {{ "admin.companies.messages.confirmation" | transloco }}
-                </p>
             </ng-template>
             <ng-template #noProducts>
                 <div
@@ -294,6 +263,11 @@
                     {{ "admin.companies.no_products" | transloco }}
                 </div>
             </ng-template>
+            <!-- Loading spinner -->
+            <div *ngIf="isLoading" class="flex justify-center">
+                <mat-spinner [diameter]="40"></mat-spinner>
+            </div>
         </div>
     </div>
 </div>
+

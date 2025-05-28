@@ -28,8 +28,9 @@ export interface Collaboration {
   compensationAmountMax: number;
   compensationDescription: string;
   platforms: Platforms[];
+  address: Address | number;
   contentTypes: number[];
-  currency: string;
+  currency: number;
   company: CompanyCollaboration | number;
   serviceType: ServiceTypeCollaboration | number;
   startDate: string;
@@ -39,6 +40,29 @@ export interface Collaboration {
   lastUpdateTime: string;
   updater: string;
   imageUrl: string;
+}
+
+export interface Address {
+  id: number | undefined;
+  additionalInfo: string;
+  addressType: string;
+  city: string;
+  country: string;
+  createdTime: string;
+  lastUpdateTime: string;
+  postalCode: string;
+  primary: boolean;
+  state: string;
+  street: string;
+  userId: number;
+}
+
+export interface Currency {
+  countryCode: string;
+  id: number;
+  isoCode: string;
+  name: string;
+  sign: string;
 }
 
 export interface Platforms {
@@ -119,6 +143,7 @@ export interface UserContent {
   userType: string;
   userTypePL: string;
   email: string;
+  addresses: string;
   firstName: string;
   lastName: string;
   accountStatusPL: string;
@@ -127,6 +152,21 @@ export interface UserContent {
   company?: Company;
   createdTime: string;
   lastUpdateTime: string;
+}
+
+export interface Address {
+  additionalInfo: string;
+  addressType: string;
+  city: string;
+  country: string;
+  createdTime: string;
+  id: number;
+  lastUpdateTime: string;
+  postalCode: string;
+  primary: boolean;
+  state: string;
+  street: string;
+  userId: number;
 }
 
 export interface Influencer {

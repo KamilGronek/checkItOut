@@ -61,7 +61,7 @@ import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { CollaborationConfirmPopUpService } from './collaboration-create-pop-up.service';
-import { Collaboration, PhotoList } from '../../services/collaboration.types';
+import { Collaboration, PhotoList, Currency } from '../../services/collaboration.types';
 import { filter, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { LookingUpDataService } from 'app/feature/collaborations/components/collaboration-create/collaboration-create-form/collaboration-form-lookup-data.service';
 import { CollaborationValidationService } from 'app/feature/collaborations/components/collaboration-create/collaboration-create-form/collaboration-form-validation.service';
@@ -77,7 +77,8 @@ import { Storage } from '@angular/fire/storage';
 
 import { ImageService } from 'app/core/services/image/image.service';
 import { firstValueFrom } from 'rxjs';
-
+import { SnackbarService } from 'app/core/services/custom-snackbar/custom-snackbar.service';
+import { Address } from 'app/feature/collaborations/services/collaboration.types';
 registerLocaleData(localePl);
 
 @Component({
@@ -235,6 +236,7 @@ export class CollaborationCreateComponent implements OnInit {
 
   selectCurrenciesCashControl = new FormControl('', [Validators.required]);
   selectCurrenciesBarter = new FormControl('', [Validators.required]);
+  collaborationAddressId: Address;
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -268,7 +270,9 @@ export class CollaborationCreateComponent implements OnInit {
     private translocoService: TranslocoService,
     private dateAdapter: DateAdapter<any>,
     private _imageService: ImageService,
-    private storage: Storage
+    private storage: Storage,
+    private cdr: ChangeDetectorRef,
+    private snackbarService: SnackbarService
   ) {
     this.editNewCollaborationFormGroup = this._collaborationFormService.createForm();
     this.setDateLocale();
@@ -288,14 +292,12 @@ export class CollaborationCreateComponent implements OnInit {
 
   ngAfterViewInit(): void {}
 
-  onImageUpload() {
-    const imageUrl = this.editNewCollaborationFormGroup.get('imageUrl')?.value;
-    console.log('URL przesłanego obrazu:', imageUrl);
+  imagePreviewUrl: string | null = null;
 
-    this.imageUrl = imageUrl;
-  }
+  collaboration: any = null;
 
   ngOnInit(): void {
+    this.getAdress();
     this.getProfilPhoto();
 
     this.profilImageControl.disable();
@@ -316,6 +318,66 @@ export class CollaborationCreateComponent implements OnInit {
     this._lookingUpDataService.getCompensationType();
     this._lookingUpDataService.getUserCompany();
     this._lookingUpDataService.getCurrency();
+  }
+
+  //  zdjecie background
+
+  onImageUpload() {
+    const imageUrl = this.editNewCollaborationFormGroup.get('imageUrl')?.value;
+    console.log('URL przesłanego obrazu:', imageUrl);
+
+    this.imageUrl = imageUrl;
+  }
+
+  getProfilPhoto() {
+    combineLatest([this.userList$, this.companyControl.valueChanges])
+      .pipe(distinctUntilChanged())
+      .subscribe({
+        next: ([userList, selectedImage]) => {
+          console.log('Selected profilePicture (value):', selectedImage);
+
+          const selectedUser = userList.find(user => user.label === selectedImage);
+
+          console.log('selectedUser:', selectedUser);
+
+          if (!selectedUser) {
+            this.profilImageControl.setValue(null);
+            return;
+          }
+
+          const profilImage = selectedUser.label;
+
+          // this.profilImageControl.reset();
+
+          setTimeout(() => {
+            this.profilImageControl.setValue(profilImage);
+            this.cdr.detectChanges();
+          });
+        },
+        error: error => {
+          console.error('Error fetching profile photo list', error);
+
+          const message = this.translocoService.translate(
+            'admin.new_influencers.snackbarServiceTextFailure'
+          );
+          this.snackbarService.showFailure(message);
+        }
+      });
+  }
+
+  getAdress() {
+    combineLatest([this.userList$, this.companyControl.valueChanges]).subscribe(
+      ([userList, selectedUserId]) => {
+        const selectedUser = userList.find(user => user.value === Number(selectedUserId));
+        console.log('selectedUser:', selectedUser.addresses[0].id);
+
+        this.idUser = selectedUser.value;
+
+        if (selectedUser?.addresses?.length) {
+          this.collaborationAddressId = selectedUser.addresses[0].id;
+        }
+      }
+    );
   }
 
   categoryControl = new FormControl('');
@@ -352,34 +414,6 @@ export class CollaborationCreateComponent implements OnInit {
 
   idUser: number = 0;
 
-  getProfilPhoto() {
-    console.log('this.companyControl.valueChanges:', this.companyControl.valueChanges);
-
-    combineLatest([this.userList$, this.companyControl.valueChanges])
-      .pipe(distinctUntilChanged())
-      .subscribe(([userList, selectedImage]) => {
-        console.log('Selected profilePicture (value):', selectedImage);
-
-        const selectedUser = userList.find(user => user.value === selectedImage);
-
-        console.log('profilImageControl:', this.profilImageControl);
-
-        if (!selectedUser) {
-          this.profilImageControl.setValue(null);
-          return;
-        }
-
-        this.idUser = selectedUser.label;
-        const imageUrl = selectedUser.value;
-
-        this.profilImageControl.reset();
-
-        setTimeout(() => {
-          this.profilImageControl.setValue(selectedUser.value);
-        });
-      });
-  }
-
   result(value: number): string {
     const label = this.markerValues[value - 1];
 
@@ -405,7 +439,13 @@ export class CollaborationCreateComponent implements OnInit {
 
     this._collaborationService.createCollaboration(collaboration).subscribe({
       next: collabo => this.handleSuccessfulCreation(collabo),
-      error: error => console.error('Error with influencer update:', error.error.message)
+
+      error: error => {
+        console.error('Error with influencer update:', error.error.message);
+
+        const message = this.translocoService.translate('user.collaborations.details.addWarning');
+        this.snackbarService.showFailure(message);
+      }
     });
   }
 
@@ -419,7 +459,7 @@ export class CollaborationCreateComponent implements OnInit {
 
     collaboration.photos = [
       {
-        url: this.imageUrl,
+        url: this.imageUrl!,
         orderNumber: 1,
         isCover: true
       }
@@ -435,7 +475,8 @@ export class CollaborationCreateComponent implements OnInit {
     collaboration.title = this.textAreaControlTitle.value;
     collaboration.company = this.idUser;
     collaboration.serviceType = Number(this.serviceTypeControl.value);
-    collaboration.currency = this.selectCurrenciesCashControl.value;
+    collaboration.address = this.collaborationAddressId;
+    collaboration.currency = Number(this.selectCurrenciesCashControl.value);
     collaboration.compensationDescription = this.selectCurrenciesBarter.value;
     collaboration.platforms = this.editNewCollaborationFormGroup.get('platforms')?.value || [];
 

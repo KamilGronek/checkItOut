@@ -32,6 +32,9 @@ export class LookingUpEditDataService {
   controlCity = new FormControl('', [Validators.required]);
   controlcompensationType = new FormControl('', [Validators.required]);
 
+  currencyListSubject = new BehaviorSubject<{ value: number; label: string }[]>([]);
+  currency$ = this.currencyListSubject.asObservable();
+
   private destroy$ = new Subject<void>();
 
   private formGroup: FormGroup | null = null;
@@ -104,6 +107,8 @@ export class LookingUpEditDataService {
         })
       )
       .subscribe(transformedData => {
+        console.log('transformedData', transformedData);
+
         this.cityListSubject.next(transformedData);
       });
   }
@@ -137,5 +142,27 @@ export class LookingUpEditDataService {
       .subscribe(transformedData => {
         this.compensationTypeSubject.next(transformedData);
       });
+  }
+
+  getCurrency(): void {
+    this._collaborationService.getCurrency().subscribe({
+      next: response => {
+        const contentCurrency = response.content.map(currency => ({
+          value: currency.id,
+          label: currency.isoCode,
+          id: currency.id,
+          isoCode: currency.isoCode,
+          name: currency.name,
+          sign: currency.sign,
+          countryCode: currency.countryCode
+        }));
+        console.log('contentCurrency;', contentCurrency);
+
+        this.currencyListSubject.next(contentCurrency);
+      },
+      error: error => {
+        console.error('Error fetching content type:', error);
+      }
+    });
   }
 }

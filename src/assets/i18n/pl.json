@@ -176,6 +176,7 @@
         "last_name": "Nazwisko",
         "email": "E-mail",
         "city": "Miasto",
+        "phoneNumber": "Numer telefonu",
         "address": "Adres",
         "instagram": "Instagram",
         "followers": "Ilość followersów",
@@ -200,7 +201,9 @@
         "fill_account_type": "Przed wysłaniem, proszę info o rodzaju konta",
         "confirmation": "Influencer zatwierdzony"
       },
-      "snackbarServiceText": "Edycja danych użytkownika zakończona powodzeniem",
+      "snackbarServiceTextAfterSave": "Edycja danych użytkownika zakończona powodzeniem",
+      "snackbarServiceTextLoaded": "Dane użytkowników pobrane",
+      "snackbarServiceTextFailure": "Coś poszło nie tak",
       "no_products": "Brak produktów!"
     },
     "companies": {
@@ -386,6 +389,19 @@
         "cancel": "Anuluj"
       }
     },
+        "company": {
+          "details": {
+                "nameCompany": "Nazwa firmy",
+                "firstName": "Imię",
+                "lastName": "Nazwisko",
+                "email": "E–mail",
+                "city": "Miasto",
+                "phoneNumber": "Numer telefonu",
+                "address": "Dokladny adres",
+                "serviceType": "Typ usługi",
+                "note": "Notatka"
+          }
+        },
         "collaborations": {
             "all": {
                 "title": "Współprace do podjęcia",
@@ -498,7 +514,7 @@
                 "show_thumb_label": "Pokaż Etykietę",
                 "disabled": "Wyłączone",
                 "tooltip" : "Niedostępna",
-                "anddWarning": "Przed wysłaniem, proszę uzupełnić wszystkie dane",
+                "addWarning": "Przed wysłaniem, proszę uzupełnić wszystkie dane",
                 "select_date_range": "Wybierz zakres daty",
                 "background_picture": "Wgraj zdjęcie"
             }

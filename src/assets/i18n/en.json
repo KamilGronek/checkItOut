@@ -200,7 +200,11 @@
         "fill_account_type": "Please provide account type information before submitting",
         "confirmation": "Influencer approved"
       },
-      "snackbarServiceText": "Editing user data completed successfully",
+      "snackbarServiceTextAfterSave": "Editing user data completed successfully",
+      "snackbarServiceTextLoaded": "User data collected",
+      "snackbarServiceTextFailure": "Something went wrong",
+      
+
       "no_products": "There are no products!"
     },
     "companies": {
@@ -386,6 +390,20 @@
         "cancel": "Cancel"
       }
     },
+
+        "company": {
+          "details": {
+                "nameCompany": "Name company",
+                "firstName": "First name",
+                "lastName": "Last name",
+                "email": "E–mail",
+                "city": "city",
+                "phoneNumber": "Phone number",
+                "address": "Address",
+                "serviceType": "Service type",
+                "note": "Note"
+          }
+        },
         "collaborations": {
             "all": {
                 "title": "Available Collaborations",

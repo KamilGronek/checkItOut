@@ -47,6 +47,7 @@ import { SelectComponent } from 'app/shared/components/ui/select/select.componen
 import { LookingUpEditDataService } from 'app/feature/collaborations/components/collaboration-details/collaboration-details-form/collaboration-details-lookup-data.service';
 import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { CollaborationEditService } from 'app/feature/collaborations/components/collaboration-details/collaboration-details-form/collaboration-edit.service';
+import { ButtonComponent } from 'app/shared/components/ui/button/button.component';
 
 @Component({
   selector: 'collaborationsId',
@@ -94,7 +95,8 @@ import { CollaborationEditService } from 'app/feature/collaborations/components/
     MatTooltipModule,
     TranslocoModule,
     InputComponent,
-    SelectComponent
+    SelectComponent,
+    ButtonComponent
   ],
   styleUrl: 'collaboration-details.styles.css'
 })
@@ -158,7 +160,11 @@ export class CollaborationsDetailComponent implements OnInit {
   contentItems: string[] = [];
   isSliderDisabled = false;
   collaborationId!: number;
+
+  currencyId: number = 0;
   compensationList: {};
+
+  currency$ = this._lookingUpEditDataService.currency$;
 
   minDate = new Date();
   maxDate = new Date(2025, 11, 31);
@@ -177,6 +183,9 @@ export class CollaborationsDetailComponent implements OnInit {
   requirementsControl = new FormControl('', [Validators.required]);
   campaignDetailsControl = new FormControl('', [Validators.required]);
   nameControl = new FormControl('', [Validators.required]);
+
+  selectCurrenciesCashControl = new FormControl('', [Validators.required]);
+  selectCurrenciesBarter = new FormControl('', [Validators.required]);
 
   collaborationList$ = this._lookingUpEditDataService.collaborationList$;
   imageControl = new FormControl('', [Validators.required]);
@@ -224,7 +233,7 @@ export class CollaborationsDetailComponent implements OnInit {
       console.log('Wybrane miasto:', value);
     });
 
-    // this._lookingUpEditDataService.getCollaborationList();
+    this._lookingUpEditDataService.getCurrency();
     this.getCollaborationList();
 
     this._lookingUpEditDataService.getCityList();
@@ -263,12 +272,36 @@ export class CollaborationsDetailComponent implements OnInit {
     return typeof amount === 'number' ? amount.toString() : amount ?? '';
   }
 
+  showResultCash = false;
+  showResultBarter = false;
+
+  switchResult(event: any): void {
+    switch (event) {
+      case 'CASH':
+        this.showResultCash = true;
+        this.showResultBarter = false;
+
+        if (!this.selectCurrenciesCashControl.value) {
+          this.selectCurrenciesCashControl.setValue('PLN');
+        }
+
+        break;
+      case 'BARTER':
+        this.showResultCash = false;
+        this.showResultBarter = true;
+      default:
+        return;
+    }
+  }
+
   getCollaborationId(id: number) {
     this._collaborationService.getCollaborationId(id).subscribe({
       next: (response: Collaboration) => {
         console.log('response id:', response);
 
         this.collaboration = response;
+        this.currencyId = response.currency;
+        console.log('currencyId:', this.currencyId);
 
         this.prevAmountMin = response.compensationAmountMin;
         this.prevAmountMax = response.compensationAmountMax;
@@ -390,20 +423,30 @@ export class CollaborationsDetailComponent implements OnInit {
     return this.collaborationList.find(collaboration => collaboration.id === collaborationId);
   }
 
-  saveCollaboration(collaborationId: number, resultMin: any, resultMax: any): void {
+  saveCollaboration(collaborationId: number, resultMin: any, resultMax: any, currencyId): void {
     this.isEditing = false;
     this.disabled = true;
+    console.log('currencyId:', currencyId);
 
-    this.updatedCollaboration(collaborationId, resultMin, resultMax);
+    this.currencyId = this.currencyId;
+
+    this.updatedCollaboration(collaborationId, resultMin, resultMax, this.currencyId);
   }
 
-  updatedCollaboration(collaborationId: number, resultMin: any, resultMax: any): void {
+  updatedCollaboration(
+    collaborationId: number,
+    resultMin: any,
+    resultMax: any,
+    currencyId: any
+  ): void {
     const formValues = this._collaborationEditService.getUpdatedFormValues(
       this.editCollaborationFormGroup,
       this.contentTypesList,
       this.platformsList,
       this.contentTypeSend,
       this.platformSend,
+      this.currencyId,
+
       resultMin,
       resultMax
     );
@@ -421,7 +464,8 @@ export class CollaborationsDetailComponent implements OnInit {
         requirements: this.requirementsControl,
         compensationType: this.compensationTypeControl,
         startDate: this.startDateControl,
-        endDate: this.endDateControl
+        endDate: this.endDateControl,
+        currencyId: this.currencyId
       },
       this.card
     );

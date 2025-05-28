@@ -181,14 +181,13 @@
               [options]="compensationList$ |async"
               (selectionChange)="switchResult($event)">
             </app-select>
-
             <div *ngIf="showResultCash">
-              <app-categorized-select
+              <app-select
                 [label]="'user.collaborations.details.compensation_result' | transloco"
                 [control]="selectCurrenciesCashControl"
                 [options]="currency$ |async"
                 >
-              </app-categorized-select>
+              </app-select>
             </div>
 
            <div *ngIf="showResultBarter">
@@ -211,12 +210,6 @@
       <div class="flex flex-col items-start">
         <fuse-card class="flex w-full max-w-140 flex-col p-6 pb-6 sm:p-8">
           <form [formGroup]="editNewCollaborationFormGroup">
-            <p *ngIf="warning" [ngStyle]="{ color: 'red' }">
-              {{
-                "user.collaborations.details.addWarning"
-                    | transloco
-              }}
-            </p>
           <app-input
               type="textarea"
               hint="This a textarea component"
@@ -403,11 +396,34 @@
       <fuse-card
       class="lg:hidden flex w-full w-120 flex-col p-8 mt-8 ng-tns-c2638821912-677 ng-star-inserted">
       <form [formGroup]="editNewCollaborationFormGroup">
-            <app-select
-              [label]="'user.collaborations.details.compensation_type' | transloco"
-              [control]="selectControlcompensationType"
-              [options]="compensationList$ |async">
-            </app-select>
+        <app-select
+            [label]="'user.collaborations.details.compensation_type' | transloco"
+            [control]="selectControlcompensationType"
+            [options]="compensationList$ |async"
+            (selectionChange)="switchResult($event)">
+        </app-select>
+        <div *ngIf="showResultCash">
+          <app-select
+            [label]="'user.collaborations.details.compensation_result' | transloco"
+            [control]="selectCurrenciesCashControl"
+            [options]="currency$ |async"
+            >
+          </app-select>
+        </div>
+        <div *ngIf="showResultBarter">
+          <app-input
+              type="text"
+              [control]="selectCurrenciesBarter"
+              [placeholder]="
+              'user.collaborations.details.barter_subscrition'
+                | transloco" 
+              >
+              {{
+                "user.collaborations.details.compensation_result"
+                    | transloco
+              }}
+          </app-input>
+        </div>
        </form>
     </fuse-card>
     </div>

@@ -80,18 +80,19 @@
                                 >
                                 </textarea>
                             </mat-form-field>
-                         <button
-                            mat-button
-                            type="submit"
+
+                        <app-button 
                             class="justify-self-center self-center"
-                            [color]="'primary'"
+                            tooltip="Flat button" 
+                            variant="flat" 
+                            color="primary"
                             (click)="sendToInfluencer(user.id)"
-                        >
+                            >
                             {{
                                 "admin.new_influencers.edit_form.submit"
                                     | transloco
                             }}
-                        </button> 
+                        </app-button>
                     </div>
                 </form>
                 <p class="textWarning" *ngIf="updatedNoteInfo">

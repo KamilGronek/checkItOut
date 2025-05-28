@@ -51,6 +51,7 @@ import { TranslocoService } from '@ngneat/transloco';
 import { Column } from '../../../../shared/components/ui/table/table.types';
 import { TableComponent } from '../../../../shared/components/ui/table/table.component';
 import { SelectComponent } from 'app/shared/components/ui/select/select.component';
+import { ButtonComponent } from 'app/shared/components/ui/button/button.component';
 
 @Component({
   selector: 'new-influencers-list',
@@ -85,7 +86,8 @@ import { SelectComponent } from 'app/shared/components/ui/select/select.componen
     MatPaginatorModule,
     TranslocoModule,
     TableComponent,
-    SelectComponent
+    SelectComponent,
+    ButtonComponent
   ]
 })
 export class newInfluencersListComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -104,6 +106,7 @@ export class newInfluencersListComponent implements OnInit, AfterViewInit, OnDes
     'firstName',
     'lastName',
     'email',
+    'addresses',
     'city',
     'instagramId',
     'followersAmount',
@@ -116,8 +119,7 @@ export class newInfluencersListComponent implements OnInit, AfterViewInit, OnDes
     { key: 'id', label: 'admin.new_influencers.table_headers.id' },
     { key: 'firstName', label: 'admin.new_influencers.table_headers.first_name' },
     { key: 'lastName', label: 'admin.new_influencers.table_headers.last_name' },
-    //l{ key: 'city', label: 'admin.new_influencers.table_headers.city' },
-    { key: 'address', label: 'admin.new_influencers.table_headers.address' },
+    { key: 'addresses', label: 'admin.new_influencers.table_headers.address' },
     { key: 'email', label: 'admin.new_influencers.table_headers.email' }
   ];
 
@@ -230,6 +232,15 @@ export class newInfluencersListComponent implements OnInit, AfterViewInit, OnDes
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
       email: ['', [Validators.required]],
+      addresses: this.fb.group({
+        street: [''],
+        city: [''],
+        postalCode: [''],
+        country: [''],
+        state: [''],
+        additionalInfo: [''],
+        addressType: ['']
+      }),
       instagramId: ['', [Validators.required]],
       followersAmount: ['1', [Validators.required]],
       accountStatus: ['', [Validators.required]],
@@ -335,14 +346,27 @@ export class newInfluencersListComponent implements OnInit, AfterViewInit, OnDes
           this.paginator.pageIndex = response.number;
           this.paginator.pageSize = response.size;
 
-          this.dataSource.data = response.content;
-          console.log('response.content:', response.content);
+          const flattened = response.content.map(user => ({
+            ...user,
+            addresses: user.addresses?.[0]?.street ?? ''
+          }));
 
-          this.snackbarService.showSuccess('Dane użytkowników pobrane');
+          this.dataSource.data = flattened;
+
+          console.log('response.content:', flattened);
+
+          const message = this.translocoService.translate(
+            'admin.new_influencers.snackbarServiceTextLoaded'
+          );
+          this.snackbarService.showSuccess(message);
         },
         error: error => {
           console.error('Error fetching influencer list', error);
-          this.snackbarService.showFailure('Coś poszło nie tak');
+
+          const message = this.translocoService.translate(
+            'admin.new_influencers.snackbarServiceTextFailure'
+          );
+          this.snackbarService.showFailure(message);
         }
       });
   }
@@ -386,6 +410,10 @@ export class newInfluencersListComponent implements OnInit, AfterViewInit, OnDes
     this.editingUserId = user.id;
     this.typeControl.setValue(user.userType);
     this.statusControl.setValue(user.accountStatus);
+
+    this.editUserFormGroup.patchValue({
+      address: user.address
+    });
   }
 
   sendToInfluencer(userId: number): void {
@@ -403,7 +431,7 @@ export class newInfluencersListComponent implements OnInit, AfterViewInit, OnDes
 
         this.fillEditForm();
         const message = this.translocoService.translate(
-          'admin.new_influencers.snackbarServiceText'
+          'admin.new_influencers.snackbarServiceTextAfterSave'
         );
         this.snackbarService.showSuccess(message);
       },
@@ -459,6 +487,7 @@ export class newInfluencersListComponent implements OnInit, AfterViewInit, OnDes
       this.editUserFormGroup.controls['firstName'].setValue(this.expandedUser.firstName);
       this.editUserFormGroup.controls['lastName'].setValue(this.expandedUser.lastName);
       this.editUserFormGroup.controls['email'].setValue(this.expandedUser.email);
+      this.editUserFormGroup.controls['addresses'].setValue(this.expandedUser.addresses);
       this.editUserFormGroup.controls['city'].setValue(this.expandedUser.influencer.city);
       this.editUserFormGroup.controls['instagramId'].setValue(
         this.expandedUser.influencer.instagramId

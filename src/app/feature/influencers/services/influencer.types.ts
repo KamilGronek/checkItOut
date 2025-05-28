@@ -19,12 +19,28 @@ export interface InfluencerUser {
   firebaseUserId: string;
   userType: string;
   email: string;
+  addresses: Address;
   firstName: string;
   lastName: string;
   accountStatus: string;
   influencer: Influencer;
   createdTime: string;
   lastUpdateTime: string;
+}
+
+export interface Address {
+  additionalInfo: string;
+  addressType: string;
+  city: string;
+  country: string;
+  createdTime: string;
+  id: number;
+  lastUpdateTime: string;
+  postalCode: string;
+  primary: boolean;
+  state: string;
+  street: string;
+  userId: number;
 }
 
 export interface InfluencerResponse {
