@@ -34,14 +34,15 @@
                     >{{
                             "admin.companies.pagination.page_number"
                                 | transloco
-                        }}{{ pageIndex }}</label
+                        }}
+                        {{ pageIndex }}
+                    </label
                     >
                 </div>
             </div>
             <ng-template #influencerEditForm let-company>
                 <form [formGroup]="editInfluencerFormGroup">
                     <div class="grid grid-cols-1 xl:grid-cols-4 md:grid-cols-2 gap-4 w-full">
-
                         <div class="flex flex-col min-w-[250px]">
                             <app-input
                                 type="image"
@@ -49,59 +50,11 @@
                                 storagePath="sample-images"
                                 acceptedFileTypes="image/jpeg,image/png,image/gif"
                                 (imageUploaded)="onImageUpload($event)"
-                            >
-                            </app-input>
-                            <div class="mt-4 sm:mt-0">
-                                <button
-                                    mat-flat-button
-                                    class="mt-6 w-36"
-                                    [color]="'primary'"
-                                    (click)="fileInput.click()"
-                                >
-                                    <mat-icon
-                                        [svgIcon]="'heroicons_outline:plus'"
-                                    ></mat-icon>
-                                    <span
-                                        class="ml-2 mr-1"
-                                        style="font-size: 12px"
-                                    >
-                                        {{
-                                            "admin.companies.edit_form.add_image"
-                                                | transloco
-                                        }}
-                                    </span>
-                                </button>
-                                <button
-                                    *ngIf="imageUrl[expandedInfluencer?.id]"
-                                    mat-flat-button
-                                    class="mt-6 w-36"
-                                    [color]="'warn'"
-                                    (click)="
-                                        deleteImage(expandedInfluencer?.id)
-                                    "
-                                >
-                                    <mat-icon
-                                        [svgIcon]="'heroicons_outline:trash'"
-                                    ></mat-icon>
-                                    <span
-                                        class="ml-2 mr-1"
-                                        style="font-size: 12px"
-                                    >{{
-                                            "admin.companies.edit_form.delete_image"
-                                                | transloco
-                                        }}</span
-                                    >
-                                </button>
-
-                                <input
-                                    #fileInput
-                                    type="file"
-                                    accept="image/*"
-                                    class="hidden"
-                                    (input)="onFileSelected($event)"
-                                    (click)="onInputClick($event)"
-                                />
-                            </div>
+                            > {{
+                                "user.company.details.profilePicture"
+                                    | transloco
+                                }}
+                            </app-input>                      
                         </div>
                         <div class="flex flex-col min-w-[250px]">
                             <app-input
@@ -142,7 +95,6 @@
                             </app-input>
                         </div>
                         <div class="flex flex-col min-w-[250px]">
-
                             <app-input
                                 type="text"
                                 [control]="firstNameControl"

@@ -713,6 +713,7 @@
     },
         "company": {
           "details": {
+                "profilePicture": "Zdjęcie profilowe",
                 "nameCompany": "Nazwa firmy",
                 "firstName": "Imię",
                 "lastName": "Nazwisko",

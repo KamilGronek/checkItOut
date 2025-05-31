@@ -5,11 +5,11 @@
                 class="xl:col-span-3 flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden"
             >
                 <app-table
-                    [title]="'admin.new_influencers.title' | transloco"
+                    [title]="'admin.companies.title' | transloco"
                     [columnsToDisplay]="tableColumns"
                     [data]="dataSource"
-                    [expandableTemplate]="expandableRowTemplate"
-                    (rowToggled)="onUserRowToggled($event)">
+                    [expandableTemplate]="influencerEditForm"
+                    (rowToggled)="onUserRowToggled($event)"
                     >
                 </app-table>
                 <div class="flex items-center">
@@ -26,65 +26,62 @@
                         [hidePageSize]="hidePageSize"
                         [pageIndex]="pageIndex"
                         [attr.aria-label]="
-                            'admin.new_influencers.pagination.select_page'
-                                | transloco
+                            'admin.companies.pagination.select_page' | transloco
                         "
                     >
                     </mat-paginator>
-                    <label class="h-full flex items-center text-sm">
-                        {{
-                            "admin.new_influencers.pagination.page_number"
+                    <label class="text-sm"
+                    >{{
+                            "admin.companies.pagination.page_number"
                                 | transloco
                         }}
-                        {{ pageIndex + 1 }}
-                    </label>
+                        {{ pageIndex }}
+                    </label
+                    >
                 </div>
             </div>
-            <ng-template #expandableRowTemplate let-user>
-                <form
-                    class="grid md:grid-cols-3 sm:grid-cols-2  overflow-hidden pb-3 influFormEdit"
-                    [formGroup]="editUserFormGroup"
-                >
-                    <app-select
-                        [label]="'admin.new_influencers.edit_form.account_type' | transloco"
-                        [control]="typeControl"
-                        [options]="typeList$ | async"
-                    >
-                    </app-select>
-                    <app-select
-                        [label]="'admin.new_influencers.edit_form.status' | transloco"
-                        [control]="statusControl"
-                        [options]="statusList$ | async"
-                    >
-                    </app-select>
-                    <div class="info-button pl-0">
-                            <mat-form-field
-                                appearance="outline"
+            <ng-template #influencerEditForm let-user>
+                <form [formGroup]="editUserFormGroup">
+                    <div class="grid grid-cols-1 xl:grid-cols-4 md:grid-cols-2 gap-4 w-full">
+                        <div class="flex flex-col min-w-[250px]">
+                            <app-select
+                                [label]="'admin.new_influencers.edit_form.account_type' | transloco"
+                                [control]="typeControl"
+                                [options]="typeList$ | async"
                             >
-                                <mat-label
-                                ><b>
-                                    {{
-                                        "admin.new_influencers.edit_form.note"
-                                            | transloco
+                        </app-select>                   
+                        </div>
+                        <div class="flex flex-col min-w-[250px]">
+                            <app-select
+                                [label]="'admin.new_influencers.edit_form.status' | transloco"
+                                [control]="statusControl"
+                                [options]="statusList$ | async"
+                            >
+                            </app-select>
+                        </div>
+                      
+                       <div class="flex flex-col min-w-[250px]">
+                            <div class="text-area pl-0">
+                                <app-input
+                                    type="textarea"
+                                    [control]="textAreaControlTitle"
+                                    [placeholder]="
+                                    'user.company.details.note'
+                                        | transloco"  
+                                
+                                    >  {{
+                                    "user.company.details.note"
+                                        | transloco
                                     }}
-                                </b></mat-label
-                                >
-                                <textarea
-                                    [formControlName]="'noteFromAdmin'"
-                                    matInput
-                                    formControlName="noteFromAdmin"
-                                    placeholder="{{
-                                        'admin.new_influencers.edit_form.note_placeholder'
-                                            | transloco
-                                    }}"
-                                >
-                                </textarea>
-                            </mat-form-field>
-
+                                </app-input>
+                            </div>
+                        </div> 
+                    </div>
+                    <div class="flex w-full justify-center xl:justify-end mb-4">
                         <app-button 
-                            class="justify-self-center self-center"
                             tooltip="Flat button" 
                             variant="flat" 
+                            type="submit" 
                             color="primary"
                             (click)="sendToInfluencer(user.id)"
                             >
@@ -117,9 +114,14 @@
                 <div
                     class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center"
                 >
-                    {{ "admin.new_influencers.no_products" | transloco }}
+                    {{ "admin.companies.no_products" | transloco }}
                 </div>
             </ng-template>
+            <!-- Loading spinner -->
+            <div *ngIf="isLoading" class="flex justify-center">
+                <mat-spinner [diameter]="40"></mat-spinner>
+            </div>
         </div>
     </div>
 </div>
+

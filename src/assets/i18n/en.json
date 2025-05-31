@@ -715,6 +715,7 @@
 
         "company": {
           "details": {
+                "profilePicture": "Profile picture",
                 "nameCompany": "Name company",
                 "firstName": "First name",
                 "lastName": "Last name",

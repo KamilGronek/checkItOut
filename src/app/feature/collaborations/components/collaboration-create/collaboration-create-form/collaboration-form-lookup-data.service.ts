@@ -66,6 +66,8 @@ export class LookingUpDataService {
   contentTypesContent = [];
   contentCurrency = [];
 
+  isLoading: boolean = false;
+
   constructor(
     private fb: FormBuilder,
     private _influencerService: InfluencerService,
@@ -212,6 +214,7 @@ export class LookingUpDataService {
   }
 
   getPlatform(): void {
+    this.isLoading = true;
     this._collaborationService.getCollaborationPlatform().subscribe({
       next: response => {
         const platforms = response.content.map((platform: any) => ({
@@ -224,8 +227,10 @@ export class LookingUpDataService {
         console.log('platforms:', platforms);
 
         this.initializePlatformToggle(platforms);
+        this.isLoading = false;
       },
       error: error => {
+        this.isLoading = false;
         console.error('Error fetching platforms:', error);
       }
     });

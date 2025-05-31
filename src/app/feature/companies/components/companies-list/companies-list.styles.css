@@ -50,7 +50,6 @@ tr.example-element-row:not(.example-expanded-row):active {
     width: 500px;
 }
 
-
 .info {
     display: flex;
     justify-content: flex-end
@@ -62,7 +61,6 @@ tr.example-element-row:not(.example-expanded-row):active {
     margin-bottom: 20px;
 }
 
-
 .info-button {
     display: flex;
 }
@@ -71,7 +69,6 @@ tr.example-element-row:not(.example-expanded-row):active {
     margin-top: 20px;
     margin-left: 20px;
 }
-
 
 .container {
     display: flex;

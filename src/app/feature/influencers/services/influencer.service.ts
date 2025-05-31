@@ -91,7 +91,7 @@ export class InfluencerService {
   }
 
   updateInfluencerUser(influencerUser: InfluencerUser, id: number) {
-    //console.log('influencerUser:', influencerUser);
+    console.log('influencerUser:', influencerUser);
     return this.http.put<InfluencerUser>(
       `${this.apiUrl}/user/${id}`,
       influencerUser,

@@ -52,6 +52,8 @@ import { Column } from '../../../../shared/components/ui/table/table.types';
 import { TableComponent } from '../../../../shared/components/ui/table/table.component';
 import { SelectComponent } from 'app/shared/components/ui/select/select.component';
 import { ButtonComponent } from 'app/shared/components/ui/button/button.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { InputComponent } from 'app/shared/components/ui/input/input.component';
 
 @Component({
   selector: 'new-influencers-list',
@@ -87,7 +89,9 @@ import { ButtonComponent } from 'app/shared/components/ui/button/button.componen
     TranslocoModule,
     TableComponent,
     SelectComponent,
-    ButtonComponent
+    ButtonComponent,
+    MatProgressSpinnerModule,
+    InputComponent
   ]
 })
 export class newInfluencersListComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -217,6 +221,7 @@ export class newInfluencersListComponent implements OnInit, AfterViewInit, OnDes
 
   typeControl = new FormControl('', [Validators.required]);
   typeList$ = this._LookingUpUserDataService.typeList$;
+  textAreaControlTitle = new FormControl('', [Validators.required]);
 
   constructor(
     private _influencerService: InfluencerService,
@@ -327,6 +332,8 @@ export class newInfluencersListComponent implements OnInit, AfterViewInit, OnDes
   }
 
   private async loadInfluencers(pageIndex: number): Promise<void> {
+    this.isLoading = true;
+
     this._influencerService
       .getInfluencerPaged(
         pageIndex,
@@ -359,6 +366,8 @@ export class newInfluencersListComponent implements OnInit, AfterViewInit, OnDes
             'admin.new_influencers.snackbarServiceTextLoaded'
           );
           this.snackbarService.showSuccess(message);
+
+          this.isLoading = false;
         },
         error: error => {
           console.error('Error fetching influencer list', error);
@@ -367,6 +376,7 @@ export class newInfluencersListComponent implements OnInit, AfterViewInit, OnDes
             'admin.new_influencers.snackbarServiceTextFailure'
           );
           this.snackbarService.showFailure(message);
+          this.isLoading = false;
         }
       });
   }
@@ -410,6 +420,7 @@ export class newInfluencersListComponent implements OnInit, AfterViewInit, OnDes
     this.editingUserId = user.id;
     this.typeControl.setValue(user.userType);
     this.statusControl.setValue(user.accountStatus);
+    this.textAreaControlTitle.setValue(user.noteFromAdmin);
 
     this.editUserFormGroup.patchValue({
       address: user.address
@@ -437,7 +448,10 @@ export class newInfluencersListComponent implements OnInit, AfterViewInit, OnDes
       },
       error: error => {
         console.error('Error updating user', error);
-        this.snackbarService.showFailure('Failed to update user');
+        const message = this.translocoService.translate(
+          'admin.new_influencers.snackbarServiceTextFailure'
+        );
+        this.snackbarService.showFailure(message);
       }
     });
   }

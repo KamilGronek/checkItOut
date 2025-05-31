@@ -244,6 +244,8 @@ export class CollaborationCreateComponent implements OnInit {
 
   selectedFile: File | null = null;
 
+  isLoading = false;
+
   @Input() acceptedFileTypes: string = 'image/*';
   @Input() control!: FormControl;
   @Output() change = new EventEmitter<any>();
@@ -297,6 +299,7 @@ export class CollaborationCreateComponent implements OnInit {
   collaboration: any = null;
 
   ngOnInit(): void {
+    this.isLoading = true;
     this.getAdress();
     this.getProfilPhoto();
 
@@ -331,6 +334,8 @@ export class CollaborationCreateComponent implements OnInit {
   }
 
   getProfilPhoto() {
+    this.isLoading = true;
+
     combineLatest([this.userList$, this.companyControl.valueChanges])
       .pipe(distinctUntilChanged())
       .subscribe({
@@ -354,8 +359,12 @@ export class CollaborationCreateComponent implements OnInit {
             this.profilImageControl.setValue(profilImage);
             this.cdr.detectChanges();
           });
+
+          this.isLoading = false;
         },
         error: error => {
+          this.isLoading = false;
+
           console.error('Error fetching profile photo list', error);
 
           const message = this.translocoService.translate(
