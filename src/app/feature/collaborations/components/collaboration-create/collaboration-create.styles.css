@@ -132,15 +132,16 @@ img:hover {
 }
 
 
+
 ::ng-deep app-input .mat-mdc-button-touch-target {
   display: none !important;
 }
 
-::ng-deep app-input.profil-pic .relative.w-full {
+::ng-deep app-input.profile-pic .relative.w-full {
   pointer-events: none !important;
 }
 
-::ng-deep app-input.profil-pic p.text-sm.text-gray-500 {
+::ng-deep app-input.profile-pic p.text-sm.text-gray-500 {
 
   display: none !important;
 }

@@ -57,3 +57,28 @@
         <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
     </table>
 </div>
+
+<div class="block sm:hidden p-4">
+  <div *ngFor="let row of data" class="bg-card rounded-xl shadow p-4 mb-4 border border-gray-200">
+    <div *ngFor="let column of columnsToDisplay" class="mb-2">
+      <div class="text-gray-500 text-sm font-medium">
+        {{ column.label | transloco }}
+      </div>
+      <div class="text-black font-semibold">
+        {{ row[column.key] }}
+      </div>
+    </div>
+
+    <!-- Możesz dodać przycisk edycji/rozwinięcia -->
+    <button
+      mat-button
+      class="mt-2 text-primary underline"
+      (click)="toggle(row)">
+      {{ 'admin.new_influencers.details.show_more' | transloco }}
+    </button>
+
+    <div *ngIf="isExpanded(row)">
+      <ng-container *ngTemplateOutlet="expandableTemplate; context: { $implicit: row }"></ng-container>
+    </div>
+  </div>
+</div>

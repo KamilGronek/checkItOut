@@ -14,12 +14,28 @@ export interface Influencer {
   adminNoteTime: string;
 }
 
+export type AddressOnlyId = Pick<Address, 'id'>;
+
+export interface InfluencerUserToUpdate {
+  id: number;
+  addresses: AddressOnlyId[];
+  accountStatus: string;
+  userType: string;
+  firebaseUserId: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  influencer: Influencer;
+  createdTime: string;
+  lastUpdateTime: string;
+}
+
 export interface InfluencerUser {
   id: number;
   firebaseUserId: string;
   userType: string;
   email: string;
-  addresses: Address;
+  addresses: Address[];
   firstName: string;
   lastName: string;
   accountStatus: string;

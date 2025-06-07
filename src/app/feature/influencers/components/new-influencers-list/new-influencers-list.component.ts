@@ -123,7 +123,7 @@ export class newInfluencersListComponent implements OnInit, AfterViewInit, OnDes
     { key: 'id', label: 'admin.new_influencers.table_headers.id' },
     { key: 'firstName', label: 'admin.new_influencers.table_headers.first_name' },
     { key: 'lastName', label: 'admin.new_influencers.table_headers.last_name' },
-    { key: 'addresses', label: 'admin.new_influencers.table_headers.address' },
+    { key: 'addressStreet', label: 'admin.new_influencers.table_headers.address' },
     { key: 'email', label: 'admin.new_influencers.table_headers.email' }
   ];
 
@@ -355,7 +355,7 @@ export class newInfluencersListComponent implements OnInit, AfterViewInit, OnDes
 
           const flattened = response.content.map(user => ({
             ...user,
-            addresses: user.addresses?.[0]?.street ?? ''
+            addressStreet: user.addresses?.[0]?.street ?? ''
           }));
 
           this.dataSource.data = flattened;
@@ -445,6 +445,7 @@ export class newInfluencersListComponent implements OnInit, AfterViewInit, OnDes
           'admin.new_influencers.snackbarServiceTextAfterSave'
         );
         this.snackbarService.showSuccess(message);
+        this.loadInfluencers(0);
       },
       error: error => {
         console.error('Error updating user', error);

@@ -8,7 +8,8 @@ import {
   OnDestroy,
   OnInit,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  NgZone
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
@@ -51,6 +52,8 @@ import { ButtonComponent } from 'app/shared/components/ui/button/button.componen
 import { LookingUpCompanyDataService } from 'app/feature/companies/components/companies-list/details-looku-data.service';
 import { SnackbarService } from 'app/core/services/custom-snackbar/custom-snackbar.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { fromEvent } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'companies-list',
@@ -100,13 +103,20 @@ export class CompaniesComponent implements OnInit, AfterViewInit, OnDestroy {
   companyList: Company[] = [];
   dataSource: MatTableDataSource<Company>;
 
-  tableColumns: Column[] = [
+  fullTableColumns: Column[] = [
     { key: 'name', label: 'admin.companies.table_headers.name' },
     { key: 'cityDisplay', label: 'admin.companies.table_headers.city' },
     { key: 'addressDisplay', label: 'admin.companies.table_headers.address' },
     { key: 'email', label: 'admin.companies.table_headers.email' },
     { key: 'phoneNumber', label: 'admin.companies.table_headers.phone_number' }
   ];
+
+  mobileTableColumns: Column[] = [
+    { key: 'name', label: 'admin.companies.table_headers.name' },
+    { key: 'email', label: 'admin.companies.table_headers.email' }
+  ];
+
+  tableColumns: Column[] = [];
 
   form: FormGroup;
   updatedNoteInfo: boolean = false;
@@ -157,7 +167,6 @@ export class CompaniesComponent implements OnInit, AfterViewInit, OnDestroy {
   isLoading = false;
 
   constructor(
-    // private _influencerService: InfluencerService,
     public _LookingUpCompanyDataService: LookingUpCompanyDataService,
     private _companyService: CompanyService,
     private _formBuilder: UntypedFormBuilder,
@@ -167,7 +176,8 @@ export class CompaniesComponent implements OnInit, AfterViewInit, OnDestroy {
     private authService: AuthService,
     private imageService: ImageService,
     private translocoService: TranslocoService,
-    private snackbarService: SnackbarService
+    private snackbarService: SnackbarService,
+    private ngZone: NgZone
   ) {
     this.editInfluencerFormGroup = this.fb.group({
       id: ['', [Validators.required]],
@@ -201,9 +211,15 @@ export class CompaniesComponent implements OnInit, AfterViewInit, OnDestroy {
     console.log(this.dataSource);
   }
 
+  private resizeListener!: () => void;
+  isMobile = false;
+
   ngOnInit(): void {
     this.loadCompanies(this.pageIndex);
     this._LookingUpCompanyDataService.getStatus();
+
+    this.isMobile = window.innerWidth < 640;
+    this.tableColumns = this.isMobile ? this.mobileTableColumns : this.fullTableColumns;
   }
 
   onUserRowToggled(user: any): void {
@@ -303,6 +319,7 @@ export class CompaniesComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this._unsubscribeAll.next(null);
     this._unsubscribeAll.complete();
+    window.removeEventListener('resize', this.resizeListener);
 
     Object.keys(this.imageUrl).forEach(key => {
       const url = this.imageUrl[key];
